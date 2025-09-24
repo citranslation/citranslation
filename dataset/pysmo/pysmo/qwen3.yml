@@ -1,0 +1,43 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ matrix.python-version }}-pip
+        restore-keys: |
+          ${{ matrix.python-version }}-pip
+    - name: Install dependencies
+      run: |
+        make
+        pip install poetry
+        poetry install
+    - name: Run tests
+      run: make tests
+    - name: Upload coverage to Codecov
+      run: bash <(curl -s https://codecov.io/bash)
+    - name: Send Gitter notification
+      if: ${{ success }}
+      run: curl -s https://webhooks.gitter.im/e/55cf16b611593edcb09d
+    - name: Send Gitter notification on failure
+      if: ${{ failure }}
+      run: curl -s https://webhooks.gitter.im/e/55cf16b611593edcb09d

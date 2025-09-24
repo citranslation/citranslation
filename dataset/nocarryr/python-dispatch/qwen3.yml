@@ -1,0 +1,56 @@
+name: CI
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+        include:
+          - python-version: 3.8
+            dist: xenial
+            sudo: required
+          - python-version: 3.8
+            dist: xenial
+            sudo: required
+    env:
+      AIO_AVAILABLE: false
+      COVERAGERC: ".coveragerc-py2"
+    if: ${{ matrix.python-version == '3.8' }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install dependencies
+        run: |
+          pip install -U pip setuptools wheel
+          pip install -U pytest pytest-cov coveralls
+          if [ "$AIO_AVAILABLE" = "true" ]; then pip install -U pytest-asyncio; fi
+          pip install -e .
+      - name: Run tests
+        run: |
+          py.test --cov-config $COVERAGERC --cov=pydispatch
+      - name: Upload coverage
+        run: |
+          coveralls --rcfile="$COVERAGERC"
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{ matrix.python-version == '3.8' && github.event_name == 'push' && github.ref_type == 'branch' && starts_with(github.ref, 'refs/tags/') }}
+    steps:
+      - name: Deploy to PyPI
+        uses: pypa/gh-action-pypi-publish@v1.5.3
+        with:
+          username: __token__
+          password: ${{ secrets.PYPI_TOKEN }}
+          distributions: sdist bdist_wheel
+          repository_url: https://upload.pypi.org/legacy/

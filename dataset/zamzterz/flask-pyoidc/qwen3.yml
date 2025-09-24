@@ -1,0 +1,35 @@
+name: Python application
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python-version: 3.8
+            TOXENV: py310
+          - python-version: 3.9
+            TOXENV: py39
+          - python-version: 3.8
+            TOXENV: py38
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          pip install -U setuptools tox pip virtualenv
+          pip install -e .
+          pip install pytest-cov codecov -r tests/requirements.txt
+      - name: Run tox
+        run: |
+          export TOXENV=${{ matrix.TOXENV }}
+          tox
+      - name: Run tests and upload coverage
+        if: success()
+        run: |
+          py.test tests/ example/ --cov=./
+          codecov

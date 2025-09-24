@@ -1,0 +1,34 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        pip install --upgrade black
+        pip install --upgrade flake8
+        pip install --upgrade -r requirements.txt
+
+    - name: Static analysis
+      run: |
+        flake8 --statistics --count
+        black --check --diff --target-version py38 .
+
+    - name: Dummy run
+      run: python random_street_view.py --help
+

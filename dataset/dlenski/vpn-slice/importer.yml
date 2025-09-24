@@ -1,0 +1,39 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install -r requirements.txt
+    - run: python setup.py bdist
+    - run: python setup.py build
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         user: moxfyre
+#         password:
+#           secure: IUe0vzjHCYbnWkO4ErYFUoo7SJ/iCNdTboVQ03lSjOhnq2ya+T5kEzXmt8u88yBhA0Ba3EkcM4h4Tfnt5VTVmyyID3eoGgxyMAyBzkgfnT+vzmWSbabsEOR+ERDGfIsEbsr0wHwGdP8GJzYAG9g5D5ikMG5yStE7y2Bj0ckRf3A3MsW+/CGOQL5WbhT63vC2YNu/XuF0lp8XhDHvHPspZbW7/SxwqwbPu8FBCzjDep2Gu+owWf04RIke9wPK5pWCiV74WTEEB+FalZTsvorVWu2pku8d+VMxlmhA5PJQhwIiZbUxkA89Hb/usN/u42PFkcFXEeNutXmRUDaJlH1Wr9JZVz8tIAP1hWQ3B/6yAHIvP+nZIYr5zkXlcBSYKYe5gt/6twRByFF3.8dbJJH0mqrsGdCdxgSkQHs34UUfoxRrfYwMhL9/hBMVicAMO7yqcjo6MEK7P0Nra4USUjXo70q3qEYxu862r/FJ8UsG/nf8WrsAVnwitKThH5eY1hJIpbPTAg/jgpRTVmRYJ8nTgHahxvJkyHGwgD3MY0/9ocfjGMqI2Pup5nlfhnjNVBKEppoETi6TE/gUcd75h1VFxKny/Wn7HQMVwHlk+tsOFKD7mNrDY0kmc7fHSYRVwx88L458h4IoIATkKgwTa5f/B6opLEAMI6Omh+aVFblqwo0=
+#         'on':
+#           tags: true
+#           repo: dlenski/vpn-slice
+#       if: "${{ github.event_name == 'push' && ${{ github.ref }} }}"
+#     # This item has no matching transformer
+#     - email: false
+    strategy:
+      matrix:
+        python:
+        - '3.8'
+

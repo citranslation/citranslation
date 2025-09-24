@@ -1,0 +1,37 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 'pypy-3.8']
+        toxenv: [black, flake8, mypy, isort, py38, py39]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install tox
+
+      - name: Run Tox
+        run: |
+          tox -e ${{ matrix.toxenv }}
+
+      - name: Install Coveralls
+        if: success()
+        run: |
+          pip install coveralls
+
+      - name: Upload coverage
+        if: success()
+        run: |
+          coveralls

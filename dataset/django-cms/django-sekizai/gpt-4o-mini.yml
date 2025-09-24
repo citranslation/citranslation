@@ -1,0 +1,50 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8]
+        django-version: [dj22, dj30, dj31, dj32]
+        include:
+          - python-version: 3.8
+            tox-env: flake8
+          - python-version: 3.8
+            tox-env: isort
+          - python-version: 3.8
+            django-version: dj22
+          - python-version: 3.8
+            django-version: dj30
+          - python-version: 3.8
+            django-version: dj31
+          - python-version: 3.8
+            django-version: dj32
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install coverage isort tox
+          if [[ "${{ matrix.python-version }}" == "3.8" ]]; then export PY_VER=py38; fi
+          if [[ "${{ matrix.python-version }}" == "3.8" ]]; then export PY_VER=py38; fi
+          if [[ "${{ matrix.python-version }}" == "3.8" ]]; then export PY_VER=py38; fi
+          if [[ "${{ matrix.python-version }}" == "3.8" ]]; then export PY_VER=py38; fi
+          if [[ "${{ matrix.django-version }}" != "" ]]; then export TOX_ENV=$PY_VER; fi
+
+      - name: Run tests
+        run: tox -e $TOX_ENV
+
+      - name: Upload coverage to Codecov
+        if: success()
+        run: bash <(curl -s https://codecov.io/bash)
+        

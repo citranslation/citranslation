@@ -1,0 +1,26 @@
+name: Python tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: 3.8
+            django: 18
+          - python: 3.8
+            django: 19
+          - python: 3.8
+            django: 110
+          - python: 3.8
+            django: 111
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install tox
+        run: pip install tox
+      - name: Run tests
+        run: tox -e py${{ matrix.python }}-django-${{ matrix.django }}

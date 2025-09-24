@@ -1,0 +1,41 @@
+name: Python package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10]
+        os: [ubuntu-latest]
+        arch: [amd64, ppc64le]
+        env:
+          WITHOUT_EXTENSION: [0, 1]
+
+    steps:
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: |
+        pip install coveralls pytest
+        python setup.py develop
+
+    - name: Run tests
+      run: coverage run --source=mwparserfromhell -m pytest
+
+    - name: Upload coverage to Coveralls
+      if: success()
+      run: coveralls

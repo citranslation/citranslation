@@ -1,0 +1,47 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+        toxenv: [py38]
+        flake8: [flake8]
+        isort: [isort]
+        black: [black]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install tox
+
+      - name: Run Tox
+        run: |
+          tox -e ${{ matrix.toxenv }}
+
+      - name: Run Flake8
+        if: matrix.toxenv == 'flake8'
+        run: |
+          tox -e flake8
+
+      - name: Run isort
+        if: matrix.toxenv == 'isort'
+        run: |
+          tox -e isort
+
+      - name: Run black
+        if: matrix.toxenv == 'black'
+        run: |
+          tox -e black
+

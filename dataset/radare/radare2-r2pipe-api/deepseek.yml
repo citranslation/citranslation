@@ -1,0 +1,26 @@
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        ./scripts/install_radare2.sh
+        pip install -r python/requirements_ci.txt
+        cd python && ./setup.py install
+
+    - name: Run tests
+      run: cd test && make tests
+

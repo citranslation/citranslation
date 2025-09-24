@@ -1,0 +1,56 @@
+name: Python package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, pypy-3.8]
+        include:
+          - python-version: 3.8
+            tox-env: py38
+          - python-version: 3.9
+            tox-env: py39
+          - python-version: pypy-3.8
+            tox-env: pypy-3.8
+          - python-version: 3.9
+            tox-env: lint
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -U -r requirements-dev.txt
+        pip install .
+
+    - name: Run tests
+      run: |
+        tox -e ${{ matrix.tox-env }}
+        pytest --dead-fixtures
+
+    - name: Clean up pip cache
+      if: success()
+      run: rm -rf ${{ runner.cache }}/pip
+
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements-dev.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-

@@ -1,0 +1,47 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        python-version: [3.8, '3.8']
+        django-version: [2.2, 3.0, 'main']
+      fail-fast: false
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install tox tox-travis
+
+      - name: Run tests
+        run: |
+          if [[ "${{ matrix.django-version }}" == "main" ]]; then
+            tox -e py${{ matrix.python-version }} -- -Django main
+          else
+            tox -e py${{ matrix.python-version }} -- -Django ${{ matrix.django-version }}
+          fi
+
+      - name: Build docs
+        if: matrix.python-version == '3.8' && matrix.django-version == 'main'
+        run: tox -e docs
+
+      - name: Run quality checks
+        if: matrix.python-version == '3.8' && matrix.django-version == 'main'
+        run: tox -e quality
+
+      - name: Allow failures for 3.8 and main
+        if: matrix.python-version == '3.8' || matrix.django-version == 'main'
+        run: echo "This job is allowed to fail."
+

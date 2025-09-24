@@ -1,0 +1,55 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8' # Change this to '3.8' or '3.8' for different versions
+
+      - name: Install dependencies
+        run: |
+          python3 setup.py install
+          sudo apt-get -y update
+          pip install pytest-cov
+          pip install .[ja]
+
+      - name: Run tests
+        run: |
+          python3 -m pytest
+          ./test.sh
+
+# You can add a matrix strategy to run on multiple Python versions
+# jobs:
+#   build:
+#     runs-on: ubuntu-22.04
+#     strategy:
+#       matrix:
+#         python-version: [3.8, 3.8, 3.8]
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+#       - name: Set up Python
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: ${{ matrix.python-version }}
+#       - name: Install dependencies
+#         run: |
+#           python3 setup.py install
+#           sudo apt-get -y update
+#           pip install pytest-cov
+#           pip install .[ja]
+#       - name: Run tests
+#         run: |
+#           python3 -m pytest
+#           ./test.sh
+
+# End-of-Code

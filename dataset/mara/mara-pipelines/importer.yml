@@ -1,0 +1,56 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install .[test]
+    - run: echo hello world
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         distributions: sdist
+#         user: mara-pypi-upload-account
+#         password:
+#           secure: 0TQCqyHghdxbOQgpBRlJJzReA/Ksys/YB01T8B7Kxn8rNHwxjcY/PBv1/IrlfSz7Qn2QVrQwloYWQfiGlG7vzyPn7GdMElNEDQDWN4TvtjT93hpsWM5kn7MPI1eZTo2Ua0u+FDoMcMkTPB/qYJWttCQGm+Cd3SwQFJUW4lgXRw1k5GPujDZjxgHrNg5tshV1Ss7hB52wxfaSeqJU4Xu/9AuKfC4xITuXn15w0EOV/hvrXFuYNl03LhOTPAfiyAL+QqlBOEZq9DOAYd5bYSFkjhfwyM14Kp7AUvq1ZOwLWe8o/6sG0F8SUIEte7CncsAXC3WV64nTrIDUvg82YaRu5cx9mtRtiKFGHQJQpVaTQD87EBZ+hgZG7j2vlgI74jRyG9V7gbxj3JBgDzsET4eiIPGX/RQM7THvUdCB2nSPGGAvkcf+DwLtm/n0JDBJhUEtDq5pCcP/IcM3ij/q3qSzO9CgbE/uoLVfh1DQwQKT944Ls0ArCgpUw9Pc3iidlx1/3xOy6N7MONwSXBSX6SilV098QfTkQ0AHRCxg86YUZ8ijnJnF+UguDM7C1NMRXA/ir+FFZUU7rSuQppHDZK8eBNL1a5G4t8W2PftL0tAonEJESB8SW6rLnLHRqY2UWw7PelwZ3kQvUJAg0V1mow3nsekloZWmpaGo5PJFzUXjSD4=
+#         'on':
+#           tags: true
+#           branch: main
+#           repo: mara/mara-pipelines
+#           condition: "$UPLOAD == True"
+#       if: "${{ github.event_name == 'push' && $UPLOAD == True && ${{ github.ref }} }}"
+  test_4:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.9'
+    - run: pip install .[test]
+    - run: echo hello world
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         distributions: sdist
+#         user: mara-pypi-upload-account
+#         password:
+#           secure: 0TQCqyHghdxbOQgpBRlJJzReA/Ksys/YB01T8B7Kxn8rNHwxjcY/PBv1/IrlfSz7Qn2QVrQwloYWQfiGlG7vzyPn7GdMElNEDQDWN4TvtjT93hpsWM5kn7MPI1eZTo2Ua0u+FDoMcMkTPB/qYJWttCQGm+Cd3SwQFJUW4lgXRw1k5GPujDZjxgHrNg5tshV1Ss7hB52wxfaSeqJU4Xu/9AuKfC4xITuXn15w0EOV/hvrXFuYNl03LhOTPAfiyAL+QqlBOEZq9DOAYd5bYSFkjhfwyM14Kp7AUvq1ZOwLWe8o/6sG0F8SUIEte7CncsAXC3WV64nTrIDUvg82YaRu5cx9mtRtiKFGHQJQpVaTQD87EBZ+hgZG7j2vlgI74jRyG9V7gbxj3JBgDzsET4eiIPGX/RQM7THvUdCB2nSPGGAvkcf+DwLtm/n0JDBJhUEtDq5pCcP/IcM3ij/q3qSzO9CgbE/uoLVfh1DQwQKT944Ls0ArCgpUw9Pc3iidlx1/3xOy6N7MONwSXBSX6SilV098QfTkQ0AHRCxg86YUZ8ijnJnF+UguDM7C1NMRXA/ir+FFZUU7rSuQppHDZK8eBNL1a5G4t8W2PftL0tAonEJESB8SW6rLnLHRqY2UWw7PelwZ3kQvUJAg0V1mow3nsekloZWmpaGo5PJFzUXjSD4=
+#         'on':
+#           tags: true
+#           branch: main
+#           repo: mara/mara-pipelines
+#           condition: "$UPLOAD == True"
+#       if: "${{ github.event_name == 'push' && $UPLOAD == True && ${{ github.ref }} }}"

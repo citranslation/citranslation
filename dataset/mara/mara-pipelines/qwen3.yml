@@ -1,0 +1,44 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+    tags: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+        include:
+          - python-version: 3.8
+            env:
+              UPLOAD: true
+    env:
+      UPLOAD: ${{ matrix.env.UPLOAD }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: pip install .[test]
+    - name: Run script
+      run: echo "hello world"
+    - name: Deploy to PyPI
+      if: $UPLOAD == "true"
+      run: |
+        echo "$PYPI_PASSWORD" > pypirc
+        echo "[distutils]" >> pypirc
+        echo "index-servers = pypi" >> pypirc
+        echo "" >> pypirc
+        echo "[pypi]" >> pypirc
+        echo "repository: https://upload.pypi.org/secure/" >> pypirc
+        echo "username: $PYPI_USER" >> pypirc
+        echo "password: $PYPI_PASSWORD" >> pypirc
+        pip install twine
+        python setup.py sdist
+        twine upload dist/*

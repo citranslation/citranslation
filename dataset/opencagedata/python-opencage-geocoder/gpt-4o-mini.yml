@@ -1,0 +1,36 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10, 3.11]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        pip install tox-travis
+
+    - name: Run tests
+      run: tox
+
+    - name: Notify Slack
+      if: always()
+      uses: slackapi/slack-github-action@v1.19.0
+      with:
+        payload: '{"text": "Build completed for Python ${{ matrix.python-version }}"}'
+        channel: '#your-channel'
+        slack-token: ${{ secrets.SLACK_TOKEN }}
+

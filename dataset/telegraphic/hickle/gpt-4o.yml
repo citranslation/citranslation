@@ -1,0 +1,38 @@
+name: Python package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install -qq libhdf5-serial-dev
+        python -m pip install --upgrade pip setuptools wheel virtualenv
+        pip install tox tox-travis codecov
+
+    - name: Run tests with tox
+      run: tox
+
+    - name: Upload coverage to Codecov
+      if: success()
+      uses: codecov/codecov-action@v2

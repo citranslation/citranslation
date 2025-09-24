@@ -1,0 +1,36 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install -e .[testing]
+    - run: pytest tests
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         user: vmalloc
+#         password:
+#           secure: IiRY8I5mIBebKxMUNygddVLyyd0j9gRG5hly5r07nIeqqB01cUhrHgTnfqQPBbVYsDzFYRNM4p2+D94YlsRyO/ylGXehNpA/Dmb5tVDLtycbQVBx4rkRwEa0nfcXaF3MO1P0NHbEi3scVhLiaYqTGWsEKGIhUrgWyckuAh99FKo=
+#         'on':
+#           tags: true
+#           repo: getslash/flux
+#       if: "${{ github.event_name == 'push' && ${{ github.ref }} }}"
+    strategy:
+      matrix:
+        python:
+        - 3.8
+

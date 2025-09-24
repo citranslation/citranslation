@@ -1,0 +1,40 @@
+name: Python Tests
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.9", "3.8"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install graphviz
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y graphviz
+    - name: Install dependencies
+      run: |
+        pip install .[test] codecov
+    - name: Remove pip debug log
+      run: rm -f $HOME/.cache/pip/log/debug.log
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ hashFiles('**/requirements.txt') }}
+    - name: Run tests
+      run: ./run-tests.py
+    - name: Upload coverage
+      run: codecov
+      if: ${{ success }}

@@ -1,0 +1,41 @@
+name: Python Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: pip install -r .github/requirements.txt
+    - name: Run tests
+      run: |
+        if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
+          export PYTHON=python3.8
+        elif [[ "${{ matrix.python-version }}" == "3.8" ]]; then
+          export PYTHON=python3.8
+        elif [[ "${{ matrix.python-version }}" == "3.8" ]]; then
+          export PYTHON=python3.8
+        elif [[ "${{ matrix.python-version }}" == "3.8" ]]; then
+          export PYTHON=python3.8
+        elif [[ "${{ matrix.python-version }}" == "3.8" ]]; then
+          export PYTHON=python3.8
+        elif [[ "${{ matrix.python-version }}" == "3.8" ]]; then
+          export PYTHON=python3.8
+        elif [[ "${{ matrix.python-version }}" == "3.9" ]]; then
+          export PYTHON=python3.9
+        fi
+        make test PYTHON=$PYTHON
+

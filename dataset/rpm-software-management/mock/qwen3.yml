@@ -1,0 +1,30 @@
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python: [3.8, 3.9]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          pip install -r mock/requirements.txt
+          pip install pytest-cov
+      - name: Run tests
+        run: |
+          PYTHON=python${{ replace(matrix.python, '-dev', '') }} ./mock/run-tests.sh
+      - name: Copr build for mock
+        run: |
+          PACKAGE=mock .travis/copr-build
+        if: ${{ github.event_name == 'pull_request' }}
+      - name: Copr build for mock-core-configs
+        run: |
+          PACKAGE=mock-core-configs .travis/copr-build
+        if: ${{ github.event_name == 'pull_request' }}

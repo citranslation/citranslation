@@ -1,0 +1,50 @@
+name: Python package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+        include:
+          - python-version: 3.9
+            env: TOXENV=mypy
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox-travis codecov
+    - name: Run tests
+      run: tox -v
+    - name: Upload coverage to Codecov
+      if: success()
+      uses: codecov/codecov-action@v2
+
+  notify:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Notify IRC
+      uses: peter-evans/irc-notify@v1
+      with:
+        server: chat.freenode.net
+        channel: '#certbot-devel'
+        secure: JDbizbq58cmpQ3hbq9/PT4V0mns9jJ9oa/fF9P/e3raZkqm3APDcfVx79QiIDXShFsy4DYYZDTTPn4yuGhzX29Wo5z0ncWmMaPJP1+BnKxgh1Zit8TcG0doFXjc5A3RRXAEYRkb4ffwJtmWor/hN8fRwFFivg6yH/54I/XWUT12/nlXaMG+hygndkI9Rmg9REVd4/sScBR25xBh6bkTcG/szMZugpvJeZsbjjxaXrZxo3.80wvdiUHGaGffgEVhCHuMMN8bs/5qeM1GMGohQVwqXciBZKUJ51C3YQl61O09SoJxPOjvik+6Os2iiQBkMmKiPTLpvpeXZMDVXM3tVUiLHckmSnuT6FHI4lmpNl0/qPGGlmvNL7PeUuZ+Mcry8meeSwM/3nYSAp4UZC4lojiR221fHIQiT67yUOAYxyaDoTs33QWQT8VE1FkY81DBB+pdcm2E1pgzfTLLTvprEZL+vabVr2ayvvQnTnTg8FKkulLFYDu0IZ3.88+TDULLkPfEUTQMVxq1Xv5cBza1USnF/Mee3x3I8niiHEaC2fDuNRENdQv6hMqcocHy7QiWTPACI/PJjO1CuYfN0QPpuHemxxyZSLrLy7kAnmmcMgUGCnorWcruc53FImsSZzFVAwe8th2iFgHKDPjlWFwB9xjCfgzNpGal85q8S6dVex1E=
+      env:
+        IRC_NOTIFY_ON: failure
+        IRC_NOTIFY_ON_CANCEL: never
+        IRC_NOTIFY_ON_SUCCESS: never

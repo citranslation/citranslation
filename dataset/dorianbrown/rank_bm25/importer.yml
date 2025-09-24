@@ -1,0 +1,35 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: pip install -e .[dev]
+    - run: pytest
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         user:
+#           secure: LVQg+RKCZ6c8QL1bnHVgWnvCfD63.89tBtsQjKea+vVrgOAPREShwRh5TBXSMD37JHRHnJbYAjm8H3QZ5bnGI8egyz0Hfr+jAx44hvmQ1r1L9rSudGuA6SSCz+IUQjK9f+AOZA/vQAa0StJxnf+Rmq6XuLBVskVmgaaJUA4wq6x4OF/6yrleYfKBAoZsHS9gUwXy44b5k9p2I0mGFzWbhFDlZWL6F2+ZDZiDWg7S5di68PjT6p0OYbmnPTkYsq1kdG4l4YyovVm5gVCku+2Rn2DZGppDadSqWAvSsJ3615Z1zS9vrfZQkYZRLC6zu+1wpbCEdJVeIAWz0O9xFmfJFoyFhBHo4EeT0ccbUgGz+up7GuPFP0+A9H/iqirOSyp73xfdG/hoHEuS86Ugc63.89q7DDp350EXbViJKgBjgSD5YAUMTKR99zJjfLkJ8o3.8EdCfKVm3/Cxc4uqJXlPf8pvsnBbg8C8N4OPhboHt6XIEmO/f6LxomBbFfQC9RwM2Hzm07a3NXk3.8ibvhOB7JAN/QTvQ7ubeQLI9zOK55lUL9IFv/zdrNiLP3VMdn+UvKEvebpMwA/95n5oABo+gxjagWFnvf89pznv5CS02gDtuNY9rOloU3FkxvkgCJy4RBaleEX+T9TxIGy+em3ZBk1eJTYiMDotYhfS3XIdLFY=
+#         password:
+#           secure: Ku6s3cX3VHIk06/fXUunkgAGsl3UsJir8XkrpNAUc4V6HYwXBrIeuNixRH+2EAiva7RXiNbRvcHJEmXzAdOS7CKfkm4zWBNtdfCNNgb3IiFzH7xotd0a9gNq6L6WEYRw/eI2/B97HlHT6BqCU6SVf4oZ4Jbhb3.87nftalWbnpJZtgKwciFqCI4evABiHcyVp5m6BFRuMCj+K2crmXxF18la9Gx0LkO/QHCH7uxPUk264mHXxBQ851katbAKE1l3xr4vv+aOYvxpeoh9DZBrH6mO6yAXM33Mt8xJUjLI+ZrFzlBM7HgOz9VnBSJqX/1b+ER8Wsot185cOQQzZNDIia16VwdpnUJLoMdzEmmbTa6nv0X/5rIztRBxocVYAuILdn3mTPLDjfqs7OnqFHbVfoHh5OEd3ZAMKWq4f3wzodXhWijLzMM5MiBMpPFS8e2t2x5smvCCu29bt1RJAnEV17BwRK1DG2riECdGahM6MnSyv81rdPLyUUDyrZJisJ8wMHJaHaHim4LtBWJzIdCRr/hB+ENnPxvnUR0DBFUx1xN3Ld8JvxjRIbFcSXGTWCrNUKAjeo3d3Xn38Nih+Cxowl2ouCFO7O5fsEKxvYiqQM80V3cIV0AeRdSY07Q8nYIOh5QTvoZ261JDPfbDnhMeyWazWjUcF5LSp4fMvmsOzSI=
+#         skip_existing: true
+#         'on':
+#           branch: main
+#       if: "${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}"
+    strategy:
+      matrix:
+        python:
+        - '3.8'

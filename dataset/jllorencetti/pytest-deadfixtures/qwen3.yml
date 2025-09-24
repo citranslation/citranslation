@@ -1,0 +1,48 @@
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python-version: 3.8
+            env: TOX_ENV=py38
+          - python-version: 3.9
+            env: TOX_ENV=py39
+          - python-version: pypy-3.8
+            env: TOX_ENV=pypy-3.8
+          - python-version: 3.9
+            env: TOX_ENV=lint
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Before cache
+        run: |
+          rm -rf $HOME/.cache/pip/log
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ matrix.python-version }}-pip
+      - name: Install dependencies
+        run: |
+          pip install -U -r requirements-dev.txt
+          pip install .
+      - name: Run tests
+        run: |
+          tox -e $TOX_ENV
+          pytest --dead-fixtures
+      - name: Save cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ matrix.python-version }}-pip

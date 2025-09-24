@@ -1,0 +1,33 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y flake8 gettext gir1.2-gtk-3.0 python3 python3-dev python3-gi python3-pytest xvfb
+
+      - name: Run flake8
+        run: flake8 .
+
+      - name: Run tests
+        run: xvfb-run pytest nfoview
+
+      - name: Install package
+        run: |
+          python3 setup.py install --prefix=/tmp/local
+          python3 setup.py install --root=/tmp/pkg
+          python3 setup.py clean

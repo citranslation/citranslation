@@ -1,0 +1,33 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+        include:
+          - { python-version: 3.8, env: TOXENV=flake8 }
+          - { python-version: 3.8, env: TOXENV=isort }
+          - { python-version: 3.8, runs-on: ubuntu-22.04 }
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          pip install tox-travis
+          pip install coveralls
+      - name: Set TOXENV
+        run: |
+          if [ -n "${{ matrix.env }}" ]; then
+            export TOXENV=$(echo "${{ matrix.env }}" | cut -d= -f2)
+          fi
+      - name: Run tests
+        run: tox
+      - name: Upload coverage
+        if: ${{ success }}
+        run: coveralls

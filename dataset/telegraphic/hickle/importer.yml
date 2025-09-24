@@ -1,0 +1,30 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: sudo apt-get update -qq
+    - run: sudo apt-get install -qq libhdf5-serial-dev
+    - run: python -m pip install --upgrade pip setuptools wheel virtualenv
+    - run: pip install tox tox-travis codecov
+    - run: tox
+    - run: codecov
+      if: "${{ success() }}"
+    strategy:
+      matrix:
+        python:
+        - '3.8'
+

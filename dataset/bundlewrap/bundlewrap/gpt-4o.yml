@@ -1,0 +1,61 @@
+name: Python application
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    services:
+      postgres:
+        image: postgres:13
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: pip install .
+
+    - name: Generate SSH key
+      run: |
+        ssh-keygen -f ~/.ssh/id_rsa -N ""
+        cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys
+        ssh -o StrictHostKeyChecking=no localhost id
+
+    - name: Run tests
+      run: |
+        pip install pytest
+        pytest tests
+
+    - name: Notify IRC
+      if: failure()
+      run: |
+        echo "Tests failed, sending notification to IRC"
+        # Add your IRC notification script or command here
+

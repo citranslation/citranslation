@@ -1,0 +1,20 @@
+name: Python CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO_VERSION: '1.11'
+    strategy:
+      matrix:
+        python: ["3.8"]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - run: |
+          pip install -q Django==${{ env.DJANGO_VERSION }}
+          pip install -e .[flake8,tests]
+      - run: flake8
+      - run: pytest

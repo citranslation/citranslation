@@ -1,0 +1,37 @@
+name: Generate Settings
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Generate settings
+      run: |
+        echo "from Default.settings import *" > settings.py
+        ./generate.py
+
+    - name: Commit and push
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "GitHub Action"
+        git add settings.py
+        git commit -m "Generated settings.py"
+        git push

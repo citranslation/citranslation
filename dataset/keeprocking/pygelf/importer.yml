@@ -1,0 +1,32 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: pip install -e .
+    - run: pip install requests pytest-cov coveralls
+    - run: docker-compose -f tests/config/docker-compose.yml up -d
+    - run: sleep 120
+    - run: "./tests/config/bootstrap"
+    - run: py.test -v --cov=pygelf
+    - run: docker-compose -f tests/config/docker-compose.yml down
+    - run: coveralls
+      if: "${{ success() }}"
+    strategy:
+      matrix:
+        python:
+        - '3.8'
+        - pypy-3.8

@@ -1,0 +1,21 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: pip-cache
+        restore-keys: pip-cache-
+    - run: make check PIP=pip BUILDBOT=buildbot
+

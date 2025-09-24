@@ -1,0 +1,32 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ hashFiles('**/requirements.txt') }}
+    - name: Add apt sources and install gcc-4.8
+      run: |
+        sudo apt-add-repository -y ubuntu-toolchain-r-test
+        sudo apt-get update
+        sudo apt-get install -y gcc-4.8
+    - name: Install libeigen3-dev
+      run: |
+        sudo apt-get install -y libeigen3-dev
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install pytest pytest-cov pytest-randomly wheel codecov
+        pip install -e .
+    - name: Run coverage
+      run: make coverage
+    - name: Upload coverage
+      run: codecov

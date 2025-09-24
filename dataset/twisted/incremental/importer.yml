@@ -1,0 +1,81 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+    - main
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: tests
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: pip install tox codecov
+    - run: if [[ -n "${TOX_ENV}" ]]; then tox -e $TOX_ENV; fi
+    - run: if [[ "$PUSH_DOCS" == "true" ]]; then ./.travis/build_docs.sh; fi
+    - run: codecov
+  test_6:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: tests
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.9
+    - run: pip install tox codecov
+    - run: if [[ -n "${TOX_ENV}" ]]; then tox -e $TOX_ENV; fi
+    - run: if [[ "$PUSH_DOCS" == "true" ]]; then ./.travis/build_docs.sh; fi
+    - run: codecov
+  test_7:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: mypy
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.9'
+    - run: pip install tox codecov
+    - run: if [[ -n "${TOX_ENV}" ]]; then tox -e $TOX_ENV; fi
+    - run: if [[ "$PUSH_DOCS" == "true" ]]; then ./.travis/build_docs.sh; fi
+    - run: codecov
+  test_8:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: apidocs
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.9'
+    - run: pip install tox codecov
+    - run: if [[ -n "${TOX_ENV}" ]]; then tox -e $TOX_ENV; fi
+    - run: if [[ "$PUSH_DOCS" == "true" ]]; then ./.travis/build_docs.sh; fi
+    - run: codecov
+  test_9:
+    runs-on: ubuntu-22.04
+    env:
+      PUSH_DOCS: 'true'
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.9'
+    - run: pip install tox codecov
+    - run: if [[ -n "${TOX_ENV}" ]]; then tox -e $TOX_ENV; fi
+    - run: if [[ "$PUSH_DOCS" == "true" ]]; then ./.travis/build_docs.sh; fi
+    - run: codecov

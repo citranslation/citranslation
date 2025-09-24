@@ -1,0 +1,42 @@
+name: Python Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: '3.8'
+            django: '2.2'
+          - python: '3.8'
+            django: '3.0'
+          - python: '3.8'
+            django: 'main'
+          - python: '3.8'
+            toxenv: 'docs'
+          - python: '3.8'
+            toxenv: 'quality'
+        allow_failures:
+          - python: '3.8'
+          - django: 'main'
+    env:
+      DJANGO: ${{ matrix.django }}
+      TOXENV: ${{ matrix.toxenv }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          pip install tox
+      - name: Run tests
+        run: |
+          tox

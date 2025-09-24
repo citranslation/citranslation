@@ -1,0 +1,110 @@
+name: Test Workflow
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      - postgresql
+      - mysql
+    env:
+      IMPORT_EXPORT_POSTGRESQL_USER: postgres
+      IMPORT_EXPORT_POSTGRESQL_PASSWORD: ""
+      IMPORT_EXPORT_MYSQL_USER: root
+      IMPORT_EXPORT_MYSQL_PASSWORD: ""
+    strategy:
+      matrix:
+        include:
+          - python-version: "3.9"
+            django-version: "https://github.com/django/django/archive/main.tar.gz"
+            test-type: "postgres"
+          - python-version: "3.9"
+            django-version: "https://github.com/django/django/archive/main.tar.gz"
+            test-type: "mysql-innodb"
+          - python-version: "3.9"
+            django-version: "https://github.com/django/django/archive/main.tar.gz"
+            test-type: "sqlite"
+          - python-version: "3.8"
+            django-version: "https://github.com/django/django/archive/main.tar.gz"
+            test-type: "postgres"
+          - python-version: "3.8"
+            django-version: "https://github.com/django/django/archive/main.tar.gz"
+            test-type: "mysql-innodb"
+          - python-version: "3.8"
+            django-version: "https://github.com/django/django/archive/main.tar.gz"
+            test-type: "sqlite"
+          - python-version: "3.8"
+            django-version: "Django==2.1.*"
+            test-type: "postgres"
+          - python-version: "3.8"
+            django-version: "Django==2.1.*"
+            test-type: "mysql-innodb"
+          - python-version: "3.8"
+            django-version: "Django==2.1.*"
+            test-type: "sqlite"
+          - python-version: "3.8"
+            django-version: "Django==2.0.*"
+            test-type: "postgres"
+          - python-version: "3.8"
+            django-version: "Django==2.0.*"
+            test-type: "mysql-innodb"
+          - python-version: "3.8"
+            django-version: "Django==2.0.*"
+            test-type: "sqlite"
+        allow_failures:
+          - python-version: "3.9"
+            django-version: "https://github.com/django/django/archive/main.tar.gz"
+            test-type: "postgres"
+          - python-version: "3.9"
+            django-version: "https://github.com/django/django/archive/main.tar.gz"
+            test-type: "mysql-innodb"
+          - python-version: "3.9"
+            django-version: "https://github.com/django/django/archive/main.tar.gz"
+            test-type: "sqlite"
+          - python-version: "3.8"
+            django-version: "https://github.com/django/django/archive/main.tar.gz"
+            test-type: "postgres"
+          - python-version: "3.8"
+            django-version: "https://github.com/django/django/archive/main.tar.gz"
+            test-type: "mysql-innodb"
+          - python-version: "3.8"
+            django-version: "https://github.com/django/django/archive/main.tar.gz"
+            test-type: "sqlite"
+          - python-version: "3.8"
+            django-version: "Django==2.1.*"
+            test-type: "postgres"
+          - python-version: "3.8"
+            django-version: "Django==2.1.*"
+            test-type: "mysql-innodb"
+          - python-version: "3.8"
+            django-version: "Django==2.1.*"
+            test-type: "sqlite"
+          - python-version: "3.8"
+            django-version: "Django==2.0.*"
+            test-type: "postgres"
+          - python-version: "3.8"
+            django-version: "Django==2.0.*"
+            test-type: "mysql-innodb"
+          - python-version: "3.8"
+            django-version: "Django==2.0.*"
+            test-type: "sqlite"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          pip install -q ${{ matrix.django-version }}
+          pip install -r requirements/base.txt
+          pip install -r requirements/test.txt
+          pip install coveralls
+      - name: Run tests
+        run: |
+          PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+          if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+      - name: Upload coverage
+        run: coveralls

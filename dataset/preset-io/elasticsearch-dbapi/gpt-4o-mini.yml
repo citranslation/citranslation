@@ -1,0 +1,46 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+        toxenv: [flake8, black, elasticsearch]
+
+    services:
+      elasticsearch:
+        image: elasticsearch:7.3.2
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd="curl -f http://localhost:9200/_cluster/health || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+        env:
+          discovery.type: single-node
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install tox
+          pip install codecov
+
+      - name: Run tox for ${{ matrix.toxenv }}
+        run: |
+          tox -e ${{ matrix.toxenv }}
+
+      - name: Upload coverage to Codecov
+        if: success()
+        run: codecov

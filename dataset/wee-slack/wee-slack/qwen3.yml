@@ -1,0 +1,32 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: ["3.8"]
+    steps:
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ matrix.python-version }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: ${{ matrix.python-version }}-pip-
+    - name: Install dependencies
+      run: |
+        pip install pipenv
+        pipenv install --dev --system
+    - name: Lint with flake8
+      run: |
+        flake8 .
+        flake8 . --exit-zero --select=C,E,F,W
+    - name: Run tests
+      run: pytest
+

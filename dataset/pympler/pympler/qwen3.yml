@@ -1,0 +1,44 @@
+name: CI
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+    steps:
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Update and install dependencies
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install -y graphviz python-tk python-matplotlib
+    - name: Install Python dependencies
+      run: |
+        pip install Sphinx
+        pip install recommonmark
+        pip install pep8
+        pip install coverage
+        pip install coveralls
+        pip install numpy
+    - name: Run setup commands
+      run: |
+        python -Wall setup.py try
+        python setup.py install
+        python -Wall setup.py test
+    - name: Run tests with coverage
+      env:
+        COVERAGE: 1
+      run: coverage run test/runtest.py
+    - name: Run doctest and html
+      run: |
+        python run.py --doctest
+        python run.py --html
+    - name: Lint with pep8
+      run: |
+        pep8 --exclude=asizeof.py,metadata.py,bottle*.py --max-line-length=80 pympler
+    - name: Upload coverage to coveralls
+      if: ${{ success }}
+      run: coveralls

@@ -1,0 +1,38 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          if [[ "${{ matrix.python-version }}" == "3.8" ]]; then pip install 'setuptools<=60.9.0'; fi
+          python setup.py -q install
+          pip install pylint yapf pytype
+
+      - name: Run tests
+        run: python setup.py test
+
+      - name: Run pylint
+        run: pylint comment_parser
+
+      - name: Run pytype
+        run: pytype
+
+      - name: Format code with yapf
+        run: yapf -drp comment_parser
+

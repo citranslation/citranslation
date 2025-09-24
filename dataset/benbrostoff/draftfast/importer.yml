@@ -1,0 +1,29 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.9'
+    - run: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    - run: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    - run: sudo apt-get update
+    - run: sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+    - run: docker build -t draft-kings-fun .
+    - run: pip install -r requirements.txt
+    - run: docker run draft-kings-fun flake8 draftfast
+    - run: docker run draft-kings-fun nosetests --with-coverage --cover-package=.
+    services:
+#       # This item has no matching transformer
+#       docker:

@@ -1,0 +1,31 @@
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox-gh-actions
+        pip install coveralls
+    - name: Test with tox
+      run: tox
+    - name: Coveralls
+      run: if [ -e .coverage ]; then coveralls; fi
+    - name: Py37 requires xenial distrubution and sudo
+      run: |
+        echo "This step is not necessary in Github Actions as it's already running on Ubuntu."
+    - name: Flake8 and isort
+      run: |
+        tox -e flake8
+        tox -e isort

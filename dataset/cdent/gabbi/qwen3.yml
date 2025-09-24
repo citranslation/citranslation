@@ -1,0 +1,42 @@
+name: Python Tests
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        - python: 3.8
+          env: TOXENV=pep8
+        - python: 3.8
+          env: TOXENV=placement
+        - python: pypy-3.8
+          env: TOXENV=pypy-3.8
+        - python: 3.8
+          env: TOXENV=py38
+        - python: 3.8
+          env: TOXENV=py38-pytest
+        - python: 3.8
+          env: TOXENV=py38-failskip
+        - python: 3.8
+          env: TOXENV=py38-limit
+        - python: 3.8
+          env: TOXENV=py38-prefix
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          pip install tox
+      - name: Run tests
+        run: |
+          export TOXENV=$(echo ${{ matrix.env }} | cut -d'=' -f2)
+          tox
+    notifications:
+      irc: chat.freenode.net#gabbi

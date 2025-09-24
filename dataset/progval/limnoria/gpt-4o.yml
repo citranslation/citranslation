@@ -1,0 +1,61 @@
+name: Python package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, '3.8', 'pypy-3.8']
+        with-opt-deps: [false, true]
+        include:
+          - python-version: 3.8
+            with-opt-deps: false
+          - python-version: 3.8
+            with-opt-deps: true
+          - python-version: 3.9
+            with-opt-deps: true
+          - python-version: '3.8'
+            with-opt-deps: true
+          - python-version: 'pypy-3.8'
+            with-opt-deps: false
+      fail-fast: false
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        if [ "${{ matrix.with-opt-deps }}" = "true" ]; then
+          pip install -r requirements.txt pytest
+        fi
+        git clone https://github.com/ProgVal/irctest.git
+        echo "y" | pip uninstall limnoria || true
+
+    - name: Install package
+      run: python setup.py install
+
+    - name: Run tests
+      run: supybot-test test -v --plugins-dir=./plugins/ --no-network
+
+    - name: Run irctest
+      if: matrix.with-opt-deps == 'true' && startsWith(matrix.python-version, '3.')
+      run: |
+        cd irctest
+        pytest --controllers irctest.controllers.limnoria
+
+    - name: Disable email notifications
+      if: always()
+      run: echo "Email notifications are disabled."

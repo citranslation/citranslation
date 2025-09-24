@@ -1,0 +1,28 @@
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install Django
+      run: pip install Django==1.11
+
+    - name: Install package
+      run: pip install .[flake8,tests]
+
+    - name: Run flake8
+      run: flake8
+
+    - name: Run tests
+      run: pytest
+

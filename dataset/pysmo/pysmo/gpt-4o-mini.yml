@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          make
+          pip install poetry
+          poetry install
+
+      - name: Run tests
+        run: make tests
+
+      - name: Upload coverage to Codecov
+        run: bash <(curl -s https://codecov.io/bash)
+
+      - name: Notify Gitter
+        if: success() || failure()
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          -d '{"text": "Build status: ${{ job.status }}"}' \
+          https://webhooks.gitter.im/e/55cf16b611593edcb09d
+
+# End-of-Code

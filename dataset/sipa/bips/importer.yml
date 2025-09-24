@@ -1,0 +1,19 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - run: scripts/link-format-chk.sh
+    - run: scripts/buildtable.pl >/tmp/table.mediawiki || exit 1
+    - run: diff README.mediawiki /tmp/table.mediawiki | grep '^[<>] |' >/tmp/after.diff || true
+    - run: if git checkout HEAD^ && scripts/buildtable.pl >/tmp/table.mediawiki 2>/dev/null; then diff README.mediawiki /tmp/table.mediawiki | grep '^[<>] |' >/tmp/before.diff || true; newdiff=$(diff -s /tmp/before.diff /tmp/after.diff -u | grep '^+'); if [ -n "$newdiff" ]; then echo "$newdiff"; exit 1; fi; else echo 'Cannot build previous commit table for comparison'; fi

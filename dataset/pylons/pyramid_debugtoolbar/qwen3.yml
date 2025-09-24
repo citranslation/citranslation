@@ -1,0 +1,45 @@
+name: CI
+on:
+  push:
+    branches: [ main ]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: 3.8
+            env: TOXENV=py38
+          - python: pypy-3.8
+            env: TOXENV=pypy-3.8
+          - python: 3.8
+            env: TOXENV=py38-cover,py38-cover,coverage
+          - python: 3.8
+            env: TOXENV=docs
+          - python: 3.8
+            env: TOXENV=py38-pyramid14
+          - python: 3.8
+            env: TOXENV=py38-pyramid19
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          pip install -U setuptools
+          pip install -U pip
+          pip install -U tox
+      - name: Run tests
+        run: tox
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: $HOME/.cache/pip
+          key: ${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ hashFiles('**/requirements.txt') }}
+      - name: Notifications
+        run: |
+          echo "Notifying via email and IRC..."
+          # Email notification
+          # Replace with actual email sending command
+          # IRC notification
+          # Replace with actual IRC bot command

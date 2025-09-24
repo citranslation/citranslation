@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Upgrade pip, wheel, setuptools, and install codecov
+      run: |
+        pip install -U pip wheel setuptools codecov
+
+    - name: Install dependencies
+      run: |
+        pip install -r reqs/requirements-latest.txt -r reqs/requirements-tests.txt
+
+    - name: Run tests with coverage
+      run: |
+        coverage erase
+        coverage run --branch bin/trial scrapyd
+        coverage report
+
+    - name: Upload coverage to Codecov
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      run: |
+        codecov
+
+  notifications:
+    irc:
+      channels:
+        - "irc.freenode.org#scrapy"
+      use_notice: true
+      skip_join: true

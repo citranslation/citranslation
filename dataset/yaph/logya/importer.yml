@@ -1,0 +1,30 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: pip install .
+    - run: python setup.py test
+#     # This item has no matching transformer
+#     - email:
+#         recipients:
+#         - code@ramiro.org
+#         on_failure: change
+    strategy:
+      matrix:
+        python:
+        - '3.8'
+        - pypy-3.6

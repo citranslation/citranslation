@@ -1,0 +1,42 @@
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+        pip install requests pytest-cov coveralls
+
+    - name: Start Docker
+      run: docker-compose -f tests/config/docker-compose.yml up -d
+
+    - name: Wait for Docker
+      run: sleep 120
+
+    - name: Bootstrap
+      run: ./tests/config/bootstrap
+
+    - name: Test with pytest
+      run: py.test -v --cov=pygelf
+
+    - name: Stop Docker
+      run: docker-compose -f tests/config/docker-compose.yml down
+
+    - name: Coveralls
+      run: coveralls
+
+# End-of-Code|

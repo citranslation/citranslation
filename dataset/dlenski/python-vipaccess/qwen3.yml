@@ -1,0 +1,36 @@
+name: Python CI
+
+on:
+  push:
+    tags: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8"]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          pip install .
+          pip install coveralls
+      - name: Run tests
+        run: |
+          coverage run --source=vipaccess setup.py test
+      - name: Upload coverage to coveralls
+        run: coveralls
+        if: always
+      - name: Deploy to PyPI
+        if: success()
+        run: |
+          python setup.py sdist bdist_wheel
+          twine upload dist/*
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USER }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}

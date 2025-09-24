@@ -1,0 +1,42 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        python-version: [3.8, pypy-3.8]
+        django-version: [2.2, 3.0, 3.1, main]
+        exclude:
+          - python-version: 3.8
+            django-version: 3.0
+          - python-version: 3.8
+            django-version: 3.1
+          - python-version: 3.8
+            django-version: main
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install tox-travis
+
+      - name: Run tests
+        run: |
+          tox -e py${{ matrix.python-version//./ }}-django${{ matrix.django-version }}
+          
+      - name: Allow failures
+        if: matrix.python-version == 'pypy-3.8' || matrix.django-version == 'main'
+        run: echo "This job is allowed to fail."
+
+# Note: Adjust the tox environment names in the run command as needed based on your tox configuration.
+

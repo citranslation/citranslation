@@ -1,0 +1,60 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9']
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -r requirements.txt
+      - run: pip install -r tests/requirements.txt
+      - run: python setup.py -q install
+      - run: nosetests --with-coverage --cover-package=btcde
+      - uses: codecov/codecov-action@v1
+
+  deploy-test-pypi:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref_type != 'tag' }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - run: pip install -r requirements.txt
+      - run: pip install -r tests/requirements.txt
+      - run: python setup.py -q install
+      - run: python -m twine upload --repository testpypi dist/*
+      - env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.TEST_PYPI_TOKEN }}
+
+  deploy-pypi:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.event.head_commit.tag != '' }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - run: pip install -r requirements.txt
+      - run: pip install -r tests/requirements.txt
+      - run: python setup.py -q install
+      - run: python -m twine upload dist/*
+      - env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}

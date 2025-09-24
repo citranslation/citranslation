@@ -1,0 +1,229 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    env:
+      RUN_COVERAGE: 'false'
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: pip install --upgrade pip setuptools
+    - run: pip install -e .[all]
+    - run: pip install pytest-xdist pycodestyle
+    - run: flake8 metomi/isodatetime
+    - run: |
+        PYTEST_ARGS=('-n' '2')
+        if "$RUN_COVERAGE"; then
+          PYTEST_ARGS+=('--cov=metomi/isodatetime')
+        fi
+        # NOTE: the way to handle long-living commands in the documentation is
+        # travis_wait 40 coverage run -m isodatetime.tests.test_time_point
+        # but it does not produce any output, which can be frustrating in case of errors.
+        # So here we are using the approach documented in the issue
+        # https://github.com/travis-ci/travis-ci/issues/4190.
+        pytest "${PYTEST_ARGS[@]}" &
+        TEST_PID="$!"
+        minutes=0
+        limit=50
+        while ps -p "${TEST_PID}" >/dev/null 2>&1; do
+          echo -n -e " \b" # never leave evidences!
+          if ((minutes == limit)); then
+            exit 1
+          fi
+          minutes=$((minutes + 1))
+          sleep 60
+        done
+        wait "${TEST_PID}"
+    - run: |-
+        coverage xml --ignore-errors
+        if "$RUN_COVERAGE"; then
+          bash <(curl -s https://codecov.io/bash)
+        fi
+      if: "${{ success() }}"
+  test_4:
+    runs-on: ubuntu-22.04
+    env:
+      RUN_COVERAGE: 'true'
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: pip install --upgrade pip setuptools
+    - run: pip install -e .[all]
+    - run: pip install pytest-xdist pycodestyle
+    - run: flake8 metomi/isodatetime
+    - run: |
+        PYTEST_ARGS=('-n' '2')
+        if "$RUN_COVERAGE"; then
+          PYTEST_ARGS+=('--cov=metomi/isodatetime')
+        fi
+        # NOTE: the way to handle long-living commands in the documentation is
+        # travis_wait 40 coverage run -m isodatetime.tests.test_time_point
+        # but it does not produce any output, which can be frustrating in case of errors.
+        # So here we are using the approach documented in the issue
+        # https://github.com/travis-ci/travis-ci/issues/4190.
+        pytest "${PYTEST_ARGS[@]}" &
+        TEST_PID="$!"
+        minutes=0
+        limit=50
+        while ps -p "${TEST_PID}" >/dev/null 2>&1; do
+          echo -n -e " \b" # never leave evidences!
+          if ((minutes == limit)); then
+            exit 1
+          fi
+          minutes=$((minutes + 1))
+          sleep 60
+        done
+        wait "${TEST_PID}"
+    - run: |-
+        coverage xml --ignore-errors
+        if "$RUN_COVERAGE"; then
+          bash <(curl -s https://codecov.io/bash)
+        fi
+      if: "${{ success() }}"
+  test_5:
+    runs-on: ubuntu-22.04
+    env:
+      RUN_COVERAGE: 'false'
+      TZ: XXX-05:30
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: pip install --upgrade pip setuptools
+    - run: pip install -e .[all]
+    - run: pip install pytest-xdist pycodestyle
+    - run: flake8 metomi/isodatetime
+    - run: |
+        PYTEST_ARGS=('-n' '2')
+        if "$RUN_COVERAGE"; then
+          PYTEST_ARGS+=('--cov=metomi/isodatetime')
+        fi
+        # NOTE: the way to handle long-living commands in the documentation is
+        # travis_wait 40 coverage run -m isodatetime.tests.test_time_point
+        # but it does not produce any output, which can be frustrating in case of errors.
+        # So here we are using the approach documented in the issue
+        # https://github.com/travis-ci/travis-ci/issues/4190.
+        pytest "${PYTEST_ARGS[@]}" &
+        TEST_PID="$!"
+        minutes=0
+        limit=50
+        while ps -p "${TEST_PID}" >/dev/null 2>&1; do
+          echo -n -e " \b" # never leave evidences!
+          if ((minutes == limit)); then
+            exit 1
+          fi
+          minutes=$((minutes + 1))
+          sleep 60
+        done
+        wait "${TEST_PID}"
+    - run: |-
+        coverage xml --ignore-errors
+        if "$RUN_COVERAGE"; then
+          bash <(curl -s https://codecov.io/bash)
+        fi
+      if: "${{ success() }}"
+  test_6:
+    runs-on: ubuntu-22.04
+    env:
+      RUN_COVERAGE: 'false'
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: pip install --upgrade pip setuptools
+    - run: pip install -e .[all]
+    - run: pip install pytest-xdist pycodestyle
+    - run: flake8 metomi/isodatetime
+    - run: |
+        PYTEST_ARGS=('-n' '2')
+        if "$RUN_COVERAGE"; then
+          PYTEST_ARGS+=('--cov=metomi/isodatetime')
+        fi
+        # NOTE: the way to handle long-living commands in the documentation is
+        # travis_wait 40 coverage run -m isodatetime.tests.test_time_point
+        # but it does not produce any output, which can be frustrating in case of errors.
+        # So here we are using the approach documented in the issue
+        # https://github.com/travis-ci/travis-ci/issues/4190.
+        pytest "${PYTEST_ARGS[@]}" &
+        TEST_PID="$!"
+        minutes=0
+        limit=50
+        while ps -p "${TEST_PID}" >/dev/null 2>&1; do
+          echo -n -e " \b" # never leave evidences!
+          if ((minutes == limit)); then
+            exit 1
+          fi
+          minutes=$((minutes + 1))
+          sleep 60
+        done
+        wait "${TEST_PID}"
+    - run: |-
+        coverage xml --ignore-errors
+        if "$RUN_COVERAGE"; then
+          bash <(curl -s https://codecov.io/bash)
+        fi
+      if: "${{ success() }}"
+  test_7:
+    runs-on: ubuntu-22.04
+    env:
+      RUN_COVERAGE: 'false'
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - run: |-
+        brew update
+        brew install python3
+    - run: pip3 install virtualenv
+    - run: virtualenv -p python3 ~/venv
+    - run: source ~/venv/bin/activate
+    - run: pip install --upgrade pip setuptools
+    - run: pip install -e .[all]
+    - run: pip install pytest-xdist pycodestyle
+    - run: flake8 metomi/isodatetime
+    - run: |
+        PYTEST_ARGS=('-n' '2')
+        if "$RUN_COVERAGE"; then
+          PYTEST_ARGS+=('--cov=metomi/isodatetime')
+        fi
+        # NOTE: the way to handle long-living commands in the documentation is
+        # travis_wait 40 coverage run -m isodatetime.tests.test_time_point
+        # but it does not produce any output, which can be frustrating in case of errors.
+        # So here we are using the approach documented in the issue
+        # https://github.com/travis-ci/travis-ci/issues/4190.
+        pytest "${PYTEST_ARGS[@]}" &
+        TEST_PID="$!"
+        minutes=0
+        limit=50
+        while ps -p "${TEST_PID}" >/dev/null 2>&1; do
+          echo -n -e " \b" # never leave evidences!
+          if ((minutes == limit)); then
+            exit 1
+          fi
+          minutes=$((minutes + 1))
+          sleep 60
+        done
+        wait "${TEST_PID}"
+    - run: |-
+        coverage xml --ignore-errors
+        if "$RUN_COVERAGE"; then
+          bash <(curl -s https://codecov.io/bash)
+        fi
+      if: "${{ success() }}"

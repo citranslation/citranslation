@@ -1,0 +1,29 @@
+name: Python package
+on:
+  push:
+    tags: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu:22.04
+    strategy:
+      matrix:
+        python-version: [3.8]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: pip install -e .[testing]
+      - name: Run tests
+        run: pytest tests
+      - name: Deploy to PyPI
+        run: |
+          python setup.py sdist bdist_wheel
+          twine upload dist/*
+        env:
+          TWINE_USERNAME: vmalloc
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}

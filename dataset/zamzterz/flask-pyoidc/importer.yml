@@ -1,0 +1,48 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      TOXENV: py310
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install -U setuptools tox pip virtualenv
+    - run: pip install -e .
+    - run: pip install pytest-cov codecov -r tests/requirements.txt
+    - run: tox
+    - run: py.test tests/ example/ --cov=./
+      if: "${{ success() }}"
+    - run: codecov
+      if: "${{ success() }}"
+  test_2:
+    runs-on: ubuntu-latest
+    env:
+      TOXENV: py39
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.9
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install -U setuptools tox pip virtualenv
+    - run: pip install -e .
+    - run: pip install pytest-cov codecov -r tests/requirements.txt
+    - run: tox
+    - run: py.test tests/ example/ --cov=./
+      if: "${{ success() }}"
+    - run: codecov
+      if: "${{ success() }}"

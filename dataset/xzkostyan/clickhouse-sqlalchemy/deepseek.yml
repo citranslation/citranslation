@@ -1,0 +1,49 @@
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    services:
+      clickhouse:
+        image: yandex/clickhouse-server:${{ matrix.version }}
+        ports:
+          - 9000:9000
+          - 8123:8123
+        options: --ulimit nofile=262144:262144
+
+    strategy:
+      matrix:
+        python-version: [3.8]
+        version: ['19.3.8', '18.14.9']
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip setuptools
+        python -m pip install flake8 flake8-print coveralls
+    - name: Lint with flake8
+      run: flake8
+    - name: Test with coverage
+      run: coverage run --source=clickhouse_sqlalchemy setup.py test
+    - name: Coveralls
+      run: coveralls
+    - name: Docker login
+      if: ${{ secrets.DOCKER_PASSWORD }}
+      run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+    - name: Docker run
+      run: docker run -d -p 127.0.0.1:9000:9000 -p 127.0.0.1:8123:8123 --name test-clickhouse-server --ulimit nofile=262144:262144 yandex/clickhouse-server:${{ matrix.version }}
+    - name: Docker ps
+      run: docker ps -a
+    - name: Override setup.cfg
+      run: sed -i 's/^host=localhost$/host=clickhouse-server/' setup.cfg
+    - name: Add host
+      run: echo '127.0.0.1 clickhouse-server' | sudo tee /etc/hosts > /dev/null

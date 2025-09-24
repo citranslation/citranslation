@@ -1,0 +1,30 @@
+name: Python Tox Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Upgrade pip, setuptools, and wheel
+        run: |
+          pip install -U pip setuptools wheel tox-travis
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements_test.txt
+
+      - name: Run Tox
+        run: tox

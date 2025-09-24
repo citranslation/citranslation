@@ -1,0 +1,27 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8, 3.8
+
+    - name: Install dependencies
+      run: |
+        if [[ ${{ matrix.python-version }} == 2* ]]; then pip install -r py2_requirements.txt; fi
+        if [[ ${{ matrix.python-version }} == 3* ]]; then pip install -r py3_requirements.txt; fi
+
+    - name: Run tests
+      run: make test
+
+    - name: Print Python version
+      run: echo "Python version is ${{ matrix.python-version }}"

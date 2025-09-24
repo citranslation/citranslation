@@ -1,0 +1,40 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: apt-get -y install postgresql-13
+    - run: pip install .
+    - run: ssh-keygen -f ~/.ssh/id_rsa -N ""
+    - run: cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys
+    - run: ssh -o StrictHostKeyChecking=no localhost id
+    - run: py.test tests
+    - uses: rectalogic/notify-irc@v1
+      if: "${{ github.event_name != 'pull_request' }}"
+      with:
+        server: irc.freenode.org
+        port: 6697
+        channel: bundlewrap
+        nickname: Default nickname
+        message: Default message
+    strategy:
+      matrix:
+        python:
+        - 3.8
+        - 3.9
+    services:
+      postgresql:
+        image: postgres:13

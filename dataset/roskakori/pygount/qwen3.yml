@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.8]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          pip install --requirement dev-requirements.txt
+      - name: Run pre-commit (only for Python 3.8)
+        if: matrix.python == '3.8'
+        run: |
+          pre-commit run --all-files
+      - name: Install and test
+        run: |
+          python setup.py develop
+          pytest --verbose
+          python setup.py bdist_wheel
+          python setup.py install
+          pygount --version
+          pygount --help
+          pygount pygount *.cfg *.yaml
+          pygount --format=summary pygount *.cfg *.yaml
+      - name: Upload coverage
+        if: matrix.python == '3.8'
+        run: |
+          coveralls
+

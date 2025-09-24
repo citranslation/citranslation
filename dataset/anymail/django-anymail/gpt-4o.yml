@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - /^v\d+\.\d+(\.(\d|x)+)?(-\S*)?$/
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, pypy-3.8]
+        toxenv:
+          - lint,docs
+          - django20-py38-all
+          - django20-pypy-3.8-all
+          - django21-py38-all
+          - django21-pypy-3.8-all
+          - django22-py38-all
+          - django22-pypy-3.8-all
+          - django30-py38-all
+          - django30-pypy-3.8-all
+          - django31-py38-all
+          - django31-pypy-3.8-all
+          - djangoDev-py38-all
+          - django31-py38-none
+          - django31-py38-amazon_ses
+          - django22-py38-all-old_urllib3
+      exclude:
+        - python-version: 3.8
+          toxenv: lint,docs
+        - python-version: pypy-3.8
+          toxenv: lint,docs
+        - python-version: 3.8
+          toxenv: django20-py38-all
+        - python-version: 3.8
+          toxenv: django20-pypy-3.8-all
+        - python-version: 3.8
+          toxenv: django21-py38-all
+        - python-version: 3.8
+          toxenv: django21-pypy-3.8-all
+        - python-version: 3.8
+          toxenv: django22-py38-all
+        - python-version: 3.8
+          toxenv: django22-pypy-3.8-all
+        - python-version: 3.8
+          toxenv: django30-py38-all
+        - python-version: 3.8
+          toxenv: django30-pypy-3.8-all
+        - python-version: 3.8
+          toxenv: django31-py38-all
+        - python-version: 3.8
+          toxenv: django31-pypy-3.8-all
+        - python-version: 3.8
+          toxenv: djangoDev-py38-all
+        - python-version: 3.8
+          toxenv: django31-py38-none
+        - python-version: 3.8
+          toxenv: django31-py38-amazon_ses
+        - python-version: 3.8
+          toxenv: django22-py38-all-old_urllib3
+        - python-version: pypy-3.8
+          toxenv: djangoDev-py38-all
+        - python-version: pypy-3.8
+          toxenv: django31-py38-none
+        - python-version: pypy-3.8
+          toxenv: django31-py38-amazon_ses
+        - python-version: pypy-3.8
+          toxenv: django22-py38-all-old_urllib3
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox
+    - name: Run tests
+      env:
+        TOXENV: ${{ matrix.toxenv }}
+        TOX_FORCE_IGNORE_OUTCOME: false
+      run: tox
+    allow_failures:
+      - matrix:
+          toxenv: djangoDev-py38-all
+          python-version: 3.8

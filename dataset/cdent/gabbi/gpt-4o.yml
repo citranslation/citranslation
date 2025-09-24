@@ -1,0 +1,46 @@
+name: Python package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        include:
+          - python-version: 3.8
+            env: TOXENV: placement
+          - python-version: pypy-3.8
+            env: TOXENV: pypy-3.8
+          - python-version: 3.8
+            env: TOXENV: py38
+          - python-version: 3.8
+            env: TOXENV: py38-pytest
+          - python-version: 3.8
+            env: TOXENV: py38-failskip
+          - python-version: 3.8
+            env: TOXENV: py38-limit
+          - python-version: 3.8
+            env: TOXENV: py38-prefix
+          - env: TOXENV: pep8
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox
+    - name: Run tests
+      env:
+        TOXENV: ${{ matrix.env.TOXENV }}
+      run: tox

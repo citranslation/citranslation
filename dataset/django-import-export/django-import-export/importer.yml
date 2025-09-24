@@ -1,0 +1,616 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+env:
+  IMPORT_EXPORT_POSTGRESQL_USER: postgres
+  IMPORT_EXPORT_POSTGRESQL_PASSWORD: "${{ secrets.IMPORT_EXPORT_POSTGRESQL_PASSWORD }}"
+  IMPORT_EXPORT_MYSQL_USER: root
+  IMPORT_EXPORT_MYSQL_PASSWORD: "${{ secrets.IMPORT_EXPORT_MYSQL_PASSWORD }}"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements/base.txt
+    - run: pip install -r requirements/test.txt
+    - run: pip install coveralls
+    - run: PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+    - run: if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+    - run: coveralls
+      if: "${{ success() }}"
+    strategy:
+      matrix:
+        python:
+        - '3.8'
+        - '3.9'
+        include:
+        - DJANGO: Django==2.2.*
+          IMPORT_EXPORT_TEST_TYPE: postgres
+        - DJANGO: Django==2.2.*
+          IMPORT_EXPORT_TEST_TYPE: mysql-innodb
+        - DJANGO: Django==2.2.*
+          IMPORT_EXPORT_TEST_TYPE: sqlite
+        - DJANGO: Django==3.0.*
+          IMPORT_EXPORT_TEST_TYPE: postgres
+        - DJANGO: Django==3.0.*
+          IMPORT_EXPORT_TEST_TYPE: mysql-innodb
+        - DJANGO: Django==3.0.*
+          IMPORT_EXPORT_TEST_TYPE: sqlite
+        - DJANGO: Django==3.1.*
+          IMPORT_EXPORT_TEST_TYPE: postgres
+        - DJANGO: Django==3.1.*
+          IMPORT_EXPORT_TEST_TYPE: mysql-innodb
+        - DJANGO: Django==3.1.*
+          IMPORT_EXPORT_TEST_TYPE: sqlite
+        - DJANGO: Django==3.2.*
+          IMPORT_EXPORT_TEST_TYPE: postgres
+        - DJANGO: Django==3.2.*
+          IMPORT_EXPORT_TEST_TYPE: mysql-innodb
+        - DJANGO: Django==3.2.*
+          IMPORT_EXPORT_TEST_TYPE: sqlite
+#       # 'allow_failures' transformations are currently unsupported.
+    services:
+      postgresql:
+        image: postgres:10
+      mysql:
+        image: mysql
+    env:
+      DJANGO: "${{ matrix.DJANGO }}"
+      IMPORT_EXPORT_TEST_TYPE: "${{ matrix.IMPORT_EXPORT_TEST_TYPE }}"
+  test_2:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO: https://github.com/django/django/archive/main.tar.gz
+      IMPORT_EXPORT_TEST_TYPE: postgres
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.9'
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements/base.txt
+    - run: pip install -r requirements/test.txt
+    - run: pip install coveralls
+    - run: PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+    - run: if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+    - run: coveralls
+      if: "${{ success() }}"
+    services:
+      postgresql:
+        image: postgres:10
+      mysql:
+        image: mysql
+  test_3:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO: https://github.com/django/django/archive/main.tar.gz
+      IMPORT_EXPORT_TEST_TYPE: mysql-innodb
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.9'
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements/base.txt
+    - run: pip install -r requirements/test.txt
+    - run: pip install coveralls
+    - run: PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+    - run: if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+    - run: coveralls
+      if: "${{ success() }}"
+    services:
+      postgresql:
+        image: postgres:10
+      mysql:
+        image: mysql
+  test_4:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO: https://github.com/django/django/archive/main.tar.gz
+      IMPORT_EXPORT_TEST_TYPE: sqlite
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.9'
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements/base.txt
+    - run: pip install -r requirements/test.txt
+    - run: pip install coveralls
+    - run: PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+    - run: if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+    - run: coveralls
+      if: "${{ success() }}"
+    services:
+      postgresql:
+        image: postgres:10
+      mysql:
+        image: mysql
+  test_5:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO: https://github.com/django/django/archive/main.tar.gz
+      IMPORT_EXPORT_TEST_TYPE: postgres
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements/base.txt
+    - run: pip install -r requirements/test.txt
+    - run: pip install coveralls
+    - run: PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+    - run: if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+    - run: coveralls
+      if: "${{ success() }}"
+    services:
+      postgresql:
+        image: postgres:10
+      mysql:
+        image: mysql
+  test_6:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO: https://github.com/django/django/archive/main.tar.gz
+      IMPORT_EXPORT_TEST_TYPE: mysql-innodb
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements/base.txt
+    - run: pip install -r requirements/test.txt
+    - run: pip install coveralls
+    - run: PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+    - run: if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+    - run: coveralls
+      if: "${{ success() }}"
+    services:
+      postgresql:
+        image: postgres:10
+      mysql:
+        image: mysql
+  test_7:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO: https://github.com/django/django/archive/main.tar.gz
+      IMPORT_EXPORT_TEST_TYPE: sqlite
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements/base.txt
+    - run: pip install -r requirements/test.txt
+    - run: pip install coveralls
+    - run: PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+    - run: if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+    - run: coveralls
+      if: "${{ success() }}"
+    services:
+      postgresql:
+        image: postgres:10
+      mysql:
+        image: mysql
+  test_8:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO: Django==2.1.*
+      IMPORT_EXPORT_TEST_TYPE: postgres
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements/base.txt
+    - run: pip install -r requirements/test.txt
+    - run: pip install coveralls
+    - run: PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+    - run: if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+    - run: coveralls
+      if: "${{ success() }}"
+    services:
+      postgresql:
+        image: postgres:10
+      mysql:
+        image: mysql
+  test_9:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO: Django==2.1.*
+      IMPORT_EXPORT_TEST_TYPE: mysql-innodb
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements/base.txt
+    - run: pip install -r requirements/test.txt
+    - run: pip install coveralls
+    - run: PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+    - run: if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+    - run: coveralls
+      if: "${{ success() }}"
+    services:
+      postgresql:
+        image: postgres:10
+      mysql:
+        image: mysql
+  test_10:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO: Django==2.1.*
+      IMPORT_EXPORT_TEST_TYPE: sqlite
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements/base.txt
+    - run: pip install -r requirements/test.txt
+    - run: pip install coveralls
+    - run: PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+    - run: if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+    - run: coveralls
+      if: "${{ success() }}"
+    services:
+      postgresql:
+        image: postgres:10
+      mysql:
+        image: mysql
+  test_11:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO: Django==2.1.*
+      IMPORT_EXPORT_TEST_TYPE: postgres
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements/base.txt
+    - run: pip install -r requirements/test.txt
+    - run: pip install coveralls
+    - run: PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+    - run: if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+    - run: coveralls
+      if: "${{ success() }}"
+    services:
+      postgresql:
+        image: postgres:10
+      mysql:
+        image: mysql
+  test_12:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO: Django==2.1.*
+      IMPORT_EXPORT_TEST_TYPE: mysql-innodb
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements/base.txt
+    - run: pip install -r requirements/test.txt
+    - run: pip install coveralls
+    - run: PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+    - run: if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+    - run: coveralls
+      if: "${{ success() }}"
+    services:
+      postgresql:
+        image: postgres:10
+      mysql:
+        image: mysql
+  test_13:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO: Django==2.1.*
+      IMPORT_EXPORT_TEST_TYPE: sqlite
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements/base.txt
+    - run: pip install -r requirements/test.txt
+    - run: pip install coveralls
+    - run: PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+    - run: if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+    - run: coveralls
+      if: "${{ success() }}"
+    services:
+      postgresql:
+        image: postgres:10
+      mysql:
+        image: mysql
+  test_14:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO: Django==2.0.*
+      IMPORT_EXPORT_TEST_TYPE: postgres
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements/base.txt
+    - run: pip install -r requirements/test.txt
+    - run: pip install coveralls
+    - run: PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+    - run: if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+    - run: coveralls
+      if: "${{ success() }}"
+    services:
+      postgresql:
+        image: postgres:10
+      mysql:
+        image: mysql
+  test_15:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO: Django==2.0.*
+      IMPORT_EXPORT_TEST_TYPE: mysql-innodb
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements/base.txt
+    - run: pip install -r requirements/test.txt
+    - run: pip install coveralls
+    - run: PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+    - run: if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+    - run: coveralls
+      if: "${{ success() }}"
+    services:
+      postgresql:
+        image: postgres:10
+      mysql:
+        image: mysql
+  test_16:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO: Django==2.0.*
+      IMPORT_EXPORT_TEST_TYPE: sqlite
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements/base.txt
+    - run: pip install -r requirements/test.txt
+    - run: pip install coveralls
+    - run: PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+    - run: if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+    - run: coveralls
+      if: "${{ success() }}"
+    services:
+      postgresql:
+        image: postgres:10
+      mysql:
+        image: mysql
+  test_17:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO: Django==2.0.*
+      IMPORT_EXPORT_TEST_TYPE: postgres
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements/base.txt
+    - run: pip install -r requirements/test.txt
+    - run: pip install coveralls
+    - run: PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+    - run: if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+    - run: coveralls
+      if: "${{ success() }}"
+    services:
+      postgresql:
+        image: postgres:10
+      mysql:
+        image: mysql
+  test_18:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO: Django==2.0.*
+      IMPORT_EXPORT_TEST_TYPE: mysql-innodb
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements/base.txt
+    - run: pip install -r requirements/test.txt
+    - run: pip install coveralls
+    - run: PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+    - run: if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+    - run: coveralls
+      if: "${{ success() }}"
+    services:
+      postgresql:
+        image: postgres:10
+      mysql:
+        image: mysql
+  test_19:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO: Django==2.0.*
+      IMPORT_EXPORT_TEST_TYPE: sqlite
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements/base.txt
+    - run: pip install -r requirements/test.txt
+    - run: pip install coveralls
+    - run: PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+    - run: if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+    - run: coveralls
+      if: "${{ success() }}"
+    services:
+      postgresql:
+        image: postgres:10
+      mysql:
+        image: mysql

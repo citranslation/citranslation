@@ -1,0 +1,60 @@
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install termcolor==1.1.0 pytest==6.2.4 pytest-xdist==2.3.0 dataclasses==0.8
+    - name: Test with pytest
+      run: |
+        pytest -n auto
+
+  test-pypy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up PyPy3
+      uses: actions/setup-python@v2
+      with:
+        python-version: pypy-3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install termcolor==1.1.0 pytest==6.2.4 pytest-xdist==2.3.0 dataclasses==0.8
+    - name: Test with pytest
+      run: |
+        pytest -n auto
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install termcolor==1.1.0 pytest==6.2.4 pytest-xdist==2.3.0 dataclasses==0.8
+    - name: Test with coverage
+      run: |
+        make coverage
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v2
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
+

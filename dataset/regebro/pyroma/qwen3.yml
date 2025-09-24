@@ -1,0 +1,24 @@
+name: Python CI
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.8, 3.9, pypy-3.8]
+      fail-fast: true
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install dependencies
+      run: |
+        pip install -U setuptools>=39.2.0
+        python setup.py develop
+    - name: Run tests
+      run: python setup.py test

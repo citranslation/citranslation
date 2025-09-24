@@ -1,0 +1,33 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: pip install bandit flake8 python-coveralls coverage liccheck
+    - run: pip install -r requirements.txt
+    - run: python setup.py bdist_wheel
+    - run: pip install dist/feedgen*
+    - run: make test
+    - run: liccheck -s .licenses.ini
+    - run: python -m feedgen
+    - run: python -m feedgen atom
+    - run: python -m feedgen rss
+    - run: coveralls
+      if: "${{ success() }}"
+    strategy:
+      matrix:
+        python:
+        - 3.8

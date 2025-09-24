@@ -1,0 +1,99 @@
+name: CI Pipeline
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    name: "Linux ARMv8"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          pip3 install --upgrade pip pyinstaller wheel
+          pip3 install -r requirements.txt .
+      - name: Run script
+        run: |
+          cd pyinstaller && ./bundle.sh
+
+  build-macos:
+    runs-on: macos-latest
+    name: "Python 3.8.4 on macOS"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          pip3 install --upgrade pip pyinstaller wheel
+          pip3 install -r requirements.txt .
+      - name: Run script
+        run: |
+          cd pyinstaller && ./bundle.sh
+
+  build-windows:
+    runs-on: windows-latest
+    name: "Python 3.8.0 on Windows"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Chocolatey
+        run: |
+          Set-ExecutionPolicy Bypass -Scope CurrentUser -Force
+          Invoke-Expression (New-Object Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')
+      - name: Install Python 3.8
+        run: |
+          choco install python --version 3.8.0 -y
+      - name: Set environment variables
+        env:
+          PATH: "C:\\Python38\\;C:\\Python38\\Scripts\\;%PATH%"
+        run: |
+          echo %PATH%
+      - name: Install dependencies
+        run: |
+          pip3 install --upgrade pip pyinstaller wheel
+          pip3 install -r requirements.txt .
+      - name: Run script
+        run: |
+          cd pyinstaller && ./bundle.sh
+
+  deploy:
+    runs-on: ubuntu-latest
+    name: "Deploy to Releases"
+    needs: [build-linux, build-macos, build-windows]
+    steps:
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: deploy/*.zip
+          asset_name: pyinstaller-win64.zip
+          asset_content_type: application/zip
+          allow_overwrite: true
+      - name: Upload release asset (mac)
+        uses: actions/upload-release-asset@v1
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: deploy/*.zip
+          asset_name: pyinstaller-mac.zip
+          asset_content_type: application/zip
+          allow_overwrite: true
+      - name: Upload release asset (linux)
+        uses: actions/upload-release-asset@v1
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: deploy/*.zip
+          asset_name: pyinstaller-linux.zip
+          asset_content_type: application/zip
+          allow_overwrite: true

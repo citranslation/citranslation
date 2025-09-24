@@ -1,0 +1,26 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        if [ "$WITH_OPT_DEPS" = "true" ] ; then pip install -vr requirements.txt pytest; fi
+        git clone https://github.com/ProgVal/irctest.git
+        echo "y" | pip uninstall limnoria || true
+    - name: Run tests
+      run: |
+        echo ${{ matrix.python-version }}
+        python setup.py install
+        supybot-test test -v --plugins-dir=./plugins/ --no-network
+        if [ "$WITH_OPT_DEPS" = "true" ] -a [[ "${{ matrix.python-version }}" =~ ^3\.[4-9] ]] ; then cd irctest; pytest --controllers irctest.controllers.limnoria; fi

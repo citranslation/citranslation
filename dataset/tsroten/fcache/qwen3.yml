@@ -1,0 +1,37 @@
+name: Python CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: 3.8
+            TOXENV: py38
+          - python: 3.9
+            TOXENV: py39
+          - python: 3.10
+            TOXENV: py310
+          - python: 3.11
+            TOXENV: py311
+          - python: 3.11
+            TOXENV: pep8
+          - python: 3.11
+            TOXENV: docs
+          - python: 3.11
+            TOXENV: packaging
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install tox
+        run: pip install tox
+      - name: Run tox
+        run: tox -e ${{ matrix.TOXENV }}

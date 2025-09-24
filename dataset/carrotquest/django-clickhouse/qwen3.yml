@@ -1,0 +1,71 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+        env: [PG=9.6 DJANGO=2.1, PG=10 DJANGO=2.1, PG=11 DJANGO=2.1, PG=12 DJANGO=2.1, PG=9.6 DJANGO=2.2, PG=10 DJANGO=2.2, PG=11 DJANGO=2.2, PG=12 DJANGO=2.2, PG=9.6 DJANGO=3.0, PG=10 DJANGO=3.0, PG=11 DJANGO=3.0, PG=12 DJANGO=3.0, PG=9.6 DJANGO=3.1, PG=10 DJANGO=3.1, PG=11 DJANGO=3.1, PG=12 DJANGO=3.1]
+    env:
+      - name: PG
+        value: ${{ matrix.env.split(' ')[0] }}
+      - name: DJANGO
+        value: ${{ matrix.env.split(' ')[1] }}
+    services:
+      - postgresql
+      - redis-server
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements-test.txt') }}
+          restore-keys: ${{ runner.os }}-pip-
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y dirmngr apt-transport-https
+          echo "deb http://repo.yandex.ru/clickhouse/deb/stable/ main" | sudo tee /etc/apt/sources.list.d/clickhouse.list
+          echo "deb https://packages.erlang-solutions.com/ubuntu xenial contrib" | sudo tee /etc/apt/sources.list.d/erlang.list
+          echo "deb https://dl.bintray.com/rabbitmq/debian xenial main" | sudo tee /etc/apt/sources.list.d/rabbitmq.list
+          wget -qO- https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc | sudo apt-key add -
+          wget -qO- https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc | sudo apt-key add -
+          sudo apt-get update
+          sudo apt-get install -y clickhouse-client clickhouse-server clickhouse-common-static rabbitmq-server postgresql-contrib-9.6 postgresql-10 postgresql-contrib-10 postgresql-client-10 postgresql-11 postgresql-contrib-11 postgresql-client-11 postgresql-12 postgresql-contrib-12 postgresql-client-12 unzip
+          sudo systemctl stop postgresql
+          sudo systemctl start postgresql@$PG-main
+          sudo sed -i 's/port = 5433/port = 5432/' /etc/postgresql/11/main/postgresql.conf
+          sudo cp /etc/postgresql/{10,11}/main/pg_hba.conf
+          sudo sed -i 's/port = 5434/port = 5432/' /etc/postgresql/12/main/postgresql.conf
+          sudo cp /etc/postgresql/{10,12}/main/pg_hba.conf
+          sudo service clickhouse-server restart
+          pip install -r requirements-test.txt
+          pip install Django==$DJANGO.*
+          python setup.py install
+
+      - name: Setup database
+        run: |
+          rabbitmqctl status | grep "RabbitMQ"
+          clickhouse-client --query "SELECT version();"
+          psql -tc 'SHOW server_version' -U postgres
+          psql -c 'CREATE ROLE test;' -U postgres
+          psql -c 'ALTER ROLE test WITH SUPERUSER;' -U postgres
+          psql -c 'ALTER ROLE test WITH LOGIN;' -U postgres
+          psql -c "ALTER ROLE test PASSWORD 'test';" -U postgres
+          psql -c 'CREATE DATABASE test OWNER test;' -U postgres
+          psql -c 'CREATE DATABASE test2 OWNER test;' -U postgres
+
+      - name: Run tests
+        run: python runtests.py

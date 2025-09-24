@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Access full SCM history
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: '8'
+          java-package: 'jdk'
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'  # You can add a matrix for multiple Python versions
+
+      - name: Install dependencies
+        run: bash scripts/install.sh
+
+      - name: Run tests
+        run: bash scripts/run_tests.sh
+
+      - name: SonarCloud Scan
+        if: github.event_name != 'pull_request'
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: sonar-scanner
+
+      - name: Cache SonarCloud
+        uses: actions/cache@v2
+        with:
+          path: $HOME/.sonar/cache
+          key: ${{ runner.os }}-sonar-${{ hashFiles('**/sonar-project.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-sonar-
+
+      - name: Notify on failure
+        if: failure()
+        run: echo "Build failed, please check the logs."
+
+# Add email notifications if needed using a third-party action or custom script
+

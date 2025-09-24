@@ -1,0 +1,42 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+    - main
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: pip install -r requirements.txt
+    - run: cd etip/
+    - run: python manage.py test
+    strategy:
+      matrix:
+        DJANGO_SETTINGS_MODULE:
+        - etip.settings.dev
+        python:
+        - 3.8
+    env:
+      DJANGO_SETTINGS_MODULE: "${{ matrix.DJANGO_SETTINGS_MODULE }}"
+  linter_2:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO_SETTINGS_MODULE: etip.settings.dev
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: pip install flake8
+    - run: flake8 etip/

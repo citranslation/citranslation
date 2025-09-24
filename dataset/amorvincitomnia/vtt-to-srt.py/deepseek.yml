@@ -1,0 +1,37 @@
+name: Python package
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Test with pytest
+      run: |
+        pytest
+
+- name: Publish Python 🐍 distributions 📦 to PyPI and TestPyPI
+  if: startsWith(github.ref, 'refs/tags')
+  uses: jakejarvis/s3-sync-action@main
+  with:
+    args: --acl public-read --follow-symlinks --delete
+  env:
+    AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    AWS_REGION: 'us-east-1'

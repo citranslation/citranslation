@@ -1,0 +1,33 @@
+name: Test and Lint
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.8, 3.9, 3.10]
+      fail-fast: true
+      allow-failures:
+        - python: 3.10
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          pip install coverage vcrpy
+          python setup.py install
+      - name: Run tests
+        run: |
+          coverage run --source=censusgeocode -m unittest
+          censusgeocode --version
+          censusgeocode --csv tests/fixtures/batch.csv || echo failed
+      - name: Generate coverage report
+        run: coverage report

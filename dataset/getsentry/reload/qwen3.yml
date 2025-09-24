@@ -1,0 +1,14 @@
+name: CI
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - run: make requirements-test
+    - run: make lint
+    - run: make test

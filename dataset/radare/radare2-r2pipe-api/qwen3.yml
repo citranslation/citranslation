@@ -1,0 +1,29 @@
+name: Python CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install Radare2
+      run: |
+        chmod +x ./scripts/install_radare2.sh
+        ./scripts/install_radare2.sh
+    - name: Install dependencies
+      run: |
+        pip install -r python/requirements_ci.txt
+        cd python && ./setup.py install
+    - name: Run tests
+      run: |
+        cd test && make tests

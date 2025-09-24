@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - env: DJANGO_VERSION="Django>=3.0,<3.1" RUN_WEB_TESTS=true BROWSER_TAG=chrome_latest DEPLOY=true USE_CUSTOM_MODEL=true
+            python: '3.8'
+          - env: DJANGO_VERSION="Django>=3.0,<3.1" RUN_WEB_TESTS=true BROWSER_TAG=chrome_latest USE_CUSTOM_MODEL=false
+            python: '3.8'
+          - env: DJANGO_VERSION="Django>=3.0,<3.1" RUN_WEB_TESTS=false USE_CUSTOM_MODEL=true
+            python: '3.8'
+          - env: DJANGO_VERSION="Django>=2.2,<2.3" RUN_WEB_TESTS=false USE_CUSTOM_MODEL=true
+            python: '3.8'
+          - env: DJANGO_VERSION="Django>=3.0,<3.1" RUN_WEB_TESTS=false USE_CUSTOM_MODEL=false
+            python: '3.8'
+          - env: DJANGO_VERSION="Django>=2.2,<2.3" RUN_WEB_TESTS=false USE_CUSTOM_MODEL=false
+            python: '3.8'
+          - env: DJANGO_VERSION="Django>=3.0,<3.1" RUN_WEB_TESTS=true BROWSER_TAG=chrome_latest USE_CUSTOM_MODEL=false
+            python: '3.8'
+          - env: DJANGO_VERSION="Django>=3.0,<3.1" RUN_WEB_TESTS=true BROWSER_TAG=chrome_latest USE_CUSTOM_MODEL=false
+            python: '3.8'
+
+    env:
+      DJANGO_VERSION: ${{ matrix.env.DJANGO_VERSION }}
+      RUN_WEB_TESTS: ${{ matrix.env.RUN_WEB_TESTS }}
+      BROWSER_TAG: ${{ matrix.env.BROWSER_TAG }}
+      DEPLOY: ${{ matrix.env.DEPLOY }}
+      USE_CUSTOM_MODEL: ${{ matrix.env.USE_CUSTOM_MODEL }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install pip
+        run: pip install pip -U
+      - name: Install codecov
+        run: pip install codecov
+      - name: Process requirements
+        run: |
+          grep -v "^django==" requirements.txt > /tmp/reqs.txt
+          pip install -r /tmp/reqs.txt
+      - name: Install Django
+        run: pip install $DJANGO_VERSION -U
+      - name: Run tests
+        run: ./scripts/ci_runtests.sh
+      - name: Upload coverage
+        if: ${{ success }}
+        run: codecov
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
+    env:
+      PYPI_USER: ${{ secrets.PYPI_USER }}
+      PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install setuptools wheel
+      - name: Build package
+        run: |
+          python setup.py sdist bdist_wheel
+      - name: Deploy to PyPI
+        uses: pypa/python-action@v1
+        with:
+          username: $PYPI_USER
+          password: $PYPI_PASSWORD
+          repository: pypi
+          distributions: sdist bdist_wheel
+          condition: $DEPLOY == 'true'
+

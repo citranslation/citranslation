@@ -1,0 +1,33 @@
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+        django-version: [1.8, 1.9, 1.10, 1.11]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          sudo add-apt-repository ppa:deadsnakes/ppa -y
+          sudo apt-get update
+          sudo apt-get install python3.8 python3.8
+          pip install tox
+
+      - name: Run tests with Tox
+        env:
+          TOXENV: py${{ matrix.python-version }}-django-${{ matrix.django-version }}
+        run: tox
+

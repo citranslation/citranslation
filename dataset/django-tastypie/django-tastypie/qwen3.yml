@@ -1,0 +1,274 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python-version: 3.8
+            django-version: dj22
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj30
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj31
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj32
+            mode: flake8
+          - python-version: 3.8
+            django-version: djdev
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj22
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj30
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj31
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj32
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: djdev
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj22
+            mode: docs
+          - python-version: 3.8
+            django-version: dj30
+            mode: docs
+          - python-version: 3.8
+            django-version: dj31
+            mode: docs
+          - python-version: 3.8
+            django-version: dj32
+            mode: docs
+          - python-version: 3.8
+            django-version: djdev
+            mode: docs
+          - python-version: 3.8
+            django-version: dj22
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj30
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj31
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj32
+            mode: flake8
+          - python-version: 3.8
+            django-version: djdev
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj22
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj30
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj31
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj32
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: djdev
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj22
+            mode: docs
+          - python-version: 3.8
+            django-version: dj30
+            mode: docs
+          - python-version: 3.8
+            django-version: dj31
+            mode: docs
+          - python-version: 3.8
+            django-version: dj32
+            mode: docs
+          - python-version: 3.8
+            django-version: djdev
+            mode: docs
+          - python-version: 3.8
+            django-version: dj22
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj30
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj31
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj32
+            mode: flake8
+          - python-version: 3.8
+            django-version: djdev
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj22
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj30
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj31
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj32
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: djdev
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj22
+            mode: docs
+          - python-version: 3.8
+            django-version: dj30
+            mode: docs
+          - python-version: 3.8
+            django-version: dj31
+            mode: docs
+          - python-version: 3.8
+            django-version: dj32
+            mode: docs
+          - python-version: 3.8
+            django-version: djdev
+            mode: docs
+          - python-version: 3.8
+            django-version: dj22
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj30
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj31
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj32
+            mode: flake8
+          - python-version: 3.8
+            django-version: djdev
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj22
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj30
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj31
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj32
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: djdev
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj22
+            mode: docs
+          - python-version: 3.8
+            django-version: dj30
+            mode: docs
+          - python-version: 3.8
+            django-version: dj31
+            mode: docs
+          - python-version: 3.8
+            django-version: dj32
+            mode: docs
+          - python-version: 3.8
+            django-version: djdev
+            mode: docs
+        exclude:
+          - python-version: 3.8
+            django-version: dj22
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj30
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj31
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj32
+            mode: flake8
+          - python-version: 3.8
+            django-version: djdev
+            mode: flake8
+          - python-version: 3.8
+            django-version: dj22
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj30
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj31
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj32
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: djdev
+            mode: flake8-strict
+          - python-version: 3.8
+            django-version: dj22
+            mode: docs
+          - python-version: 3.8
+            django-version: dj30
+            mode: docs
+          - python-version: 3.8
+            django-version: dj31
+            mode: docs
+          - python-version: 3.8
+            django-version: dj32
+            mode: docs
+          - python-version: 3.8
+            django-version: djdev
+            mode: docs
+    env:
+      MODE: ${{ matrix.mode }}
+      DJANGO_VERSION: ${{ matrix.django-version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 762E3.87
+          sudo apt-get update
+          sudo apt-get install -y binutils libproj-dev gdal-bin libsqlite3-mod-spatialite
+          pip install -U pip
+          pip install -U wheel virtualenv
+          pip install tox coveralls
+      - name: Remove pip log
+        run: rm -f $HOME/.cache/pip/log/debug.log
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ matrix.python-version }}-pip
+          restore-keys: |
+            ${{ matrix.python-version }}-pip
+      - name: Run tests
+        if: ${{ matrix.django-version == 'djdev' || matrix.mode == 'flake8-strict' }}
+        continue: true
+        run: |
+          apt list --installed
+          coverage erase
+          tox -e py${{ replace(matrix.python-version, '.', '') }}-${{ matrix.django-version }}${{ env.MODE }}
+      - name: Upload coverage
+        run: coveralls
+        if: ${{ success }}

@@ -1,0 +1,32 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install pyte coverage mock
+    - run: python setup.py install
+    - run: nosetests .
+    - uses: distributhor/workflow-webhook@v3.0.5
+      env:
+        webhook_url: "${{ secrets.WEBHOOK_URL }}"
+        webhook_secret: "${{ secrets.WEBHOOK_SECRET }}"
+    strategy:
+      matrix:
+        python:
+        - '3.8'
+        - '3.9'
+        - pypy-3.8

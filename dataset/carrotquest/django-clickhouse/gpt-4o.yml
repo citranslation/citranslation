@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+        pg-version: [9.6, 10, 11, 12]
+        django-version: [2.1, 2.2, 3.0, 3.1]
+
+    services:
+      postgres:
+        image: postgres:${{ matrix.pg-version }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test
+
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y dirmngr apt-transport-https unzip
+        sudo apt-get install -y postgresql-client-${{ matrix.pg-version }}
+        sudo apt-get install -y rabbitmq-server
+        sudo apt-get install -y clickhouse-client clickhouse-server clickhouse-common-static
+        sudo service clickhouse-server restart
+        pip install -r requirements-test.txt
+        pip install Django==${{ matrix.django-version }}.*
+        python setup.py install
+
+    - name: Set up PostgreSQL
+      run: |
+        psql -c 'CREATE ROLE test;' -U postgres
+        psql -c 'ALTER ROLE test WITH SUPERUSER;' -U postgres
+        psql -c 'ALTER ROLE test WITH LOGIN;' -U postgres
+        psql -c "ALTER ROLE test PASSWORD 'test';" -U postgres
+        psql -c 'CREATE DATABASE test OWNER test;' -U postgres
+        psql -c 'CREATE DATABASE test2 OWNER test;' -U postgres
+
+    - name: Output software versions
+      run: |
+        erl -eval 'erlang:display(erlang:system_info(otp_release)), halt().'  -noshell
+        rabbitmqctl status | grep "RabbitMQ"
+        clickhouse-client --query "SELECT version();"
+        psql -tc 'SHOW server_version' -U postgres
+
+    - name: Run tests
+      run: python runtests.py

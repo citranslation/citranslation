@@ -1,0 +1,33 @@
+name: Python package
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .[testing]
+    - name: Test with pytest
+      run: |
+        pytest tests
+
+- name: Deploy
+  if: startsWith(github.ref, 'refs/tags')
+  run: echo "Deploying..."
+  env:
+    PYPI_USERNAME: vmalloc
+    PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}

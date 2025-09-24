@@ -1,0 +1,39 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install -r requirements.txt
+    - run: sudo apt-get install -qq openjdk-8-jre
+    - run: python setup.py test
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         user: moxfyre
+#         password:
+#           secure: eNSVgDo1B2hjz7XzPkKLWLfKG5HcRe+ffW5bxpIU2cddq+WFVc/nKGevqnQcbQuKROcShxMwG4Hb7Z13VzC42kTdSwg2IFTXH5tONIE2z/x6EI1WrysK3XoqupnD6vHFIiOWgjklA+RTL6cLkbJZXGYzP/Qf+Ic80iS9mYZxLKM7+fKjRez/bHBd6tXnXUCygniCpWPo/JLaO1FF9rvMNk2ZUOtqCMWGQBgqVQsntrnOj0hHq4Of8sGp3aykicbH9WeJwkr63.8rI/ohYBqafsmP6rMhJrK9FfHfadsQVhS1vJNR2hneSbhVgFqFptTKAxDtVdB2flb78X9kEsy6COzAElgwWwPpGTo1VKsxmZ9udMFtVJEjjIfciGrhU1jVnPfSj9XDASh4A3MJydp+TkQ8iz3+AIXPThNCWvEoHmYIGrrziTmih+bw+k0OxX9xN1HcBN8ssj98fv4AGgev110GBA1kM8yt5aDSuo+9c7mZA+352rE2/YZvAqtAORjjDEoPoezm/dg6YTgiXhRUGFpbjiyNKsF/QggVZURn+KOuu4kIsrX6FL0QzJ7Y2kK3b1Cfv94ppggAG7NqsCPO7gTmHCvTXCM+Q83QT+HLXlPjEd9kzfUEyfqjM0ueIRWHDVZ1+St0gwcSaA/N6e2IlIfRPKKU7PQ7mQO9f8lfvb4=
+#         'on':
+#           tags: true
+#           repo: dlenski/python-zxing
+#       if: "${{ github.event_name == 'push' && ${{ github.ref }} }}"
+#     # This item has no matching transformer
+#     - email: false
+    strategy:
+      matrix:
+        python:
+        - '3.8'
+

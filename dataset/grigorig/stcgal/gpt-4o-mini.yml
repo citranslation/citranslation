@@ -1,0 +1,34 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-precise
+
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install pyusb coverage coveralls pyserial PyYAML tqdm
+
+      - name: Build
+        run: python setup.py build
+
+      - name: Run tests with coverage
+        run: coverage run --source=stcgal setup.py test
+
+      - name: Upload coverage to Coveralls
+        run: coveralls
+

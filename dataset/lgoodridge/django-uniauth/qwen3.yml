@@ -1,0 +1,111 @@
+name: Test Python and Django
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: 3.8
+            django: 1.11
+          - python: 3.8
+            django: 2.0
+          - python: 3.8
+            django: 2.0
+          - python: 3.8
+            django: 2.0
+          - python: 3.8
+            django: 2.1
+          - python: 3.8
+            django: 2.1
+          - python: 3.8
+            django: 2.1
+          - python: 3.8
+            django: 2.2
+          - python: 3.8
+            django: 2.2
+          - python: 3.8
+            django: 2.2
+          - python: 3.8
+            django: 2.2
+          - python: 3.8
+            django: 3.0
+          - python: 3.8
+            django: 3.0
+          - python: 3.8
+            django: 3.0
+          - python: 3.9
+            django: 3.0
+          - python: 3.8
+            django: 3.1
+          - python: 3.8
+            django: 3.1
+          - python: 3.8
+            django: 3.1
+          - python: 3.9
+            django: 3.1
+          - python: 3.8
+            django: 3.2
+          - python: 3.8
+            django: 3.2
+          - python: 3.8
+            django: 3.2
+          - python: 3.9
+            django: 3.2
+          - python: 3.10
+            django: 3.2
+          - python: 3.8
+            django: 4.0
+          - python: 3.9
+            django: 4.0
+          - python: 3.10
+            django: 4.0
+    env:
+      DJANGO: ${{ matrix.django }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          if [[ ${{ matrix.python }} == "3.8" ]]; then pip install -U importlib_metadata; fi
+          pip install tox tox-venv tox-travis
+      - name: Run tests
+        run: tox
+
+  allow_failure:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: 3.8
+            django: main
+          - python: 3.9
+            django: main
+          - python: 3.10
+            django: main
+    allow-failure: true
+    env:
+      DJANGO: ${{ matrix.django }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          if [[ ${{ matrix.python }} == "3.8" ]]; then pip install -U importlib_metadata; fi
+          pip install tox tox-venv tox-travis
+      - name: Run tests
+        run: tox

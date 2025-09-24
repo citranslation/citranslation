@@ -1,0 +1,35 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8, pypy-3.8]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: python setup.py develop
+
+      - name: Run tests
+        run: python -m pytest
+
+      - name: Notify Slack
+        if: success() || failure()
+        uses: slackapi/slack-github-action@v1.19.0
+        with:
+          payload: '{"text": "Build completed for commit ${{ github.sha }}"}'
+          slack-token: ${{ secrets.SLACK_TOKEN }}
+
+# Note: You need to set the SLACK_TOKEN secret in your GitHub repository settings.
+

@@ -1,0 +1,143 @@
+name: Python tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: 3.8
+            env:
+              DJANGO: "Django==1.11.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==2.0.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==2.1.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==2.2.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==3.0.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==3.1.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==3.2.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==1.11.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==2.0.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==2.1.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==2.2.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==3.0.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==3.1.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==3.2.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==1.11.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==2.0.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==2.1.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==2.2.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==3.0.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==3.1.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==3.2.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==1.11.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==2.0.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==2.1.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==2.2.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==3.0.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==3.1.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==3.2.*"
+          - python: 3.9
+            env:
+              DJANGO: "Django==1.11.*"
+          - python: 3.9
+            env:
+              DJANGO: "Django==2.0.*"
+          - python: 3.9
+            env:
+              DJANGO: "Django==2.1.*"
+          - python: 3.9
+            env:
+              DJANGO: "Django==2.2.*"
+          - python: 3.9
+            env:
+              DJANGO: "Django==3.0.*"
+          - python: 3.9
+            env:
+              DJANGO: "Django==3.1.*"
+          - python: 3.9
+            env:
+              DJANGO: "Django==3.2.*"
+        exclude:
+          - python: 3.8
+            env:
+              DJANGO: "Django==3.0.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==3.1.*"
+          - python: 3.8
+            env:
+              DJANGO: "Django==3.2.*"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          pip install ${{ matrix.env.DJANGO }}
+          pip install requests
+          pip install -e .
+      - name: Run tests
+        run: python runtests.py
+

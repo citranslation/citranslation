@@ -1,0 +1,32 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - run: mkdir -p /home/travis/config
+    - run: pip install -r requirements.txt
+    - run: python FeedCrawler.py --port=9090 --config="/home/runner/work/_temp/_github_home" --test_run --log-level=DEBUG
+    strategy:
+      matrix:
+        python:
+        - '3.8'
+        - '3.9'

@@ -1,0 +1,33 @@
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8"]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    - uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ matrix.python }}-pip
+        restore-keys: |
+          ${{ matrix.python }}-pip
+    - run: pip install --editable .[dev]
+    - name: Run checks
+      run: |
+        if [ "${{ matrix.python }}" = "3.8" ]; then
+          pip install black mypy
+          make check
+        else
+          make check-tests
+        fi

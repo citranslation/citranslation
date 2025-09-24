@@ -1,0 +1,13 @@
+name: Python CI
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      TOXENV: pep8,py3
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: pip install -U tox
+    - name: Run tox
+      run: sudo tox

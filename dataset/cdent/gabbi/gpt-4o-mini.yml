@@ -1,0 +1,44 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        toxenv: 
+          - pep8
+          - placement
+          - pypy-3.8
+          - py38
+          - py38-pytest
+          - py38-failskip
+          - py38-limit
+          - py38-prefix
+        python-version: 
+          - '3.8'
+          - 'pypy-3.8'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install tox
+
+      - name: Run tox
+        run: |
+          tox -e ${{ matrix.toxenv }}
+
+      - name: Notify IRC
+        run: |
+          echo "Build completed for ${{ matrix.toxenv }}" | nc irc.freenode.net 6667 -e "msg #gabbi"
+        

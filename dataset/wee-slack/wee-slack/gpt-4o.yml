@@ -1,0 +1,58 @@
+name: Python application
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/Pipfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        pip install pipenv
+        pipenv install --dev --system
+
+    - name: Lint with flake8
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 .
+        # exit-zero treats all errors as warnings.
+        flake8 . --exit-zero --select=C,E,F,W
+
+    - name: Test with pytest
+      run: pytest
+
+    - name: Notify IRC
+      if: failure()
+      run: |
+        echo "Build failed, sending notification to IRC"
+        # Add your IRC notification script or command here
+
+    - name: Notify email
+      if: failure()
+      run: echo "Build failed, but email notifications are disabled"

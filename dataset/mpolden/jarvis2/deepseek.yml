@@ -1,0 +1,31 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '12'
+    - name: Install jshint
+      run: npm install -g jshint
+
+    - name: Build with make
+      run: make
+
+    - name: Test with make
+      run: make test

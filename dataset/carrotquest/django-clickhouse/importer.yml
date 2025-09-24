@@ -1,0 +1,99 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+#     # This item has no matching transformer
+#     - apt: true
+    - run: apt-get -y install dirmngr apt-transport-https postgresql-contrib-9.6 postgresql-10 postgresql-contrib-10 postgresql-client-10 postgresql-11 postgresql-contrib-11 postgresql-client-11 postgresql-12 postgresql-contrib-12 postgresql-client-12 unzip rabbitmq-server
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: sudo sed -i 's/port = 5433/port = 5432/' /etc/postgresql/11/main/postgresql.conf
+    - run: sudo cp /etc/postgresql/{10,11}/main/pg_hba.conf
+    - run: sudo sed -i 's/port = 5434/port = 5432/' /etc/postgresql/12/main/postgresql.conf
+    - run: sudo cp /etc/postgresql/{10,12}/main/pg_hba.conf
+    - run: sudo systemctl stop postgresql
+    - run: sudo systemctl start postgresql@$PG-main
+    - run: sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv E0C56BD4
+    - run: sudo apt-get update
+    - run: sudo apt-get install clickhouse-client clickhouse-server clickhouse-common-static
+    - run: sudo service clickhouse-server restart
+    - run: pip install -r requirements-test.txt
+    - run: pip install -q Django==$DJANGO.*
+    - run: python setup.py -q install
+    - run: erl -eval 'erlang:display(erlang:system_info(otp_release)), halt().'  -noshell
+    - run: rabbitmqctl status | grep "RabbitMQ"
+    - run: clickhouse-client --query "SELECT version();"
+    - run: psql -tc 'SHOW server_version' -U postgres
+    - run: psql -tc 'SHOW server_version' -U postgres
+    - run: psql -c 'CREATE ROLE test;' -U postgres
+    - run: psql -c 'ALTER ROLE test WITH SUPERUSER;' -U postgres
+    - run: psql -c 'ALTER ROLE test WITH LOGIN;' -U postgres
+    - run: psql -c "ALTER ROLE test PASSWORD 'test';" -U postgres
+    - run: psql -c 'CREATE DATABASE test OWNER test;' -U postgres
+    - run: psql -c 'CREATE DATABASE test2 OWNER test;' -U postgres
+    - run: python runtests.py
+    strategy:
+      matrix:
+        python:
+        - 3.8
+        include:
+        - PG: '9.6'
+          DJANGO: '2.1'
+        - PG: '10'
+          DJANGO: '2.1'
+        - PG: '11'
+          DJANGO: '2.1'
+        - PG: '12'
+          DJANGO: '2.1'
+        - PG: '9.6'
+          DJANGO: '2.2'
+        - PG: '10'
+          DJANGO: '2.2'
+        - PG: '11'
+          DJANGO: '2.2'
+        - PG: '12'
+          DJANGO: '2.2'
+        - PG: '9.6'
+          DJANGO: '3.0'
+        - PG: '10'
+          DJANGO: '3.0'
+        - PG: '11'
+          DJANGO: '3.0'
+        - PG: '12'
+          DJANGO: '3.0'
+        - PG: '9.6'
+          DJANGO: '3.1'
+        - PG: '10'
+          DJANGO: '3.1'
+        - PG: '11'
+          DJANGO: '3.1'
+        - PG: '12'
+          DJANGO: '3.1'
+    services:
+      postgresql:
+        image: postgres:11
+      redis:
+        image: redis
+        options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      PG: "${{ matrix.PG }}"
+      DJANGO: "${{ matrix.DJANGO }}"

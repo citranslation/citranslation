@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8"]
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Setup JDK 8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 8
+    - name: Install dependencies
+      run: bash scripts/install.sh
+    - name: Run tests
+      run: bash scripts/run_tests.sh
+    - name: SonarScanner
+      if: ${{ github.event_name != 'pull_request' }}
+      run: |
+        sonar-scanner
+    - name: Cache Sonar
+      uses: actions/cache@v2
+      with:
+        path: $HOME/.sonar/cache
+        key: ${{ runner.os }}-sonar-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-sonar-
+
+# notifications:
+#   email:
+#     on_success: never
+#     on_failure: always
+

@@ -1,0 +1,177 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  lint:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install tox coveralls tox-travis
+    - run: tox
+    - run: pip install django
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         user: charettes
+#         password:
+#           secure: Ix/iLGKu+usjaNGPIKRzvgdZz8TVxReiMFLorgMpHb9P29tgIBQSDzVmo8gzUi+LF4SQs2AdnuYJY15ap68JX7iLfCuWWYIvIqgMLb3.84jfUDg9KpLJQYCv6cTKQHoDVtVTg0jXJmauEYMMYuqmdrSgZ6rSfpsbajMrveCzVuStb7kd5H4WPX3/j4JfCmr07CyAi85rLAnaIfmCYADWC4nrYll7+0Ugke64C4KstY0l6HYBNTT5ZwJvXSNd0VQd31b5okv8bwjGXzeVrbgIAe+c1p0lS11hsNqfLL/rrnlvgC7P7568TxGwWVmIDJm131r1K7skLscEfCuPbJJ3oqljxLQMQIJ4JbR12HtRwB93dOnJOgCbqySAJAZHUvkm2r3VAO8BJK3xYnJg/2IGrxolDQxwJi2SMEgwqQZx3thTFKXvviiWn5dnLjiNRpSOHUzayCVYga7WAgVksKVMbmtcNrJWwrAHtWLxo9vnM2W+6JNFeXiGIIwGu7qJ/Sz/qCuv/uKibbFqhUJfATXf5HhSJ3yIM/Ef04/SSpBqkYcFcrGLdzzW2Bpv4jscv4EcNyGDxnzeJtvXWVceoW0g7XweUn4b5P+NvOSV4YCjJ04BU4r/upV7+ulkQxnCWot2MD0zhvlodldn+6tGfdBbYJ/KlBHQjwdjFFKaxqRkuyA=
+#         distributions: sdist bdist_wheel
+#         'on':
+#           tags: true
+#           condition: "$TRAVIS_PYTHON_VERSION = 3.8"
+#       if: "${{ github.event_name == 'push' && $TRAVIS_PYTHON_VERSION == 3.8 && ${{ github.ref }} }}"
+    - run: if [ -f .coverage ]; then coveralls; fi
+      if: "${{ success() }}"
+    strategy:
+      matrix:
+        python:
+        - 3.8
+  lint_2:
+    runs-on: ubuntu-22.04
+    env:
+      TOXENV: flake8
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install tox coveralls tox-travis
+    - run: tox
+    - run: pip install django
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         user: charettes
+#         password:
+#           secure: Ix/iLGKu+usjaNGPIKRzvgdZz8TVxReiMFLorgMpHb9P29tgIBQSDzVmo8gzUi+LF4SQs2AdnuYJY15ap68JX7iLfCuWWYIvIqgMLb3.84jfUDg9KpLJQYCv6cTKQHoDVtVTg0jXJmauEYMMYuqmdrSgZ6rSfpsbajMrveCzVuStb7kd5H4WPX3/j4JfCmr07CyAi85rLAnaIfmCYADWC4nrYll7+0Ugke64C4KstY0l6HYBNTT5ZwJvXSNd0VQd31b5okv8bwjGXzeVrbgIAe+c1p0lS11hsNqfLL/rrnlvgC7P7568TxGwWVmIDJm131r1K7skLscEfCuPbJJ3oqljxLQMQIJ4JbR12HtRwB93dOnJOgCbqySAJAZHUvkm2r3VAO8BJK3xYnJg/2IGrxolDQxwJi2SMEgwqQZx3thTFKXvviiWn5dnLjiNRpSOHUzayCVYga7WAgVksKVMbmtcNrJWwrAHtWLxo9vnM2W+6JNFeXiGIIwGu7qJ/Sz/qCuv/uKibbFqhUJfATXf5HhSJ3yIM/Ef04/SSpBqkYcFcrGLdzzW2Bpv4jscv4EcNyGDxnzeJtvXWVceoW0g7XweUn4b5P+NvOSV4YCjJ04BU4r/upV7+ulkQxnCWot2MD0zhvlodldn+6tGfdBbYJ/KlBHQjwdjFFKaxqRkuyA=
+#         distributions: sdist bdist_wheel
+#         'on':
+#           tags: true
+#           condition: "$TRAVIS_PYTHON_VERSION = 3.8"
+#       if: "${{ github.event_name == 'push' && $TRAVIS_PYTHON_VERSION == 3.8 && ${{ github.ref }} }}"
+    - run: if [ -f .coverage ]; then coveralls; fi
+      if: "${{ success() }}"
+  lint_3:
+    runs-on: ubuntu-22.04
+    env:
+      TOXENV: isort
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install tox coveralls tox-travis
+    - run: tox
+    - run: pip install django
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         user: charettes
+#         password:
+#           secure: Ix/iLGKu+usjaNGPIKRzvgdZz8TVxReiMFLorgMpHb9P29tgIBQSDzVmo8gzUi+LF4SQs2AdnuYJY15ap68JX7iLfCuWWYIvIqgMLb3.84jfUDg9KpLJQYCv6cTKQHoDVtVTg0jXJmauEYMMYuqmdrSgZ6rSfpsbajMrveCzVuStb7kd5H4WPX3/j4JfCmr07CyAi85rLAnaIfmCYADWC4nrYll7+0Ugke64C4KstY0l6HYBNTT5ZwJvXSNd0VQd31b5okv8bwjGXzeVrbgIAe+c1p0lS11hsNqfLL/rrnlvgC7P7568TxGwWVmIDJm131r1K7skLscEfCuPbJJ3oqljxLQMQIJ4JbR12HtRwB93dOnJOgCbqySAJAZHUvkm2r3VAO8BJK3xYnJg/2IGrxolDQxwJi2SMEgwqQZx3thTFKXvviiWn5dnLjiNRpSOHUzayCVYga7WAgVksKVMbmtcNrJWwrAHtWLxo9vnM2W+6JNFeXiGIIwGu7qJ/Sz/qCuv/uKibbFqhUJfATXf5HhSJ3yIM/Ef04/SSpBqkYcFcrGLdzzW2Bpv4jscv4EcNyGDxnzeJtvXWVceoW0g7XweUn4b5P+NvOSV4YCjJ04BU4r/upV7+ulkQxnCWot2MD0zhvlodldn+6tGfdBbYJ/KlBHQjwdjFFKaxqRkuyA=
+#         distributions: sdist bdist_wheel
+#         'on':
+#           tags: true
+#           condition: "$TRAVIS_PYTHON_VERSION = 3.8"
+#       if: "${{ github.event_name == 'push' && $TRAVIS_PYTHON_VERSION == 3.8 && ${{ github.ref }} }}"
+    - run: if [ -f .coverage ]; then coveralls; fi
+      if: "${{ success() }}"
+  lint_4:
+    runs-on: ubuntu-22.04
+    env:
+      TOXENV: flake8
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install tox coveralls tox-travis
+    - run: tox
+    - run: pip install django
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         user: charettes
+#         password:
+#           secure: Ix/iLGKu+usjaNGPIKRzvgdZz8TVxReiMFLorgMpHb9P29tgIBQSDzVmo8gzUi+LF4SQs2AdnuYJY15ap68JX7iLfCuWWYIvIqgMLb3.84jfUDg9KpLJQYCv6cTKQHoDVtVTg0jXJmauEYMMYuqmdrSgZ6rSfpsbajMrveCzVuStb7kd5H4WPX3/j4JfCmr07CyAi85rLAnaIfmCYADWC4nrYll7+0Ugke64C4KstY0l6HYBNTT5ZwJvXSNd0VQd31b5okv8bwjGXzeVrbgIAe+c1p0lS11hsNqfLL/rrnlvgC7P7568TxGwWVmIDJm131r1K7skLscEfCuPbJJ3oqljxLQMQIJ4JbR12HtRwB93dOnJOgCbqySAJAZHUvkm2r3VAO8BJK3xYnJg/2IGrxolDQxwJi2SMEgwqQZx3thTFKXvviiWn5dnLjiNRpSOHUzayCVYga7WAgVksKVMbmtcNrJWwrAHtWLxo9vnM2W+6JNFeXiGIIwGu7qJ/Sz/qCuv/uKibbFqhUJfATXf5HhSJ3yIM/Ef04/SSpBqkYcFcrGLdzzW2Bpv4jscv4EcNyGDxnzeJtvXWVceoW0g7XweUn4b5P+NvOSV4YCjJ04BU4r/upV7+ulkQxnCWot2MD0zhvlodldn+6tGfdBbYJ/KlBHQjwdjFFKaxqRkuyA=
+#         distributions: sdist bdist_wheel
+#         'on':
+#           tags: true
+#           condition: "$TRAVIS_PYTHON_VERSION = 3.8"
+#       if: "${{ github.event_name == 'push' && $TRAVIS_PYTHON_VERSION == 3.8 && ${{ github.ref }} }}"
+    - run: if [ -f .coverage ]; then coveralls; fi
+      if: "${{ success() }}"
+  lint_5:
+    runs-on: ubuntu-22.04
+    env:
+      TOXENV: isort
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install tox coveralls tox-travis
+    - run: tox
+    - run: pip install django
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         user: charettes
+#         password:
+#           secure: Ix/iLGKu+usjaNGPIKRzvgdZz8TVxReiMFLorgMpHb9P29tgIBQSDzVmo8gzUi+LF4SQs2AdnuYJY15ap68JX7iLfCuWWYIvIqgMLb3.84jfUDg9KpLJQYCv6cTKQHoDVtVTg0jXJmauEYMMYuqmdrSgZ6rSfpsbajMrveCzVuStb7kd5H4WPX3/j4JfCmr07CyAi85rLAnaIfmCYADWC4nrYll7+0Ugke64C4KstY0l6HYBNTT5ZwJvXSNd0VQd31b5okv8bwjGXzeVrbgIAe+c1p0lS11hsNqfLL/rrnlvgC7P7568TxGwWVmIDJm131r1K7skLscEfCuPbJJ3oqljxLQMQIJ4JbR12HtRwB93dOnJOgCbqySAJAZHUvkm2r3VAO8BJK3xYnJg/2IGrxolDQxwJi2SMEgwqQZx3thTFKXvviiWn5dnLjiNRpSOHUzayCVYga7WAgVksKVMbmtcNrJWwrAHtWLxo9vnM2W+6JNFeXiGIIwGu7qJ/Sz/qCuv/uKibbFqhUJfATXf5HhSJ3yIM/Ef04/SSpBqkYcFcrGLdzzW2Bpv4jscv4EcNyGDxnzeJtvXWVceoW0g7XweUn4b5P+NvOSV4YCjJ04BU4r/upV7+ulkQxnCWot2MD0zhvlodldn+6tGfdBbYJ/KlBHQjwdjFFKaxqRkuyA=
+#         distributions: sdist bdist_wheel
+#         'on':
+#           tags: true
+#           condition: "$TRAVIS_PYTHON_VERSION = 3.8"
+#       if: "${{ github.event_name == 'push' && $TRAVIS_PYTHON_VERSION == 3.8 && ${{ github.ref }} }}"
+    - run: if [ -f .coverage ]; then coveralls; fi
+      if: "${{ success() }}"

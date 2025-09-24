@@ -1,0 +1,35 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, pypy-3.8]
+        include:
+          - python-version: 3.8
+            runs-on: ubuntu:22.04
+    env:
+      LANG:
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: python setup.py --quiet install
+      - name: Run tests
+        run: |
+          python test_docformatter.py
+          docformatter setup.py
+      - name: Generate coverage
+        if: ${{ success }}
+        run: |
+          pip install --quiet coverage
+          make coverage
+      - name: Upload coverage
+        if: ${{ success }}
+        run: |
+          pip install --quiet coveralls
+          coveralls

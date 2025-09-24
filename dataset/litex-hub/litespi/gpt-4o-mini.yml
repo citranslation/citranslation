@@ -1,0 +1,38 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install verilator libevent-dev libjson-c-dev
+
+      - name: Setup Migen / LiteX / Cores
+        run: |
+          cd ~/
+          wget https://raw.githubusercontent.com/enjoy-digital/litex/main/litex_setup.py
+          python3 litex_setup.py init install
+
+      - name: Install the version being tested
+        run: |
+          cd ${{ github.workspace }}
+          python3 setup.py install
+
+      - name: Get RISC-V toolchain
+        run: |
+          wget https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-20171231-x86_64-linux-centos6.tar.gz
+          tar -xvf riscv64-unknown-elf-gcc-20171231-x86_64-linux-centos6.tar.gz
+          echo "${{ github.workspace }}/riscv64-unknown-elf-gcc-20171231-x86_64-linux-centos6/bin/" >> $GITHUB_PATH
+
+      - name: Run unit tests
+        run: |
+          cd ${{ github.workspace }}
+          python setup.py test

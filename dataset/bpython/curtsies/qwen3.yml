@@ -1,0 +1,29 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "pypy-3.8"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        pip install pyte coverage mock
+        python setup.py install
+    - name: Run tests
+      run: nosetests .
+    - name: Notifications
+      run: |
+        # This is a placeholder for the secure webhook integration
+        # In practice, you would use GitHub's built-in notifications or a service like Slack
+        echo "Webhook secure token: ${{ secrets.TRAVIS_WEBHOOK_TOKEN }}"
+        # Example: curl -X POST -H "Content-Type: application/json" -d '{"message": "Build completed"}' https://webhook-url
+

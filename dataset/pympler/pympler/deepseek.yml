@@ -1,0 +1,38 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get -qq update
+        sudo apt-get install -y graphviz python-tk python-matplotlib
+        pip install Sphinx recommonmark pep8 coverage coveralls numpy
+
+    - name: Run tests
+      run: |
+        python -Wall setup.py try
+        python setup.py install
+        python -Wall setup.py test
+        COVERAGE=1 coverage run test/runtest.py
+        python run.py --doctest
+        python run.py --html
+
+    - name: Check code style with pep8
+      run: pep8 --exclude=asizeof.py,metadata.py,bottle*.py --max-line-length=80 pympler
+
+    - name: Coveralls
+      run: coveralls
+
+# End-of-Code|

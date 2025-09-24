@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8]
+        env:
+          - TOXENV=flake8
+          - TOXENV=black
+          - TOXENV=elasticsearch
+
+    services:
+      elasticsearch:
+        image: elasticsearch:7.3.2
+        options: --name elasticsearch -e "discovery.type=single-node" -p 9200:9200
+        ports:
+          - 9200:9200
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        pip install tox
+        pip install codecov
+
+    - name: Run tests
+      run: |
+        if [ "${{ matrix.env }}" == "TOXENV=elasticsearch" ]; then
+          sleep 60
+        fi
+        tox
+
+    - name: Upload coverage to Codecov
+      if: success()
+      run: codecov

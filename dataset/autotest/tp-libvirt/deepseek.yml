@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install Sphinx
+      run: pip install sphinx${SPHINX_VERSION:+==$SPHINX_VERSION}
+
+    - name: Install dependencies
+      run: pip install -r requirements-travis.txt
+
+    - name: Run inspekt checkall
+      run: inspekt checkall --disable-style E501,E265,W601,W605,E402,E722,E741 --no-license-check
+

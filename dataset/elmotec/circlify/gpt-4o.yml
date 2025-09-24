@@ -1,0 +1,40 @@
+name: Python package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [ 3.8, 3.9, 3.10]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python setup.py --quiet install
+        pip --quiet install -r test-requirements.txt
+
+    - name: Run tests
+      run: python setup.py --quiet test
+
+    - name: Run coverage
+      run: coverage run --source circlify tests.py
+
+    - name: Upload coverage to Coveralls
+      uses: coverallsapp/github-action@v2.1.2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}

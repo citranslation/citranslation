@@ -1,0 +1,57 @@
+name: Python tests
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+        geos-version: [3.8.2, 3.8.4, 3.8.3, 3.8.1, 3.8.1, main]
+        numpy-version: [1.10.4, 1.13.3, 1.15.4, 1.17.5, 1.19.4, 1.19.4]
+    env:
+      GEOS_VERSION: ${{ matrix.geos-version }}
+      NUMPY_VERSION: ${{ matrix.numpy-version }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            $HOME/geosinstall
+            ~/.cache/pip
+          key: ${{ matrix.python-version }}-geos-${{ matrix.geos-version }}
+          restore-keys: |
+            ${{ matrix.python-version }}-geos-
+      - name: Install GEOS
+        run: |
+          export GEOS_INSTALL=$HOME/geosinstall/geos-${{ matrix.geos-version }}
+          ./ci/install_geos.sh
+      - name: Install dependencies
+        run: |
+          pip install --disable-pip-version-check --upgrade pip
+          pip install --upgrade wheel
+          if [ "${{ matrix.geos-version }}" = "main" ]; then
+            pip install --upgrade --pre Cython numpy pytest
+          else
+            pip install --upgrade Cython "numpy==${{ matrix.numpy-version }}" pytest
+          fi
+      - name: Set environment variables
+        run: |
+          export LD_LIBRARY_PATH=$GEOS_INSTALL/lib
+          export PATH=$GEOS_INSTALL/bin:$PATH
+      - name: Build and install
+        run: |
+          python setup.py build_ext --inplace
+          pip install --no-deps -e .
+      - name: Run tests
+        run: pytest --doctest-modules
+    if: ${{ matrix.python-version == '3.8' && matrix.geos-version == 'main' }}
+    allow_failure: true

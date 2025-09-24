@@ -1,0 +1,35 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get install -y graphviz
+          pip install .[test] codecov
+
+      - name: Run tests
+        run: ./run-tests.py
+
+      - name: Upload coverage to Codecov
+        if: success()
+        run: codecov
+
+      - name: Clean up pip cache
+        run: rm -f $HOME/.cache/pip/log/debug.log
+

@@ -1,0 +1,23 @@
+name: Python CI
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, pypy-3.6]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: pip install .
+    - name: Run tests
+      run: python setup.py test
+notifications:
+  email:
+    recipients:
+      - code@ramiro.org
+    on_failure: change

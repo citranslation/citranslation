@@ -1,0 +1,24 @@
+name: Python Tests
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  test:
+    runs-on: ${{ matrix.dist }}
+    strategy:
+      matrix:
+        include:
+          - python: '3.8'
+            dist: xenial
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install flake8
+      - run: |
+          python setup.py test
+          flake8 --max-line-length 120 *.py

@@ -1,0 +1,45 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, pypy-3.8]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install -U -r requirements-dev.txt
+          pip install .
+
+      - name: Run tests
+        run: |
+          if [[ "${{ matrix.python-version }}" == "pypy-3.8" ]]; then
+            TOX_ENV=pypy-3.8
+          else
+            TOX_ENV=py${{ matrix.python-version }} 
+          fi
+          tox -e $TOX_ENV
+          pytest --dead-fixtures
+
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: $HOME/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements-dev.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+          
+      - name: Clean pip cache logs
+        run: rm -rf $HOME/.cache/pip/log

@@ -1,0 +1,42 @@
+name: Python Package
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install numpy svgwrite scipy
+
+      - name: Run tests
+        run: |
+          python -m unittest discover test
+
+      - name: Publish to PyPI
+        if: github.ref_type == 'tag'
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          pip install twine
+          twine upload dist/*
+          
+# Note: You need to set the PYPI_TOKEN secret in your GitHub repository settings.

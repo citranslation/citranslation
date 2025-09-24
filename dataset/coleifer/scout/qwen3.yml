@@ -1,0 +1,19 @@
+name: Python CI
+on: [push]
+jobs:
+  test:
+    runs-on: ${{ matrix.image }}
+    strategy:
+      matrix:
+        include:
+          - python: 3.8
+            image: ubuntu:22.04
+          - python: 3.8
+            image: ubuntu:22.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install flask peewee
+      - run: python runtests.py

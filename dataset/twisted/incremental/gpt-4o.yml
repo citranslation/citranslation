@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+        include:
+          - python-version: 3.9
+            tox-env: mypy
+          - python-version: 3.9
+            tox-env: apidocs
+          - python-version: 3.9
+            tox-env: push-docs
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tox codecov
+      - name: Run tests
+        if: matrix.tox-env != 'push-docs'
+        run: tox -e ${{ matrix.tox-env || 'tests' }}
+      - name: Upload coverage to Codecov
+        if: matrix.tox-env != 'push-docs'
+        run: codecov

@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install -r mock/requirements.txt
+          pip install pytest-cov
+
+      - name: Run tests
+        run: |
+          PYTHON=python${{ matrix.python-version }} ./mock/run-tests.sh
+
+  copr-build:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    needs: build
+    strategy:
+      matrix:
+        package: [mock, mock-core-configs]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Run Copr build
+        run: PACKAGE=${{ matrix.package }} .travis/copr-build
+

@@ -1,0 +1,128 @@
+name: Django Test Suite
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:10
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ""
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: ""
+        ports:
+          - 33.8:33.8
+        options: >-
+          --health-cmd "mysqladmin ping --silent"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+        django-version: ["2.2.*", "3.0.*", "3.1.*", "3.2.*"]
+        test-type: [postgres, mysql-innodb, sqlite]
+        include:
+          - python-version: 3.9
+            django-version: "https://github.com/django/django/archive/main.tar.gz"
+            test-type: postgres
+          - python-version: 3.9
+            django-version: "https://github.com/django/django/archive/main.tar.gz"
+            test-type: mysql-innodb
+          - python-version: 3.9
+            django-version: "https://github.com/django/django/archive/main.tar.gz"
+            test-type: sqlite
+          - python-version: 3.8
+            django-version: "https://github.com/django/django/archive/main.tar.gz"
+            test-type: postgres
+          - python-version: 3.8
+            django-version: "https://github.com/django/django/archive/main.tar.gz"
+            test-type: mysql-innodb
+          - python-version: 3.8
+            django-version: "https://github.com/django/django/archive/main.tar.gz"
+            test-type: sqlite
+          - python-version: 3.8
+            django-version: "2.1.*"
+            test-type: postgres
+          - python-version: 3.8
+            django-version: "2.1.*"
+            test-type: mysql-innodb
+          - python-version: 3.8
+            django-version: "2.1.*"
+            test-type: sqlite
+          - python-version: 3.8
+            django-version: "2.1.*"
+            test-type: postgres
+          - python-version: 3.8
+            django-version: "2.1.*"
+            test-type: mysql-innodb
+          - python-version: 3.8
+            django-version: "2.1.*"
+            test-type: sqlite
+          - python-version: 3.8
+            django-version: "2.0.*"
+            test-type: postgres
+          - python-version: 3.8
+            django-version: "2.0.*"
+            test-type: mysql-innodb
+          - python-version: 3.8
+            django-version: "2.0.*"
+            test-type: sqlite
+          - python-version: 3.8
+            django-version: "2.0.*"
+            test-type: postgres
+          - python-version: 3.8
+            django-version: "2.0.*"
+            test-type: mysql-innodb
+          - python-version: 3.8
+            django-version: "2.0.*"
+            test-type: sqlite
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -q ${{ matrix.django-version }}
+        pip install -r requirements/base.txt
+        pip install -r requirements/test.txt
+        pip install coveralls
+
+    - name: Run tests
+      env:
+        IMPORT_EXPORT_POSTGRESQL_USER: postgres
+        IMPORT_EXPORT_POSTGRESQL_PASSWORD: ""
+        IMPORT_EXPORT_MYSQL_USER: root
+        IMPORT_EXPORT_MYSQL_PASSWORD: ""
+      run: |
+        PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+        if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+
+    - name: Coveralls
+      if: success()
+      run: coveralls

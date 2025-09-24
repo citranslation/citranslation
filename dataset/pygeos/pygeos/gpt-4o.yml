@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+        include:
+          - python-version: 3.8
+            geos-version: 3.8.2
+            numpy-version: 1.10.4
+          - python-version: 3.8
+            geos-version: 3.8.4
+            numpy-version: 1.13.3
+          - python-version: 3.8
+            geos-version: 3.8.3
+            numpy-version: 1.15.4
+          - python-version: 3.8
+            geos-version: 3.8.1
+            numpy-version: 1.17.5
+          - python-version: 3.9
+            geos-version: 3.8.1
+            numpy-version: 1.19.4
+          - python-version: 3.8
+            geos-version: main
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ matrix.python-version }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    - name: Cache GEOS
+      uses: actions/cache@v2
+      with:
+        path: ${{ github.workspace }}/geosinstall
+        key: ${{ runner.os }}-geos-${{ matrix.geos-version }}
+        restore-keys: |
+          ${{ runner.os }}-geos-
+    - name: Install GEOS
+      run: |
+        export GEOS_INSTALL=${{ github.workspace }}/geosinstall/geos-${{ matrix.geos-version }}
+        ./ci/install_geos.sh
+    - name: Install dependencies
+      run: |
+        pip install --disable-pip-version-check --upgrade pip
+        pip install --upgrade wheel
+        if [ "${{ matrix.geos-version }}" = "main" ]; then
+          pip install --upgrade --pre Cython numpy pytest
+        else
+          pip install --upgrade Cython "numpy==${{ matrix.numpy-version }}" pytest
+        fi
+    - name: Build and install
+      run: |
+        export LD_LIBRARY_PATH=${{ github.workspace }}/geosinstall/geos-${{ matrix.geos-version }}/lib
+        export PATH=${{ github.workspace }}/geosinstall/geos-${{ matrix.geos-version }}/bin:$PATH
+        python setup.py build_ext --inplace
+        pip install --no-deps -e .
+    - name: Run tests
+      run: pytest --doctest-modules
+    allow_failures:
+      - python-version: 3.8
+        geos-version: main

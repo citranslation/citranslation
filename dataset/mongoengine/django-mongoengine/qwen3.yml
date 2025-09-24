@@ -1,0 +1,25 @@
+name: CI
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongodb:latest
+    strategy:
+      matrix:
+        python: [3.8, 3.9, pypy-3.8]
+        django: [Django>=2.2,<2.3, Django>=3.0,<3.2, Django>=3.2,<3.3]
+    env:
+      DJANGO: ${{ matrix.django }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Poetry
+        run: pip install poetry
+      - name: Install dependencies
+        run: |
+          poetry install -q
+          poetry run pip install -q $DJANGO
+      - name: Run tests
+        run: poetry run python -m pytest

@@ -1,0 +1,53 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: [3.8, pypy-3.8]
+        include:
+          - python-version: 3.8
+            env: TOXENV=py38
+          - python-version: 3.8
+            env: TOXENV=py38
+            os: ubuntu-22.04
+          - python-version: pypy-3.8
+            env: TOXENV=pypy-3.8
+          - python-version: 3.8
+            env: TOXENV=py38-cover,py38-cover,coverage
+          - python-version: 3.8
+            env: TOXENV=docs
+          - python-version: 3.8
+            env: TOXENV=py38-pyramid14
+          - python-version: 3.8
+            env: TOXENV=py38-pyramid19
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools
+          pip install -U tox
+      - name: Run tests
+        run: tox
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+          
+notifications:
+  email:
+    - pyramid-checkins@lists.repoze.org
+  irc:
+    channels:
+      - "chat.freenode.net#pyramid"

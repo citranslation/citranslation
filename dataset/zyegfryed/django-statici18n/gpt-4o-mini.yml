@@ -1,0 +1,43 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+        toxenv: 
+          - py38-django22
+          - py38-django31
+          - py38-django32
+          - lint
+          - coverage
+          - py39-django22
+          - py39-django31
+          - py39-django32
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install tox codecov
+
+      - name: Run tests with Tox
+        run: |
+          tox -e ${{ matrix.toxenv }}
+
+      - name: Upload coverage to Codecov
+        if: success()
+        run: |
+          codecov
+

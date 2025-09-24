@@ -1,0 +1,37 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: pip install -r requirements.txt
+    - run: pytest
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         username: __token__
+#         password:
+#           secure: kXUn0Q7WfMbzM27gdjzRuCbEMdr3.8YqhmCir6R55DDoqkWW7CsKy5n6VlWjvRzfm0mfcUkRGBSnvvAMXjfhruM116uH2lsSw7B5ew4tv4mMZ7LAF85PSybVoprwmql8eVbwUasMpnKCV1liT9+x9Ldw2TFfqy3bJOQA4VgHjZfqiDLKGlSxq1pZDUHSeSouHClH65UWPKmXcTAa+zgBBo6rZdXk1pF6TL/n3DYzFEgI2PA3VNFCJX8pDur6f2lBK0s2soYa3uRFxI7fMd+/2A9cPCfwFANu/7EAey/CRmvu45fIpwHG9ddY1ycxEKrV/hKXD8sU79/CsYNFAHMu+2rOQ00WBO425QEeRCaQz1gN9zLZlmba3.8S1Ng0XJejHHJquWJqcoX1SN+ydCrDetTItwt/qGmFLoCpUJJD13kjgddFjY3CS5dnresvHJWz9v/QPVI2mHztd51P1/ozCImYkXWWq+OZG7O9dbJeQtA4J/p7eJpDnwyMfuNgfEV2TOiXd4FfmRVw08wdUG7GJEUkLu6/j40PACQB6AXZs2+5Q/NokZ+pDHdj/lhY9xX/t7LUFZZkRNr+GKAI/qXxoX+k6hfJAlEuLmAaFQHMi+p/574VCF1Tn7P++P20dp89WlwG70//W7EsPNC45UC86425ALZ76Unm0HRy7QdNo+Q=
+#         distributions: sdist bdist_wheel
+#         edge: true
+#         'on':
+#           python: 3.8
+#           tags: true
+#       if: "${{ github.event_name == 'push' && ${{ github.ref }} }}"
+    strategy:
+      matrix:
+        python:
+        - '3.8'
+        - '3.9'

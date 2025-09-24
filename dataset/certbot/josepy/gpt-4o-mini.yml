@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install tox-travis codecov
+
+      - name: Run tests with Tox
+        run: tox -v
+
+      - name: Upload coverage to Codecov
+        run: codecov
+
+  notify:
+    runs-on: ubuntu-22.04
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    steps:
+      - name: Notify IRC
+        run: |
+          # Add your IRC notification script here
+          echo "Notify IRC channel"
+          
+# Note: You will need to implement the IRC notification logic as per your requirements.
+

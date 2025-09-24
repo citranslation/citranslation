@@ -1,0 +1,24 @@
+name: Python Tests
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9"]
+        fast_finish: true
+      allow_failures:
+        - python: "3.8"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pytest
+          pip install --editable .
+      - name: Run tests
+        run: pytest

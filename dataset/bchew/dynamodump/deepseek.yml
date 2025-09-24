@@ -1,0 +1,41 @@
+name: Python application
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install DynamoDB Local
+      run: |
+        mkdir /tmp/dynamodb_local
+        wget -O - https://s3-us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_latest.tar.gz | tar xz --directory /tmp/dynamodb_local
+        java -Djava.library.path=/tmp/dynamodb_local/DynamoDBLocal_lib -jar /tmp/dynamodb_local/DynamoDBLocal.jar -sharedDb -inMemory &
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install flake8
+    - name: Lint with flake8
+      run: flake8 --ignore=E501,W504
+    - name: Test
+      run: |
+        mkdir dump && cp -a test/testTable dump
+        python dynamodump.py -m restore -r local -s testTable -d testRestoredTable --host localhost --port 8000 --accessKey a --secretKey a
+        python dynamodump.py -m backup -r local -s testRestoredTable --host localhost --port 8000 --accessKey a --secretKey a
+        python test/test.py
+        python dynamodump.py -m restore -r local -s "*" --host localhost --port 8000 --accessKey a --secretKey a
+        rm -rf dump/test*
+        python dynamodump.py -m backup -r local -s "*" --host localhost --port 8000 --accessKey a --secretKey a
+        python test/test.py
+        python dynamodump.py -m restore -r local -s "test*" --host localhost --port 8000 --accessKey a --secretKey a --prefixSeparator ""
+        rm -rf dump/test*
+        python dynamodump.py -m backup -r local -s "test*" --host localhost --port 8000 --accessKey a --secretKey a --prefixSeparator ""
+        python test/test.py
+# End-of-Code|

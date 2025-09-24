@@ -1,0 +1,37 @@
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+        aio-available: [false]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip setuptools wheel
+        python -m pip install pytest pytest-cov coveralls
+        if ${{ matrix.aio-available == 'true' }}; then python -m pip install pytest-asyncio; fi
+        python -m pip install .
+    - name: Test with pytest
+      run: |
+        py.test --cov-config ${{ matrix.coveragerc }} --cov=pydispatch
+    - name: Coveralls
+      run: coveralls --rcfile=${{ matrix.coveragerc }}
+
+- name: Deploy to PyPI
+  if: startsWith(github.ref, 'refs/tags')
+  uses: pypa/gh-action-pypi-publish@release/v1
+  with:
+    user: __token__
+    password: ${{ secrets.PYPI_API_TOKEN }}

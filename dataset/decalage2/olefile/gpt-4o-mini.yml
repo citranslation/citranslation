@@ -1,0 +1,41 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, pypy-3.8]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        pip install coverage
+        pip install coveralls
+        pip install pycodestyle pyflakes
+
+    - name: Run tests with coverage
+      run: coverage run --source=olefile -m nose tests
+
+    - name: Upload coverage to Coveralls
+      run: coveralls
+
+    - name: Show coverage report
+      run: coverage report
+
+    - name: Run pyflakes
+      run: pyflakes .
+
+    - name: Run pycodestyle
+      run: pycodestyle --statistics --count .
+

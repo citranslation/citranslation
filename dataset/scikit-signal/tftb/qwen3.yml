@@ -1,0 +1,28 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install Miniconda
+        run: |
+          wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O $HOME/miniconda.sh
+          bash $HOME/miniconda.sh -b -u -p $HOME/miniconda
+          export PATH="$HOME/miniconda/bin:$PATH"
+          hash -r
+      - name: Install dependencies
+        run: |
+          pip install nose coverage coveralls flake8 scikit-image
+          pip install -e .
+      - name: Run flake8
+        run: flake8
+      - name: Run tests
+        run: |
+          nosetests -sv --with-doctest --no-byte-compile --with-coverage --cover-package=tftb
+      - name: Upload coverage
+        run: coveralls
+        if: ${{ success }}

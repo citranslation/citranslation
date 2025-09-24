@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r tests/requirements.txt
+          python setup.py -q install
+
+      - name: Run tests with coverage
+        run: nosetests --with-coverage --cover-package=btcde
+
+      - name: Upload coverage to Codecov
+        if: success()
+        run: bash <(curl -s https://codecov.io/bash)
+
+  deploy-test:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref != 'refs/heads/main' && github.event_name == 'push' && matrix.python-version == '3.8'
+    steps:
+      - name: Deploy to Test PyPI
+        run: |
+          pip install twine
+          python setup.py sdist
+          twine upload --repository-url https://test.pypi.org/legacy/ dist/* -u __token__ -p ${{ secrets.TEST_PYPI_TOKEN }}
+
+  deploy-release:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main' && startsWith(github.ref, 'refs/tags/') && matrix.python-version == '3.8'
+    steps:
+      - name: Deploy to PyPI
+        run: |
+          pip install twine
+          python setup.py sdist
+          twine upload dist/* -u __token__ -p ${{ secrets.PYPI_TOKEN }}
+        

@@ -1,0 +1,36 @@
+name: Pygount CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r dev-requirements.txt
+    - name: Lint with pre-commit
+      run: |
+        pre-commit run --all-files
+    - name: Test with pytest
+      run: |
+        python setup.py develop
+        pytest --verbose
+    - name: Build and install the package
+      run: |
+        python setup.py bdist_wheel
+        python setup.py install
+    - name: Test drive the installed pygount
+      run: |
+        pygount --version
+        pygount --help
+        pygount pygount *.cfg *.yaml
+        pygount --format=summary pygount *.cfg *.yaml

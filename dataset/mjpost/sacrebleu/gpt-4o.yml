@@ -1,0 +1,38 @@
+name: Python application
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        python-version: [ 3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python3 setup.py install
+        sudo apt-get -y update
+        pip install pytest-cov
+        pip install .[ja]
+
+    - name: Test with pytest
+      run: python3 -m pytest
+
+    - name: Run additional tests
+      run: ./test.sh

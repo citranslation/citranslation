@@ -1,0 +1,268 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.8]
+        env:
+          - DJANGO_VERSION: "<1.9" MJML_VERSION: "3.3.8"
+          - DJANGO_VERSION: "<1.9" MJML_VERSION: "4.3.1"
+          - DJANGO_VERSION: "<1.9" MJML_VERSION: "4.4.0"
+          - DJANGO_VERSION: "<1.9" MJML_VERSION: "4.5.1"
+          - DJANGO_VERSION: "<1.9" MJML_VERSION: "4.6.3"
+          - DJANGO_VERSION: "<1.10" MJML_VERSION: "3.3.8"
+          - DJANGO_VERSION: "<1.10" MJML_VERSION: "4.3.1"
+          - DJANGO_VERSION: "<1.10" MJML_VERSION: "4.4.0"
+          - DJANGO_VERSION: "<1.10" MJML_VERSION: "4.5.1"
+          - DJANGO_VERSION: "<1.10" MJML_VERSION: "4.6.3"
+          - DJANGO_VERSION: "<1.11" MJML_VERSION: "3.3.8"
+          - DJANGO_VERSION: "<1.11" MJML_VERSION: "4.3.1"
+          - DJANGO_VERSION: "<1.11" MJML_VERSION: "4.4.0"
+          - DJANGO_VERSION: "<1.11" MJML_VERSION: "4.5.1"
+          - DJANGO_VERSION: "<1.11" MJML_VERSION: "4.6.3"
+          - DJANGO_VERSION: "<1.12" MJML_VERSION: "3.3.8"
+          - DJANGO_VERSION: "<1.12" MJML_VERSION: "4.3.1"
+          - DJANGO_VERSION: "<1.12" MJML_VERSION: "4.4.0"
+          - DJANGO_VERSION: "<1.12" MJML_VERSION: "4.5.1"
+          - DJANGO_VERSION: "<1.12" MJML_VERSION: "4.6.3"
+          - DJANGO_VERSION: "<2.1" MJML_VERSION: "3.3.8"
+          - DJANGO_VERSION: "<2.1" MJML_VERSION: "4.3.1"
+          - DJANGO_VERSION: "<2.1" MJML_VERSION: "4.4.0"
+          - DJANGO_VERSION: "<2.1" MJML_VERSION: "4.5.1"
+          - DJANGO_VERSION: "<2.1" MJML_VERSION: "4.6.3"
+          - DJANGO_VERSION: "<2.2" MJML_VERSION: "3.3.8"
+          - DJANGO_VERSION: "<2.2" MJML_VERSION: "4.3.1"
+          - DJANGO_VERSION: "<2.2" MJML_VERSION: "4.4.0"
+          - DJANGO_VERSION: "<2.2" MJML_VERSION: "4.5.1"
+          - DJANGO_VERSION: "<2.2" MJML_VERSION: "4.6.3"
+          - DJANGO_VERSION: "<2.3" MJML_VERSION: "3.3.8"
+          - DJANGO_VERSION: "<2.3" MJML_VERSION: "4.3.1"
+          - DJANGO_VERSION: "<2.3" MJML_VERSION: "4.4.0"
+          - DJANGO_VERSION: "<2.3" MJML_VERSION: "4.5.1"
+          - DJANGO_VERSION: "<2.3" MJML_VERSION: "4.6.3"
+          - DJANGO_VERSION: "<3.1" MJML_VERSION: "3.3.8"
+          - DJANGO_VERSION: "<3.1" MJML_VERSION: "4.3.1"
+          - DJANGO_VERSION: "<3.1" MJML_VERSION: "4.4.0"
+          - DJANGO_VERSION: "<3.1" MJML_VERSION: "4.5.1"
+          - DJANGO_VERSION: "<3.1" MJML_VERSION: "4.6.3"
+          - DJANGO_VERSION: "<3.2" MJML_VERSION: "3.3.8"
+          - DJANGO_VERSION: "<3.2" MJML_VERSION: "4.3.1"
+          - DJANGO_VERSION: "<3.2" MJML_VERSION: "4.4.0"
+          - DJANGO_VERSION: "<3.2" MJML_VERSION: "4.5.1"
+          - DJANGO_VERSION: "<3.2" MJML_VERSION: "4.6.3"
+        exclude:
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "3.3.8"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "4.3.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "4.4.0"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "4.5.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "4.6.3"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.1" MJML_VERSION: "3.3.8"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.1" MJML_VERSION: "4.3.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.1" MJML_VERSION: "4.4.0"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.1" MJML_VERSION: "4.5.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.1" MJML_VERSION: "4.6.3"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.2" MJML_VERSION: "3.3.8"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.2" MJML_VERSION: "4.3.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.2" MJML_VERSION: "4.4.0"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.2" MJML_VERSION: "4.5.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.2" MJML_VERSION: "4.6.3"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.3" MJML_VERSION: "3.3.8"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.3" MJML_VERSION: "4.3.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.3" MJML_VERSION: "4.4.0"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.3" MJML_VERSION: "4.5.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.3" MJML_VERSION: "4.6.3"
+          - python: 3.8
+            env: DJANGO_VERSION="<3.1" MJML_VERSION: "3.3.8"
+          - python: 3.8
+            env: DJANGO_VERSION="<3.1" MJML_VERSION: "4.3.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<3.1" MJML_VERSION: "4.4.0"
+          - python: 3.8
+            env: DJANGO_VERSION="<3.1" MJML_VERSION: "4.5.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<3.1" MJML_VERSION: "4.6.3"
+          - python: 3.8
+            env: DJANGO_VERSION="<3.2" MJML_VERSION: "3.3.8"
+          - python: 3.8
+            env: DJANGO_VERSION="<3.2" MJML_VERSION: "4.3.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<3.2" MJML_VERSION: "4.4.0"
+          - python: 3.8
+            env: DJANGO_VERSION="<3.2" MJML_VERSION: "4.5.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<3.2" MJML_VERSION: "4.6.3"
+          - python: 3.8
+            env: DJANGO_VERSION="<3.1" MJML_VERSION: "3.3.8"
+          - python: 3.8
+            env: DJANGO_VERSION="<3.1" MJML_VERSION: "4.3.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<3.1" MJML_VERSION: "4.4.0"
+          - python: 3.8
+            env: DJANGO_VERSION="<3.1" MJML_VERSION: "4.5.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<3.1" MJML_VERSION: "4.6.3"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "3.3.8"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "4.3.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "4.4.0"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "4.5.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "4.6.3"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.10" MJML_VERSION: "3.3.8"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.10" MJML_VERSION: "4.3.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.10" MJML_VERSION: "4.4.0"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.10" MJML_VERSION: "4.5.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.10" MJML_VERSION: "4.6.3"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.11" MJML_VERSION: "3.3.8"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.11" MJML_VERSION: "4.3.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.11" MJML_VERSION: "4.4.0"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.11" MJML_VERSION: "4.5.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.11" MJML_VERSION: "4.6.3"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "3.3.8"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "4.3.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "4.4.0"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "4.5.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "4.6.3"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.10" MJML_VERSION: "3.3.8"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.10" MJML_VERSION: "4.3.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.10" MJML_VERSION: "4.4.0"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.10" MJML_VERSION: "4.5.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.10" MJML_VERSION: "4.6.3"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.11" MJML_VERSION: "3.3.8"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.11" MJML_VERSION: "4.3.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.11" MJML_VERSION: "4.4.0"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.11" MJML_VERSION: "4.5.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.11" MJML_VERSION: "4.6.3"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "3.3.8"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "4.3.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "4.4.0"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "4.5.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.9" MJML_VERSION: "4.6.3"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.10" MJML_VERSION: "3.3.8"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.10" MJML_VERSION: "4.3.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.10" MJML_VERSION: "4.4.0"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.10" MJML_VERSION: "4.5.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.10" MJML_VERSION: "4.6.3"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.11" MJML_VERSION: "3.3.8"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.11" MJML_VERSION: "4.3.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.11" MJML_VERSION: "4.4.0"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.11" MJML_VERSION: "4.5.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.11" MJML_VERSION: "4.6.3"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.12" MJML_VERSION: "3.3.8"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.12" MJML_VERSION: "4.3.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.12" MJML_VERSION: "4.4.0"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.12" MJML_VERSION: "4.5.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<1.12" MJML_VERSION: "4.6.3"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.1" MJML_VERSION: "3.3.8"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.1" MJML_VERSION: "4.3.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.1" MJML_VERSION: "4.4.0"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.1" MJML_VERSION: "4.5.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.1" MJML_VERSION: "4.6.3"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.2" MJML_VERSION: "3.3.8"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.2" MJML_VERSION: "4.3.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.2" MJML_VERSION: "4.4.0"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.2" MJML_VERSION: "4.5.1"
+          - python: 3.8
+            env: DJANGO_VERSION="<2.2" MJML_VERSION: "4.6.3"
+    steps:
+      - name: Install Node.js
+        run: |
+          . $HOME/.nvm/nvm.sh
+          nvm install 12
+          nvm use 12
+
+      - name: Install npm packages
+        run: |
+          npm install -g mjml-http-server@0.0.3
+          npm install mjml@${{ matrix.env.MJML_VERSION }}
+          node_modules/.bin/mjml --version
+
+      - name: Install Python dependencies
+        run: |
+          pip install "Django${{ matrix.env.DJANGO_VERSION }}"
+          pip install "requests>=2.20.0,<=2.24.0"
+
+      - name: Run tests
+        run: |
+          python tools.py test

@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8]
+        ipython-version: [7.9, 7]
+        pandas-version: [0.24.2, 1]
+        include:
+          - python-version: 3.8
+            ipython-version: 7.9
+            pandas-version: 0.24.2
+          - python-version: 3.8
+            ipython-version: 7
+            pandas-version: 1
+
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          pip install IPython==${{ matrix.ipython-version }}
+          pip install pandas==${{ matrix.pandas-version }}
+          pip install .[test]
+      - name: Run tests
+        run: |
+          python -c 'import pytorch_memlab'
+          pytest test/test_mem_reporter.py
+  deploy:
+    runs-on: ubuntu-22.04
+    needs: build
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    env:
+      PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+    steps:
+      - name: Deploy to PyPI
+        uses: pypa/marketplace-deploy@v1
+        with:
+          user: yoursky
+          password: ${{ secrets.PYPI_PASSWORD }}
+          on: tags
+          python: 3.8
+          command: twine upload dist/*

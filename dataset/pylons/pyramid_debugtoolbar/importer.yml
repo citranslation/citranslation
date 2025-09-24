@@ -1,0 +1,227 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      TOXENV: py38
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "${{ github.workspace }}/.cache/pip"
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: travis_retry pip install -U setuptools
+    - run: travis_retry pip install -U pip
+    - run: travis_retry pip install -U tox
+    - run: travis_retry tox
+#     # This item has no matching transformer
+#     - email:
+#       - pyramid-checkins@lists.repoze.org
+    - uses: rectalogic/notify-irc@v1
+      if: "${{ github.event_name != 'pull_request' }}"
+      with:
+        server: chat.freenode.net
+        port: 6697
+        channel: pyramid
+        nickname: Default nickname
+        message: Default message
+  test_7:
+    runs-on: ubuntu-latest
+    env:
+      TOXENV: pypy
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "${{ github.workspace }}/.cache/pip"
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: pypy
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: travis_retry pip install -U setuptools
+    - run: travis_retry pip install -U pip
+    - run: travis_retry pip install -U tox
+    - run: travis_retry tox
+#     # This item has no matching transformer
+#     - email:
+#       - pyramid-checkins@lists.repoze.org
+    - uses: rectalogic/notify-irc@v1
+      if: "${{ github.event_name != 'pull_request' }}"
+      with:
+        server: chat.freenode.net
+        port: 6697
+        channel: pyramid
+        nickname: Default nickname
+        message: Default message
+  test_8:
+    runs-on: ubuntu-latest
+    env:
+      TOXENV: pypy-3.8
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "${{ github.workspace }}/.cache/pip"
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: pypy-3.8
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: travis_retry pip install -U setuptools
+    - run: travis_retry pip install -U pip
+    - run: travis_retry pip install -U tox
+    - run: travis_retry tox
+#     # This item has no matching transformer
+#     - email:
+#       - pyramid-checkins@lists.repoze.org
+    - uses: rectalogic/notify-irc@v1
+      if: "${{ github.event_name != 'pull_request' }}"
+      with:
+        server: chat.freenode.net
+        port: 6697
+        channel: pyramid
+        nickname: Default nickname
+        message: Default message
+  test_9:
+    runs-on: ubuntu-latest
+    env:
+      TOXENV: py38-cover,py38-cover,coverage
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "${{ github.workspace }}/.cache/pip"
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: travis_retry pip install -U setuptools
+    - run: travis_retry pip install -U pip
+    - run: travis_retry pip install -U tox
+    - run: travis_retry tox
+#     # This item has no matching transformer
+#     - email:
+#       - pyramid-checkins@lists.repoze.org
+    - uses: rectalogic/notify-irc@v1
+      if: "${{ github.event_name != 'pull_request' }}"
+      with:
+        server: chat.freenode.net
+        port: 6697
+        channel: pyramid
+        nickname: Default nickname
+        message: Default message
+  test_10:
+    runs-on: ubuntu-latest
+    env:
+      TOXENV: docs
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "${{ github.workspace }}/.cache/pip"
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: travis_retry pip install -U setuptools
+    - run: travis_retry pip install -U pip
+    - run: travis_retry pip install -U tox
+    - run: travis_retry tox
+#     # This item has no matching transformer
+#     - email:
+#       - pyramid-checkins@lists.repoze.org
+    - uses: rectalogic/notify-irc@v1
+      if: "${{ github.event_name != 'pull_request' }}"
+      with:
+        server: chat.freenode.net
+        port: 6697
+        channel: pyramid
+        nickname: Default nickname
+        message: Default message
+  test_11:
+    runs-on: ubuntu-latest
+    env:
+      TOXENV: py38-pyramid14
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "${{ github.workspace }}/.cache/pip"
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: travis_retry pip install -U setuptools
+    - run: travis_retry pip install -U pip
+    - run: travis_retry pip install -U tox
+    - run: travis_retry tox
+#     # This item has no matching transformer
+#     - email:
+#       - pyramid-checkins@lists.repoze.org
+    - uses: rectalogic/notify-irc@v1
+      if: "${{ github.event_name != 'pull_request' }}"
+      with:
+        server: chat.freenode.net
+        port: 6697
+        channel: pyramid
+        nickname: Default nickname
+        message: Default message
+  test_12:
+    runs-on: ubuntu-latest
+    env:
+      TOXENV: py38-pyramid19
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "${{ github.workspace }}/.cache/pip"
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: travis_retry pip install -U setuptools
+    - run: travis_retry pip install -U pip
+    - run: travis_retry pip install -U tox
+    - run: travis_retry tox
+#     # This item has no matching transformer
+#     - email:
+#       - pyramid-checkins@lists.repoze.org
+    - uses: rectalogic/notify-irc@v1
+      if: "${{ github.event_name != 'pull_request' }}"
+      with:
+        server: chat.freenode.net
+        port: 6697
+        channel: pyramid
+        nickname: Default nickname
+        message: Default message

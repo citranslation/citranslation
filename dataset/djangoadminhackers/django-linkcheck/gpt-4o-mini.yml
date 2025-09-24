@@ -1,0 +1,47 @@
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+        django-version: [
+          "Django==1.11.*",
+          "Django==2.0.*",
+          "Django==2.1.*",
+          "Django==2.2.*",
+          "Django==3.0.*",
+          "Django==3.1.*",
+          "Django==3.2.*"
+        ]
+      fail-fast: true
+      exclude:
+        - python-version: 3.8
+          django-version: "Django==3.0.*"
+        - python-version: 3.8
+          django-version: "Django==3.1.*"
+        - python-version: 3.8
+          django-version: "Django==3.2.*"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install ${{ matrix.django-version }}
+          pip install requests
+          pip install -e .
+
+      - name: Run tests
+        run: python runtests.py
+
+# End-of-Code

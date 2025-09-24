@@ -1,0 +1,124 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: "'flake8'"
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: pip install coverage isort tox
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ ${DJANGO}z != 'z' ]]; then export TOX_ENV=$PY_VER; fi
+    - run: tox -e $TOX_ENV
+    - run: bash <(curl -s https://codecov.io/bash)
+      if: "${{ success() }}"
+  test_2:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: "'isort'"
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: pip install coverage isort tox
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ ${DJANGO}z != 'z' ]]; then export TOX_ENV=$PY_VER; fi
+    - run: tox -e $TOX_ENV
+    - run: bash <(curl -s https://codecov.io/bash)
+      if: "${{ success() }}"
+  test_6:
+    runs-on: ubuntu-22.04
+    env:
+      DJANGO: "'dj22'"
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: pip install coverage isort tox
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ ${DJANGO}z != 'z' ]]; then export TOX_ENV=$PY_VER; fi
+    - run: tox -e $TOX_ENV
+    - run: bash <(curl -s https://codecov.io/bash)
+      if: "${{ success() }}"
+  test_7:
+    runs-on: ubuntu-22.04
+    env:
+      DJANGO: "'dj30'"
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: pip install coverage isort tox
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ ${DJANGO}z != 'z' ]]; then export TOX_ENV=$PY_VER; fi
+    - run: tox -e $TOX_ENV
+    - run: bash <(curl -s https://codecov.io/bash)
+      if: "${{ success() }}"
+  test_8:
+    runs-on: ubuntu-22.04
+    env:
+      DJANGO: "'dj31'"
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: pip install coverage isort tox
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ ${DJANGO}z != 'z' ]]; then export TOX_ENV=$PY_VER; fi
+    - run: tox -e $TOX_ENV
+    - run: bash <(curl -s https://codecov.io/bash)
+      if: "${{ success() }}"
+  test_9:
+    runs-on: ubuntu-22.04
+    env:
+      DJANGO: "'dj32'"
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: pip install coverage isort tox
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ $TRAVIS_PYTHON_VERSION == '3.8' ]]; then export PY_VER=py38; fi
+    - run: if [[ ${DJANGO}z != 'z' ]]; then export TOX_ENV=$PY_VER; fi
+    - run: tox -e $TOX_ENV
+    - run: bash <(curl -s https://codecov.io/bash)
+      if: "${{ success() }}"

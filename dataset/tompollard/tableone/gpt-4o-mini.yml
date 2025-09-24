@@ -1,0 +1,31 @@
+name: Python package
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Upgrade pip
+        run: pip install --upgrade pip
+
+      - name: Install dependencies
+        run: |
+          pip install numpy scipy matplotlib pandas sympy nose statsmodels tabulate
+          pip install .
+
+      - name: Run tests
+        run: nosetests

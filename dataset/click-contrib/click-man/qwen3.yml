@@ -1,0 +1,31 @@
+name: CI and Deploy
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, pypy-3.8]
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python setup.py build sdist
+        pip install -r requirements-dev.txt
+    - name: Run tests
+      run: nosetests --verbosity 2
+    - name: Deploy to PyPI
+      run: |
+        twine upload dist/*
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}

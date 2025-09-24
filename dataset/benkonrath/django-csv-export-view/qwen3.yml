@@ -1,0 +1,45 @@
+name: CI
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        include:
+          - python: 3.8
+            env: TOXENV=pre-commit
+          - python: 3.8
+            env: TOXENV=py38-2.2
+          - python: pypy-3.8
+            env: TOXENV=pypy-3.8-2.2
+          - python: 3.8
+            env: TOXENV=py38-3.0
+          - python: pypy-3.8
+            env: TOXENV=pypy-3.8-3.0
+          - python: 3.8
+            env: TOXENV=py38-3.1
+          - python: pypy-3.8
+            env: TOXENV=pypy-3.8-3.1
+          - python: 3.8
+            env: TOXENV=py38-3.2
+          - python: 3.9
+            env: TOXENV=py39-3.2
+          - python: pypy-3.8
+            env: TOXENV=pypy-3.8-3.2
+          - python: 3.8
+            env: TOXENV=py38-main
+            allow_failure: true
+          - python: 3.9
+            env: TOXENV=py39-main
+            allow_failure: true
+          - python: pypy-3.8
+            env: TOXENV=pypy-3.8-main
+            allow_failure: true
+    steps:
+      - name: Install dependencies
+        run: |
+          pip install coverage tox
+      - name: Run tests
+        run: tox
+      - name: Upload coverage
+        run: coveralls

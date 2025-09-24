@@ -1,0 +1,30 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: if [[ $TRAVIS_PYTHON_VERSION == 3.8 ]]; then pip install 'setuptools<=60.9.0'; fi
+    - run: python setup.py -q install
+    - run: pip install pylint yapf pytype
+    - run: python setup.py test
+    - run: pylint comment_parser
+    - run: pytype
+    - run: yapf -drp comment_parser
+    strategy:
+      matrix:
+        python:
+        - '3.8'
+        - '3.9'

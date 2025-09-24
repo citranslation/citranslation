@@ -1,0 +1,52 @@
+name: Python Package
+
+on:
+  push:
+    tags:
+      - '*'
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [ 3.8]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
+          export IPYTHON_VERSION='7.9'
+          export PANDAS_VERSION='0.24.2'
+        else
+          export IPYTHON_VERSION='7'
+          export PANDAS_VERSION='1'
+        fi
+        pip install IPython==$IPYTHON_VERSION
+        pip install pandas==$PANDAS_VERSION
+        pip install .[test]
+
+    - name: Run tests
+      run: |
+        python -c 'import pytorch_memlab'
+        pytest test/test_mem_reporter.py
+
+    - name: Deploy to PyPI
+      if: github.ref == 'refs/tags' && matrix.python-version == '3.8'
+      env:
+        TWINE_USERNAME: yoursky
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      run: |
+        pip install twine
+        twine upload dist/*
+        
+# Note: You need to set the PYPI_PASSWORD secret in your GitHub repository settings.

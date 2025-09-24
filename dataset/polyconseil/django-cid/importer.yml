@@ -1,0 +1,122 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: travis_retry pip install tox tox-travis
+    - run: tox
+    strategy:
+      matrix: {}
+#       # 'allow_failures' transformations are currently unsupported.
+  test_2:
+    runs-on: ubuntu-22.04
+    env:
+      DJANGO: '2.2'
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: travis_retry pip install tox tox-travis
+    - run: tox
+  test_7:
+    runs-on: ubuntu-22.04
+    env:
+      DJANGO: '3.0'
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: travis_retry pip install tox tox-travis
+    - run: tox
+  test_11:
+    runs-on: ubuntu-22.04
+    env:
+      DJANGO: main
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: travis_retry pip install tox tox-travis
+    - run: tox
+  test_15:
+    runs-on: ubuntu-22.04
+    env:
+      TOXENV: docs
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: travis_retry pip install tox tox-travis
+    - run: tox
+  test_16:
+    runs-on: ubuntu-22.04
+    env:
+      TOXENV: quality
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: travis_retry pip install tox tox-travis
+    - run: tox

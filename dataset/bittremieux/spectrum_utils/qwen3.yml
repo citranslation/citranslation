@@ -1,0 +1,30 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8"]
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Install Miniconda and set up environment
+      run: |
+        sudo apt-get update
+        if [[ "$python" == "3.8" ]]; then
+          wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
+        else
+          wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+        fi
+        bash miniconda.sh -b -p $HOME/miniconda
+        export PATH="$HOME/miniconda/bin:$PATH"
+        hash -r
+        conda config --set always_yes yes --set changeps1 no
+        conda update -q conda
+        conda create -q -n test python=$python
+        source activate test
+        conda install altair matplotlib numba numpy pandas pyteomics pytest -c defaults -c bioconda -c conda-forge
+        python setup.py install
+    - name: Run tests
+      run: pytest

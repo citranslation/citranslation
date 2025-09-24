@@ -1,0 +1,47 @@
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: '3.8'
+            django_version: '1.8'
+          - python: '3.8'
+            django_version: '1.11'
+          - python: '3.8'
+            django_version: '2.0'
+          - python: '3.8'
+            django_version: '2.1'
+          - python: '3.8'
+            django_version: '2.2'
+        exclude:
+          - python: '3.8'
+            django_version: '2.0'
+          - python: '3.8'
+            django_version: '2.1'
+          - python: '3.8'
+            django_version: '2.2'
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install dependencies
+        run: |
+          pip install -U django==${{ matrix.django_version }}
+          if [[ "${{ matrix.python }}" == "3.8" ]]; then pip install black; fi
+
+      - name: Run tests
+        run: python manage.py test
+
+      - name: Check code formatting (if Python 3.8)
+        if: matrix.python == '3.8'
+        run: black --check zen_queries

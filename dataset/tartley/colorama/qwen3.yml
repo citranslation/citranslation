@@ -1,0 +1,25 @@
+name: Python Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: 3.8
+          - python: 3.9
+          - os: arm64
+            python: 3.8
+          - python: pypy-3.8
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: pip install mock
+      - name: Run tests
+        run: python -m unittest discover -p *_test.py

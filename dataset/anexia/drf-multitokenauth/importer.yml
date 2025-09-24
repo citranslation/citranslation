@@ -1,0 +1,46 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "${{ github.workspace }}/.cache/pip"
+        key: "${{ runner.os }}-path"
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install tox-travis
+    - run: tox
+    strategy:
+      matrix:
+        DJANGO:
+        - '2.2'
+        - '3.0'
+        - '3.1'
+        - main
+        python:
+        - '3.8'
+        - pypy-3.8
+        exclude:
+        - DJANGO: '3.0'
+          python: '3.8'
+        - DJANGO: '3.1'
+          python: '3.8'
+        - DJANGO: main
+          python: '3.8'
+#       # 'allow_failures' transformations are currently unsupported.
+    env:
+      DJANGO: "${{ matrix.DJANGO }}"

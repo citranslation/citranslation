@@ -1,0 +1,36 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ppc64le]
+        python: ['3.8', '3.9']
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: pip install -r dev-requirements.txt
+      - name: Clean
+        run: make clean
+      - name: PEP8
+        run: make pep8
+      - name: Flake8
+        run: make flake8
+      - name: Check
+        run: make check
+      - name: Unit tests
+        run: make unittest
+      - name: Upload coverage
+        uses: coverallsapp/coveralls-action@v1
+

@@ -1,0 +1,40 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+env:
+  HYPOTHESIS_STORAGE_DIRECTORY: "${{ github.workspace }}/.hypothesis"
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "${{ github.workspace }}/.hypothesis"
+        key: "${{ runner.os }}-path"
+    - run: travis_retry pip install --upgrade pip
+    - run: travis_retry pip install --upgrade --upgrade-strategy only-if-needed pytest pytest-catchlog
+    - run: pip install .
+    - run: py.test
+#     # This item has no matching transformer
+#     - email:
+#         on_success: change
+#         on_failure: always
+    strategy:
+      matrix:
+        python:
+        - 3.8
+        - 3.9
+        - pypy
+        - pypy-3.8

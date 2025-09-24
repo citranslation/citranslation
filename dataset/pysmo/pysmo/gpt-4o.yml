@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        make
+        pip install poetry
+        poetry install
+
+    - name: Run tests
+      run: make tests
+
+    - name: Upload coverage to Codecov
+      if: success()
+      run: bash <(curl -s https://codecov.io/bash)
+
+    - name: Notify Gitter
+      if: success() || failure()
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{ secrets.GITTER_USERNAME }}
+        password: ${{ secrets.GITTER_PASSWORD }}
+        subject: GitHub Actions Notification
+        body: |
+          Build ${{ github.run_id }} of ${{ github.repository }} has completed.
+        to: webhook@gitter.im
+        from: ${{ secrets.GITTER_USERNAME }}

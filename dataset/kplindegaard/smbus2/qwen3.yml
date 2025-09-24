@@ -1,0 +1,37 @@
+name: Test with Tox
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: 3.8
+            env: TOXENV=py38
+          - python: 3.9
+            env: TOXENV=py39
+          - python: 3.8
+            env: TOXENV=qa,doc
+
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade setuptools pip tox
+
+      - name: Run tests
+        run: |
+          TOXENV=$(echo ${{ matrix.env }} | cut -d'=' -f2)
+          export TOXENV
+          tox -v
+

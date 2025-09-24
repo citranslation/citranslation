@@ -1,0 +1,57 @@
+name: Python Application
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          pip install flake8 Flask==1.1.1
+          pip install -e .
+      - name: Lint code
+        run: flake8 .
+      - name: Navigate to test directory
+        run: cd tests/example_app
+      - name: Set FLASK_APP
+        run: export FLASK_APP=example.app
+      - name: Check file count before compiling
+        run: |
+          ls -laR example/static/ | wc -l | grep -q "26"
+          echo "File count before compiling test: $?"
+      - name: Compile and check file count
+        run: |
+          flask digest compile
+          ls -laR example/static/ | wc -l | grep -q "36"
+          echo "File count after compiling test: $?"
+      - name: Check cache manifest for nested file
+        run: |
+          grep -q "js/modules/hello.js" example/static/cache_manifest.json
+          echo "Cache manifest has nested file test: $?"
+      - name: Check cache manifest for digested file
+        run: |
+          grep -q "js/modules/hello-d41d8cd98f00b204e9800998ecf8427e.js" example/static/cache_manifest.json
+          echo "Cache manifest has digested file test: $?"
+      - name: Run server and check MD5 tagged CSS
+        run: |
+          flask run &
+          sleep 5
+          curl http://localhost:5000 | grep -q 'https://cdn.example.com/static/css/app-d41d8cd98f00b204e9800998ecf8427e.css'
+          echo "Stylesheet is md5 tagged test: $?"
+      - name: Clean and check file count
+        run: |
+          flask digest clean
+          ls -laR example/static/ | wc -l | grep -q "26"
+          echo "File count after cleaning test: $?"
+      - name: Run server on different port and check JS
+        run: |
+          flask run -p 5001 &
+          sleep 5
+          curl http://localhost:5001 | grep -q 'https://cdn.example.com/static/js/app.js'
+          echo "Javascript is not md5 tagged test: $?"

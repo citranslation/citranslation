@@ -1,0 +1,31 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get -qq update
+        sudo apt-get install -y libeigen3-dev
+        pip install -r requirements.txt
+        pip install pytest pytest-cov pytest-randomly wheel codecov
+        pip install -e .
+
+    - name: Run tests and generate coverage
+      run: make coverage
+
+    - name: Upload coverage to Codecov
+      run: codecov
+

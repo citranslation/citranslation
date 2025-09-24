@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: |
+          pytest
+          mypy pyteal
+          python3 -c "import pyteal" scripts/generate_init.py --check
+          black --check .
+
+  release:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Deploy to PyPI
+        uses: pypa/upload-to-pypi@v1
+        with:
+          username: __token__
+          password: ${{ secrets.PYPI_TOKEN }}
+          distributions: "sdist bdist_wheel"
+          repository: "https://upload.pypi.org/simple/"
+

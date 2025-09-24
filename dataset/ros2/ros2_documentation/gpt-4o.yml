@@ -1,0 +1,45 @@
+name: Documentation Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        pip install doc8 sphinx
+        pip install git+https://github.com/osrf/sphinx-tabs
+        pip install sphinx_multiversion
+
+    - name: Build HTML
+      run: |
+        make html 2> stderr.log
+        cat stderr.log
+
+    - name: Run doc8
+      run: |
+        doc8 --ignore D001 --ignore-path build --ignore-path source/Tutorials/Actions
+        doc8 --ignore D000 --ignore D001 --ignore-path build source/Tutorials/Actions
+
+    - name: Check for stderr output
+      run: |
+        if [ -s "stderr.log" ]; then exit 1; fi
+
+    - name: Cleanup
+      run: rm stderr.log

@@ -1,0 +1,47 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - run: if [ ! -z $DOCKER_PASSWORD ] ; then echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin ; fi
+    - run: docker run -d -p 127.0.0.1:9000:9000 -p 127.0.0.1:8123:8123 --name test-clickhouse-server --ulimit nofile=262144:262144 yandex/clickhouse-server:$VERSION
+    - run: docker ps -a
+    - run: sed -i 's/^host=localhost$/host=clickhouse-server/' setup.cfg
+    - run: echo '127.0.0.1 clickhouse-server' | sudo tee /etc/hosts > /dev/null
+    - run: pip install --upgrade pip setuptools
+    - run: pip install flake8 flake8-print coveralls
+    - run: flake8
+    - run: coverage run --source=clickhouse_sqlalchemy setup.py test
+    - run: coveralls
+      if: "${{ success() }}"
+    strategy:
+      matrix:
+        VERSION:
+        - 19.3.8
+        - 18.14.9
+        python:
+        - '3.8'
+    services:
+#       # This item has no matching transformer
+#       docker:
+    env:
+      VERSION: "${{ matrix.VERSION }}"

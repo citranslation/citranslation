@@ -1,0 +1,38 @@
+name: Python package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        python-version: [3.88]
+        toxenv:
+          - py38
+          - py39
+          - black
+          - pep8py2
+          - pep8py3
+          - doc
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools
+          pip install tox codecov
+      - name: Run tox
+        run: tox -e ${{ matrix.toxenv }}
+      - name: Upload coverage to Codecov
+        if: success()
+        uses: codecov/codecov-action@v2

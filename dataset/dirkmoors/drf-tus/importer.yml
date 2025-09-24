@@ -1,0 +1,27 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - run: apt-get -y install python3.8 python3.8
+    - run: pip install tox
+    - run: tox
+    strategy:
+      matrix:
+        TOXENV:
+        - py38-django-18
+        - py38-django-19
+        - py38-django-110
+        - py38-django-111
+    env:
+      TOXENV: "${{ matrix.TOXENV }}"

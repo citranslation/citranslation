@@ -1,0 +1,46 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: travis_retry pip install $DJANGO
+    - run: travis_retry pip install requests
+    - run: pip install -e .
+    - run: python runtests.py
+#     # This item has no matching transformer
+#     - email: false
+    strategy:
+      matrix:
+        DJANGO:
+        - Django==1.11.*
+        - Django==2.0.*
+        - Django==2.1.*
+        - Django==2.2.*
+        - Django==3.0.*
+        - Django==3.1.*
+        - Django==3.2.*
+        python:
+        - 3.8
+        - 3.9
+        exclude:
+        - DJANGO: Django==3.0.*
+          python: 3.8
+        - DJANGO: Django==3.1.*
+          python: 3.8
+        - DJANGO: Django==3.2.*
+          python: 3.8
+    env:
+      DJANGO: "${{ matrix.DJANGO }}"

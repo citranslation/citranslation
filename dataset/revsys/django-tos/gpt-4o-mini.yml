@@ -1,0 +1,44 @@
+name: Python Package
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+        django-version: [
+          "Django>=1.4,<1.5",
+          "Django>=1.5,<1.6",
+          "Django>=1.6,<1.7",
+          "Django>=1.7,<1.8",
+          "Django>=1.8,<1.9",
+          "Django>=1.9,<1.10",
+          "Django>=1.10,<1.11",
+          "Django>=1.11,<2.0",
+          "https://github.com/django/django/archive/main.tar.gz"
+        ]
+    defaults:
+      runs:
+        if: matrix.python-version != '3.8' || !contains(matrix.django-version, 'Django>=1.7,<1.8') && !contains(matrix.django-version, 'Django>=1.8,<1.9') && !contains(matrix.django-version, 'Django>=1.9,<1.10') && !contains(matrix.django-version, 'Django>=1.10,<1.11') && !contains(matrix.django-version, 'Django>=1.11,<2.0') && !contains(matrix.django-version, 'https://github.com/django/django/archive/main.tar.gz')
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          pip install coveralls coverage
+          pip install ${{ matrix.django-version }}
+      - name: Run tests
+        run: |
+          coverage run runtests.py
+          coverage report -m
+      - name: Combine coverage
+        run: |
+          coverage combine
+          coveralls
+          
+# End-of-Code

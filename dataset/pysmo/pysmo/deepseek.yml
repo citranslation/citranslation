@@ -1,0 +1,46 @@
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        make
+        pip install poetry
+        poetry install
+    - name: Run tests
+      run: make tests
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: true
+
+  notify:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Notify
+      if: ${{ failure() && github.event_name == 'push' }}
+      uses: dorny/webhook-url@v1
+      with:
+        url: ${{ secrets.GITTER_WEBHOOK }}
+        data: '{"text":"Build failed: ${{ github.repository }} ${{ github.sha }}"}'
+
+# End-of-Code

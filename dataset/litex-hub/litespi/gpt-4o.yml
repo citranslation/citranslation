@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install verilator libevent-dev libjson-c-dev
+
+    - name: Get Migen / LiteX / Cores
+      run: |
+        wget https://raw.githubusercontent.com/enjoy-digital/litex/main/litex_setup.py
+        python3 litex_setup.py init install
+
+    - name: Install the version being tested
+      run: |
+        python3 setup.py install
+
+    - name: Get RISC-V toolchain
+      run: |
+        wget https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-20171231-x86_64-linux-centos6.tar.gz
+        tar -xvf riscv64-unknown-elf-gcc-20171231-x86_64-linux-centos6.tar.gz
+        echo "$PWD/riscv64-unknown-elf-gcc-20171231-x86_64-linux-centos6/bin" >> $GITHUB_PATH
+
+    - name: Run Unit tests
+      run: |
+        python setup.py test

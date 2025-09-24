@@ -1,0 +1,43 @@
+name: Python application
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install .
+    - name: Run tests
+      run: pytest tests
+    - name: Notify IRC
+      uses: appleboy/irc-action@main
+      with:
+        host: irc.freenode.org
+        port: 6667
+        channel: "#bundlewrap"
+        nick: github-actions
+        message: "Build ${{ github.run_id }} has started."
+        notice: true
+        skip_join: true
+        tls: true

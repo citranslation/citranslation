@@ -1,0 +1,31 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install -U tox
+
+      - name: Run Tox
+        run: tox
+        env:
+          TOXENV: ${{ github.event_name == 'push' && 'py3' || 'pep8' }}
+          
+# SYS_PTRACE capability is not available in default containers,
+# use sudo to work around the issue:
+# https://github.com/travis-ci/travis-ci/issues/9033
+      - name: Run with sudo
+        run: sudo tox
+
+# End-of-Code

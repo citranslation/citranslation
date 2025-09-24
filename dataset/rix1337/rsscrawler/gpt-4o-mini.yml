@@ -1,0 +1,28 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Create config directory
+        run: mkdir -p /home/travis/config
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run FeedCrawler
+        run: python FeedCrawler.py --port=9090 --config="/home/travis/config" --travis_ci --log-level=DEBUG

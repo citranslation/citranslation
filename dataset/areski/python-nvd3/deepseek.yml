@@ -1,0 +1,66 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies for Python 3.8
+      run: pip install -r requirements.txt
+    - name: Install nvd3 for Python 3.8
+      run: python setup.py install
+    - name: Coverage for Python 3.8
+      run: coverage run --source=nvd3 setup.py test
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies for Python 3.9
+      run: pip install -r requirements.txt
+    - name: Install nvd3 for Python 3.9
+      run: python setup.py install
+    - name: Coverage for Python 3.9
+      run: coverage run --source=nvd3 setup.py test
+
+    - name: Coveralls
+      run: coveralls
+
+    - name: Notifications
+      if: failure()
+      uses: actions/github-script@v3
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          const core = require('@actions/core');
+          const github = require('@actions/github');
+          const fs = require('fs');
+          const process = require('process');
+          const exec = require('@actions/exec');
+
+          async function run() {
+            try {
+              const { data: email } = await github.getOctokit(process.env.GITHUB_TOKEN).rest.users.getEmails();
+              const userEmail = email.find(info => info.primary && !info.verified).email;
+              await exec.exec(`echo ${userEmail} >> .email`);
+              await exec.exec(`git config --global user.email ${userEmail}`);
+              await exec.exec(`git config --global user.name ${github.context.payload.pull_request.user.login || github.context.repo.owner}`);
+              await exec.exec(`git commit -am "Add email"`);
+              await exec.exec(`git push`);
+            } catch (error) {
+              core.setFailed(error.message);
+            }
+          }
+
+          run();
+

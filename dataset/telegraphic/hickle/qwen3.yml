@@ -1,0 +1,27 @@
+name: Python CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install -qq libhdf5-serial-dev
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip setuptools wheel virtualenv
+        pip install tox tox-travis codecov
+    - name: Run tests with tox
+      run: tox
+    - name: Upload coverage to Codecov
+      run: codecov
+      if: ${{ success }}

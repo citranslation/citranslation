@@ -1,0 +1,17 @@
+name: Generate Settings
+
+on: [push]
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create settings.py
+        run: echo "from Default.settings import *" > settings.py
+
+      - name: Run generate script
+        run: python3 generate.py

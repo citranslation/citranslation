@@ -1,0 +1,37 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install flake8 Flask==1.1.1
+    - run: pip install -e .
+    - run: flake8 .
+    - run: pip install -r requirements.txt
+    - run: cd tests/example_app
+    - run: export FLASK_APP=example.app
+    - run: 'ls -laR example/static/ | wc -l | grep -q "26" && (echo "File count before compiling test: pass" && exit 0) || (echo "File count before compiling test: fail" && exit 1)
+        '
+    - run: 'flask digest compile && ls -laR example/static/ | wc -l | grep -q "36" && (echo "File count after compiling test: pass" && exit 0) || (echo "File count after compiling test: fail" && exit 1)
+        '
+    - run: 'grep -q "js/modules/hello.js" example/static/cache_manifest.json && (echo "Cache manifest has nested file test: pass" && exit 0) || (echo "Cache manifest has nested file test: fail" && exit 1)
+        '
+    - run: 'grep -q "js/modules/hello-d41d8cd98f00b204e9800998ecf8427e.js" example/static/cache_manifest.json && (echo "Cache manifest has digested file test: pass" && exit 0) || (echo "Cache manifest has digested file test: fail" && exit 1)
+        '
+    - run: 'flask run & sleep 5 && curl http://localhost:5000 | grep -q ''https://cdn.example.com/static/css/app-d41d8cd98f00b204e9800998ecf8427e.css'' && (echo ''Stylesheet is md5 tagged test: pass'' && exit 0) || (echo ''Stylesheet is md5 tagged test: fail'' && exit 1)
+        '
+    - run: 'flask digest clean && ls -laR example/static/ | wc -l | grep -q "26" && (echo "File count after cleaning test: pass" && exit 0) || (echo "File count after cleaning test: fail" && exit 1)
+        '
+    - run: 'flask run -p 5001 & sleep 5 && curl http://localhost:5001 | grep -q ''https://cdn.example.com/static/js/app.js'' && (echo ''Javascript is not md5 tagged test: pass'' && exit 0) || (echo ''Javascript is not md5 tagged test: fail'' && exit 1)'

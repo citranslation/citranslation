@@ -1,0 +1,209 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/geosinstall
+          ~/.cache/pip
+        key: "${{ runner.os }}-path"
+    - run: export GEOS_INSTALL=${{ github.workspace }}/geosinstall/geos-$GEOS_VERSION
+    - run: "./ci/install_geos.sh"
+    - run: cd ${{ github.workspace }}
+    - run: pip install --disable-pip-version-check --upgrade pip
+    - run: pip install --upgrade wheel
+    - run: if [ "$GEOS_VERSION" = "main" ]; then pip install --upgrade --pre Cython numpy pytest; else pip install --upgrade Cython "numpy==$NUMPY_VERSION" pytest; fi
+    - run: export LD_LIBRARY_PATH=$GEOS_INSTALL/lib
+    - run: export PATH=$GEOS_INSTALL/bin:$PATH
+    - run: python setup.py build_ext --inplace
+    - run: pip install --no-deps -e .
+    - run: pytest --doctest-modules
+    strategy:
+      matrix: {}
+#       # 'allow_failures' transformations are currently unsupported.
+  test_2:
+    runs-on: ubuntu-22.04
+    env:
+      GEOS_VERSION: 3.8.2
+      NUMPY_VERSION: 1.10.4
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/geosinstall
+          ~/.cache/pip
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: export GEOS_INSTALL=${{ github.workspace }}/geosinstall/geos-$GEOS_VERSION
+    - run: "./ci/install_geos.sh"
+    - run: cd ${{ github.workspace }}
+    - run: pip install --disable-pip-version-check --upgrade pip
+    - run: pip install --upgrade wheel
+    - run: if [ "$GEOS_VERSION" = "main" ]; then pip install --upgrade --pre Cython numpy pytest; else pip install --upgrade Cython "numpy==$NUMPY_VERSION" pytest; fi
+    - run: export LD_LIBRARY_PATH=$GEOS_INSTALL/lib
+    - run: export PATH=$GEOS_INSTALL/bin:$PATH
+    - run: python setup.py build_ext --inplace
+    - run: pip install --no-deps -e .
+    - run: pytest --doctest-modules
+  test_3:
+    runs-on: ubuntu-22.04
+    env:
+      GEOS_VERSION: 3.8.4
+      NUMPY_VERSION: 1.13.3
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/geosinstall
+          ~/.cache/pip
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: export GEOS_INSTALL=${{ github.workspace }}/geosinstall/geos-$GEOS_VERSION
+    - run: "./ci/install_geos.sh"
+    - run: cd ${{ github.workspace }}
+    - run: pip install --disable-pip-version-check --upgrade pip
+    - run: pip install --upgrade wheel
+    - run: if [ "$GEOS_VERSION" = "main" ]; then pip install --upgrade --pre Cython numpy pytest; else pip install --upgrade Cython "numpy==$NUMPY_VERSION" pytest; fi
+    - run: export LD_LIBRARY_PATH=$GEOS_INSTALL/lib
+    - run: export PATH=$GEOS_INSTALL/bin:$PATH
+    - run: python setup.py build_ext --inplace
+    - run: pip install --no-deps -e .
+    - run: pytest --doctest-modules
+  test_4:
+    runs-on: ubuntu-22.04
+    env:
+      GEOS_VERSION: 3.8.3
+      NUMPY_VERSION: 1.15.4
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/geosinstall
+          ~/.cache/pip
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: export GEOS_INSTALL=${{ github.workspace }}/geosinstall/geos-$GEOS_VERSION
+    - run: "./ci/install_geos.sh"
+    - run: cd ${{ github.workspace }}
+    - run: pip install --disable-pip-version-check --upgrade pip
+    - run: pip install --upgrade wheel
+    - run: if [ "$GEOS_VERSION" = "main" ]; then pip install --upgrade --pre Cython numpy pytest; else pip install --upgrade Cython "numpy==$NUMPY_VERSION" pytest; fi
+    - run: export LD_LIBRARY_PATH=$GEOS_INSTALL/lib
+    - run: export PATH=$GEOS_INSTALL/bin:$PATH
+    - run: python setup.py build_ext --inplace
+    - run: pip install --no-deps -e .
+    - run: pytest --doctest-modules
+  test_5:
+    runs-on: ubuntu-22.04
+    env:
+      GEOS_VERSION: 3.8.1
+      NUMPY_VERSION: 1.17.5
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/geosinstall
+          ~/.cache/pip
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: export GEOS_INSTALL=${{ github.workspace }}/geosinstall/geos-$GEOS_VERSION
+    - run: "./ci/install_geos.sh"
+    - run: cd ${{ github.workspace }}
+    - run: pip install --disable-pip-version-check --upgrade pip
+    - run: pip install --upgrade wheel
+    - run: if [ "$GEOS_VERSION" = "main" ]; then pip install --upgrade --pre Cython numpy pytest; else pip install --upgrade Cython "numpy==$NUMPY_VERSION" pytest; fi
+    - run: export LD_LIBRARY_PATH=$GEOS_INSTALL/lib
+    - run: export PATH=$GEOS_INSTALL/bin:$PATH
+    - run: python setup.py build_ext --inplace
+    - run: pip install --no-deps -e .
+    - run: pytest --doctest-modules
+  test_6:
+    runs-on: ubuntu-22.04
+    env:
+      GEOS_VERSION: 3.8.1
+      NUMPY_VERSION: 1.19.4
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/geosinstall
+          ~/.cache/pip
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.9'
+    - run: export GEOS_INSTALL=${{ github.workspace }}/geosinstall/geos-$GEOS_VERSION
+    - run: "./ci/install_geos.sh"
+    - run: cd ${{ github.workspace }}
+    - run: pip install --disable-pip-version-check --upgrade pip
+    - run: pip install --upgrade wheel
+    - run: if [ "$GEOS_VERSION" = "main" ]; then pip install --upgrade --pre Cython numpy pytest; else pip install --upgrade Cython "numpy==$NUMPY_VERSION" pytest; fi
+    - run: export LD_LIBRARY_PATH=$GEOS_INSTALL/lib
+    - run: export PATH=$GEOS_INSTALL/bin:$PATH
+    - run: python setup.py build_ext --inplace
+    - run: pip install --no-deps -e .
+    - run: pytest --doctest-modules
+  test_7:
+    runs-on: ubuntu-22.04
+    env:
+      GEOS_VERSION: main
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/geosinstall
+          ~/.cache/pip
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: export GEOS_INSTALL=${{ github.workspace }}/geosinstall/geos-$GEOS_VERSION
+    - run: "./ci/install_geos.sh"
+    - run: cd ${{ github.workspace }}
+    - run: pip install --disable-pip-version-check --upgrade pip
+    - run: pip install --upgrade wheel
+    - run: if [ "$GEOS_VERSION" = "main" ]; then pip install --upgrade --pre Cython numpy pytest; else pip install --upgrade Cython "numpy==$NUMPY_VERSION" pytest; fi
+    - run: export LD_LIBRARY_PATH=$GEOS_INSTALL/lib
+    - run: export PATH=$GEOS_INSTALL/bin:$PATH
+    - run: python setup.py build_ext --inplace
+    - run: pip install --no-deps -e .
+    - run: pytest --doctest-modules

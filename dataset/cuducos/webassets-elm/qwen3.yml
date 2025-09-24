@@ -1,0 +1,29 @@
+name: Python CI
+on:
+  push:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - 3.8
+        include:
+          - python-version: 3.8
+            env: TOXENV=cover
+          - python-version: 3.8
+            env: TOXENV=black
+    env:
+      TOXENV: ${{ matrix.env }}
+    steps:
+      - name: Install dependencies
+        run: |
+          npm install -g elm
+          pip install tox-travis
+      - name: Run tests
+        run: tox
+      - name: Upload coverage
+        if: ${{ success() }}
+        run: coveralls

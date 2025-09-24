@@ -1,0 +1,33 @@
+name: Python Tests
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.8", "pypy-3.8"]
+        test-suite: ["adddelete", "compartmentedmodel", "networkdynamics", "sir", "sirs", "sir_fixedrecovery", "sis", "sis_fixedrecovery", "seir", "stochasticrates", "monitor", "generators", "loci", "percolate"]
+    steps:
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install coveralls
+    - name: Install package
+      run: python setup.py install
+    - name: Run tests
+      run: |
+        coverage run --include './epydemic/*' -m nose test/test_${{ matrix.test-suite }}.py
+    - name: Upload coverage
+      if: ${{ success }}
+      run: coveralls
+

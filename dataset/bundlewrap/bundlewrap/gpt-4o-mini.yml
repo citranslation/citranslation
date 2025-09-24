@@ -1,0 +1,51 @@
+name: Python Package CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    services:
+      postgres:
+        image: postgres:13
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: test_db
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+        options: >-
+          --health-cmd "pg_isready -U user"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8' # Change this to 3.8, 3.8, or 3.9 as needed
+
+    - name: Install dependencies
+      run: |
+        pip install .
+
+    - name: Generate SSH key
+      run: |
+        ssh-keygen -f ~/.ssh/id_rsa -N ""
+        cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys
+
+    - name: Test SSH connection
+      run: ssh -o StrictHostKeyChecking=no localhost id
+
+    - name: Run tests
+      run: |
+        pytest tests
+
+    - name: Notify IRC
+      run: echo "Build completed" # Replace with actual IRC notification command
+

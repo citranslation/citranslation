@@ -1,0 +1,34 @@
+name: MTGJSON5 Tox
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Upgrade pip, setuptools, and wheel
+      run: pip install --upgrade pip setuptools wheel
+
+    - name: Install dependencies
+      run: pip install -r requirements_test.txt
+
+    - name: Run Tox
+      run: pip install tox-travis && tox

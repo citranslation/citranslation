@@ -1,0 +1,23 @@
+name: Python Tests
+
+on:
+  [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install dependencies
+      run: |
+        export CFLAGS="-O0"
+        pip install . --upgrade
+    - name: Run tests
+      run: ./runtests.sh

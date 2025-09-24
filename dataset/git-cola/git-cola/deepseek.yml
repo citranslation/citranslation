@@ -1,0 +1,41 @@
+name: Travis CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y gettext rsync python-sphinx python3-sphinx python-pyqt5 python3-pyqt5 python3-venv
+
+    - name: Build translations
+      run: make all
+
+    - name: Install tox
+      run: pip install tox tox-venv
+
+    - name: Run tests
+      run: tox
+
+    - name: Run pylint
+      run: tox -e pylint

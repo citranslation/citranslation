@@ -1,0 +1,53 @@
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: [3.8, pypy-3.8]
+        test-suite: [
+          "adddelete",
+          "compartmentedmodel",
+          "networkdynamics",
+          "sir",
+          "sirs",
+          "sir_fixedrecovery",
+          "sis",
+          "sis_fixedrecovery",
+          "seir",
+          "stochasticrates",
+          "monitor",
+          "generators",
+          "loci",
+          "percolate"
+        ]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install coveralls
+
+      - name: Run tests
+        run: |
+          python setup.py install
+          coverage run --include './epydemic/*' -m nose test/test_${{ matrix.test-suite }}.py
+
+      - name: Upload coverage to Coveralls
+        if: success()
+        run: coveralls

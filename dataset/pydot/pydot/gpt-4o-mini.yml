@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    tags: 
+      - '*'
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ${{ matrix.arch }}
+    strategy:
+      matrix:
+        python-version: [ 3.8, 3.9]
+        arch: [amd64, ppc64le]
+        include:
+          - python-version: 3.8
+            arch: amd64
+          - python-version: 3.8
+            arch: ppc64le
+          - python-version: 3.9
+            arch: ppc64le
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install -U pip setuptools
+          python setup.py sdist
+          pip install dist/pydot-*.tar.gz
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: |
+          cd test/
+          python pydot_unittest.py
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dev dependencies
+        run: |
+          pip install -e .[dev]
+
+      - name: Run black
+        run: |
+          black --check --diff .
+
+  # Add any additional jobs or configurations as needed
+
+# End-of-Code

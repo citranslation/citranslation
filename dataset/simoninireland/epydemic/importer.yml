@@ -1,0 +1,48 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+    - main
+    - dev
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: pip install -r requirements.txt
+    - run: pip install coveralls
+    - run: python setup.py install
+    - run: coverage run --include './epydemic/*' -m nose test/test_${TEST_SUITE}.py
+    - run: coveralls
+      if: "${{ success() }}"
+    strategy:
+      matrix:
+        TEST_SUITE:
+        - adddelete
+        - compartmentedmodel
+        - networkdynamics
+        - sir
+        - sirs
+        - sir_fixedrecovery
+        - sis
+        - sis_fixedrecovery
+        - seir
+        - stochasticrates
+        - monitor
+        - generators
+        - loci
+        - percolate
+        python:
+        - '3.8'
+        - pypy-3.8
+    env:
+      TEST_SUITE: "${{ matrix.TEST_SUITE }}"

@@ -1,0 +1,50 @@
+name: Python package
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        pip install pip -U
+        pip install codecov
+        grep -v "^django==" requirements.txt > /tmp/reqs.txt
+        pip install -r /tmp/reqs.txt
+        pip install "${{ env.DJANGO_VERSION }}" -U
+    - name: Run tests
+      run: ./scripts/ci_runtests.sh
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: true
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags')
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Publish Python 🐍 distributions 📦 to PyPI
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      uses: pypa/gh-action-pypi-publish@main
+      with:
+        user: wildfish-deployer
+        password: ${{ secrets.PYPI_API_TOKEN }}

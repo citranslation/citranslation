@@ -1,0 +1,68 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  Python_3_8_0_on_Bionic_Linux:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: pip3 install --upgrade pip pyinstaller wheel
+    - run: pip3 install -r requirements.txt .
+    - run: cd pyinstaller && ./bundle.sh
+    - uses: softprops/action-gh-release@v0.1.15
+      env:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        GITHUB_REPOSITORY: "${{ github.repository }}"
+      with:
+        files: deploy/*
+        draft: true
+        name: "${{ github.ref }} (DRAFT)"
+      if: "${{ github.event_name == 'push' && ${{ github.ref }} }}"
+  Python_3.8_4_on_macOS:
+    runs-on: macos-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - run: pip3 install --upgrade pip pyinstaller wheel
+    - run: pip3 install -r requirements.txt .
+    - run: cd pyinstaller && ./bundle.sh
+    - uses: softprops/action-gh-release@v0.1.15
+      env:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        GITHUB_REPOSITORY: "${{ github.repository }}"
+      with:
+        files: deploy/*
+        draft: true
+        name: "${{ github.ref }} (DRAFT)"
+      if: "${{ github.event_name == 'push' && ${{ github.ref }} }}"
+  Python_3_8_0_on_Windows:
+    runs-on: windows-latest
+    env:
+      PATH: "/c/Python38:/c/Python38/Scripts:$PATH"
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - run: choco install python --version 3.8.0
+    - run: python -m pip install --upgrade pip
+    - run: pip3 install --upgrade pip pyinstaller wheel
+    - run: pip3 install -r requirements.txt .
+    - run: cd pyinstaller && ./bundle.sh
+    - uses: softprops/action-gh-release@v0.1.15
+      env:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        GITHUB_REPOSITORY: "${{ github.repository }}"
+      with:
+        files: deploy/*
+        draft: true
+        name: "${{ github.ref }} (DRAFT)"
+      if: "${{ github.event_name == 'push' && ${{ github.ref }} }}"

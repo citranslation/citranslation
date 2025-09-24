@@ -1,0 +1,36 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: sudo apt-get update
+    - run: if [[ "$TRAVIS_PYTHON_VERSION" == "3.8" ]]; then wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh; else wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh; fi
+    - run: bash miniconda.sh -b -p ${{ github.workspace }}/miniconda
+    - run: export PATH="${{ github.workspace }}/miniconda/bin:$PATH"
+    - run: hash -r
+    - run: conda config --set always_yes yes --set changeps1 no
+    - run: conda update -q conda
+    - run: conda create -q -n test python=$TRAVIS_PYTHON_VERSION
+    - run: source activate test
+    - run: conda install altair matplotlib numba numpy pandas pyteomics pytest -c defaults -c bioconda -c conda-forge
+    - run: python setup.py install
+    - run: pytest
+    strategy:
+      matrix:
+        python:
+        - '3.8'
+

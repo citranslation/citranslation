@@ -1,0 +1,53 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: rm -f ${{ github.workspace }}/.cache/pip/log/debug.log
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "${{ github.workspace }}/.cache/pip"
+        key: "${{ runner.os }}-path"
+    - run: apt-get -y install binutils libproj-dev gdal-bin libsqlite3-mod-spatialite
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 762E3.87
+    - run: pip install -U pip
+    - run: pip install -U wheel virtualenv
+    - run: pip install tox coveralls
+    - run: apt list --installed
+    - run: coverage erase
+    - run: tox -e py${TRAVIS_PYTHON_VERSION/./}-${DJANGO_VERSION}${MODE}
+    - run: coveralls
+      if: "${{ success() }}"
+    strategy:
+      matrix:
+        MODE:
+        - flake8
+        - flake8-strict
+        - docs
+        DJANGO_VERSION:
+        - dj22
+        - dj30
+        - dj31
+        - dj32
+        - djdev
+        python:
+        - '3.8'
+#       # 'allow_failures' transformations are currently unsupported.
+    env:
+      MODE: "${{ matrix.MODE }}"
+      DJANGO_VERSION: "${{ matrix.DJANGO_VERSION }}"

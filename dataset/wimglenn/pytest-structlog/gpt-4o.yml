@@ -1,0 +1,39 @@
+name: Python package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+        allow_failures:
+          - python-version: '3.8'
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install --upgrade pytest
+        pip install --editable .
+
+    - name: Test with pytest
+      run: pytest
+
+    - name: Disable email notifications
+      if: always()
+      run: echo "Email notifications are disabled."

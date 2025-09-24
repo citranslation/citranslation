@@ -1,0 +1,46 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.8, 3.9]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: pip install -r dev-requirements.txt
+
+      - name: Clean
+        run: make clean
+
+      - name: Run PEP8
+        run: make pep8
+
+      - name: Run Flake8
+        run: make flake8
+
+      - name: Run checks
+        run: make check
+
+      - name: Run unit tests
+        run: make unittest
+
+      - name: Send coverage report
+        run: coveralls
+
+      - name: Notify via email
+        if: success()
+        run: echo "Build succeeded, sending email to eosplus-dev@arista.com"
+

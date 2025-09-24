@@ -1,0 +1,37 @@
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: "pypy-3.8"
+            env: TOXENV=pypy-3.8
+          - python: "3.8"
+            env: TOXENV=py38
+            dist: xenial
+            sudo: true
+          - python: "3.8"
+            env: TOXENV=py39
+            dist: xenial
+            sudo: true
+        exclude:
+          - arch: ppc64le
+            python: pypy-3.8
+    steps:
+      - name: Install codecov
+        run: pip install codecov
+      - name: Install tox
+        run: pip install tox
+      - name: Run tests
+        run: tox -e $TOXENV
+      - name: Generate coverage report
+        run: tox -e coverage-report
+      - name: Upload coverage
+        run: codecov

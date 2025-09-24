@@ -1,0 +1,54 @@
+name: Python application
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/Pipfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install pipenv
+      run: |
+        python -m pip install pipenv
+
+    - name: Install dependencies
+      run: |
+        pipenv install --dev --system
+
+    - name: Lint with flake8
+      run: |
+        flake8 .
+        flake8 . --exit-zero --select=C,E,F,W
+
+    - name: Test with pytest
+      run: |
+        pytest
+
+    - name: Notify on IRC
+      if: always()
+      uses: rtCamp/action-irc-notifications@v1
+      with:
+        server: chat.freenode.net
+        channel: "#wee-slack-dev"
+        nickname: "GitHub-Actions"
+        message: "Build status: ${{ job.status }}"
+        on_success: change
+        on_failure: always
+        debug: false
+

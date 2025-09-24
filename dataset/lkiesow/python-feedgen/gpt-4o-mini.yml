@@ -1,0 +1,43 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install bandit flake8 python-coveralls coverage liccheck
+          pip install -r requirements.txt
+          python setup.py bdist_wheel
+          pip install dist/feedgen*
+
+      - name: Run tests
+        run: make test
+
+      - name: Check licenses
+        run: liccheck -s .licenses.ini
+
+      - name: Generate feeds
+        run: |
+          python -m feedgen
+          python -m feedgen atom
+          python -m feedgen rss
+
+      - name: Upload coverage to Coveralls
+        run: coveralls
+

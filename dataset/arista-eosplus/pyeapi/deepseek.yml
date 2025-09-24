@@ -1,0 +1,65 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: pip install -r dev-requirements.txt
+
+    - name: Run tests
+      run: |
+        make clean
+        make pep8
+        make flake8
+        make check
+        make unittest
+
+    - name: Coveralls
+      run: coveralls
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: pip install -r dev-requirements.txt
+
+    - name: Run tests
+      run: |
+        make clean
+        make pep8
+        make flake8
+        make check
+        make unittest
+
+    - name: Coveralls
+      run: coveralls
+
+    - name: Send notification
+      if: failure()
+      uses: dawidd6/action-send-mail@v2
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: Build failure
+        body: |
+          Build failed in ${{ github.repository }}
+          Commit: ${{ github.sha }}
+          Author: ${{ github.actor }}
+        to: eosplus-dev@arista.com
+        from: GitHub Actions <noreply@github.com>

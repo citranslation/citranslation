@@ -1,0 +1,46 @@
+name: Python package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        python-version: [3.8]
+        include:
+          - python-version: "3.8"
+            env: PRE=--pre
+    allow_failures:
+      - python-version: "3.8"
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install -v .
+        python -m pip install ${{ matrix.env.PRE }} --upgrade pytest pytest-cov coverage
+
+    - name: Run tests
+      run: |
+        coverage run run_tests.py
+        coverage report -m
+
+    - name: Upload coverage to Codecov
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      run: bash <(curl -s https://codecov.io/bash)

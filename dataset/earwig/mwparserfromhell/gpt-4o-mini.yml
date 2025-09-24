@@ -1,0 +1,38 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10]
+        os: [ubuntu-latest, ubuntu-22.04]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install coveralls pytest
+          python setup.py develop
+
+      - name: Run tests with coverage
+        env:
+          WITHOUT_EXTENSION: ${{ matrix.WITHOUT_EXTENSION }}
+        run: |
+          coverage run --source=mwparserfromhell -m pytest
+
+      - name: Upload coverage to Coveralls
+        if: success()
+        run: coveralls
+
+    env:
+      WITHOUT_EXTENSION: ${{ matrix.WITHOUT_EXTENSION }}

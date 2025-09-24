@@ -1,0 +1,46 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8]
+        django-version: [
+          "<1.9", "<1.10", "<1.11", "<1.12", "<2.1", "<2.2", "<2.3", "<3.1", "<3.2"
+        ]
+        mjml-version: [
+          "3.3.8", "4.3.1", "4.4.0", "4.5.1", "4.6.3"
+        ]
+    defaults:
+      runs:
+        if: matrix.python-version != '3.8' || (matrix.django-version != '<2.1' && matrix.django-version != '<2.2' && matrix.django-version != '<2.3' && matrix.django-version != '<3.1' && matrix.django-version != '<3.2')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+
+      - name: Install MJML
+        run: |
+          npm install -g mjml-http-server@0.0.3
+          npm install mjml@${{ matrix.mjml-version }}
+          node_modules/.bin/mjml --version
+
+      - name: Install dependencies
+        run: |
+          pip install "Django${{ matrix.django-version }}"
+          pip install "requests>=2.20.0,<=2.24.0"
+
+      - name: Run tests
+        run: python tools.py test

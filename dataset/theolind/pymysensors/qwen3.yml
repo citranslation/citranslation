@@ -1,0 +1,27 @@
+name: Python tests
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.8]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ matrix.python }}-pip
+          restore-keys: |
+            ${{ matrix.python }}-pip
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: pip install -U tox-travis
+      - name: Run tests
+        run: tox

@@ -1,0 +1,61 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ubuntu-22.04
+        arch: [amd64, ppc64le]
+        python: [3.8, 3.9]
+        h5py_version: ["==3.8", "==2.10", "==3.0", "==3.1"]
+        include:
+          - os: ubuntu-22.04
+            arch: ppc64le
+            python: 3.9
+            h5py_version: "==2.10"
+        exclude:
+          - os: ubuntu-22.04
+            arch: amd64
+            python: 3.8
+            h5py_version: "==3.0"
+          - os: ubuntu-22.04
+            arch: amd64
+            python: 3.8
+            h5py_version: "==3.1"
+    env:
+      H5PY_VERSION: ${{ matrix.h5py_version }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ matrix.python }}-pip
+          restore-keys: |
+            ${{ matrix.python }}-pip
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc libhdf5-serial-dev libblas-dev liblapack-dev libatlas-base-dev libquadmath0
+          python -m pip install --upgrade pip
+          pip install -U numpy Cython
+          pip install h5py${{ env.H5PY_VERSION }}
+          pip install -r requirements_tests.txt
+          pip install .
+          pip install -e examples/example_hdf5storage_marshaller_plugin
+
+      - name: Run tests
+        run: pytest
+

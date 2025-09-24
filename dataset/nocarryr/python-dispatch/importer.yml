@@ -1,0 +1,186 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      AIO_AVAILABLE: 'false'
+      COVERAGERC: ".coveragerc-py2"
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -U pip setuptools wheel
+    - run: pip install -U pytest pytest-cov coveralls
+    - run: sh -c "if [ '$AIO_AVAILABLE' = 'true' ]; then pip install -U pytest-asyncio; fi"
+    - run: pip install -e .
+    - run: py.test --cov-config $COVERAGERC --cov=pydispatch
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         distributions: sdist bdist_wheel
+#         'on':
+#           python: '3.8'
+#           tags: true
+#         username: __token__
+#         password:
+#           secure: NIm71IwfmsgZkVHb2gNpzX3wGWckPF4ryMX95eoURh0cn3CBEwtdx0n1y2UjIIQMHswzZ13Ksmd1X5q04SMwbr0CBmdfDalH4BZXjhnuHFSeIy6MIZzXDzacAEsbR5FNGjEMgYWxV4bh463sPackQ+qPQFlC5Qv8FA3a+i6Ei6ZtFJDPzaHhRLmnddbX4FeCM8tCri5mLZpK/3fpdiwjRvqtkftNvDxnieSBG/n/dqOGfxQghWLAiqOJV+BlGG7awjMSXcBOjzZsT0SI02bNrSV6vDJI7fKp5hjkb73yBucOd5YVvDZWGIF30thq662Ug9hw37k+EbtHOFjSDgFVXdC3.8PZoiedo42SLPOZ0d/jdGaQIyijkq0Sw+UplBlKBc+7s+sWUFSgjaYOvgyXp4bG6ApDC/yJ5FY7h/GobpsctaZ60lc0lFBSxGasd/pk0KUYCG4A6EXvEh62W4F9gJJXJQ/+g4tn38pX21LCy8lckqgo4Eqwcn4ch6N+7n1U7wVjZBoXXnCT1Q65w1LQmKKiAFPczAwZ5sxs+KXLKPaEnSHZ1OsNZNrcj4kfncxM1zdNMtGZUaw+p3RQs1vHPBNg/0p2tHZ/YHEJFHZd3.8KfyT8sMXXsMwd7jxBievN2XVrK/4PtXWFObhQmmzZGBFn0a09pn6F+map21j3Em4=
+#       if: "${{ github.event_name == 'push' && ${{ github.ref }} }}"
+    - run: coveralls --rcfile="$COVERAGERC"
+      if: "${{ success() }}"
+  test_2:
+    runs-on: ubuntu-latest
+    env:
+      AIO_AVAILABLE: 'false'
+      COVERAGERC: ".coveragerc-py38"
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -U pip setuptools wheel
+    - run: pip install -U pytest pytest-cov coveralls
+    - run: sh -c "if [ '$AIO_AVAILABLE' = 'true' ]; then pip install -U pytest-asyncio; fi"
+    - run: pip install -e .
+    - run: py.test --cov-config $COVERAGERC --cov=pydispatch
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         distributions: sdist bdist_wheel
+#         'on':
+#           python: '3.8'
+#           tags: true
+#         username: __token__
+#         password:
+#           secure: NIm71IwfmsgZkVHb2gNpzX3wGWckPF4ryMX95eoURh0cn3CBEwtdx0n1y2UjIIQMHswzZ13Ksmd1X5q04SMwbr0CBmdfDalH4BZXjhnuHFSeIy6MIZzXDzacAEsbR5FNGjEMgYWxV4bh463sPackQ+qPQFlC5Qv8FA3a+i6Ei6ZtFJDPzaHhRLmnddbX4FeCM8tCri5mLZpK/3fpdiwjRvqtkftNvDxnieSBG/n/dqOGfxQghWLAiqOJV+BlGG7awjMSXcBOjzZsT0SI02bNrSV6vDJI7fKp5hjkb73yBucOd5YVvDZWGIF30thq662Ug9hw37k+EbtHOFjSDgFVXdC3.8PZoiedo42SLPOZ0d/jdGaQIyijkq0Sw+UplBlKBc+7s+sWUFSgjaYOvgyXp4bG6ApDC/yJ5FY7h/GobpsctaZ60lc0lFBSxGasd/pk0KUYCG4A6EXvEh62W4F9gJJXJQ/+g4tn38pX21LCy8lckqgo4Eqwcn4ch6N+7n1U7wVjZBoXXnCT1Q65w1LQmKKiAFPczAwZ5sxs+KXLKPaEnSHZ1OsNZNrcj4kfncxM1zdNMtGZUaw+p3RQs1vHPBNg/0p2tHZ/YHEJFHZd3.8KfyT8sMXXsMwd7jxBievN2XVrK/4PtXWFObhQmmzZGBFn0a09pn6F+map21j3Em4=
+#       if: "${{ github.event_name == 'push' && ${{ github.ref }} }}"
+    - run: coveralls --rcfile="$COVERAGERC"
+      if: "${{ success() }}"
+  test_3:
+    runs-on: ubuntu-latest
+    env:
+      AIO_AVAILABLE: 'false'
+      COVERAGERC: ".coveragerc"
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -U pip setuptools wheel
+    - run: pip install -U pytest pytest-cov coveralls
+    - run: sh -c "if [ '$AIO_AVAILABLE' = 'true' ]; then pip install -U pytest-asyncio; fi"
+    - run: pip install -e .
+    - run: py.test --cov-config $COVERAGERC --cov=pydispatch
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         distributions: sdist bdist_wheel
+#         'on':
+#           python: '3.8'
+#           tags: true
+#         username: __token__
+#         password:
+#           secure: NIm71IwfmsgZkVHb2gNpzX3wGWckPF4ryMX95eoURh0cn3CBEwtdx0n1y2UjIIQMHswzZ13Ksmd1X5q04SMwbr0CBmdfDalH4BZXjhnuHFSeIy6MIZzXDzacAEsbR5FNGjEMgYWxV4bh463sPackQ+qPQFlC5Qv8FA3a+i6Ei6ZtFJDPzaHhRLmnddbX4FeCM8tCri5mLZpK/3fpdiwjRvqtkftNvDxnieSBG/n/dqOGfxQghWLAiqOJV+BlGG7awjMSXcBOjzZsT0SI02bNrSV6vDJI7fKp5hjkb73yBucOd5YVvDZWGIF30thq662Ug9hw37k+EbtHOFjSDgFVXdC3.8PZoiedo42SLPOZ0d/jdGaQIyijkq0Sw+UplBlKBc+7s+sWUFSgjaYOvgyXp4bG6ApDC/yJ5FY7h/GobpsctaZ60lc0lFBSxGasd/pk0KUYCG4A6EXvEh62W4F9gJJXJQ/+g4tn38pX21LCy8lckqgo4Eqwcn4ch6N+7n1U7wVjZBoXXnCT1Q65w1LQmKKiAFPczAwZ5sxs+KXLKPaEnSHZ1OsNZNrcj4kfncxM1zdNMtGZUaw+p3RQs1vHPBNg/0p2tHZ/YHEJFHZd3.8KfyT8sMXXsMwd7jxBievN2XVrK/4PtXWFObhQmmzZGBFn0a09pn6F+map21j3Em4=
+#       if: "${{ github.event_name == 'push' && ${{ github.ref }} }}"
+    - run: coveralls --rcfile="$COVERAGERC"
+      if: "${{ success() }}"
+  test_4:
+    runs-on: ubuntu-latest
+    env:
+      AIO_AVAILABLE: 'true'
+      COVERAGERC: ".coveragerc"
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -U pip setuptools wheel
+    - run: pip install -U pytest pytest-cov coveralls
+    - run: sh -c "if [ '$AIO_AVAILABLE' = 'true' ]; then pip install -U pytest-asyncio; fi"
+    - run: pip install -e .
+    - run: py.test --cov-config $COVERAGERC --cov=pydispatch
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         distributions: sdist bdist_wheel
+#         'on':
+#           python: '3.8'
+#           tags: true
+#         username: __token__
+#         password:
+#           secure: NIm71IwfmsgZkVHb2gNpzX3wGWckPF4ryMX95eoURh0cn3CBEwtdx0n1y2UjIIQMHswzZ13Ksmd1X5q04SMwbr0CBmdfDalH4BZXjhnuHFSeIy6MIZzXDzacAEsbR5FNGjEMgYWxV4bh463sPackQ+qPQFlC5Qv8FA3a+i6Ei6ZtFJDPzaHhRLmnddbX4FeCM8tCri5mLZpK/3fpdiwjRvqtkftNvDxnieSBG/n/dqOGfxQghWLAiqOJV+BlGG7awjMSXcBOjzZsT0SI02bNrSV6vDJI7fKp5hjkb73yBucOd5YVvDZWGIF30thq662Ug9hw37k+EbtHOFjSDgFVXdC3.8PZoiedo42SLPOZ0d/jdGaQIyijkq0Sw+UplBlKBc+7s+sWUFSgjaYOvgyXp4bG6ApDC/yJ5FY7h/GobpsctaZ60lc0lFBSxGasd/pk0KUYCG4A6EXvEh62W4F9gJJXJQ/+g4tn38pX21LCy8lckqgo4Eqwcn4ch6N+7n1U7wVjZBoXXnCT1Q65w1LQmKKiAFPczAwZ5sxs+KXLKPaEnSHZ1OsNZNrcj4kfncxM1zdNMtGZUaw+p3RQs1vHPBNg/0p2tHZ/YHEJFHZd3.8KfyT8sMXXsMwd7jxBievN2XVrK/4PtXWFObhQmmzZGBFn0a09pn6F+map21j3Em4=
+#       if: "${{ github.event_name == 'push' && ${{ github.ref }} }}"
+    - run: coveralls --rcfile="$COVERAGERC"
+      if: "${{ success() }}"
+  test_5:
+    runs-on: ubuntu-22.04
+    env:
+      AIO_AVAILABLE: 'true'
+      COVERAGERC: ".coveragerc"
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install -U pip setuptools wheel
+    - run: pip install -U pytest pytest-cov coveralls
+    - run: sh -c "if [ '$AIO_AVAILABLE' = 'true' ]; then pip install -U pytest-asyncio; fi"
+    - run: pip install -e .
+    - run: py.test --cov-config $COVERAGERC --cov=pydispatch
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         distributions: sdist bdist_wheel
+#         'on':
+#           python: '3.8'
+#           tags: true
+#         username: __token__
+#         password:
+#           secure: NIm71IwfmsgZkVHb2gNpzX3wGWckPF4ryMX95eoURh0cn3CBEwtdx0n1y2UjIIQMHswzZ13Ksmd1X5q04SMwbr0CBmdfDalH4BZXjhnuHFSeIy6MIZzXDzacAEsbR5FNGjEMgYWxV4bh463sPackQ+qPQFlC5Qv8FA3a+i6Ei6ZtFJDPzaHhRLmnddbX4FeCM8tCri5mLZpK/3fpdiwjRvqtkftNvDxnieSBG/n/dqOGfxQghWLAiqOJV+BlGG7awjMSXcBOjzZsT0SI02bNrSV6vDJI7fKp5hjkb73yBucOd5YVvDZWGIF30thq662Ug9hw37k+EbtHOFjSDgFVXdC3.8PZoiedo42SLPOZ0d/jdGaQIyijkq0Sw+UplBlKBc+7s+sWUFSgjaYOvgyXp4bG6ApDC/yJ5FY7h/GobpsctaZ60lc0lFBSxGasd/pk0KUYCG4A6EXvEh62W4F9gJJXJQ/+g4tn38pX21LCy8lckqgo4Eqwcn4ch6N+7n1U7wVjZBoXXnCT1Q65w1LQmKKiAFPczAwZ5sxs+KXLKPaEnSHZ1OsNZNrcj4kfncxM1zdNMtGZUaw+p3RQs1vHPBNg/0p2tHZ/YHEJFHZd3.8KfyT8sMXXsMwd7jxBievN2XVrK/4PtXWFObhQmmzZGBFn0a09pn6F+map21j3Em4=
+#       if: "${{ github.event_name == 'push' && ${{ github.ref }} }}"
+    - run: coveralls --rcfile="$COVERAGERC"
+      if: "${{ success() }}"
+  test_6:
+    runs-on: ubuntu-22.04
+    env:
+      AIO_AVAILABLE: 'true'
+      COVERAGERC: ".coveragerc"
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install -U pip setuptools wheel
+    - run: pip install -U pytest pytest-cov coveralls
+    - run: sh -c "if [ '$AIO_AVAILABLE' = 'true' ]; then pip install -U pytest-asyncio; fi"
+    - run: pip install -e .
+    - run: py.test --cov-config $COVERAGERC --cov=pydispatch
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         distributions: sdist bdist_wheel
+#         'on':
+#           python: '3.8'
+#           tags: true
+#         username: __token__
+#         password:
+#           secure: NIm71IwfmsgZkVHb2gNpzX3wGWckPF4ryMX95eoURh0cn3CBEwtdx0n1y2UjIIQMHswzZ13Ksmd1X5q04SMwbr0CBmdfDalH4BZXjhnuHFSeIy6MIZzXDzacAEsbR5FNGjEMgYWxV4bh463sPackQ+qPQFlC5Qv8FA3a+i6Ei6ZtFJDPzaHhRLmnddbX4FeCM8tCri5mLZpK/3fpdiwjRvqtkftNvDxnieSBG/n/dqOGfxQghWLAiqOJV+BlGG7awjMSXcBOjzZsT0SI02bNrSV6vDJI7fKp5hjkb73yBucOd5YVvDZWGIF30thq662Ug9hw37k+EbtHOFjSDgFVXdC3.8PZoiedo42SLPOZ0d/jdGaQIyijkq0Sw+UplBlKBc+7s+sWUFSgjaYOvgyXp4bG6ApDC/yJ5FY7h/GobpsctaZ60lc0lFBSxGasd/pk0KUYCG4A6EXvEh62W4F9gJJXJQ/+g4tn38pX21LCy8lckqgo4Eqwcn4ch6N+7n1U7wVjZBoXXnCT1Q65w1LQmKKiAFPczAwZ5sxs+KXLKPaEnSHZ1OsNZNrcj4kfncxM1zdNMtGZUaw+p3RQs1vHPBNg/0p2tHZ/YHEJFHZd3.8KfyT8sMXXsMwd7jxBievN2XVrK/4PtXWFObhQmmzZGBFn0a09pn6F+map21j3Em4=
+#       if: "${{ github.event_name == 'push' && ${{ github.ref }} }}"
+    - run: coveralls --rcfile="$COVERAGERC"
+      if: "${{ success() }}"

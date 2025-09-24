@@ -1,0 +1,95 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref || github.event_name == 'pull_request' || github.ref == 'refs/heads/main' && github.event_name == push) }}
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: apt-get -y install graphviz
+    - run: pip install -U pip setuptools
+    - run: python setup.py sdist
+    - run: pip install dist/pydot-*.tar.gz
+    - run: pip install -r requirements.txt
+    - run: cd test/
+    - run: python pydot_unittest.py
+    strategy:
+      matrix:
+        python:
+        - 3.8
+        - 3.9
+  test_2:
+    runs-on: # this agent type is not supported: [[{"arch"=>"amd64"}]]
+             ubuntu-latest
+    if: ${{ github.ref || github.event_name == 'pull_request' || github.ref == 'refs/heads/main' && github.event_name == push) }}
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: apt-get -y install graphviz
+    - run: pip install -U pip setuptools
+    - run: python setup.py sdist
+    - run: pip install dist/pydot-*.tar.gz
+    - run: pip install -r requirements.txt
+    - run: cd test/
+    - run: python pydot_unittest.py
+  test_3:
+    runs-on: # this agent type is not supported: [[{"arch"=>"ppc64le"}]]
+             ubuntu-latest
+    if: ${{ github.ref || github.event_name == 'pull_request' || github.ref == 'refs/heads/main' && github.event_name == push) }}
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: apt-get -y install graphviz
+    - run: pip install -U pip setuptools
+    - run: python setup.py sdist
+    - run: pip install dist/pydot-*.tar.gz
+    - run: pip install -r requirements.txt
+    - run: cd test/
+    - run: python pydot_unittest.py
+  test_4:
+    runs-on: # this agent type is not supported: [[{"arch"=>"ppc64le"}]]
+             ubuntu-latest
+    if: ${{ github.ref || github.event_name == 'pull_request' || github.ref == 'refs/heads/main' && github.event_name == push) }}
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.9
+    - run: apt-get -y install graphviz
+    - run: pip install -U pip setuptools
+    - run: python setup.py sdist
+    - run: pip install dist/pydot-*.tar.gz
+    - run: pip install -r requirements.txt
+    - run: cd test/
+    - run: python pydot_unittest.py
+  black:
+    runs-on: # this agent type is not supported: [[{"arch"=>"amd64"}]]
+             ubuntu-latest
+    if: ${{ github.ref || github.event_name == 'pull_request' || github.ref == 'refs/heads/main' && github.event_name == push) }}
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: apt-get -y install
+    - run: pip install -e .[dev]
+    - run: black --check --diff .

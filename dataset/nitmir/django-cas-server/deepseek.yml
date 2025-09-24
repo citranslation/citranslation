@@ -1,0 +1,36 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox
+    - name: Run tox
+      run: tox -e ${{ matrix.tox_env }}
+      env:
+        TOX_ENV: ${{ matrix.tox_env }}
+
+  matrix:
+    tox_env:
+      - flake8
+      - check_rst
+      - coverage
+      - py38-django111
+      - py38-django22
+      - py39-django22
+      - py310-django32
+      - py39-django32
+      - py310-django40
+      - py310-django41

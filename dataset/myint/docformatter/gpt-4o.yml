@@ -1,0 +1,53 @@
+name: Python package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        python-version: ["3.8", "pypy-3.8"]
+        include:
+          - python-version: "3.8"
+            dist: xenial
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python setup.py --quiet install
+
+    - name: Run tests
+      run: |
+        python test_docformatter.py
+        docformatter setup.py
+
+    - name: Install coverage
+      run: |
+        pip install --quiet coverage
+
+    - name: Run coverage
+      run: |
+        make coverage
+
+    - name: Install coveralls
+      run: |
+        pip install --quiet coveralls
+
+    - name: Run coveralls
+      run: |
+        coveralls

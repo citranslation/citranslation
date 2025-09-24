@@ -1,0 +1,27 @@
+name: Python CI
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO_SETTINGS_MODULE: etip.settings.dev
+    steps:
+      - uses: actions/checkout@v2
+      - run: pip install flake8
+      - run: flake8 etip/
+
+  test:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO_SETTINGS_MODULE: etip.settings.dev
+    strategy:
+      matrix:
+        python-version: [3.8]
+    steps:
+      - uses: actions/checkout@v2
+      - run: pip install -r requirements.txt
+      - run: cd etip/ && python manage.py test

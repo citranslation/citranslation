@@ -1,0 +1,97 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    services:
+      postgres:
+        image: postgres:11
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            dirmngr \
+            apt-transport-https \
+            postgresql-contrib-9.6 \
+            postgresql-10 \
+            postgresql-contrib-10 \
+            postgresql-client-10 \
+            postgresql-11 \
+            postgresql-contrib-11 \
+            postgresql-client-11 \
+            postgresql-12 \
+            postgresql-contrib-12 \
+            postgresql-client-12 \
+            unzip \
+            rabbitmq-server \
+            clickhouse-client \
+            clickhouse-server \
+            clickhouse-common-static
+          sudo service clickhouse-server restart
+          pip install -r requirements-test.txt
+
+      - name: Set up PostgreSQL
+        run: |
+          sudo sed -i 's/port = 5433/port = 5432/' /etc/postgresql/11/main/postgresql.conf
+          sudo cp /etc/postgresql/{10,11}/main/pg_hba.conf
+          sudo sed -i 's/port = 5434/port = 5432/' /etc/postgresql/12/main/postgresql.conf
+          sudo cp /etc/postgresql/{10,12}/main/pg_hba.conf
+          sudo systemctl stop postgresql
+          sudo systemctl start postgresql@11-main
+
+      - name: Create PostgreSQL roles and databases
+        run: |
+          psql -tc 'CREATE ROLE test;' -U postgres
+          psql -c 'ALTER ROLE test WITH SUPERUSER;' -U postgres
+          psql -c 'ALTER ROLE test WITH LOGIN;' -U postgres
+          psql -c "ALTER ROLE test PASSWORD 'test';" -U postgres
+          psql -c 'CREATE DATABASE test OWNER test;' -U postgres
+          psql -c 'CREATE DATABASE test2 OWNER test;' -U postgres
+
+      - name: Run tests
+        run: python runtests.py
+
+      - name: Output software versions
+        run: |
+          erl -eval 'erlang:display(erlang:system_info(otp_release)), halt().' -noshell
+          rabbitmqctl status | grep "RabbitMQ"
+          clickhouse-client --query "SELECT version();"
+          psql -tc 'SHOW server_version' -U postgres
+
+      - name: Set up Python versions and run tests for each
+        run: |
+          for PG in 9.6 10 11 12; do
+            for DJANGO in 2.1 2.2 3.0 3.1; do
+              echo "Testing with PostgreSQL $PG and Django $DJANGO"
+              pip install Django==$DJANGO.*
+              python setup.py -q install
+              python runtests.py
+            done
+          done
+

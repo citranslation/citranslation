@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8']
+        build: ['docs', 'pep8', 'cover', 'default']
+      allow_failures:
+        python-version: '3.8'
+    env:
+      BUILD: ${{ matrix.build }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip uninstall -y nose mock
+          pip install pbr tox tox-travis
+          pip install -r doc/requirements.txt .[test]
+
+      - name: Run tests
+        run: |
+          case "${{ env.BUILD }}" in
+            docs|pep8|cover)
+              tox -e ${{ env.BUILD }}
+              ;;
+            *)
+              tox
+              ;;
+          esac
+
+      - name: Deploy to PyPI
+        if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
+        run: |
+          echo "Deploying to PyPI..."
+          twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
+        env:
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}

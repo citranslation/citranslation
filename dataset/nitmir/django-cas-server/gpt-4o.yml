@@ -1,0 +1,96 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        include:
+          # generic checks
+          - python-version: "3.9"
+            env: TOX_ENV=flake8
+          - python-version: "3.9"
+            env: TOX_ENV=check_rst
+          - python-version: "3.9"
+            env: TOX_ENV=coverage
+          # REHL 7 support and Ubuntu bionic
+          - python-version: "3.8"
+            env: TOX_ENV=py38-django111
+          - python-version: "3.8"
+            env: TOX_ENV=py38-django111
+            arch: ppc64le
+          # RHEL 8 support
+          - python-version: "3.8"
+            env: TOX_ENV=py38-django22
+          - python-version: "3.8"
+            env: TOX_ENV=py38-django22
+            arch: ppc64le
+          # Debian buster support
+          - python-version: "3.8"
+            env: TOX_ENV=py38-django111
+          - python-version: "3.8"
+            env: TOX_ENV=py38-django111
+            arch: ppc64le
+          # Ubuntu focal and Ubuntu groovy support
+          - python-version: "3.8"
+            env: TOX_ENV=py38-django22
+          - python-version: "3.8"
+            env: TOX_ENV=py38-django22
+            arch: ppc64le
+          # Debian bullseye and Ubuntu hirsute and impish support
+          - python-version: "3.9"
+            env: TOX_ENV=py39-django22
+          - python-version: "3.9"
+            env: TOX_ENV=py39-django22
+            arch: ppc64le
+          # Ubuntu jammy and kinetic support
+          - python-version: "3.10"
+            env: TOX_ENV=py310-django32
+          - python-version: "3.10"
+            env: TOX_ENV=py310-django32
+            arch: ppc64le
+          # Django additional supported version
+          - python-version: "3.9"
+            env: TOX_ENV=py39-django32
+          - python-version: "3.10"
+            env: TOX_ENV=py310-django40
+          - python-version: "3.10"
+            env: TOX_ENV=py310-django41
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools --upgrade
+        pip install tox
+        pip freeze
+
+    - name: Run tests
+      run: tox -e ${{ matrix.env }}
+
+    - name: Show logs
+      if: failure()
+      run: cat tox_log/*.log

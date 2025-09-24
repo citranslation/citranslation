@@ -1,0 +1,43 @@
+name: Python Package
+
+on:
+  push:
+    tags: true
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install .[test]
+
+      - name: Run tests
+        run: echo hello world
+
+      - name: Deploy to PyPI
+        if: matrix.python-version == '3.8' && github.ref_type == 'tag'
+        env:
+          TWINE_USERNAME: mara-pypi-upload-account
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          pip install twine
+          python setup.py sdist
+          twine upload dist/*
+          
+# Note: You need to set the PYPI_PASSWORD secret in your GitHub repository settings.
+

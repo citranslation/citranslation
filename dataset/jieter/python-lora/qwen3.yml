@@ -1,0 +1,35 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - { python: 3.8, env: { TOXENV: py38 } }
+          - { python: 3.8, env: { TOXENV: flake8 } }
+          - { python: 3.8, env: { TOXENV: isort } }
+          - { python: 3.8, env: { TOXENV: black } }
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ matrix.python }}-pip
+      - name: Install dependencies
+        run: |
+          pip install tox
+      - name: Run tox
+        run: tox
+

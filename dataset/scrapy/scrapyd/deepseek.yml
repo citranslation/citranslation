@@ -1,0 +1,42 @@
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8, 3.9
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip wheel setuptools codecov
+        pip install -r reqs/requirements-latest.txt -r reqs/requirements-tests.txt
+
+    - name: Run tests and coverage
+      run: |
+        coverage erase
+        coverage run --branch bin/trial scrapyd
+        coverage report
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+
+    - name: Notifications
+      if: failure()
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_CHANNEL: "#scrapy"
+        SLACK_USERNAME: "GitHub Actions"
+        SLACK_ICON: ":github:"
+        SLACK_COLOR: "#0066cc"
+        SLACK_MESSAGE: "Job failed: ${{ github.job }}"
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+

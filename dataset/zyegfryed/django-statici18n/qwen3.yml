@@ -1,0 +1,23 @@
+name: Python Tests
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - python-version: 3.8
+            os: ubuntu-22.04
+            tox-env: lint,py38-django22,py38-django31,py38-django32,coverage
+          - python-version: 3.9
+            os: ubuntu-22.04
+            tox-env: py39-django22,py39-django31,py39-django32
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install tox codecov
+      - run: tox -e ${{ matrix.tox-env }}
+      - run: codecov

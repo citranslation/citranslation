@@ -1,0 +1,40 @@
+name: Python Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: 3.8
+            allow-failure: true
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: pip-${{ matrix.python }}
+        restore-keys: pip
+
+    - name: Install dependencies
+      run: |
+        pip install -e .
+        pip install -r tests/requirements.txt | cat
+
+    - name: Run tests
+      run: py.test -vv
+

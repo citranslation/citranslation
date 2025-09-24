@@ -1,0 +1,27 @@
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install tox
+      run: pip install tox
+    - name: Determine TOXENV and run tox
+      run: |
+        TOXENV=$(tox --listenvs | grep "py${{ matrix.python }}-" | tr '\n' ',')
+        export TOXENV
+        tox
+

@@ -1,0 +1,22 @@
+name: CI
+on:
+  push:
+    branches: [ main ]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9"]
+        allow_failures:
+          - python: "3.8"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install pipenv
+      - run: pipenv install --dev
+      - run: pipenv run lint
+      - run: pipenv run test

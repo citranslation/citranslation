@@ -1,0 +1,29 @@
+name: Python CI
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.8', '3.9', 'pypy-3.8']
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ hashFiles('**/requirements.txt') }}
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          pip install codecov tox
+      - name: Run tests
+        run: tox -e py
+      - name: Upload coverage
+        uses: codecov/codecov-action@v1

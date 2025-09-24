@@ -1,0 +1,33 @@
+name: Python CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.8, 3.9]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Conditional setuptools install
+        run: |
+          if [[ ${{ matrix.python }} == "3.8" ]]; then pip install 'setuptools<=60.9.0'; fi
+      - name: Install package
+        run: python setup.py -q install
+      - name: Install linters
+        run: pip install pylint yapf pytype
+      - name: Run tests
+        run: python setup.py test
+      - name: Run pylint
+        run: pylint comment_parser
+      - name: Run pytype
+        run: pytype
+      - name: Format code with yapf
+        run: yapf -drp comment_parser

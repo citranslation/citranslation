@@ -1,0 +1,32 @@
+name: MTGJSON5 Tox Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.8]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Before Install
+        run: |
+          pip install -U pip setuptools wheel tox-travis
+
+      - name: Install dependencies
+        run: pip install -r requirements_test.txt
+
+      - name: Run tests
+        run: tox
+

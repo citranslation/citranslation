@@ -1,0 +1,47 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+        django-version: [22, 30, 31, 32]
+        arch: [x64, ppc64le]
+    
+    defaults:
+      runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install tox
+
+      - name: Run tests
+        env:
+          TOXENV: py${{ matrix.python-version }}-django${{ matrix.django-version }}
+        run: |
+          tox
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "Test failed for Python ${{ matrix.python-version }} and Django ${{ matrix.django-version }}"
+
+      - name: Notify on success
+        if: success()
+        run: |
+          echo "Test succeeded for Python ${{ matrix.python-version }} and Django ${{ matrix.django-version }}"
+
+# Email notifications can be handled through other means, such as using a third-party service or GitHub Actions for notifications.
+

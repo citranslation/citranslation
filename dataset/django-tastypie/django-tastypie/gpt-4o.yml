@@ -1,0 +1,51 @@
+name: Python package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8]
+        django-version: [dj22, dj30, dj31, dj32, djdev]
+        mode: [flake8, flake8-strict, docs]
+
+      allow_failures:
+        - matrix:
+            django-version: djdev
+        - matrix:
+            mode: flake8-strict
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 762E3.87
+        sudo apt-get update
+        sudo apt-get install -y binutils libproj-dev gdal-bin libsqlite3-mod-spatialite
+        python -m pip install --upgrade pip
+        pip install -U wheel virtualenv
+        pip install tox coveralls
+
+    - name: Run tests
+      run: |
+        apt list --installed
+        coverage erase
+        tox -e py${{ matrix.python-version }}-${{ matrix.django-version }}${{ matrix.mode }}
+
+    - name: Coveralls
+      if: success()
+      run: coveralls

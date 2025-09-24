@@ -1,0 +1,53 @@
+name: Django CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+        django-version: ["django>=1.11,<1.12", "django>=2.0,<2.1"]
+        exclude:
+          - python-version: 3.8
+            django-version: "django>=2.0,<2.1"
+        include:
+          - python-version: 3.8
+            django-version: "django>=2.1,<2.2"
+          - python-version: 3.8
+            django-version: "django>=2.2,<2.3"
+          - python-version: 3.8
+            django-version: "django>=3.0,<3.1"
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip wheel setuptools
+        pip install codecov
+        pip install ${{ matrix.django-version }} -e .[tests]
+    - name: Run tests
+      run: coverage run --rcfile=.coveragerc runtests.py
+    - name: Upload coverage to Codecov
+      if: success()
+      uses: codecov/codecov-action@v2
+
+  notifications:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Send notifications
+      if: failure()
+      run: |
+        echo "Sending notifications..."
+        # Add your notification logic here
+

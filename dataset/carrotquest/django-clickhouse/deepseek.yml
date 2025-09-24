@@ -1,0 +1,66 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_DB: test
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-test.txt
+        pip install Django==${{ matrix.django }}*
+        python setup.py install
+
+    - name: Run tests
+      run: python runtests.py
+
+    - name: Output software versions
+      run: |
+        erl -eval 'erlang:display(erlang:system_info(otp_release)), halt().' -noshell
+        rabbitmqctl status | grep "RabbitMQ"
+        clickhouse-client --query "SELECT version();"
+        psql -tc 'SHOW server_version' -U test -d test
+
+    - name: Setup ClickHouse
+      run: |
+        wget https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc
+        sudo apt-key add erlang_solutions.asc
+        sudo apt-get update
+        sudo apt-get install clickhouse-client clickhouse-server clickhouse-common-static
+        sudo service clickhouse-server restart
+
+    - name: Setup PostgreSQL
+      run: |
+        sudo sed -i 's/port = 5433/port = 5432/' /etc/postgresql/11/main/postgresql.conf
+        sudo systemctl stop postgresql
+        sudo systemctl start postgresql@11-main
+        sudo -u postgres psql -c 'CREATE ROLE test;'
+        sudo -u postgres psql -c 'ALTER ROLE test WITH SUPERUSER;'
+        sudo -u postgres psql -c 'ALTER ROLE test WITH LOGIN;'
+        sudo -u postgres psql -c "ALTER ROLE test PASSWORD 'test';"
+        sudo -u postgres psql -c 'CREATE DATABASE test OWNER test;'
+        sudo -u postgres psql -c 'CREATE DATABASE test2 OWNER test;'
+
+# End-of-Code

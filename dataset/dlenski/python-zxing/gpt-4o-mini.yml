@@ -1,0 +1,44 @@
+name: Python package
+
+on:
+  push:
+    tags: true
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install OpenJDK 8
+        run: sudo apt-get install -y openjdk-8-jre
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: python setup.py test
+
+      - name: Deploy to PyPI
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          TWINE_USERNAME: moxfyre
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          pip install twine
+          twine upload dist/*
+          
+# Note: You need to set the PYPI_PASSWORD secret in your GitHub repository settings.

@@ -1,0 +1,45 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+        toxenv: 
+          - flake8
+          - integration
+          - py38-django22
+          - py39-django22
+          - py38-django30
+          - py39-django30
+          - py39-django31
+          - py39-djangomain
+
+    defaults:
+      runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install tox
+
+      - name: Run tests
+        run: |
+          tox -e ${{ matrix.toxenv }}
+
+      - name: Allow failures for specific environments
+        if: startsWith(matrix.toxenv, 'py') && endsWith(matrix.toxenv, 'djangomain')
+        run: echo "This job is allowed to fail."
+

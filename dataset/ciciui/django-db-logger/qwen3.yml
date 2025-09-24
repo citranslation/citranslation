@@ -1,0 +1,61 @@
+name: Django Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: "3.8"
+            django: "1.9"
+          - python: "3.8"
+            django: "1.10"
+          - python: "3.8"
+            django: "1.11.17"
+          - python: "3.8"
+            django: "2.0"
+          - python: "3.8"
+            django: "2.2"
+          - python: "3.8"
+            django: "3.1"
+          - python: "3.8"
+            django: "3.2"
+          - python: "3.9"
+            django: "1.11.17"
+          - python: "3.9"
+            django: "2.0"
+          - python: "3.9"
+            django: "2.2"
+          - python: "3.9"
+            django: "3.1"
+          - python: "3.9"
+            django: "3.2"
+        exclude:
+          - python: "3.8"
+            django: "2.0"
+          - python: "3.8"
+            django: "2.2"
+          - python: "3.8"
+            django: "3.1"
+          - python: "3.8"
+            django: "3.2"
+          - python: "3.8"
+            django: "1.9"
+          - python: "3.8"
+            django: "1.10"
+          - python: "3.9"
+            django: "1.9"
+          - python: "3.9"
+            django: "1.10"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install Django
+        run: pip install Django==${{ matrix.django }}
+      - name: Run tests
+        run: python test_manage.py test

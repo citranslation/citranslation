@@ -1,0 +1,32 @@
+name: Python CI
+
+on:
+  push:
+    branches:
+      - '!dependabot/*'
+  pull_request:
+    branches:
+      - '!dependabot/*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: '3.8'
+          - python: pypy-3.8
+          - python: '3.8'
+            env: OLD_CRYPTOGRAPHY=3.8.1
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run tests
+        run: ./ci/travis.sh
+

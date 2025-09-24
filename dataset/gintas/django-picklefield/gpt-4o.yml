@@ -1,0 +1,97 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.8]
+        arch: [amd64, ppc64le]
+        include:
+          - os: ubuntu-latest
+            python-version: 3.8
+            arch: amd64
+            env: TOXENV=flake8
+          - os: ubuntu-latest
+            python-version: 3.8
+            arch: amd64
+            env: TOXENV=isort
+          - os: ubuntu-latest
+            python-version: 3.8
+            arch: ppc64le
+            env: TOXENV=flake8
+          - os: ubuntu-latest
+            python-version: 3.8
+            arch: ppc64le
+            env: TOXENV=isort
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: ${{ matrix.arch }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tox
+      - name: Run lint
+        run: tox
+
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.8]
+        arch: [amd64, ppc64le]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: ${{ matrix.arch }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tox coveralls
+      - name: Run tests
+        run: tox
+      - name: Upload coverage to Coveralls
+        if: success() && matrix.python-version == '3.8'
+        run: |
+          if [ -f .coverage ]; then
+            coveralls
+          fi
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref_type == 'tag'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install django
+      - name: Build and publish
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          python -m pip install --upgrade setuptools wheel twine
+          python setup.py sdist bdist_wheel
+          twine upload dist/*

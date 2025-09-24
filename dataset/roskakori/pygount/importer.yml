@@ -1,0 +1,35 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: pip install --requirement dev-requirements.txt
+    - run: if [[ $TRAVIS_PYTHON_VERSION == 3.8 ]]; then pre-commit run --all-files; fi
+    - run: python setup.py develop
+    - run: pytest --verbose
+    - run: python setup.py bdist_wheel
+    - run: python setup.py install
+    - run: pygount --version
+    - run: pygount --help
+    - run: pygount pygount *.cfg *.yaml
+    - run: pygount --format=summary pygount *.cfg *.yaml
+    - run: if [[ $TRAVIS_PYTHON_VERSION == 3.8 ]]; then coveralls; fi
+      if: "${{ success() }}"
+    strategy:
+      matrix:
+        python:
+        - '3.8'
+

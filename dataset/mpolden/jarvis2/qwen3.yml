@@ -1,0 +1,29 @@
+name: Python CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Node.js
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y nodejs
+      - name: Install jshint
+        run: npm install -g jshint
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run make
+        run: make

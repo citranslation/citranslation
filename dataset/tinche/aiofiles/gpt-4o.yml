@@ -1,0 +1,54 @@
+name: Python package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - python-version: "3.8"
+            env: TOXENV=py38
+            arch: x86
+          - python-version: "3.8"
+            env: TOXENV=py39
+            arch: x86
+          - python-version: "3.8"
+            env: TOXENV=py38
+            arch: ppc64le
+          - python-version: "3.8"
+            env: TOXENV=py39
+            arch: ppc64le
+        exclude:
+          - arch: ppc64le
+            python-version: "pypy-3.8"
+
+    runs-on: ${{ matrix.arch == 'ppc64le' && 'ubuntu-latest' || 'ubuntu-latest' }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tox codecov
+
+      - name: Run tests
+        run: tox -e ${{ matrix.env }}
+
+      - name: Upload coverage to Codecov
+        if: success()
+        run: |
+          tox -e coverage-report
+          codecov

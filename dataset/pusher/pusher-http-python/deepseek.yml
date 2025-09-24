@@ -1,0 +1,26 @@
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+        architecture: x64
+
+    - name: Upgrade setuptools for Python 3.8
+      run: pip install --upgrade setuptools
+
+    - name: Install dependencies for Python 3.8
+      run: pip install -r requirements.txt
+
+    - name: Test with Python 3.8
+      run: python setup.py test

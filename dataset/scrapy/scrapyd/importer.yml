@@ -1,0 +1,38 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: pip install -U pip wheel setuptools codecov
+    - run: pip install -rreqs/requirements-latest.txt -rreqs/requirements-tests.txt
+    - run: coverage erase
+    - run: coverage run --branch bin/trial scrapyd
+    - run: coverage report
+    - run: codecov
+      if: "${{ success() }}"
+    - uses: rectalogic/notify-irc@v1
+      if: "${{ github.event_name != 'pull_request' }}"
+      with:
+        server: irc.freenode.org
+        port: 6697
+        channel: scrapy
+        nickname: Default nickname
+        message: Default message
+    strategy:
+      matrix:
+        python:
+        - '3.8'
+        - '3.9'

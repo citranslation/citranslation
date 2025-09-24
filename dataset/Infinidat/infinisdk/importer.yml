@@ -1,0 +1,42 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: pip install -e .
+    - run: pip install astroid>=2.0
+    - run: pip install pylint>=2.0
+    - run: pylint --rcfile=.pylintrc infinisdk setup.py
+    strategy:
+      matrix:
+        python:
+        - '3.8'
+  deploy:
+    needs:
+    - test
+    runs-on: ubuntu-22.04
+    if: ${{ github.ref }}
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -e .
+    - run: pip install astroid>=2.0
+    - run: pip install pylint>=2.0
+    - run: python setup.py sdist bdist_wheel
+    - run: twine upload -u $PYPI_USERNAME -p $PYPI_PASSWORD dist/*

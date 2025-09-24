@@ -1,0 +1,64 @@
+name: Django CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+        django-version: 
+          - "Django==2.2.*"
+          - "Django==3.0.*"
+          - "Django==3.1.*"
+          - "Django==3.2.*"
+          - "Django==2.1.*" # unsupported
+          - "Django==2.0.*" # unsupported
+        db: [postgres, mysql-innodb, sqlite]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install -q ${{ matrix.django-version }}
+          pip install -r requirements/base.txt
+          pip install -r requirements/test.txt
+          pip install coveralls
+
+      - name: Run tests
+        run: |
+          PYTHONPATH=".:tests:$PYTHONPATH" python -Wall -m coverage run --omit='setup.py' --source=. tests/manage.py test core --settings=
+          if python -c 'import sys; sys.exit(1 - (sys.version_info >= (3, 6)))'; then isort --check-only import_export tests; fi
+
+      - name: Upload coverage to Coveralls
+        run: coveralls
+
+    env:
+      IMPORT_EXPORT_POSTGRESQL_USER: postgres
+      IMPORT_EXPORT_POSTGRESQL_PASSWORD: ""
+      IMPORT_EXPORT_MYSQL_USER: root
+      IMPORT_EXPORT_MYSQL_PASSWORD: ""
+      
+    services:
+      postgres:
+        image: postgres:10
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ""
+        ports:
+          - 5432:5432
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: ""
+        ports:
+          - 33.8:33.8
+

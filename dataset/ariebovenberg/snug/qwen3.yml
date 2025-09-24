@@ -1,0 +1,38 @@
+name: Python CI
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python-version: 3.8
+            env: TOXENV=lint
+          - python-version: 3.8
+            env: TOXENV=docs
+          - python-version: 3.8
+            env: TOXENV=isort
+          - python-version: 3.9
+            env: TOXENV=lint
+          - python-version: 3.9
+            env: TOXENV=docs
+          - python-version: 3.9
+            env: TOXENV=isort
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        pip install tox-travis
+        pip install codecov
+    - name: Run tox
+      run: tox -e ${{ matrix.env }}
+    - name: Upload coverage
+      run: codecov

@@ -1,0 +1,167 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    env:
+      TOXENV: pep8
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install tox
+    - run: tox
+    - uses: rectalogic/notify-irc@v1
+      with:
+        server: chat.freenode.net
+        port: 6697
+        channel: gabbi
+        nickname: Default nickname
+        message: Default message
+  test_2:
+    runs-on: ubuntu-22.04
+    env:
+      TOXENV: placement
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install tox
+    - run: tox
+    - uses: rectalogic/notify-irc@v1
+      with:
+        server: chat.freenode.net
+        port: 6697
+        channel: gabbi
+        nickname: Default nickname
+        message: Default message
+  test_3:
+    runs-on: ubuntu-22.04
+    env:
+      TOXENV: pypy-3.8
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: pypy-3.8
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install tox
+    - run: tox
+    - uses: rectalogic/notify-irc@v1
+      with:
+        server: chat.freenode.net
+        port: 6697
+        channel: gabbi
+        nickname: Default nickname
+        message: Default message
+  test_4:
+    runs-on: ubuntu-22.04
+    env:
+      TOXENV: py38
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install tox
+    - run: tox
+    - uses: rectalogic/notify-irc@v1
+      with:
+        server: chat.freenode.net
+        port: 6697
+        channel: gabbi
+        nickname: Default nickname
+        message: Default message
+  test_8:
+    runs-on: ubuntu-22.04
+    env:
+      TOXENV: py38-pytest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install tox
+    - run: tox
+    - uses: rectalogic/notify-irc@v1
+      with:
+        server: chat.freenode.net
+        port: 6697
+        channel: gabbi
+        nickname: Default nickname
+        message: Default message
+  test_11:
+    runs-on: ubuntu-22.04
+    env:
+      TOXENV: py38-failskip
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install tox
+    - run: tox
+    - uses: rectalogic/notify-irc@v1
+      with:
+        server: chat.freenode.net
+        port: 6697
+        channel: gabbi
+        nickname: Default nickname
+        message: Default message
+  test_12:
+    runs-on: ubuntu-22.04
+    env:
+      TOXENV: py38-limit
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install tox
+    - run: tox
+    - uses: rectalogic/notify-irc@v1
+      with:
+        server: chat.freenode.net
+        port: 6697
+        channel: gabbi
+        nickname: Default nickname
+        message: Default message
+  test_13:
+    runs-on: ubuntu-22.04
+    env:
+      TOXENV: py38-prefix
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install tox
+    - run: tox
+    - uses: rectalogic/notify-irc@v1
+      with:
+        server: chat.freenode.net
+        port: 6697
+        channel: gabbi
+        nickname: Default nickname
+        message: Default message

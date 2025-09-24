@@ -1,0 +1,42 @@
+name: Python package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, pypy-3.8]
+        django-version: [Django>=2.2,<2.3, Django>=3.0,<3.2, Django>=3.2,<3.3]
+
+    services:
+      mongodb:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Poetry
+      run: pip install poetry
+
+    - name: Install dependencies
+      run: |
+        poetry install -q
+        poetry run pip install -q ${{ matrix.django-version }}
+
+    - name: Run tests
+      run: poetry run python -m pytest

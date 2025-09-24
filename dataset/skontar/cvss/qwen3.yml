@@ -1,0 +1,34 @@
+name: Python Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+
+          - name: "Python 3.8"
+            python: 3.8
+            os: ubuntu-latest
+          - name: "Python 3.9"
+            python: 3.9
+            os: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: pip install -e .
+      - name: Run tests
+        run: |
+          cd tests
+          python test_cvss2.py
+          python test_cvss3.py

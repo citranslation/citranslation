@@ -1,0 +1,38 @@
+name: Python Tests
+on:
+  push:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python-version: 3.8
+          - python-version: 3.9
+            env: TOXENV=mypy
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: pip-${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        pip install tox-travis codecov
+    - name: Run tests
+      run: |
+        tox -v
+    - name: Upload coverage
+      run: |
+        codecov
+    - name: IRC Notification
+      if: failure()
+      run: |
+        curl -s -X POST -H "Content-Type: application/json" --data '{"text":"Build failed: ${{ github.event.head_commit.message }}"}' ${{ secrets.IRC_CHANNEL }}

@@ -1,0 +1,36 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install pipenv
+        run: pip install pipenv
+
+      - name: Install dependencies
+        run: pipenv install --dev
+
+      - name: Run lint
+        run: pipenv run lint
+
+      - name: Run tests
+        run: pipenv run test
+
+      - name: Allow failure for 3.8
+        if: matrix.python-version == '3.8'
+        run: echo "Nightly build is allowed to fail."
+

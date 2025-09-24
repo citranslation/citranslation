@@ -1,0 +1,40 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          if [ -f minimal_requirements.txt ]; then
+            pip install -r minimal_requirements.txt
+          fi
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+          pip install --upgrade pytest
+          pip install pytest-cov codecov
+
+      - name: Set MPLBACKEND
+        run: echo "MPLBACKEND=Agg" >> $GITHUB_ENV
+
+      - name: Run tests
+        run: python -m pytest --cov=fgivenx
+
+      - name: Upload coverage to Codecov
+        run: bash <(curl -s https://codecov.io/bash)
+

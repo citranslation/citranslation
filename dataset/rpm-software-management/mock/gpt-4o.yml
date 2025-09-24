@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10]
+        include:
+          - python-version: 3.9
+            package: mock
+            name: mock RPM in Copr
+            if: github.event_name == 'pull_request'
+          - python-version: 3.9
+            package: mock-core-configs
+            name: mock-core-configs RPM in Copr
+            if: github.event_name == 'pull_request'
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        pip install -r mock/requirements.txt
+        pip install pytest-cov
+
+    - name: Run tests
+      run: |
+        if [ -n "${{ matrix.package }}" ]; then
+          PACKAGE=${{ matrix.package }} .travis/copr-build
+        else
+          PYTHON=python${{ matrix.python-version }} ./mock/run-tests.sh
+        fi

@@ -1,0 +1,406 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: flake8
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/.cache/pip/http/
+          ${{ github.workspace }}/build/nitmir/django-cas-server/.tox/$TOX_ENV/
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.9'
+    - run: travis_retry pip install setuptools --upgrade
+    - run: pip install tox $PKGS
+    - run: pip freeze
+    - run: tox -e $TOX_ENV
+    - run: cat tox_log/*.log
+  test_2:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: check_rst
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/.cache/pip/http/
+          ${{ github.workspace }}/build/nitmir/django-cas-server/.tox/$TOX_ENV/
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.9'
+    - run: travis_retry pip install setuptools --upgrade
+    - run: pip install tox $PKGS
+    - run: pip freeze
+    - run: tox -e $TOX_ENV
+    - run: cat tox_log/*.log
+  test_3:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: coverage
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/.cache/pip/http/
+          ${{ github.workspace }}/build/nitmir/django-cas-server/.tox/$TOX_ENV/
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.9'
+    - run: travis_retry pip install setuptools --upgrade
+    - run: pip install tox $PKGS
+    - run: pip freeze
+    - run: tox -e $TOX_ENV
+    - run: cat tox_log/*.log
+  test_4:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: py38-django111
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/.cache/pip/http/
+          ${{ github.workspace }}/build/nitmir/django-cas-server/.tox/$TOX_ENV/
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: travis_retry pip install setuptools --upgrade
+    - run: pip install tox $PKGS
+    - run: pip freeze
+    - run: tox -e $TOX_ENV
+    - run: cat tox_log/*.log
+  test_5:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: py38-django111
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/.cache/pip/http/
+          ${{ github.workspace }}/build/nitmir/django-cas-server/.tox/$TOX_ENV/
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: travis_retry pip install setuptools --upgrade
+    - run: pip install tox $PKGS
+    - run: pip freeze
+    - run: tox -e $TOX_ENV
+    - run: cat tox_log/*.log
+  test_6:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: py38-django22
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/.cache/pip/http/
+          ${{ github.workspace }}/build/nitmir/django-cas-server/.tox/$TOX_ENV/
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: travis_retry pip install setuptools --upgrade
+    - run: pip install tox $PKGS
+    - run: pip freeze
+    - run: tox -e $TOX_ENV
+    - run: cat tox_log/*.log
+  test_7:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: py38-django22
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/.cache/pip/http/
+          ${{ github.workspace }}/build/nitmir/django-cas-server/.tox/$TOX_ENV/
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: travis_retry pip install setuptools --upgrade
+    - run: pip install tox $PKGS
+    - run: pip freeze
+    - run: tox -e $TOX_ENV
+    - run: cat tox_log/*.log
+  test_8:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: py38-django111
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/.cache/pip/http/
+          ${{ github.workspace }}/build/nitmir/django-cas-server/.tox/$TOX_ENV/
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: travis_retry pip install setuptools --upgrade
+    - run: pip install tox $PKGS
+    - run: pip freeze
+    - run: tox -e $TOX_ENV
+    - run: cat tox_log/*.log
+  test_9:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: py38-django111
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/.cache/pip/http/
+          ${{ github.workspace }}/build/nitmir/django-cas-server/.tox/$TOX_ENV/
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: travis_retry pip install setuptools --upgrade
+    - run: pip install tox $PKGS
+    - run: pip freeze
+    - run: tox -e $TOX_ENV
+    - run: cat tox_log/*.log
+  test_10:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: py38-django22
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/.cache/pip/http/
+          ${{ github.workspace }}/build/nitmir/django-cas-server/.tox/$TOX_ENV/
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: travis_retry pip install setuptools --upgrade
+    - run: pip install tox $PKGS
+    - run: pip freeze
+    - run: tox -e $TOX_ENV
+    - run: cat tox_log/*.log
+  test_11:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: py38-django22
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/.cache/pip/http/
+          ${{ github.workspace }}/build/nitmir/django-cas-server/.tox/$TOX_ENV/
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: travis_retry pip install setuptools --upgrade
+    - run: pip install tox $PKGS
+    - run: pip freeze
+    - run: tox -e $TOX_ENV
+    - run: cat tox_log/*.log
+  test_12:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: py39-django22
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/.cache/pip/http/
+          ${{ github.workspace }}/build/nitmir/django-cas-server/.tox/$TOX_ENV/
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.9'
+    - run: travis_retry pip install setuptools --upgrade
+    - run: pip install tox $PKGS
+    - run: pip freeze
+    - run: tox -e $TOX_ENV
+    - run: cat tox_log/*.log
+  test_13:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: py39-django22
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/.cache/pip/http/
+          ${{ github.workspace }}/build/nitmir/django-cas-server/.tox/$TOX_ENV/
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.9'
+    - run: travis_retry pip install setuptools --upgrade
+    - run: pip install tox $PKGS
+    - run: pip freeze
+    - run: tox -e $TOX_ENV
+    - run: cat tox_log/*.log
+  test_14:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: py310-django32
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/.cache/pip/http/
+          ${{ github.workspace }}/build/nitmir/django-cas-server/.tox/$TOX_ENV/
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.10'
+    - run: travis_retry pip install setuptools --upgrade
+    - run: pip install tox $PKGS
+    - run: pip freeze
+    - run: tox -e $TOX_ENV
+    - run: cat tox_log/*.log
+  test_15:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: py310-django32
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/.cache/pip/http/
+          ${{ github.workspace }}/build/nitmir/django-cas-server/.tox/$TOX_ENV/
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.10'
+    - run: travis_retry pip install setuptools --upgrade
+    - run: pip install tox $PKGS
+    - run: pip freeze
+    - run: tox -e $TOX_ENV
+    - run: cat tox_log/*.log
+  test_16:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: py39-django32
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/.cache/pip/http/
+          ${{ github.workspace }}/build/nitmir/django-cas-server/.tox/$TOX_ENV/
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.9'
+    - run: travis_retry pip install setuptools --upgrade
+    - run: pip install tox $PKGS
+    - run: pip freeze
+    - run: tox -e $TOX_ENV
+    - run: cat tox_log/*.log
+  test_17:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: py310-django40
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/.cache/pip/http/
+          ${{ github.workspace }}/build/nitmir/django-cas-server/.tox/$TOX_ENV/
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.10'
+    - run: travis_retry pip install setuptools --upgrade
+    - run: pip install tox $PKGS
+    - run: pip freeze
+    - run: tox -e $TOX_ENV
+    - run: cat tox_log/*.log
+  test_18:
+    runs-on: ubuntu-22.04
+    env:
+      TOX_ENV: py310-django41
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          ${{ github.workspace }}/.cache/pip/http/
+          ${{ github.workspace }}/build/nitmir/django-cas-server/.tox/$TOX_ENV/
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.10'
+    - run: travis_retry pip install setuptools --upgrade
+    - run: pip install tox $PKGS
+    - run: pip freeze
+    - run: tox -e $TOX_ENV
+    - run: cat tox_log/*.log

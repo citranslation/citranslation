@@ -1,0 +1,63 @@
+name: CI Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - python: "3.8"
+            env: "false"
+            os: ubuntu-22.04
+          - python: "3.9"
+            env: "true"
+            os: ubuntu-22.04
+          - python: "3.8"
+            env: "true"
+            os: ubuntu-22.04
+          - python: "pypy-3.8"
+            env: "false"
+            os: ubuntu-14.04
+        allow_failures:
+          - python: "pypy-3.8"
+            env: "true"
+            os: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install dependencies
+        run: |
+          if [ "${{ matrix.env }}" = "true" ]; then
+            pip install -r requirements.txt pytest
+          fi
+          git clone https://github.com/ProgVal/irctest.git
+          echo "y" | pip uninstall limnoria || true
+
+      - name: Echo Python version
+        run: echo "Python version: ${{ matrix.python }}"
+
+      - name: Install package
+        run: python setup.py install
+
+      - name: Run tests
+        run: supybot-test test -v --plugins-dir=./plugins/ --no-network
+
+      - name: Run optional tests
+        if: ${{ matrix.env == 'true' && matrix.python != 'pypy-3.8' && matrix.python != '3.8' && matrix.python matches '3\.[4-9]' }}
+        run: |
+          cd irctest
+          pytest --controllers irctest.controllers.limnoria
+

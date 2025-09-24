@@ -1,0 +1,42 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Node.js and Elm
+        run: |
+          curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+          sudo apt-get install -y nodejs
+          npm install -g elm
+
+      - name: Install dependencies
+        run: pip install tox-travis
+
+      - name: Run tests
+        run: |
+          if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
+            tox -e cover
+            tox -e black
+          else
+            tox
+          fi
+
+      - name: Upload coverage to Coveralls
+        if: success() && matrix.python-version == '3.8'
+        run: coveralls
+

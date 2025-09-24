@@ -1,0 +1,83 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+      - /^v\d+\.\d+(\.(\d|x)+)?(-\S*)?$/
+  pull_request:
+    branches:
+      - main
+      - /^v\d+\.\d+(\.(\d|x)+)?(-\S*)?$/
+
+env:
+  TOX_FORCE_IGNORE_OUTCOME: "false"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, pypy-3.8]
+        toxenv:
+          - lint,docs
+          - django20-py38-all
+          - django20-pypy-3.8-all
+          - django21-py38-all
+          - django21-pypy-3.8-all
+          - django22-py38-all
+          - django22-pypy-3.8-all
+          - django30-py38-all
+          - django30-pypy-3.8-all
+          - django31-py38-all
+          - django31-pypy-3.8-all
+          - django31-py38-none
+          - django31-py38-amazon_ses
+          - django22-py38-all-old_urllib3
+        allow-failure: false
+    if: ${{ matrix.allow-failure == false }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          pip install tox
+
+      - name: Run tests
+        run: |
+          tox -e ${{ matrix.toxenv }}
+
+  allow-failure-job:
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{ failure() }}
+    strategy:
+      matrix:
+        python-version: [3.8]
+        toxenv: [djangoDev-py38-all]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          pip install tox
+
+      - name: Run tests
+        run: |
+          tox -e ${{ matrix.toxenv }}
+          echo "Allowing failure for ${{ matrix.toxenv }}"

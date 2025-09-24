@@ -1,0 +1,24 @@
+name: Python 3.8 Test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          # Add any dependency installation commands here if needed
+          echo "No dependencies to install for this test."
+
+      - name: Run tests
+        run: python runtest.py
+

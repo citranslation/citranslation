@@ -1,0 +1,35 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      docker:
+        image: docker:latest
+        options: >-
+          --privileged
+          --network host
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        run: |
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+          sudo apt-get update
+          sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+
+      - name: Build Docker image
+        run: docker build -t draft-kings-fun .
+
+      - name: Run flake8
+        run: docker run draft-kings-fun flake8 draftfast
+
+      - name: Run tests with coverage
+        run: docker run draft-kings-fun nosetests --with-coverage --cover-package=.
+

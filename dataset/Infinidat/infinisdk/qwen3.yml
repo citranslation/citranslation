@@ -1,0 +1,45 @@
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python: ["3.8"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          pip install -e .
+          pip install astroid>=2.0
+          pip install pylint>=2.0
+      - name: Run Pylint
+        run: pylint --rcfile=.pylintrc infinisdk setup.py
+
+  deploy:
+    runs-on: ubuntu-22.04
+    if: tag IS present
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: Build package
+        run: python setup.py sdist bdist_wheel
+      - name: Upload to PyPI
+        run: twine upload -u ${{ secrets.PYPI_USERNAME }} -p ${{ secrets.PYPI_PASSWORD }} dist/*
+

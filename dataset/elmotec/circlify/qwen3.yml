@@ -1,0 +1,25 @@
+name: Python CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install dependencies
+      run: |
+        python setup.py install --quiet
+        pip install -r test-requirements.txt
+    - name: Run tests
+      run: python setup.py test --quiet
+    - name: Run coverage and coveralls
+      if: ${{ success }}
+      run: |
+        coverage run --source circlify tests.py
+        coveralls

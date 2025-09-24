@@ -1,0 +1,47 @@
+name: Python Tests and Coverage
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.8, pypy-3.8]
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Docker
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker.io
+        sudo systemctl start docker
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+
+    - name: Install dependencies
+      run: |
+        pip install -e .
+        pip install requests pytest-cov coveralls
+
+    - name: Start Docker containers
+      run: |
+        docker-compose -f tests/config/docker-compose.yml up -d
+        sleep 120
+
+    - name: Bootstrap
+      run: ./tests/config/bootstrap
+
+    - name: Run tests
+      run: py.test -v --cov=pygelf
+
+    - name: Stop Docker containers
+      run: docker-compose -f tests/config/docker-compose.yml down
+
+    - name: Upload coverage to coveralls
+      if: ${{ success }}
+      run: coveralls

@@ -1,0 +1,48 @@
+name: Python Tests
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python-version: 3.8
+            toxenv: py38
+          - python-version: 3.8
+            toxenv: py39
+          - python-version: 3.8
+            toxenv: black
+          - python-version: 3.8
+            toxenv: pep8py2
+          - python-version: 3.8
+            toxenv: pep8py3
+          - python-version: 3.8
+            toxenv: doc
+    env:
+      TOXENV: ${{ matrix.toxenv }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ matrix.python-version }}
+          restore-keys: |
+            ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip setuptools
+          pip --version
+          pip install tox codecov
+      - name: Run tox
+        run: tox
+      - name: Upload coverage
+        run: codecov

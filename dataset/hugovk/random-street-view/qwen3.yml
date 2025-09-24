@@ -1,0 +1,33 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8"]
+        fast_finish: true
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: ${{ runner.os }}-pip-
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install dependencies
+      run: |
+        pip install --upgrade black
+        pip install --upgrade flake8
+        pip install -r requirements.txt
+    - name: Static analysis
+      run: |
+        flake8 --statistics --count
+        black --check --diff --target-version py38 .
+    - name: Dummy run
+      run: python random_street_view.py --help

@@ -1,0 +1,35 @@
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: pip install -r dev-requirements.txt
+    - name: Lint with flake8
+      run: flake8 sendgrid_backend/
+    - name: Check import order with isort
+      run: isort -c ./
+    - name: Check code style with black
+      run: black --check ./
+    - name: Type check with mypy
+      run: mypy sendgrid_backend/
+    - name: Test with tox
+      run: tox

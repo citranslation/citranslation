@@ -1,0 +1,31 @@
+name: Python CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8"]
+        django: ["django21", "django22", "django30", "django31"]
+    env:
+      DJANGOVER: ${{ matrix.django }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install dependencies
+      run: |
+        pip install tox coverage
+    - name: Set TOX_ENV
+      run: |
+        if [[ "${{ matrix.python }}" == "3.8" && $DJANGOVER ]]; then export TOX_ENV=py38-$DJANGOVER; fi
+        if [[ "${{ matrix.python }}" == "3.8" && $DJANGOVER ]]; then export TOX_ENV=py38-$DJANGOVER; fi
+        if [[ "${{ matrix.python }}" == "3.8" && $DJANGOVER ]]; then export TOX_ENV=py38-$DJANGOVER; fi
+    - name: Run tox
+      run: tox -r -e "$TOX_ENV"
+    - name: Upload coverage
+      uses: codecov/codecov-action@v1.0.0

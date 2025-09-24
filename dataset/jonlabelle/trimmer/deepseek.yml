@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  # This is to ensure full SCM history is accessible for SonarCloud
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: bash scripts/install.sh
+
+    - name: Run tests
+      run: bash scripts/run_tests.sh
+
+    - name: SonarCloud Scan
+      uses: kitabisa/sonarcloud-action@main
+      with:
+        host: ${{ secrets.SONAR_HOST }}
+        login: ${{ secrets.SONAR_TOKEN }}
+        organization: jonlabelle-github
+        projectKey: ${{ github.event.repository.name }}
+        pullRequest: ${{ github.event_name == 'pull_request' }}

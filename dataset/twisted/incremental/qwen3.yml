@@ -1,0 +1,37 @@
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9"]
+        env: ["TOX_ENV=tests", "TOX_ENV=mypy", "TOX_ENV=apidocs", "PUSH_DOCS=true"]
+      fail-fast: true
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        pip install tox codecov
+    - name: Run tests
+      run: |
+        if [[ -n "${TOX_ENV}" ]]; then tox -e $TOX_ENV; fi
+
+    - name: Upload coverage
+      run: |
+        codecov
+    - name: Secure Secret
+      env:
+        SECURE_SECRET: ${{ secrets.SECURE_SECRET }}
+      run: |
+        echo "Secure secret value: $SECURE_SECRET"

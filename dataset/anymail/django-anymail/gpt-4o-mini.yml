@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'v*.*.*'
+  pull_request:
+    branches:
+      - main
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8, 'pypy-3.8']
+        toxenv:
+          - lint
+          - docs
+          - django20-py38-all
+          - django20-pypy-3.8-all
+          - django21-py38-all
+          - django21-pypy-3.8-all
+          - django22-py38-all
+          - django22-pypy-3.8-all
+          - django30-py38-all
+          - django30-pypy-3.8-all
+          - django31-py38-all
+          - django31-pypy-3.8-all
+          - djangoDev-py38-all
+          - django31-py38-none
+          - django31-py38-amazon_ses
+          - django22-py38-all-old_urllib3
+
+    defaults:
+      runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install tox
+
+      - name: Run tests
+        env:
+          TOX_FORCE_IGNORE_OUTCOME: false
+          RUN_LIVE_TESTS: ${{ matrix.toxenv == 'django31-py38-all' && 'true' || 'false' }}
+        run: |
+          tox -e ${{ matrix.toxenv }}
+
+    # Allow failures for the development environment
+    if: matrix.toxenv == 'djangoDev-py38-all' && matrix.python-version == '3.8'
+      continue-on-error: true
+

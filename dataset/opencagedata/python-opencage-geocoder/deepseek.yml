@@ -1,0 +1,37 @@
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox-gh-actions
+
+    - name: Test with tox
+      run: tox
+
+    - name: Notify Slack
+      if: failure()
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_CHANNEL: '#general'
+        SLACK_USERNAME: 'GitHub Actions'
+        SLACK_ICON: 'https://avatars.githubusercontent.com/u/6490250?v=4'
+        SLACK_MESSAGE: 'Job failed: ${{ github.repository }} :file_folder: ${{ github.ref }}'
+

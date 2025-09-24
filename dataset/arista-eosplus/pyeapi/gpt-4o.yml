@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        arch: [amd64, ppc64le]
+        python-version: ['3.8', '3.9']
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: pip install -r dev-requirements.txt
+
+    - name: Clean
+      run: make clean
+
+    - name: Run PEP8
+      run: make pep8
+
+    - name: Run Flake8
+      run: make flake8
+
+    - name: Run Check
+      run: make check
+
+    - name: Run Unittests
+      run: make unittest
+
+    - name: Upload coverage to Coveralls
+      if: success()
+      uses: coverallsapp/github-action@v1
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Send notification email
+      if: failure()
+      run: echo "Build failed" | mail -s "Build Notification" eosplus-dev@arista.com

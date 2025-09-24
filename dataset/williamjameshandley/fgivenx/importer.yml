@@ -1,0 +1,36 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: pip install -r $REQUIREMENTS
+    - run: pip install --upgrade pytest
+    - run: pip install pytest-cov codecov
+    - run: export MPLBACKEND=Agg
+    - run: python -m pytest --cov=fgivenx
+    - run: codecov
+      if: "${{ success() }}"
+    - run: bash <(curl -s https://codecov.io/bash)
+      if: "${{ success() }}"
+    strategy:
+      matrix:
+        REQUIREMENTS:
+        - minimal_requirements.txt
+        - requirements.txt
+        python:
+        - '3.8'
+    env:
+      REQUIREMENTS: "${{ matrix.REQUIREMENTS }}"

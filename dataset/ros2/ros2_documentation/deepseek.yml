@@ -1,0 +1,30 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install doc8 sphinx
+        pip install git+https://github.com/osrf/sphinx-tabs
+        pip install sphinx_multiversion
+    - name: Build the documentation
+      run: |
+        make html 2> stderr.log
+        cat stderr.log
+    - name: Check documentation
+      run: |
+        doc8 --ignore D001 --ignore-path build --ignore-path source/Tutorials/Actions
+        doc8 --ignore D000 --ignore D001 --ignore-path build source/Tutorials/Actions
+        if [ -s "stderr.log" ]; then false; fi
