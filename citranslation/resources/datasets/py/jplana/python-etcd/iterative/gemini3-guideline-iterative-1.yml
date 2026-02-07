@@ -1,0 +1,48 @@
+name: Python Package
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+
+    env:
+      TRAVIS: "True"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Before install
+        run: |
+          chmod +x download_etcd.sh
+          ./download_etcd.sh 3.4.0
+          pip install --upgrade setuptools
+
+      - name: Install Buildout and dependencies
+        run: |
+          pip install coveralls coverage pytest tox tox-gh-actions zc.buildout
+          buildout bootstrap || python -m zc.buildout bootstrap || true
+          if [ -f bin/buildout ]; then bin/buildout; else buildout; fi
+
+      - name: Run tests
+        run: tox
+
+      - name: Upload coverage to Coveralls
+        run: coveralls
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+|End-of-Code|

@@ -1,0 +1,159 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "black"
+    },
+    {
+     "children": [],
+     "type": "test"
+    }
+   ],
+   "type": "stages"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.8-dev"
+    },
+    {
+     "children": [],
+     "type": "nightly"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "black"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "black --version"
+         },
+         {
+          "children": [],
+          "type": "black --check futaba"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }],
+     "type": "include"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "nightly"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     }],
+     "type": "allow_failures"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    }
+   ],
+   "type": "build"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install -r requirements.txt"
+    },
+    {
+     "children": [],
+     "type": "pip install -r requirements-dev.txt"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pylint --reports=yes futaba"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "never"
+      }],
+      "type": "on_success"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "always"
+      }],
+      "type": "on_failure"
+     }
+    ],
+    "type": "email"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

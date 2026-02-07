@@ -1,0 +1,502 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "ci"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "30 0 * * 1"
+       }],
+       "type": "cron"
+      }],
+      "type": "OBJ-NODE"
+     }],
+     "type": "schedule"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "run unit tests"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [
+          {
+           "children": [],
+           "type": "3.7"
+          },
+          {
+           "children": [],
+           "type": "3.8"
+          },
+          {
+           "children": [],
+           "type": "3.9"
+          },
+          {
+           "children": [],
+           "type": "3.10"
+          }
+         ],
+         "type": "python"
+        }],
+        "type": "matrix"
+       }],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout source code"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up python-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-cmd"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "python-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run unit tests (via tox)"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "tox -e py"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "test"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "upload release artifacts"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "test"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "github.event_name == 'push'"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout source code"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "0"
+            }],
+            "type": "fetch-depth"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up python"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "3.10"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "python-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "build a binary wheel and a source tarball"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "python-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "publish distribution to pypi"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "startswith(github.ref, 'refs/tags')"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pypa/gh-action-pypi-publish@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.pypi_api_token }}"
+            }],
+            "type": "password"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "create release on github"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "create_release"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "startswith(github.ref, 'refs/tags')"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/create-release@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.github_token }}"
+            }],
+            "type": "github_token"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ github.ref }}"
+             }],
+             "type": "tag_name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ github.ref }}"
+             }],
+             "type": "release_name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "FALSE"
+             }],
+             "type": "draft"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "FALSE"
+             }],
+             "type": "prerelease"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "add sdist to release"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "upload-release-asset"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "startswith(github.ref, 'refs/tags')"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/upload-release-asset@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.github_token }}"
+            }],
+            "type": "github_token"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ steps.create_release.outputs.upload_url }}"
+             }],
+             "type": "upload_url"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "./dist/git-pw-${{ github.ref }}.tar.gz"
+             }],
+             "type": "asset_path"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "git-pw-${{ github.ref }}.tar.gz"
+             }],
+             "type": "asset_name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "application/gzip"
+             }],
+             "type": "asset_content_type"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "release"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

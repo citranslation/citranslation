@@ -1,0 +1,59 @@
+```yaml
+name: Python CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    # Corresponds to Travis `dist: jammy`
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        # Corresponds to Travis `python: - 3.9`
+        python-version: ["3.9"]
+
+    env:
+      # This variable is required for Qt to work on CI.
+      # https://gist.github.com/popzxc/70fe145a3a1109d5c11f7b2f06dd269f
+      QT_QPA_PLATFORM: "offscreen"
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        # Corresponds to `before_install`
+        # graphviz lib: https://pygraphviz.github.io/documentation/stable/install.html#ubuntu-and-debian
+        sudo apt-get update
+        sudo apt-get install -y graphviz graphviz-dev
+        python -m pip install --upgrade pip
+        # for pygraphviz pip install: https://github.com/readthedocs/readthedocs.org/issues/9354#issuecomment-1160133066
+        pip install -U setuptools
+        pip install pytest codecov pytest-cov
+        # Corresponds to `install`
+        # install package + test dependencies
+        pip install ".[full,test]" .
+
+    - name: Run tests
+      # Corresponds to `script`
+      run: |
+        pytest --cov=./
+
+    - name: Upload coverage to Codecov
+      # Corresponds to `after_success`
+      uses: codecov/codecov-action@v4
+      with:
+        # token is optional for public repositories
+        token: ${{ secrets.CODECOV_TOKEN }}
+```
+|End-of-Code|

@@ -1,0 +1,48 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "tests: pretest/posttest"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pull_request"
+    },
+    {
+     "children": [],
+     "type": "push"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "read"
+    }],
+    "type": "contents"
+   }],
+   "type": "permissions"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "ljharb/actions/.github/workflows/pretest.yml@version"
+     }],
+     "type": "uses"
+    }],
+    "type": "tests"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

@@ -1,0 +1,314 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "update-translations"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "branch-name"
+     }],
+     "type": "branches"
+    }],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "sphinx-doc"
+        }],
+        "type": "sphinxintl_transifex_project_name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "sphinxjp"
+        }],
+        "type": "sphinxintl_transifex_username"
+       }
+      ],
+      "type": "env"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "get date"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "get-date"
+          }],
+          "type": "id"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "echo-cmd"
+          }],
+          "type": "run"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "bash"
+          }],
+          "type": "shell"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "cache pip"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "cache-pip"
+          }],
+          "type": "id"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/cache@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "~/.cache/pip\\n~/.local/\\n"
+            }],
+            "type": "path"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ runner.os }}-pip-${{ hashfiles(arg) }}-${{ steps.get-date.outputs.yyyymm }}"
+            }],
+            "type": "key"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "setup python"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "3.9"
+           }],
+           "type": "python-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "check python-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "python-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install graphviz"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "sudo apt-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "git branch -a\\ngit checkout master # attach this repo\\ngit submodule init\\ngit submodule update\\n(cd-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "update translations"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "sh ./locale/PATH-OR-URL"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "after success"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "git branch -a\\ngit checkout master # attach this repo\\ngit config --global user.email \\\"sphinx-auto-update\\\"\\ngit config --global PATH-OR-URL \\\"sphinx-auto-update\\\"\\ngit add .\\ngit commit -m \\\"[skip ci] by gha (job ${{ github_action }}) PATH-OR-URL{{ github.repository }}/actions/runs/${{ github.run_number }}\\\"\\n"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "github push"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "ad-m/github-push-action@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.github_token }}"
+            }],
+            "type": "github_token"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ github.ref }}"
+            }],
+            "type": "branch"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "ubuntu"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

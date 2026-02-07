@@ -1,0 +1,30 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 14
+        uses: actions/setup-node@v4
+        with:
+          node-version: "14"
+          # Removed cache: "yarn" because yarn.lock is missing. 
+          # You can re-enable this once a yarn.lock file is committed.
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Run tests
+        run: npm test
+
+|End-of-Code|

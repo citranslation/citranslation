@@ -1,0 +1,410 @@
+{
+ "children": [
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "5"
+       }],
+       "type": "timeout-minutes"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "3.10"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "pip install -r requirements-dev.txt"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "black --check $(git ls-files | grep 'py$')\\n"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "black"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "5"
+       }],
+       "type": "timeout-minutes"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "3.10"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "pip install -e ."
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "flake8 $(git ls-files | grep 'py$')\\n"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "flake8"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "5"
+       }],
+       "type": "timeout-minutes"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ matrix.os }}"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [
+           {
+            "children": [],
+            "type": "ubuntu-latest"
+           },
+           {
+            "children": [],
+            "type": "macos-latest"
+           }
+          ],
+          "type": "os"
+         },
+         {
+          "children": [
+           {
+            "children": [],
+            "type": "3.6"
+           },
+           {
+            "children": [],
+            "type": "3.7"
+           },
+           {
+            "children": [],
+            "type": "3.8"
+           },
+           {
+            "children": [],
+            "type": "3.9"
+           },
+           {
+            "children": [],
+            "type": "3.10"
+           }
+          ],
+          "type": "python-version"
+         }
+        ],
+        "type": "matrix"
+       }],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-version }}"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "pip install -e ."
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "python3 PATH-OR-URL test"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "tests"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "5"
+       }],
+       "type": "timeout-minutes"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "python/typeshed"
+             }],
+             "type": "repository"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "typeshed"
+             }],
+             "type": "path"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "3.10"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "pip install -e ."
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "cd-cmd"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "check-typeshed"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

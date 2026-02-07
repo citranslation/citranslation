@@ -1,0 +1,288 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "minimal"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "coverage_storage=\\\"json\\\""
+     },
+     {
+      "children": [],
+      "type": "conda_pkgs_dirs=\\\"${home}/.cache/conda/pkgs\\\""
+     }
+    ],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "conda:3.6"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "python_version=\\\"3.6\\\""
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "conda:3.7"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "python_version=\\\"3.7\\\""
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "conda:3.8"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "python_version=\\\"3.8\\\""
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "conda:3.9"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "python_version=\\\"3.9\\\""
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    }
+   ],
+   "type": "matrix"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "bash PATH-OR-URL -b -p ${home}/miniconda"
+    },
+    {
+     "children": [],
+     "type": "source \\\"${home}/miniconda/etc/profile.d/PATH-OR-URL\\\""
+    },
+    {
+     "children": [],
+     "type": "conda config --set always_yes yes --set changeps1 no"
+    },
+    {
+     "children": [],
+     "type": "conda config --add channels conda-forge"
+    },
+    {
+     "children": [],
+     "type": "travis_retry conda update --quiet --yes conda"
+    },
+    {
+     "children": [],
+     "type": "conda info --all"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "travis_retry conda create --quiet --yes --name gwsummci python=${python_version} pip setuptools"
+    },
+    {
+     "children": [],
+     "type": "travis_retry conda activate gwsummci"
+    },
+    {
+     "children": [],
+     "type": "travis_retry python-cmd"
+    },
+    {
+     "children": [],
+     "type": "travis_retry conda install --quiet --yes --update-all --name gwsummci --file conda-reqs.txt"
+    },
+    {
+     "children": [],
+     "type": "rm -f conda-reqs.txt PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "travis_retry conda install --quiet --yes --name gwsummci codecov"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "after_success"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "travis_retry conda clean --quiet --yes --all"
+    },
+    {
+     "children": [],
+     "type": "rm -f ~/.cache/pip/log/debug.log"
+    }
+   ],
+   "type": "before_cache"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "pip"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "${home}/.cache/conda/pkgs"
+     }],
+     "type": "directories"
+    }
+   ],
+   "type": "cache"
+  }
+ ],
+ "type": "travis-file"
+}

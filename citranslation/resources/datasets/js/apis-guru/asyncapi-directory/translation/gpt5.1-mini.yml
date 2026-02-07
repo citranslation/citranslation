@@ -1,0 +1,48 @@
+name: Build and Deploy (GitHub Pages)
+
+# Trigger on a schedule (cron) to replicate Travis's cron-only deployment.
+# Adjust the cron schedule as needed. You can also trigger manually via "Run workflow" in Actions UI.
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    # Ensure this runs for the master branch (matches `on: branch: master` in Travis).
+    # Scheduled runs use the repository default branch; this guard enforces master.
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # full history; required if you want to preserve history on deploy
+
+      - name: Setup Node.js (use LTS)
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build data
+        run: npm run build.data
+
+      - name: Build site
+        run: npm run build.site
+
+      # Deploy to GitHub Pages.
+      # NOTE: Set `publish_dir` to the folder your site build outputs (e.g. ./public, ./dist, ./build, ./docs).
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: master
+          keep_history: true
+
+|End-of-Code|

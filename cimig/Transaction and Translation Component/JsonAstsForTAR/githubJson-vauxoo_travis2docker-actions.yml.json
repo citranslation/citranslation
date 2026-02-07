@@ -1,0 +1,400 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "build"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "branch-name"
+       }],
+       "type": "branches"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "v*"
+       }],
+       "type": "tags"
+      }
+     ],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "${{ matrix.os }}"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "30"
+      }],
+      "type": "timeout-minutes"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "FALSE"
+        }],
+        "type": "fail-fast"
+       },
+       {
+        "children": [
+         {
+          "children": [
+           {
+            "children": [],
+            "type": "3.7"
+           },
+           {
+            "children": [],
+            "type": "3.8"
+           },
+           {
+            "children": [],
+            "type": "3.9"
+           },
+           {
+            "children": [],
+            "type": "3.10"
+           },
+           {
+            "children": [],
+            "type": "3.11"
+           }
+          ],
+          "type": "python"
+         },
+         {
+          "children": [
+           {
+            "children": [],
+            "type": "ubuntu-latest"
+           },
+           {
+            "children": [],
+            "type": "windows-latest"
+           },
+           {
+            "children": [],
+            "type": "macos-latest"
+           }
+          ],
+          "type": "os"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "py,codecov"
+          }],
+          "type": "tox_env"
+         },
+         {
+          "children": [
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "3.10"
+              }],
+              "type": "python"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "ubuntu-latest"
+              }],
+              "type": "os"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "check"
+              }],
+              "type": "tox_env"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "3.10"
+              }],
+              "type": "python"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "ubuntu-latest"
+              }],
+              "type": "os"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "docs"
+              }],
+              "type": "tox_env"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "3.10"
+              }],
+              "type": "python"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "ubuntu-latest"
+              }],
+              "type": "os"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "build"
+              }],
+              "type": "tox_env"
+             }
+            ],
+            "type": "OBJ-NODE"
+           }
+          ],
+          "type": "include"
+         }
+        ],
+        "type": "matrix"
+       }
+      ],
+      "type": "strategy"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "0"
+            }],
+            "type": "fetch-depth"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "recursive"
+            }],
+            "type": "submodules"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-cmd"
+            }],
+            "type": "python-version"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "x64"
+            }],
+            "type": "architecture"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "pip"
+            }],
+            "type": "cache"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "cache pre-commit packages"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "cache-pre-commit"
+          }],
+          "type": "id"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/cache@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "~/.cache/pre-commit"
+            }],
+            "type": "path"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ runner.os }}-py${{ matrix.python-cmd"
+            }],
+            "type": "key"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "pip install --upgrade pip\\npython-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "test"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "mkdir-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "publish package"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "github.event_name == 'push' && startswith(github.ref, 'refs/tags') && contains(matrix.tox_env, 'build')"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "ls -lah dist/*\\npython-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "test"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

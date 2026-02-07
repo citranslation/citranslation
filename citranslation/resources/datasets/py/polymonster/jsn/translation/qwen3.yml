@@ -1,0 +1,23 @@
+name: Python CI
+on:
+  push
+  pull_request
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        pip install codecov
+        pip install coverage
+    - name: Run coverage
+      run: coverage run jsn.py -i example.jsn -o test.json -I import_dir
+    - name: Upload coverage to Codecov
+      run: codecov
+|End-of-Code|

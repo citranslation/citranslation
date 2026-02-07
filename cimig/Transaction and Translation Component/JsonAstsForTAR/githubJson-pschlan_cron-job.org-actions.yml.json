@@ -1,0 +1,124 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "build chronos"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "*"
+     }],
+     "type": "branches"
+    }],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "true"
+           }],
+           "type": "submodules"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "sudo apt-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "build dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "mkdir-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "build chronos"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "mkdir-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build-chronos"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

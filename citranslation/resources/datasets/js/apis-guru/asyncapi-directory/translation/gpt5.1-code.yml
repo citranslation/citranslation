@@ -1,0 +1,30 @@
+```yaml
+name: Build and Deploy
+
+on:
+  push:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+      - run: npm install
+      - run: npm run build.data
+      - run: npm run build.site
+      - name: Deploy to GitHub Pages
+        if: github.event_name == 'schedule' && github.ref == 'refs/heads/master'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          publish_branch: master
+          keep_history: true
+          verbose: true
+```
+|End-of-Code|

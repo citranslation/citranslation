@@ -1,0 +1,92 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.9"
+    },
+    {
+     "children": [],
+     "type": "3.10"
+    },
+    {
+     "children": [],
+     "type": "3.11"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "token"
+     }],
+     "type": "secure"
+    }],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "sudo apt-cmd"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install -u numpy pytest python-coveralls pytest-cov"
+    },
+    {
+     "children": [],
+     "type": "pip install ."
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "py.test --cov pyasdf --cov-report term-missing"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "coveralls"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

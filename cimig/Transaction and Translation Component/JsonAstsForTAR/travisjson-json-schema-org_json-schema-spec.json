@@ -1,0 +1,39 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install \\\"xml2rfc~=2.20\\\""
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tag=$(git tag -l --points-at head)"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "xml2rfc -v"
+    },
+    {
+     "children": [],
+     "type": "make all"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

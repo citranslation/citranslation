@@ -1,0 +1,36 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: nvm install
+    - run: nvm use
+    - run: pip install --upgrade pip setuptools wheel
+    - run: pip install -r requirements-dev.txt
+    - run: cp django_airavata/settings_local.py.sample django_airavata/settings_local.py
+    - run: python manage.py migrate
+    - run: python manage.py check
+    - run: flake8 .
+    - run: "./lint_js.sh"
+    - run: "./build_js.sh"
+    - run: "./test_js.sh"
+    - run: "./runtests.py"
+    strategy:
+      matrix:
+        python:
+        - '3.8'
+        - '3.9'
+        - '3.10'

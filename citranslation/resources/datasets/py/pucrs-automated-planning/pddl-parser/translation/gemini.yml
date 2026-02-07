@@ -1,0 +1,44 @@
+```yaml
+name: Python CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # This line corresponds to Travis CI's `allow_failures` for Python 2.7
+    continue-on-error: ${{ matrix.python-version == '2.7' }}
+    strategy:
+      # Ensures that all matrix jobs run to completion, even if one fails.
+      fail-fast: false
+      matrix:
+        python-version: ['2.7', '3.6', '3.7', '3.8', '3.9']
+
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        # If you have a requirements.txt, add: pip install -r requirements.txt
+
+    - name: Run tests and examples
+      run: |
+        python test_PDDL.py
+        python test_planner.py
+        python action.py
+        python PDDL.py    examples/dinner/dinner.pddl examples/dinner/pb1.pddl
+        python planner.py examples/dinner/dinner.pddl examples/dinner/pb1.pddl
+        python planner.py examples/airport/airport.pddl examples/airport/pb1.pddl
+```
+|End-of-Code|

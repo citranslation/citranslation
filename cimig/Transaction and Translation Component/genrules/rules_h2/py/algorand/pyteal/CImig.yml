@@ -1,0 +1,16 @@
+name: placeholder_Name
+
+on: push:
+
+jobs:
+  build:
+    runs-on
+    steps:
+      run: pip install --requirement $github_workspace/requirements.txt
+
+language: python
+
+if: ${{ github.ref_name == 'master' }}
+
+print_hash: TRUE
+

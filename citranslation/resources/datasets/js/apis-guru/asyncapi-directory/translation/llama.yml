@@ -1,0 +1,38 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: 0 0 * * * *
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 'lts/*'
+      - name: Install dependencies
+        run: npm install
+      - name: Build data
+        run: npm run build.data
+      - name: Build site
+        run: npm run build.site
+      - name: Deploy to GitHub Pages
+        uses: gh-pages-deploy@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          keep-history: true
+          skip-cleanup: true
+          target-branch: master
+          verbose: true
+|End-of-Code|
+```
+Note that in GitHub Actions, we use the `on` section to specify the trigger (push and cron schedule) and the `jobs` section to define the job that will run. The `steps` section defines the individual tasks that will be executed in the job. We use the `actions/checkout` and `actions/setup-node` actions to checkout the code and set up Node.js, respectively. The `run` keyword is used to execute shell commands, and the `gh-pages-deploy` action is used to deploy the site to GitHub Pages.

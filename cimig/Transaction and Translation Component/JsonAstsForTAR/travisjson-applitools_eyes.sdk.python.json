@@ -1,0 +1,1041 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "focal"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xvfb"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "FALSE"
+    }],
+    "type": "submodules"
+   }],
+   "type": "git"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "mkdir-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    }
+   ],
+   "type": "before_script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "tox -e $tox_env"
+    },
+    {
+     "children": [],
+     "type": "sleep 5 || true"
+    },
+    {
+     "children": [],
+     "type": "taskkill -f -im eyes-universal-win.exe || true"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "unit-tests"
+    },
+    {
+     "children": [],
+     "type": "integration-tests"
+    },
+    {
+     "children": [],
+     "type": "bumpversion"
+    },
+    {
+     "children": [],
+     "type": "functional-tests"
+    },
+    {
+     "children": [],
+     "type": "generated-tests"
+    },
+    {
+     "children": [],
+     "type": "deploy"
+    }
+   ],
+   "type": "stages"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "bumpversion"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "tag =~ ^release_candidate and fork == false"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "echo-cmd"
+         },
+         {
+          "children": [],
+          "type": "shell-cmd"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "unit-tests"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "windows"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "sh"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "choco install python-cmd"
+         },
+         {
+          "children": [],
+          "type": "choco install -y --force nodejs-lts"
+         },
+         {
+          "children": [],
+          "type": "python-cmd"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "tox_env=unit"
+         },
+         {
+          "children": [],
+          "type": "path=\\\"/c/python310:/c/python310/scripts:/c/program files/nodejs:$path\\\""
+         }
+        ],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "$localappdata/pip/cache"
+         }],
+         "type": "directories"
+        }],
+        "type": "cache"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "windows"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "sh"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "choco install python2"
+         },
+         {
+          "children": [],
+          "type": "choco install -y --force nodejs-lts"
+         },
+         {
+          "children": [],
+          "type": "python-cmd"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "tox_env=unit"
+         },
+         {
+          "children": [],
+          "type": "path=\\\"/c/python27:/c/python27/scripts:/c/program files/nodejs:$path\\\""
+         }
+        ],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "$localappdata/pip/cache"
+         }],
+         "type": "directories"
+        }],
+        "type": "cache"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "tox_env=unit"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "tox_env=unit"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.1"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "tox_env=unit"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "integration-tests"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "windows"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "sh"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "choco install python-cmd"
+         },
+         {
+          "children": [],
+          "type": "choco install -y --force nodejs-lts"
+         },
+         {
+          "children": [],
+          "type": "python-cmd"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "tox_env=integration"
+         },
+         {
+          "children": [],
+          "type": "path=\\\"/c/python310:/c/python310/scripts:/c/program files/nodejs:$path\\\""
+         }
+        ],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "$localappdata/pip/cache"
+         }],
+         "type": "directories"
+        }],
+        "type": "cache"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "windows"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "sh"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "choco install python2 --version=2.7.18"
+         },
+         {
+          "children": [],
+          "type": "choco install -y --force nodejs-lts"
+         },
+         {
+          "children": [],
+          "type": "python-cmd"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "tox_env=integration"
+         },
+         {
+          "children": [],
+          "type": "path=\\\"/c/python27:/c/python27/scripts:/c/program files/nodejs:$path\\\""
+         }
+        ],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "$localappdata/pip/cache"
+         }],
+         "type": "directories"
+        }],
+        "type": "cache"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "tox_env=integration"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "tox_env=integration"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "functional-tests"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "not tag =~ ^release_candidate"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "14"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "stable"
+          }],
+          "type": "chrome"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "latest"
+          }],
+          "type": "firefox"
+         }
+        ],
+        "type": "addons"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "tox_env=selenium-generated"
+         },
+         {
+          "children": [],
+          "type": "applitools_batch_name=\\\"python-cmd"
+         }
+        ],
+        "type": "env"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "git submodule update --init --remote --recursive"
+         },
+         {
+          "children": [],
+          "type": "nvm install node"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "tox -e selenium-generated"
+         },
+         {
+          "children": [],
+          "type": "shell-cmd"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "not tag =~ ^release_candidate"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.1"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "14"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "stable"
+          }],
+          "type": "chrome"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "latest"
+          }],
+          "type": "firefox"
+         }
+        ],
+        "type": "addons"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "tox_env=selenium-generated"
+         },
+         {
+          "children": [],
+          "type": "applitools_batch_name=\\\"python-cmd"
+         }
+        ],
+        "type": "env"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "git submodule update --init --remote --recursive"
+         },
+         {
+          "children": [],
+          "type": "nvm install node"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "tox -e selenium-generated"
+         },
+         {
+          "children": [],
+          "type": "shell-cmd"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "not tag =~ ^release_candidate"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "stable"
+         }],
+         "type": "chrome"
+        }],
+        "type": "addons"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "tox_env=robotframework"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "not tag =~ ^release_candidate"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "stable"
+         }],
+         "type": "chrome"
+        }],
+        "type": "addons"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "tox_env=selenium"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "not tag =~ ^release_candidate"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "stable"
+          }],
+          "type": "chrome"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "latest"
+          }],
+          "type": "firefox"
+         }
+        ],
+        "type": "addons"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "tox_env=selenium"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "not tag =~ ^release_candidate"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.1"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "stable"
+          }],
+          "type": "chrome"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "latest"
+          }],
+          "type": "firefox"
+         }
+        ],
+        "type": "addons"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "tox_env=selenium"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "not tag =~ ^release_candidate"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "windows"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "sh"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "choco install python-cmd"
+         },
+         {
+          "children": [],
+          "type": "choco install googlechrome --x86 --ignore-checksums"
+         },
+         {
+          "children": [],
+          "type": "choco install chromedriver"
+         },
+         {
+          "children": [],
+          "type": "python-cmd"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "tox_env=selenium"
+         },
+         {
+          "children": [],
+          "type": "path=\\\"/c/python310:/c/python310/scripts:/c/program files/nodejs:$path\\\""
+         }
+        ],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "$localappdata/pip/cache"
+         }],
+         "type": "directories"
+        }],
+        "type": "cache"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "not tag =~ ^release_candidate and type = cron"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "pip install invoke"
+         },
+         {
+          "children": [],
+          "type": "inv install-requirements"
+         },
+         {
+          "children": [],
+          "type": "inv install-packages"
+         },
+         {
+          "children": [],
+          "type": "bash ./tutorials/PATH-OR-URL"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "deploy"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "tag =~ ^v[0-9]+\\\\.[0-9]+\\\\.[0-9]+$ and fork == false"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "pip install -u invoke twine keyring==21.4.0"
+         },
+         {
+          "children": [],
+          "type": "echo-cmd"
+         },
+         {
+          "children": [],
+          "type": "echo-cmd"
+         },
+         {
+          "children": [],
+          "type": "committer_email=\\\"$(git log -1 $travis_commit --pretty=\\\"%ce\\\")\\\""
+         },
+         {
+          "children": [],
+          "type": "shell-cmd"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

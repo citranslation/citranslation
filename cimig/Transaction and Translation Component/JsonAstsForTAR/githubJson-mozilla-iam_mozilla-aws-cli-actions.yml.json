@@ -1,0 +1,491 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "test"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "test maws"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ matrix.platform }}"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [
+           {
+            "children": [],
+            "type": "ubuntu-latest"
+           },
+           {
+            "children": [],
+            "type": "macos-latest"
+           },
+           {
+            "children": [],
+            "type": "windows-latest"
+           }
+          ],
+          "type": "platform"
+         },
+         {
+          "children": [
+           {
+            "children": [],
+            "type": "2.7"
+           },
+           {
+            "children": [],
+            "type": "3.6"
+           },
+           {
+            "children": [],
+            "type": "3.7"
+           },
+           {
+            "children": [],
+            "type": "3.8"
+           },
+           {
+            "children": [],
+            "type": "3.9"
+           },
+           {
+            "children": [],
+            "type": "3.10"
+           }
+          ],
+          "type": "python-version"
+         },
+         {
+          "children": [
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "macos-latest"
+              }],
+              "type": "platform"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.6"
+              }],
+              "type": "python-version"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "macos-latest"
+              }],
+              "type": "platform"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.7"
+              }],
+              "type": "python-version"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "macos-latest"
+              }],
+              "type": "platform"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.9"
+              }],
+              "type": "python-version"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "macos-latest"
+              }],
+              "type": "platform"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.10"
+              }],
+              "type": "python-version"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "windows-latest"
+              }],
+              "type": "platform"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "2.7"
+              }],
+              "type": "python-version"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "windows-latest"
+              }],
+              "type": "platform"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.6"
+              }],
+              "type": "python-version"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "windows-latest"
+              }],
+              "type": "platform"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.7"
+              }],
+              "type": "python-version"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "windows-latest"
+              }],
+              "type": "platform"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.8"
+              }],
+              "type": "python-version"
+             }
+            ],
+            "type": "OBJ-NODE"
+           }
+          ],
+          "type": "exclude"
+         }
+        ],
+        "type": "matrix"
+       }],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up python-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.python-version }}"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "pip"
+             }],
+             "type": "cache"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pip install -u pip\\npip install tox tox-gh-actions\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "test with tox"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.platform }}"
+            }],
+            "type": "platform"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "tox"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "test-maws"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "test cloud functions idtoken_for_roles and group_role_map_builder"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python-version"
+        }],
+        "type": "matrix"
+       }],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up python-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.python-version }}"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "pip"
+             }],
+             "type": "cache"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pip install -u pip\\npip install tox tox-gh-actions\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "test with tox"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "./cloudformation"
+           }],
+           "type": "working-directory"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "tox"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "test-cloud-functions"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

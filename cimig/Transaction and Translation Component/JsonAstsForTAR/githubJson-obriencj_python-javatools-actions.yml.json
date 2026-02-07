@@ -1,0 +1,214 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "tox"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "FALSE"
+        }],
+        "type": "fail-fast"
+       },
+       {
+        "children": [{
+         "children": [
+          {
+           "children": [],
+           "type": "2.7"
+          },
+          {
+           "children": [],
+           "type": "3.7"
+          },
+          {
+           "children": [],
+           "type": "3.8"
+          },
+          {
+           "children": [],
+           "type": "3.9"
+          },
+          {
+           "children": [],
+           "type": "3.10"
+          }
+         ],
+         "type": "python-version"
+        }],
+        "type": "matrix"
+       }
+      ],
+      "type": "strategy"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set up python-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ matrix.python-version != '2.7' }}"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ matrix.python-version }}"
+           }],
+           "type": "python-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set up python-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ matrix.python-version == '2.7' }}"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "sudo apt-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install system packages"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "sudo apt-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install python-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "pip install tox tox-gh-actions wheel\\n"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "running tox"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "tox"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

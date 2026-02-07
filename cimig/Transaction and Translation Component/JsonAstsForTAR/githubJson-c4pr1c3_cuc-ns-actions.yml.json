@@ -1,0 +1,93 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "gitbook action build"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "branch-name"
+     }],
+     "type": "branches"
+    }],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "checkout action"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "gitbook action"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "zanderzhao/gitbook-action@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ secrets.personal_token }}"
+           }],
+           "type": "token"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

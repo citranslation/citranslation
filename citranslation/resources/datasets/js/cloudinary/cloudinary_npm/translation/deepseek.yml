@@ -1,0 +1,32 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [9, 10, 12, 14, 16, 18, 20, 22]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run test-with-temp-cloud
+
+notifications:
+  email:
+    recipients:
+      - sdk_developers@cloudinary.com
+```
+
+Please note that the `dist: focal` in Travis CI is equivalent to `runs-on: ubuntu-latest` in GitHub Actions. The `matrix` feature in Travis CI is replaced by the `strategy.matrix` feature in GitHub Actions. The `script` in Travis CI is replaced by `run` in GitHub Actions. The `notifications` section is also kept as is.

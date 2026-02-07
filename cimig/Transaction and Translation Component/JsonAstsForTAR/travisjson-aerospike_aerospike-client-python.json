@@ -1,0 +1,221 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "bionic"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "libssl-dev"
+       },
+       {
+        "children": [],
+        "type": "python3-dev"
+       }
+      ],
+      "type": "packages"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "TRUE"
+      }],
+      "type": "update"
+     }
+    ],
+    "type": "apt"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "tar xvzf aerospike-server.tgz"
+    },
+    {
+     "children": [],
+     "type": "cp -f .travis/aerospike.conf ./aerospike-server/share/etc"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "sed -i -e 's/\\\\${me}/\\\"root\\\"/' share/libexec/aerospike-start"
+    },
+    {
+     "children": [],
+     "type": "sed -i -e 's/set_shmall$/#set_shmall/' share/libexec/aerospike-start"
+    },
+    {
+     "children": [],
+     "type": "sed -i -e 's/set_shmmax$/#set_shmmax/' share/libexec/aerospike-start"
+    },
+    {
+     "children": [],
+     "type": "mkdir-cmd"
+    },
+    {
+     "children": [],
+     "type": "mkdir-cmd"
+    },
+    {
+     "children": [],
+     "type": "./bin/aerospike init --home instance1 --instance 1 --service-port 3000"
+    },
+    {
+     "children": [],
+     "type": "./bin/aerospike init --home instance2 --instance 2 --service-port 3010"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "./bin/aerospike start"
+    },
+    {
+     "children": [],
+     "type": "../../scripts/PATH-OR-URL var/log/aerospike.log"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "./bin/aerospike start"
+    },
+    {
+     "children": [],
+     "type": "../../scripts/PATH-OR-URL var/log/aerospike.log"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "./run -v"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "token"
+      }],
+      "type": "secure"
+     }],
+     "type": "slack"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "rooms"
+     }],
+     "type": "hipchat"
+    },
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "EMAIL"
+      },
+      {
+       "children": [],
+       "type": "EMAIL"
+      }
+     ],
+     "type": "email"
+    }
+   ],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

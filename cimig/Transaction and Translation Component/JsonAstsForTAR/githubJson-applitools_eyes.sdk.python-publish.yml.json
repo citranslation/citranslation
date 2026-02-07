@@ -1,0 +1,363 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "publish python-cmd"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "package name"
+         }],
+         "type": "description"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "choice"
+         }],
+         "type": "type"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "eyes_universal"
+          },
+          {
+           "children": [],
+           "type": "eyes_selenium"
+          }
+         ],
+         "type": "options"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "required"
+        }
+       ],
+       "type": "package"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "version increment type"
+         }],
+         "type": "description"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "choice"
+         }],
+         "type": "type"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "patch"
+          },
+          {
+           "children": [],
+           "type": "minor"
+          },
+          {
+           "children": [],
+           "type": "major"
+          }
+         ],
+         "type": "options"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "required"
+        }
+       ],
+       "type": "version"
+      }
+     ],
+     "type": "inputs"
+    }],
+    "type": "workflow_dispatch"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "${{steps.create_release_branch.outputs.release_branch}}"
+         }],
+         "type": "release_branch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "${{steps.create_release_branch.outputs.release_version}}"
+         }],
+         "type": "release_version"
+        }
+       ],
+       "type": "outputs"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "create_release_branch"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pip install bump2version\\npackage_dir=${{github.event.inputs.package}}\\n[[ $package_dir == eyes_selenium ]] && package_dir=.\\neval $(cd-cmd"
+           }],
+           "type": "run"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{github.actor}}"
+             }],
+             "type": "git_author_name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{github.actor}}"
+             }],
+             "type": "git_committer_name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "EMAIL"
+             }],
+             "type": "email"
+            }
+           ],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "make_release_branch"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "make_release_branch"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "applitools/eyes.sdk.python/.github/workflows/tests.yaml@version"
+       }],
+       "type": "uses"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "inherit"
+       }],
+       "type": "secrets"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "${{needs.make_release_branch.outputs.release_branch}}"
+        }],
+        "type": "ref"
+       }],
+       "type": "with"
+      }
+     ],
+     "type": "test"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "make_release_branch"
+        },
+        {
+         "children": [],
+         "type": "test"
+        }
+       ],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "0"
+            }],
+            "type": "fetch-depth"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/download-artifact@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "packages"
+            }],
+            "type": "name"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "make publish_testing_${{github.event.inputs.package}} -e sdk_version=${{needs.make_release_branch.outputs.release_version}}\\ngit tag -am \\\"\\\" ${{github.event.inputs.package}}-${{needs.make_release_branch.outputs.release_version}}\\ngit merge origin/${{needs.make_release_branch.outputs.release_branch}}\\ngit push origin --follow-tags\\ngit push origin --delete ${{needs.make_release_branch.outputs.release_branch}}\\n"
+           }],
+           "type": "run"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{github.actor}}"
+             }],
+             "type": "git_author_name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{github.actor}}"
+             }],
+             "type": "git_committer_name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "EMAIL"
+             }],
+             "type": "email"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "__token__"
+             }],
+             "type": "twine_username"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.pypi_token }}"
+             }],
+             "type": "twine_password"
+            }
+           ],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "upload_to_pypi_merge_and_tag"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

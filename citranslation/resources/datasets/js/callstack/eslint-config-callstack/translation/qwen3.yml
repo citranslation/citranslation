@@ -1,0 +1,29 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+    - name: Install Yarn
+      run: |
+        curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.17.3
+        export PATH=$HOME/.yarn/bin:$PATH
+    - name: Cache node_modules
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node_modules-${{ hashFiles('package.json') }}
+        restore-keys: ${{ runner.os }}-node_modules-
+    - name: Cache test/node_modules
+      uses: actions/cache@v3
+      with:
+        path: test/node_modules
+        key: ${{ runner.os }}-test-node_modules-${{ hashFiles('test/package.json') }}
+        restore-keys: ${{ runner.os }}-test-node_modules-
+|End-of-Code|

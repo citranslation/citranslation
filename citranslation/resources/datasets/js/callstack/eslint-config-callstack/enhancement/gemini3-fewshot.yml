@@ -1,0 +1,26 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'yarn'
+
+      - name: Install Yarn 1.17.3
+        run: |
+          curl -o- -L https://yarn.com/install.sh | bash -s -- --version 1.17.3
+          echo "$HOME/.yarn/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies
+        run: yarn install
+
+|End-of-Code|

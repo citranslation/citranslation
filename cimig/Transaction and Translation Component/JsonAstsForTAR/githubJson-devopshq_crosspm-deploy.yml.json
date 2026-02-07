@@ -1,0 +1,140 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "deploy"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "branch-name"
+     }],
+     "type": "branches"
+    }],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "./.github/workflows/build.yml"
+      }],
+      "type": "uses"
+     }],
+     "type": "build-packages"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "build-packages"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "download artifacts"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/download-artifact@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "crosspm packages"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "dist/"
+             }],
+             "type": "path"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "publish package"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pypa/gh-action-pypi-publish@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "__token__"
+             }],
+             "type": "user"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.pypi_api_token }}"
+             }],
+             "type": "password"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "deploy"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

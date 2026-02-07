@@ -1,0 +1,70 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.7"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "bash ~/PATH-OR-URL -b -u -p ~/miniconda"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "hash -r"
+    },
+    {
+     "children": [],
+     "type": "pip install nose coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip install -e ."
+    },
+    {
+     "children": [],
+     "type": "flake8"
+    },
+    {
+     "children": [],
+     "type": "nosetests -sv --with-doctest --no-byte-compile --with-coverage-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coveralls"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

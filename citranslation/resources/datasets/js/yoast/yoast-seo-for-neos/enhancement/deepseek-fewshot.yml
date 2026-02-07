@@ -1,0 +1,41 @@
+Here is the GitHub Action configuration equivalent to the provided Travis CI configuration:
+
+```yaml
+name: Continuous integration
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
+    - name: Install dependencies
+      run: yarn install
+    - name: Run tests
+      run: yarn test
+    - name: Lint
+      run: yarn lint
+    - name: Run integration tests
+      run: yarn test:integration
+    - name: Run tests without telemetry
+      run: yarn test:notelemetry
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+```
+
+|End-of-Code|

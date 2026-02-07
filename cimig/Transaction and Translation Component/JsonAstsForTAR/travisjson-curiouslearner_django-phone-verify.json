@@ -1,0 +1,120 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "~/.cache/pip"
+    }],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "rm -f ~/.cache/pip/log/debug.log"
+   }],
+   "type": "before_cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install tox-travis"
+    },
+    {
+     "children": [],
+     "type": "pip install coveralls"
+    },
+    {
+     "children": [],
+     "type": "pip install -r requirements/testing.txt"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "flake8"
+    },
+    {
+     "children": [],
+     "type": "tox"
+    },
+    {
+     "children": [],
+     "type": "coveralls"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "change"
+      }],
+      "type": "on_success"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "always"
+      }],
+      "type": "on_failure"
+     }
+    ],
+    "type": "email"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,402 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.7"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "bionic"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "14"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "postgresql"
+    },
+    {
+     "children": [],
+     "type": "redis"
+    },
+    {
+     "children": [],
+     "type": "xvfb"
+    }
+   ],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "stable"
+    }],
+    "type": "chrome"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "FALSE"
+     }],
+     "type": "npm"
+    },
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "~/.cache/pip"
+      },
+      {
+       "children": [],
+       "type": "node_modules/"
+      }
+     ],
+     "type": "directories"
+    }
+   ],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "lint-test"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "nvm install \\\"14\\\""
+         },
+         {
+          "children": [],
+          "type": "psql -c 'create database testdb;' -u postgres"
+         }
+        ],
+        "type": "before_script"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "cp app/app/travis.env app/app/.env"
+         },
+         {
+          "children": [],
+          "type": "pip install pip==20.0.2 setuptools --upgrade"
+         },
+         {
+          "children": [],
+          "type": "sudo apt-cmd"
+         },
+         {
+          "children": [],
+          "type": "cp dist/*.gz ./"
+         },
+         {
+          "children": [],
+          "type": "gunzip geolite2-city.mmdb.tar.gz && gunzip geolite2-country.mmdb.tar.gz"
+         },
+         {
+          "children": [],
+          "type": "tar -xvf geolite2-city.mmdb.tar && tar -xvf geolite2-country.mmdb.tar"
+         },
+         {
+          "children": [],
+          "type": "sudo mkdir-cmd"
+         },
+         {
+          "children": [],
+          "type": "sudo mv geolite2-city_20200128/*.mmdb /opt/geoip/"
+         },
+         {
+          "children": [],
+          "type": "sudo mv geolite2-country_20200128/*.mmdb /opt/geoip/"
+         },
+         {
+          "children": [],
+          "type": "sudo apt-cmd"
+         },
+         {
+          "children": [],
+          "type": "node --version"
+         },
+         {
+          "children": [],
+          "type": "yarn install"
+         },
+         {
+          "children": [],
+          "type": "pip install -r requirements/test.txt"
+         },
+         {
+          "children": [],
+          "type": "yarn run eslint"
+         },
+         {
+          "children": [],
+          "type": "yarn run stylelint"
+         },
+         {
+          "children": [],
+          "type": "(cd-cmd"
+         },
+         {
+          "children": [],
+          "type": "python3 app/PATH-OR-URL migrate"
+         },
+         {
+          "children": [],
+          "type": "python3 app/PATH-OR-URL fetch_gas_prices"
+         },
+         {
+          "children": [],
+          "type": "pytest -p no:ethereum -p no:warnings"
+         },
+         {
+          "children": [],
+          "type": "bin/ci/cypress-run"
+         },
+         {
+          "children": [],
+          "type": "pydocmd build"
+         }
+        ],
+        "type": "script"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "pythonpath=\\\"${travis_build_dir}/app/\\\""
+         },
+         {
+          "children": [],
+          "type": "django_settings_module=\\\"app.settings\\\""
+         },
+         {
+          "children": [],
+          "type": "supress_debug_toolbar=1"
+         }
+        ],
+        "type": "env"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "git"
+          }],
+          "type": "strategy"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "pages"
+          }],
+          "type": "provider"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "$github_token"
+          }],
+          "type": "token"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "TRUE"
+          }],
+          "type": "keep_history"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "TRUE"
+          }],
+          "type": "skip_cleanup"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "_build/site"
+          }],
+          "type": "local_dir"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "PATH-OR-URL"
+          }],
+          "type": "fqdn"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "gh-pages"
+          }],
+          "type": "target_branch"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "master"
+           }],
+           "type": "branch"
+          }],
+          "type": "on"
+         }
+        ],
+        "type": "deploy"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "deploy-stage"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "branch = master and not type = pull_request"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "echo-cmd"
+         },
+         {
+          "children": [],
+          "type": "docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "docker-cmd"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "deploy-prod"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "branch = stable"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "echo-cmd"
+         },
+         {
+          "children": [],
+          "type": "docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "docker-cmd"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

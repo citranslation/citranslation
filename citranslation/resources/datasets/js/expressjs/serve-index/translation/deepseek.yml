@@ -1,0 +1,41 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [0.8, 0.10, 0.12, 1.8, 2.5, 3.3, 4.9, 5.12, 6.17, 7.10, 8.17, 9.11, 10.24, 11.15, 12.22, 13.14, 14.16, 15.13]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+    - run: npm run lint --if-present
+    - run: npm run coverage --if-present
+    - name: Coveralls
+      if: matrix.node-version == '8.17'
+      run: |
+        npm install --save-dev coveralls
+        nyc report --reporter=text-lcov | coveralls
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+```
+
+Please note that the GitHub Actions configuration is different from Travis CI configuration. The above configuration assumes that you have a `coveralls` package installed in your project and a `COVERALLS_REPO_TOKEN` secret in your GitHub repository. The `nyc` package is used for code coverage, and it's installed in the `coveralls` step. The `nyc` command is run in the `Coveralls` step. The `if: matrix.node-version == '8.17'` condition is used to run the `nyc` and `coveralls` commands only for Node.js 8.17.
+
+Also, the `npm ci` command is used instead of `npm install` to ensure that the `node_modules` directory is not recreated. The `npm run build` command is run if a `build` script is present in your `package.json` file. The `npm test`, `npm run lint`, and `npm run coverage` commands are run if these scripts are present in your `package.json` file.
+
+The `COVERALLS_REPO_TOKEN` secret should be set in your GitHub repository settings. It's used to authenticate with the Coveralls service.

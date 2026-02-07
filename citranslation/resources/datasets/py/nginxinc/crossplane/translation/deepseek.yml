@@ -1,0 +1,35 @@
+Sure, here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10, pypy3.6, pypy3.7, pypy3.8, pypy3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox-gh-actions
+    - name: Test with tox
+      run: tox
+```
+
+This configuration will trigger the workflow on every push and pull request to the repository. It will run on the latest version of Ubuntu, and for each Python version specified in the matrix, it will set up the Python environment, install the necessary dependencies, and run the tox command.
+
+Please note that GitHub Actions does not support PyPy as of the time of writing this response. You would need to use a different CI/CD tool or setup a local environment to run PyPy.
+
+|End-of-Code|

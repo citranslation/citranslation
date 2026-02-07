@@ -1,0 +1,411 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "ci"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "branch-name"
+        },
+        {
+         "children": [],
+         "type": "branch-name"
+        }
+       ],
+       "type": "branches"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "v[0-9]*"
+       }],
+       "type": "tags"
+      }
+     ],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
+     }],
+     "type": "group"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "cancel-in-progress"
+    }
+   ],
+   "type": "concurrency"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [
+           {
+            "children": [],
+            "type": "3.10"
+           },
+           {
+            "children": [],
+            "type": "3.11"
+           },
+           {
+            "children": [],
+            "type": "3.12"
+           }
+          ],
+          "type": "python_version"
+         },
+         {
+          "children": [
+           {
+            "children": [],
+            "type": "32"
+           },
+           {
+            "children": [],
+            "type": "42"
+           },
+           {
+            "children": [],
+            "type": "50"
+           }
+          ],
+          "type": "django_version"
+         },
+         {
+          "children": [
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "32"
+              }],
+              "type": "django_version"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.11"
+              }],
+              "type": "python_version"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "32"
+              }],
+              "type": "django_version"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.12"
+              }],
+              "type": "python_version"
+             }
+            ],
+            "type": "OBJ-NODE"
+           }
+          ],
+          "type": "exclude"
+         }
+        ],
+        "type": "matrix"
+       }],
+       "type": "strategy"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "submodules"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "choose python-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.python_version }}"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "pip"
+             }],
+             "type": "cache"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install tox (with uv)"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "python3 -m pip install tox tox-uv"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run tox"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "tox -e 'py${{ matrix.python_version }}-django${{ matrix.django_version }}'"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "tests"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tests"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "submodules"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "3.10"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "pip"
+             }],
+             "type": "cache"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install tooling"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pip install build"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "build wheel and sdist"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "python-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "publish package"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "github.event_name == 'push' && startswith(github.ref, 'refs/tags')"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pypa/gh-action-pypi-publish@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "release"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

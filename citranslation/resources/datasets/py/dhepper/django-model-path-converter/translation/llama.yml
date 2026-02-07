@@ -1,0 +1,36 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.10", "3.9"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install -U tox-travis
+      - name: Run tests
+        run: tox
+      - name: Deploy to PyPI
+        uses: pypa/gha:latest
+        with:
+          python-version: 3.6
+          pypi-token: ${{ secrets.PYPI_TOKEN }}
+          pypi-username: dhepper
+          pypi-password: ${{ secrets.PYPI_PASSWORD }}
+          pypi-repo: dhepper/django-model-path-converter
+          pypi-distributions: sdist bdist_wheel
+```
+|End-of-Code|

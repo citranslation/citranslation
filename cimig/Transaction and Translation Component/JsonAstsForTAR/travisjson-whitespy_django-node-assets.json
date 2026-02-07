@@ -1,0 +1,60 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "focal"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.9"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install flake8"
+    },
+    {
+     "children": [],
+     "type": "pip install isort"
+    },
+    {
+     "children": [],
+     "type": "pip install black"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "flake8 django_node_assets"
+    },
+    {
+     "children": [],
+     "type": "isort django_node_assets --check"
+    },
+    {
+     "children": [],
+     "type": "black django_node_assets --check"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

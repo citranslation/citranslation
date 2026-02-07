@@ -1,0 +1,1017 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "bionic"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip3 install --upgrade pip tox pyxattr pylibacl setuptools-scm"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9-dev"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "releases"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "file_glob"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "dist/rdiff*.*"
+       }],
+       "type": "file"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "draft"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "token"
+        }],
+        "type": "secure"
+       }],
+       "type": "token"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "all_branches"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "$make_step == ?dist*"
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "pypi"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "__token__"
+       }],
+       "type": "user"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "token"
+        }],
+        "type": "secure"
+       }],
+       "type": "password"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "bdist_wheel"
+       }],
+       "type": "distributions"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_existing"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "all_branches"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "$make_step =~ ^(bdist_wheel)$ && $travis_tag =~ ^v[0-9]+\\\\.[0-9]+\\\\.[0-9]+((a|b|rc)[0-9]+)?$"
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "pypi"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "__token__"
+       }],
+       "type": "user"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "token"
+        }],
+        "type": "secure"
+       }],
+       "type": "password"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "sdist"
+       }],
+       "type": "distributions"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_existing"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "all_branches"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "$make_step == sdist && $travis_tag =~ ^v[0-9]+\\\\.[0-9]+\\\\.[0-9]+((a|b|rc)[0-9]+)?$"
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "pypi"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "__token__"
+       }],
+       "type": "user"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "token"
+        }],
+        "type": "secure"
+       }],
+       "type": "password"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "bdist_wheel"
+       }],
+       "type": "distributions"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_existing"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "PATH-OR-URL"
+       }],
+       "type": "server"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "native-api/dpl"
+         }],
+         "type": "source"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "z-quotes"
+         }],
+         "type": "branch"
+        }
+       ],
+       "type": "edge"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "all_branches"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "$make_step =~ ^(bdist_wheel)$ && $travis_tag =~ ^v[0-9]+\\\\.[0-9]+\\\\.[0-9]+((a|b|rc)[0-9]+)?\\\\.dev[0-9]+$"
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "pypi"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "__token__"
+       }],
+       "type": "user"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "token"
+        }],
+        "type": "secure"
+       }],
+       "type": "password"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "sdist"
+       }],
+       "type": "distributions"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_existing"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "PATH-OR-URL"
+       }],
+       "type": "server"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "native-api/dpl"
+         }],
+         "type": "source"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "z-quotes"
+         }],
+         "type": "branch"
+        }
+       ],
+       "type": "edge"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "all_branches"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "$make_step == sdist && $travis_tag =~ ^v[0-9]+\\\\.[0-9]+\\\\.[0-9]+((a|b|rc)[0-9]+)?\\\\.dev[0-9]+$"
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "deploy"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "windows"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "shell"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "make_step=bdist_win"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "git clone --depth 1 --branch v2.32.1 PATH-OR-URL ~/.pyenv"
+         },
+         {
+          "children": [],
+          "type": "export-cmd"
+         },
+         {
+          "children": [],
+          "type": "export-cmd"
+         },
+         {
+          "children": [],
+          "type": "export-cmd"
+         },
+         {
+          "children": [],
+          "type": "pyenv install --list"
+         },
+         {
+          "children": [],
+          "type": "pyenv install -q $pyver || pyenv rehash"
+         },
+         {
+          "children": [],
+          "type": "pyenv global $pyver"
+         },
+         {
+          "children": [],
+          "type": "pyenv rehash"
+         },
+         {
+          "children": [],
+          "type": "pyenv local $pyver"
+         },
+         {
+          "children": [],
+          "type": "python-cmd"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "pip install --upgrade tox pywin32 setuptools-scm pyinstaller wheel pyyaml"
+         },
+         {
+          "children": [],
+          "type": "pyenv rehash"
+         },
+         {
+          "children": [],
+          "type": "git clone -b v2.2.1 PATH-OR-URL ~/.librsync"
+         },
+         {
+          "children": [],
+          "type": "export-cmd"
+         },
+         {
+          "children": [],
+          "type": "pushd ~/.librsync"
+         },
+         {
+          "children": [],
+          "type": "cmake -dcmake_install_prefix=$librsync_dir -a win32 -dbuild_shared_libs=off ."
+         },
+         {
+          "children": [],
+          "type": "cmake --build . --config release"
+         },
+         {
+          "children": [],
+          "type": "cmake --install . --config release"
+         },
+         {
+          "children": [],
+          "type": "popd"
+         }
+        ],
+        "type": "install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "python-cmd"
+         },
+         {
+          "children": [],
+          "type": "vername=rdiff-backup-`python-cmd"
+         },
+         {
+          "children": [],
+          "type": "pyinstaller --onefile --distpath build/$vername --paths=build/lib.win32-$pyverbrief --add-data=src/rdiff_backup.egg-info/pkg-info\\\\;rdiff_backup.egg-info --console build/scripts-$pyverbrief/rdiff-backup"
+         }
+        ],
+        "type": "script"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "cp PATH-OR-URL copying PATH-OR-URL docs/PATH-OR-URL docs/PATH-OR-URL docs/PATH-OR-URL docs/PATH-OR-URL docs/PATH-OR-URL build/$vername"
+         },
+         {
+          "children": [],
+          "type": "pushd build"
+         },
+         {
+          "children": [],
+          "type": "7z a -tzip ../dist/$vername.win32exe.zip $vername"
+         },
+         {
+          "children": [],
+          "type": "popd"
+         }
+        ],
+        "type": "before_deploy"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "required"
+        }],
+        "type": "sudo"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "docker-cmd"
+        }],
+        "type": "services"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "docker-cmd"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "docker-cmd"
+        }],
+        "type": "install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "ls dist/"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "docker-cmd"
+        }],
+        "type": "services"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "docker-cmd"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "docker-cmd"
+        }],
+        "type": "install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "ls dist/"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "docker-cmd"
+        }],
+        "type": "services"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "docker-cmd"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "docker-cmd"
+        }],
+        "type": "install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "ls dist/"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "shell"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "make_step=dist_deb run_command="
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [
+           {
+            "children": [],
+            "type": "build-essential"
+           },
+           {
+            "children": [],
+            "type": "debhelper-compat"
+           },
+           {
+            "children": [],
+            "type": "dh-python"
+           },
+           {
+            "children": [],
+            "type": "fakeroot"
+           },
+           {
+            "children": [],
+            "type": "git-buildpackage"
+           },
+           {
+            "children": [],
+            "type": "librsync-dev"
+           },
+           {
+            "children": [],
+            "type": "python3-all-dev"
+           },
+           {
+            "children": [],
+            "type": "python3-pylibacl"
+           },
+           {
+            "children": [],
+            "type": "python3-pyxattr"
+           },
+           {
+            "children": [],
+            "type": "python3-setuptools"
+           },
+           {
+            "children": [],
+            "type": "python3-setuptools-scm"
+           }
+          ],
+          "type": "packages"
+         }],
+         "type": "apt"
+        }],
+        "type": "addons"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "echo-cmd"
+        }],
+        "type": "install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "make $make_step"
+         },
+         {
+          "children": [],
+          "type": "cat ../*.changes"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "make_step=sdist run_command="
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "echo-cmd"
+        }],
+        "type": "install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "make $make_step"
+         },
+         {
+          "children": [],
+          "type": "ls dist/"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "master"
+     },
+     {
+      "children": [],
+      "type": "/_$/"
+     },
+     {
+      "children": [],
+      "type": "/^v\\\\d+\\\\.\\\\d+\\\\.\\\\d+((a|b|rc)[0-9])?(\\\\.dev[0-9]+)?$/"
+     }
+    ],
+    "type": "only"
+   }],
+   "type": "branches"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [
+      {
+       "children": [],
+       "type": "librsync-dev"
+      },
+      {
+       "children": [],
+       "type": "libacl1-dev"
+      },
+      {
+       "children": [],
+       "type": "rdiff"
+      }
+     ],
+     "type": "packages"
+    }],
+    "type": "apt"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "make_step=test-misc     run_command= sudo=sudo"
+    },
+    {
+     "children": [],
+     "type": "make_step=test-runtime-base run_command= sudo=sudo"
+    },
+    {
+     "children": [],
+     "type": "make_step=test-runtime-root run_command= sudo=root"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "make $make_step"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "~/build/rdiff-backup/cache"
+    }],
+    "type": "directories"
+   }],
+   "type": "cache"
+  }
+ ],
+ "type": "travis-file"
+}

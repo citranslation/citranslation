@@ -1,0 +1,62 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "docker-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "bin/test_travis.sh"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "token"
+     }],
+     "type": "secure"
+    }],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "FALSE"
+    }],
+    "type": "email"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

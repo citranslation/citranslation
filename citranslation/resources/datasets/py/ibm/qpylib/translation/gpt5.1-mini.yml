@@ -1,0 +1,104 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONUNBUFFERED: 1
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Show installed packages
+        run: python -m pip list
+
+      - name: Lint and Test
+        run: |
+          ./lint.sh && ./test.sh
+
+      - name: SonarCloud scan
+        if: >
+          github.event_name == 'push'
+          && !startsWith(github.ref, 'refs/tags/')
+          && github.repository == 'IBM/qpylib'
+        # This step assumes sonar-scanner is configured in your repository/organization.
+        # Replace the run command below with the appropriate SonarCloud action or CLI invocation
+        # (and ensure necessary SonarCloud tokens/config are available as secrets) if needed.
+        run: sonar-scanner || true
+
+      - name: Build distribution
+        id: build
+        run: |
+          # Extract tag name if this is a tag ref
+          TAGNAME=""
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            TAGNAME="${GITHUB_REF#refs/tags/}"
+            echo "Detected tag: ${TAGNAME}"
+            ./build.sh "${TAGNAME}"
+            echo "tag=${TAGNAME}" >> $GITHUB_OUTPUT
+          else
+            DEVVER="0.0.dev${GITHUB_RUN_NUMBER}"
+            echo "No tag detected, using dev version: ${DEVVER}"
+            ./build.sh "${DEVVER}"
+            echo "tag=${DEVVER}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Prepare release assets paths
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          echo "asset_tar=dist/qpylib-${TAG}.tar.gz" >> $GITHUB_OUTPUT
+          echo "asset_wheel=dist/qpylib-${TAG}-py3-none-any.whl" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_OAUTH_TOKEN }}
+
+      - name: Upload release asset: tar.gz
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: dist/qpylib-${{ github.ref_name }}.tar.gz
+          asset_name: dist/qpylib-${{ github.ref_name }}.tar.gz
+          asset_content_type: application/gzip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_OAUTH_TOKEN }}
+
+      - name: Upload release asset: wheel
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: dist/qpylib-${{ github.ref_name }}-py3-none-any.whl
+          asset_name: dist/qpylib-${{ github.ref_name }}-py3-none-any.whl
+          asset_content_type: application/octet-stream
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_OAUTH_TOKEN }}
+
+|End-of-Code|

@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.8', '3.9', '3.10', '3.11']
+        arch: ['amd64', 'ppc64le']
+        without_extension: ['0', '1']
+    # Use GitHub-hosted runner for amd64, and a self-hosted ppc64le runner for ppc64le builds.
+    runs-on: ${{ matrix.arch == 'amd64' && 'ubuntu-latest' || 'self-hosted && ppc64le' }}
+    env:
+      WITHOUT_EXTENSION: ${{ matrix.without_extension }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install coveralls pytest coverage
+          python setup.py develop
+
+      - name: Run tests
+        run: |
+          coverage run --source=mwparserfromhell -m pytest
+
+      - name: Send coverage to Coveralls
+        if: success()
+        env:
+          # Provide COVERALLS_REPO_TOKEN via repository secrets if required by your Coveralls setup
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        run: |
+          coveralls
+|End-of-Code|

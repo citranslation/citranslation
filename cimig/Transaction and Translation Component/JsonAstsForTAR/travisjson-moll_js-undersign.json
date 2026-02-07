@@ -1,0 +1,78 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "node"
+    },
+    {
+     "children": [],
+     "type": "4"
+    },
+    {
+     "children": [],
+     "type": "5"
+    },
+    {
+     "children": [],
+     "type": "6"
+    },
+    {
+     "children": [],
+     "type": "7"
+    },
+    {
+     "children": [],
+     "type": "8"
+    },
+    {
+     "children": [],
+     "type": "9"
+    },
+    {
+     "children": [],
+     "type": "10"
+    },
+    {
+     "children": [],
+     "type": "11"
+    },
+    {
+     "children": [],
+     "type": "12"
+    },
+    {
+     "children": [],
+     "type": "13"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "EMAIL"
+    }],
+    "type": "email"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

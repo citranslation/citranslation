@@ -1,0 +1,629 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "build"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ matrix.os }}"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "fail-fast"
+        },
+        {
+         "children": [
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "3.7"
+            },
+            {
+             "children": [],
+             "type": "3.8"
+            },
+            {
+             "children": [],
+             "type": "3.9"
+            },
+            {
+             "children": [],
+             "type": "3.10"
+            }
+           ],
+           "type": "python-version"
+          },
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "ubuntu-latest"
+            },
+            {
+             "children": [],
+             "type": "macos-latest"
+            },
+            {
+             "children": [],
+             "type": "windows-latest"
+            }
+           ],
+           "type": "os"
+          }
+         ],
+         "type": "matrix"
+        }
+       ],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up python-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-version }}"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pip install -r requirements_dev.txt\\npip install coveralls\\npip install pytest\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run tests"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "coverage-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "upload coverage-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "coveralls --service=github"
+           }],
+           "type": "run"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.github_token }}"
+             }],
+             "type": "github_token"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.os }} - ${{ matrix.python-version }}"
+             }],
+             "type": "coveralls_flag_name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "coveralls_parallel"
+            }
+           ],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "test"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "run linters"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "0"
+            }],
+            "type": "fetch-depth"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "super-linter"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "github/super-linter@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "FALSE"
+             }],
+             "type": "validate_all_codebase"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "validate_python_black"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "master"
+             }],
+             "type": "default_branch"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.github_token }}"
+             }],
+             "type": "github_token"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "/"
+             }],
+             "type": "linter_rules_path"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "pyproject.toml"
+             }],
+             "type": "python_black_config_file"
+            }
+           ],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "lint"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "indicate completion to PATH-OR-URL"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "test"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "python:3-slim"
+       }],
+       "type": "container"
+      },
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "finished"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "pip3 install --upgrade coveralls\\ncoveralls --finish\\n"
+          }],
+          "type": "run"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ secrets.github_token }}"
+           }],
+           "type": "github_token"
+          }],
+          "type": "env"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }],
+       "type": "steps"
+      }
+     ],
+     "type": "coveralls"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "release"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "test"
+        },
+        {
+         "children": [],
+         "type": "coveralls"
+        }
+       ],
+       "type": "needs"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "0"
+            }],
+            "type": "fetch-depth"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup node.js"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-node@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "16"
+            }],
+            "type": "node-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "npm-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up python"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "3.8"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install setuptools"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "python-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "release"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.github_token }}"
+             }],
+             "type": "gh_token"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.pypi_token }}"
+             }],
+             "type": "pypi_token"
+            }
+           ],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "npx semantic-release"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "release"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

@@ -1,0 +1,53 @@
+name: Node CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ["0.12", "4.2", "5.0"]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install npm@2.14.5 and dependencies
+        run: |
+          npm install -g npm@2.14.5
+          npm install
+
+      - name: Run tests
+        run: DEBUG=* npm test
+
+      # Optional: send email notification on failure (requires SMTP secrets configured in repository settings)
+      - name: Send failure email
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          # Configure these secrets in your repository: SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD
+          server_address: ${{ secrets.SMTP_SERVER }}
+          server_port: ${{ secrets.SMTP_PORT }}
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "CI failure: ${{ github.repository }} (ref: ${{ github.ref }})"
+          to: |
+            charlie.robbins@gmail.com
+            erik.trom.github@gmail.com
+          from: ${{ secrets.SMTP_FROM | default(secrets.SMTP_USERNAME) }}
+          body: |
+            The GitHub Actions workflow for ${{ github.repository }} failed.
+            Workflow: ${{ github.workflow }}
+            Job: ${{ github.job }}
+            Run: ${{ github.run_id }}
+            Commit: ${{ github.sha }}
+            URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+|End-of-Code|

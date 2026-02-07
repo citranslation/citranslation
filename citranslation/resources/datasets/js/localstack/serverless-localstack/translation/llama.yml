@@ -1,0 +1,32 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      localstack:
+        image: localstack/localstack:0.14.1
+        ports:
+          - 4566:4566
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Lint
+        run: npm run lint
+      - name: Test
+        run: npm run test
+      - name: Link dependencies
+        run: npm link
+      - name: Run integration tests
+        run: |
+          sleep 5
+          SLS_DEBUG=1 npm run test:integration
+|End-of-Code|
+```
+Note that in GitHub Actions, we don't need to specify the `node_js` section, as it's not a valid configuration option. Instead, we use the `runs-on` keyword to specify the environment (in this case, `ubuntu-latest`) and the `services` keyword to define the `localstack` service. The rest of the configuration is similar to the Travis CI configuration.

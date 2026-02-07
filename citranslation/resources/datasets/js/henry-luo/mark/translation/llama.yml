@@ -1,0 +1,29 @@
+Here is the migrated GitHub Action configuration:
+```
+name: Node.js CI
+
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Install codecov
+        run: npm install -g codecov
+      - name: Install dependencies
+        run: npm install boolbase nth-check htmlparser2
+      - name: Run tests
+        run: npm run coverage
+      - name: Generate coverage report
+        run: codecov
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: coverage.json
+|End-of-Code|
+```
+Note that I've replaced the `node_js` section with the `runs-on` keyword, which specifies the environment where the job will run. I've also replaced the `install` section with separate `run` steps for installing dependencies and installing codecov. The `script` section has been replaced with separate `run` steps for running tests and generating the coverage report. Finally, I've added a new step to upload the coverage report using the codecov-action.

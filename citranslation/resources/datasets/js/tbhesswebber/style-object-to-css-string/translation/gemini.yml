@@ -1,0 +1,40 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # Corresponds to the node_js versions in Travis CI.
+        # 'node' is mapped to the latest Long-Term Support (LTS) version.
+        node-version: [16.x, 18.x, 20.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          # This caches npm dependencies, equivalent to 'cache: npm' in Travis CI
+          cache: 'npm'
+
+      - name: Install dependencies
+        # 'npm ci' is recommended for CI for faster, more reliable builds
+        run: npm ci
+
+      - name: Run validation
+        # This corresponds to the 'script' block in Travis CI
+        run: npm run validate
+
+
+```
+|End-of-Code|

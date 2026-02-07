@@ -1,0 +1,12 @@
+name: placeholder_Name
+
+on: push:
+
+jobs:
+  build:
+    runs-on
+    steps
+    run: make test
+
+skip_existing: TRUE
+

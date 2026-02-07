@@ -1,0 +1,73 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "bionic"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "TRUE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo dpkg --install pandoc.deb"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install \\\".[webpage,dev]\\\""
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pytest -m='integration or travis'"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

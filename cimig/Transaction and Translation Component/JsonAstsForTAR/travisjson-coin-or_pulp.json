@@ -1,0 +1,313 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "bionic"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "pypy3"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "bionic"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "bionic"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "bionic"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "bionic"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "bionic"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9-dev"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "bionic"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "nightly"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "focal"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "pypy3"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "focal"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "focal"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "focal"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "focal"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "focal"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9-dev"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "focal"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "nightly"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install ."
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pulptest"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

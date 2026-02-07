@@ -1,0 +1,1019 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "tests: node.js"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pull_request"
+    },
+    {
+     "children": [],
+     "type": "push"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "install deps and build"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "ljharb/actions/node/install@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "skip-ls-check"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "npx lerna bootstrap"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/cache@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "packages/*/build\\nnode_modules\\npackages/*/node_modules\\n"
+             }],
+             "type": "path"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "enzyme-${{ github.workflow }}-${{ github.action }}-${{ github.run_id }}"
+             }],
+             "type": "key"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "build"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "build"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "karma tests"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "continue-on-error"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "fail-fast"
+        },
+        {
+         "children": [{
+          "children": [
+           {
+            "children": [],
+            "type": "16"
+           },
+           {
+            "children": [],
+            "type": "16.3"
+           },
+           {
+            "children": [],
+            "type": "16.2"
+           },
+           {
+            "children": [],
+            "type": "16.1"
+           },
+           {
+            "children": [],
+            "type": "15"
+           },
+           {
+            "children": [],
+            "type": "15.4"
+           },
+           {
+            "children": [],
+            "type": "0.14"
+           },
+           {
+            "children": [],
+            "type": "0.13"
+           }
+          ],
+          "type": "react"
+         }],
+         "type": "matrix"
+        }
+       ],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/cache@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "packages/*/build\\nnode_modules\\npackages/*/node_modules\\n"
+             }],
+             "type": "path"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "enzyme-${{ github.workflow }}-${{ github.action }}-${{ github.run_id }}"
+             }],
+             "type": "key"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "sudo chmod-cmd"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "ljharb/actions/node/install@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "lts/*"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "skip-install"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "(nvm install node && react=${{ matrix.react }} travis=1 sh PATH-OR-URL)"
+             }],
+             "type": "after_install"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "skip-ls-check"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "npm-cmd"
+           }],
+           "type": "run"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "TRUE"
+           }],
+           "type": "continue-on-error"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "chromium-browser"
+             }],
+             "type": "chrome_bin"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "99.0"
+             }],
+             "type": "display"
+            }
+           ],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "echo-cmd"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "karma"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "build"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tests"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ matrix.continue-on-error == 'true' }}"
+       }],
+       "type": "continue-on-error"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "fail-fast"
+        },
+        {
+         "children": [
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "18"
+            },
+            {
+             "children": [],
+             "type": "4"
+            }
+           ],
+           "type": "node-version"
+          },
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "16.14"
+            },
+            {
+             "children": [],
+             "type": "16.13"
+            },
+            {
+             "children": [],
+             "type": "16.12"
+            },
+            {
+             "children": [],
+             "type": "16.11"
+            },
+            {
+             "children": [],
+             "type": "16.10"
+            },
+            {
+             "children": [],
+             "type": "16.9"
+            },
+            {
+             "children": [],
+             "type": "16.8"
+            },
+            {
+             "children": [],
+             "type": "16.7"
+            },
+            {
+             "children": [],
+             "type": "16.6"
+            },
+            {
+             "children": [],
+             "type": "16.5"
+            },
+            {
+             "children": [],
+             "type": "16.4"
+            },
+            {
+             "children": [],
+             "type": "16.3"
+            },
+            {
+             "children": [],
+             "type": "16.2"
+            },
+            {
+             "children": [],
+             "type": "16.1"
+            },
+            {
+             "children": [],
+             "type": "16.0"
+            },
+            {
+             "children": [],
+             "type": "15.5"
+            },
+            {
+             "children": [],
+             "type": "15.4"
+            },
+            {
+             "children": [],
+             "type": "15.3"
+            },
+            {
+             "children": [],
+             "type": "15.2"
+            },
+            {
+             "children": [],
+             "type": "15.1"
+            },
+            {
+             "children": [],
+             "type": "15.0"
+            },
+            {
+             "children": [],
+             "type": "0.14"
+            },
+            {
+             "children": [],
+             "type": "0.13"
+            }
+           ],
+           "type": "react"
+          },
+          {
+           "children": [
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "16"
+               }],
+               "type": "node-version"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "16"
+               }],
+               "type": "react"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "14"
+               }],
+               "type": "node-version"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "16"
+               }],
+               "type": "react"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "12"
+               }],
+               "type": "node-version"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "16"
+               }],
+               "type": "react"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "10"
+               }],
+               "type": "node-version"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "16"
+               }],
+               "type": "react"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "8"
+               }],
+               "type": "node-version"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "16"
+               }],
+               "type": "react"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "6"
+               }],
+               "type": "node-version"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "16"
+               }],
+               "type": "react"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "lts/*"
+               }],
+               "type": "node-version"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "16.8.3"
+               }],
+               "type": "react"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "lts/*"
+               }],
+               "type": "node-version"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "16.8.5"
+               }],
+               "type": "react"
+              },
+              {
+               "children": [{
+                "children": [{
+                 "children": [],
+                 "type": "16.8.5"
+                }],
+                "type": "renderer"
+               }],
+               "type": "env"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "lts/*"
+               }],
+               "type": "node-version"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "16.8.5"
+               }],
+               "type": "react"
+              },
+              {
+               "children": [{
+                "children": [{
+                 "children": [],
+                 "type": "16.8.3"
+                }],
+                "type": "renderer"
+               }],
+               "type": "env"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "lts/*"
+               }],
+               "type": "node-version"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "16.3"
+               }],
+               "type": "react"
+              },
+              {
+               "children": [{
+                "children": [{
+                 "children": [],
+                 "type": "16"
+                }],
+                "type": "adapter"
+               }],
+               "type": "env"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "lts/*"
+               }],
+               "type": "node-version"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "16.8"
+               }],
+               "type": "react"
+              },
+              {
+               "children": [{
+                "children": [{
+                 "children": [],
+                 "type": "16.7"
+                }],
+                "type": "renderer"
+               }],
+               "type": "env"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "lts/*"
+               }],
+               "type": "node-version"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "16.7"
+               }],
+               "type": "react"
+              },
+              {
+               "children": [{
+                "children": [{
+                 "children": [],
+                 "type": "16.8"
+                }],
+                "type": "renderer"
+               }],
+               "type": "env"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "lts/*"
+               }],
+               "type": "node-version"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "16.7"
+               }],
+               "type": "react"
+              },
+              {
+               "children": [{
+                "children": [{
+                 "children": [],
+                 "type": "16.7"
+                }],
+                "type": "renderer"
+               }],
+               "type": "env"
+              }
+             ],
+             "type": "OBJ-NODE"
+            }
+           ],
+           "type": "include"
+          }
+         ],
+         "type": "matrix"
+        }
+       ],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/cache@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "packages/*/build\\nnode_modules\\npackages/*/node_modules\\n"
+             }],
+             "type": "path"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "enzyme-${{ github.workflow }}-${{ github.action }}-${{ github.run_id }}"
+             }],
+             "type": "key"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "sudo chmod-cmd"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "ljharb/actions/node/install@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.node-version || 'lts/* '}}"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "skip-install"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "(nvm install node && sh PATH-OR-URL)"
+             }],
+             "type": "after_install"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "skip-ls-check"
+            }
+           ],
+           "type": "with"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.react }}"
+            }],
+            "type": "react"
+           }],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "codecov/codecov-action@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "tests"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "node + react + karma"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "tests"
+        },
+        {
+         "children": [],
+         "type": "karma"
+        }
+       ],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "echo-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       }],
+       "type": "steps"
+      }
+     ],
+     "type": "node"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

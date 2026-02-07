@@ -1,0 +1,25 @@
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.6.0]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run test
+    - run: npm run lint
+      |End-of-Code|
+
+Please note that the "npm ci" command is used instead of "npm install" to ensure that the project dependencies are installed exactly as they were at the time of the last git commit. This is a more reliable way to install dependencies than using "npm install" which can lead to dependency version mismatches.

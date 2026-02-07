@@ -1,0 +1,77 @@
+```yaml
+# This GitHub Actions workflow was migrated from the provided Travis CI configuration.
+# Key changes and considerations:
+# 1. Environment: The 'language' and 'node_js' keys are replaced by the 'actions/setup-node' action.
+# 2. Services: The 'addons: postgresql' section is replaced by a 'services' block, which starts a PostgreSQL 9.6 container.
+# 3. Database Setup: The 'before_install' command 'psql -c create database...' is handled more cleanly by setting the 'POSTGRES_DB' environment variable in the service definition, which automatically creates the database.
+# 4. Scripts: 'script' and 'after_script' are mapped to 'steps' in the job. Environment variables for the database connection are set for the test step.
+# 5. Coverage: The complex 'after_script' for Coveralls is replaced by the modern 'coverallsapp/github-action'. The 'if: always()' condition is used on the coverage steps to mimic the behavior of 'after_script', which runs regardless of the main script's success or failure.
+# 6. Notifications: The 'notifications' block is not migrated as GitHub Actions has its own built-in notification system based on repository watch settings and workflow status.
+
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:9.6
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: sequelize
+        ports:
+          - 5432:5432
+        # Health check to ensure postgres is ready before steps start
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x' # Using a recent LTS version, as "node" in Travis means latest stable
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+        env:
+          # Provide connection details for the PostgreSQL service
+          PGHOST: localhost
+          PGPORT: 5432
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          PGDATABASE: sequelize
+
+      - name: Generate coverage report
+        # This step runs the coverage command from the original 'after_script'.
+        # 'if: always()' ensures it runs even if the 'Run tests' step fails.
+        if: always()
+        run: ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --report lcovonly test/overall.test.js -- --exit
+
+      - name: Upload coverage to Coveralls
+        # This step uses the official Coveralls action to upload the report.
+        # 'if: always()' ensures it runs even if prior steps fail.
+        if: always()
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./coverage/lcov.info
+|End-of-Code|
+```

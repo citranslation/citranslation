@@ -1,0 +1,640 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "focal"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "minimal"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "beta"
+        }],
+        "type": "rust"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "nightly"
+        }],
+        "type": "rust"
+       }],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "allow_failures"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "python"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "flatdata-generator"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "cd-cmd"
+          },
+          {
+           "children": [],
+           "type": "pip install -r requirements.txt"
+          },
+          {
+           "children": [],
+           "type": "pip install nose pylint"
+          }
+         ],
+         "type": "install"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "python-cmd"
+          },
+          {
+           "children": [],
+           "type": "pip install ."
+          },
+          {
+           "children": [],
+           "type": "flatdata-generator --help"
+          }
+         ],
+         "type": "script"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "python"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "flatdata-py"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "pip install ./flatdata-generator"
+          },
+          {
+           "children": [],
+           "type": "cd-cmd"
+          },
+          {
+           "children": [],
+           "type": "pip install -r requirements.txt"
+          },
+          {
+           "children": [],
+           "type": "pip install nose pylint"
+          }
+         ],
+         "type": "install"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "python-cmd"
+          },
+          {
+           "children": [],
+           "type": "pip install ."
+          },
+          {
+           "children": [],
+           "type": "flatdata-inspector --help"
+          }
+         ],
+         "type": "script"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "cpp"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "flatdata-cpp"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "gcc"
+         }],
+         "type": "compiler"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [
+            {
+             "children": [],
+             "type": "python3-pip"
+            },
+            {
+             "children": [],
+             "type": "python3-setuptools"
+            },
+            {
+             "children": [],
+             "type": "libboost-filesystem-dev"
+            }
+           ],
+           "type": "packages"
+          }],
+          "type": "apt"
+         }],
+         "type": "addons"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "pip3 install ./flatdata-generator"
+         }],
+         "type": "install"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "flatdata-cpp/ci/PATH-OR-URL"
+         }],
+         "type": "script"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "cpp"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "flatdata-cpp"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "clang"
+         }],
+         "type": "compiler"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [
+            {
+             "children": [],
+             "type": "python3-pip"
+            },
+            {
+             "children": [],
+             "type": "python3-setuptools"
+            },
+            {
+             "children": [],
+             "type": "libboost-filesystem-dev"
+            }
+           ],
+           "type": "packages"
+          }],
+          "type": "apt"
+         }],
+         "type": "addons"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "pip3 install ./flatdata-generator"
+         }],
+         "type": "install"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "flatdata-cpp/ci/PATH-OR-URL"
+         }],
+         "type": "script"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "go"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "flatdata-go"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "1.x"
+         }],
+         "type": "go"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "install"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "go get PATH-OR-URL"
+          },
+          {
+           "children": [],
+           "type": "go get PATH-OR-URL"
+          }
+         ],
+         "type": "before_script"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "set -ex\\npushd flatdata-go/flatdata; make run-ci; popd\\ndocker-cmd"
+         }],
+         "type": "script"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "python"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "flatdata-dot"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "graphviz"
+           }],
+           "type": "packages"
+          }],
+          "type": "apt"
+         }],
+         "type": "addons"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "pip3 install ./flatdata-generator"
+         }],
+         "type": "install"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "ci/dot_test_cases.sh"
+         }],
+         "type": "script"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "rust"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "flatdata-rs"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "stable"
+         }],
+         "type": "rust"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "cargo"
+         }],
+         "type": "cache"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "python3-venv"
+           }],
+           "type": "packages"
+          }],
+          "type": "apt"
+         }],
+         "type": "addons"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "export-cmd"
+          },
+          {
+           "children": [],
+           "type": "cd-cmd"
+          },
+          {
+           "children": [],
+           "type": "cargo build"
+          },
+          {
+           "children": [],
+           "type": "cargo test"
+          },
+          {
+           "children": [],
+           "type": "cargo build --all-features"
+          },
+          {
+           "children": [],
+           "type": "cargo test --all-features"
+          }
+         ],
+         "type": "script"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "cargo coveralls"
+         }],
+         "type": "after_success"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "rust"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "flatdata-rs"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "bionic"
+         }],
+         "type": "dist"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "beta"
+         }],
+         "type": "rust"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "cargo"
+         }],
+         "type": "cache"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "python3-venv"
+           }],
+           "type": "packages"
+          }],
+          "type": "apt"
+         }],
+         "type": "addons"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "export-cmd"
+          },
+          {
+           "children": [],
+           "type": "cd-cmd"
+          },
+          {
+           "children": [],
+           "type": "cargo build"
+          },
+          {
+           "children": [],
+           "type": "cargo test"
+          }
+         ],
+         "type": "script"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "rust"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "flatdata-rs"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "bionic"
+         }],
+         "type": "dist"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "nightly"
+         }],
+         "type": "rust"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "cargo"
+         }],
+         "type": "cache"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "python3-venv"
+           }],
+           "type": "packages"
+          }],
+          "type": "apt"
+         }],
+         "type": "addons"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "export-cmd"
+          },
+          {
+           "children": [],
+           "type": "cd-cmd"
+          },
+          {
+           "children": [],
+           "type": "cargo build"
+          },
+          {
+           "children": [],
+           "type": "cargo test"
+          }
+         ],
+         "type": "script"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    }
+   ],
+   "type": "matrix"
+  }
+ ],
+ "type": "travis-file"
+}

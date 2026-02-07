@@ -1,0 +1,40 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "generic"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "scripts/PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "scripts/PATH-OR-URL >/tmp/table.mediawiki || exit 1"
+    },
+    {
+     "children": [],
+     "type": "diff readme.mediawiki /tmp/table.mediawiki | grep '^[<>] |' >/tmp/after.diff || true"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

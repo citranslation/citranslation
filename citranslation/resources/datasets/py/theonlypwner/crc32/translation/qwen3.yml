@@ -1,0 +1,57 @@
+name: Python CI
+on: [push]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - python-version: 2.6
+            runs-on: ubuntu:trusty
+            allow_failure: true
+          - python-version: 2.7
+            runs-on: ubuntu-latest
+          - python-version: 3.2
+            runs-on: ubuntu:trusty
+            allow_failure: true
+          - python-version: 3.3
+            runs-on: ubuntu:trusty
+            allow_failure: true
+          - python-version: 3.4
+            runs-on: ubuntu-latest
+            allow_failure: true
+          - python-version: 3.5
+            runs-on: ubuntu-latest
+            allow_failure: true
+          - python-version: 3.6
+            runs-on: ubuntu-latest
+            allow_failure: true
+          - python-version: 3.7
+            runs-on: ubuntu-latest
+            allow_failure: true
+          - python-version: 3.8
+            runs-on: ubuntu-latest
+          - python-version: 3.9
+            runs-on: ubuntu-latest
+          - python-version: pypy
+            runs-on: ubuntu-latest
+            allow_failure: true
+          - python-version: pypy3
+            runs-on: ubuntu-latest
+            allow_failure: true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          pip install coveralls
+      - name: Run tests
+        run: |
+          coverage run --branch --source=crc32 test.py
+      - name: Upload coverage
+        if: ${{ success }}
+        run: coveralls
+|End-of-Code|

@@ -1,0 +1,136 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "tests"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "read"
+    }],
+    "type": "contents"
+   }],
+   "type": "permissions"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "tests"
+      }],
+      "type": "name"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "checkout"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set up python"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "pip install flake8 flake8-import-order"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "flake8 ."
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "python-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "lint"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

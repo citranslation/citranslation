@@ -1,0 +1,183 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "stable"
+    },
+    {
+     "children": [],
+     "type": "8"
+    },
+    {
+     "children": [],
+     "type": "6"
+    },
+    {
+     "children": [],
+     "type": "10"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xcode7.3"
+   }],
+   "type": "osx_image"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "TRUE"
+    }],
+    "type": "fast_finish"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "yarn --ignore-engines"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "yarn run travis"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "release"
+       }],
+       "type": "stage"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "lts/*"
+       }],
+       "type": "node_js"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "script"
+         }],
+         "type": "provider"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "skip_cleanup"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "npx semantic-release@15"
+         }],
+         "type": "script"
+        }
+       ],
+       "type": "deploy"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "d3494c5bb5f3df7d98635dbc2aa962c7ce5e14c61f574a8c7304dfa9bc8783e4"
+     }],
+     "type": "repo_token"
+    }],
+    "type": "code_climate"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "yarn"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "cat coverage/PATH-OR-URL | node_modules/.bin/coveralls --verbose"
+    },
+    {
+     "children": [],
+     "type": "codeclimate-test-reporter < coverage/PATH-OR-URL"
+    }
+   ],
+   "type": "after_success"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "master"
+      },
+      {
+       "children": [],
+       "type": "/^greenkeeper/.*$/"
+      }
+     ],
+     "type": "only"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "/^v\\\\d+\\\\.\\\\d+\\\\.\\\\d+$/"
+     }],
+     "type": "except"
+    }
+   ],
+   "type": "branches"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "gk_lock_yarn_opts=\\\"--ignore-engines\\\""
+    }],
+    "type": "global"
+   }],
+   "type": "env"
+  }
+ ],
+ "type": "travis-file"
+}

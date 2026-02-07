@@ -1,0 +1,303 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "cloud-pysec ci"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "branch-name"
+       }],
+       "type": "branches"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "*"
+       }],
+       "type": "tags"
+      }
+     ],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [
+          {
+           "children": [],
+           "type": "3.7"
+          },
+          {
+           "children": [],
+           "type": "3.8"
+          },
+          {
+           "children": [],
+           "type": "3.9"
+          },
+          {
+           "children": [],
+           "type": "3.10"
+          },
+          {
+           "children": [],
+           "type": "3.11"
+          }
+         ],
+         "type": "python-version"
+        }],
+        "type": "matrix"
+       }],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up python-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-version }}"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "python-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run tox"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pythonversion=${{ matrix.python-version }}\\npythonversion=${pythonversion//./}\\ntox -e py${pythonversion}\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "build"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "build"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "github.event_name == 'push' && startswith(github.ref, 'refs/tags')"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up python"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "3.8"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "python-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "build and publish"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "__token__"
+             }],
+             "type": "twine_username"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.pypi_api_token }}"
+             }],
+             "type": "twine_password"
+            }
+           ],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "python-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "deploy"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

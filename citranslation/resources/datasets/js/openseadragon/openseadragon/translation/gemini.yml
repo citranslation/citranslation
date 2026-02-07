@@ -1,0 +1,45 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    # The 'dist: jammy' in Travis CI corresponds to Ubuntu 22.04.
+    # 'ubuntu-latest' in GitHub Actions currently points to Ubuntu 22.04.
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # Corresponds to the 'node_js' matrix in Travis CI
+        node-version: [lts/*]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        # Cache npm dependencies for faster builds
+        cache: 'npm'
+
+    # Corresponds to the 'before_install' step in Travis CI
+    - name: Install Grunt CLI
+      run: npm install -g grunt-cli
+
+    # Corresponds to the implicit 'install' step in Travis CI
+    # 'npm ci' is recommended for CI for faster, more reliable builds
+    - name: Install dependencies
+      run: npm ci
+
+    # Corresponds to the implicit 'script' step in Travis CI (which defaults to 'npm test')
+    - name: Run tests
+      run: npm test
+```
+|End-of-Code|

@@ -1,0 +1,39 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # Corresponds to dist: focal (or newer)
+
+    strategy:
+      matrix:
+        node-version: [9, 10, 12, 14, 16, 18, 20, 22]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm run test-with-temp-cloud
+
+# Note: Email notifications are configured in repository settings (Settings > Notifications)
+# and not directly within the GitHub Actions workflow file.
+
+```
+|End-of-Code|

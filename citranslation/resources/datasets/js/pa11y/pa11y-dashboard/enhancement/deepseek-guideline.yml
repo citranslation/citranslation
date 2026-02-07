@@ -1,0 +1,57 @@
+```yaml
+name: Node CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10, 12, 14]
+
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+      env:
+        CI: true
+        NODE_ENV: test
+        MONGODB_URL: mongodb://localhost:27017/mydb
+
+    - name: Copy config file
+      run: cp config/test.sample.json config/test.json
+
+    - name: Start server
+      run: NODE_ENV=test node index.js &
+
+    - name: Sleep
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '5s'
+
+    - name: Run tests
+      run: make ci
+
+|End-of-Code|
+```
+
+This GitHub Action configuration is based on the Travis CI configuration you provided. It uses the `actions/checkout@v2` action to checkout the code, `actions/setup-node@v1` to setup the Node.js environment, and `jakejarvis/wait-action@master` to add a delay of 5 seconds. The MongoDB service is started using Docker and the MONGODB_URL environment variable is set to point to the MongoDB service. The `npm ci` and `npm run build --if-present` commands are used to install dependencies and build the project, respectively. The `npm test` command is used to run the tests. The `make ci` command is used to run the CI script.

@@ -1,0 +1,160 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "pypi-build-and-deploy"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "diepvries/*"
+     }],
+     "type": "tags"
+    }],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "__token__"
+        }],
+        "type": "twine_username"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.twine_password }}"
+        }],
+        "type": "twine_password"
+       }
+      ],
+      "type": "env"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "checkout repository"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "0"
+           }],
+           "type": "fetch-depth"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "setup python"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "3.9"
+           }],
+           "type": "python-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "python-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run tox"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "python-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "deploy-to-pypi"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

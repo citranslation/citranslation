@@ -1,0 +1,308 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "8"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "trusty"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "stable"
+    }],
+    "type": "chrome"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "TRUE"
+    }],
+    "type": "yarn"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "test"
+    },
+    {
+     "children": [],
+     "type": "older version tests"
+    },
+    {
+     "children": [],
+     "type": "deploy"
+    }
+   ],
+   "type": "stages"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fail_fast"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "ember_try_scenario=ember-canary"
+       }],
+       "type": "env"
+      }],
+      "type": "OBJ-NODE"
+     }],
+     "type": "allow_failures"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "yarn lint:js"
+          },
+          {
+           "children": [],
+           "type": "yarn test"
+          }
+         ],
+         "type": "script"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "other version tests"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "ember_try_scenario=ember-lts-3.4"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "ember_try_scenario=ember-lts-3.8"
+        }],
+        "type": "env"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "ember_try_scenario=ember-release"
+        }],
+        "type": "env"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "ember_try_scenario=ember-beta"
+        }],
+        "type": "env"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "ember_try_scenario=ember-canary"
+        }],
+        "type": "env"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "deploy"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "tag is present"
+         }],
+         "type": "if"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "yarn global add auto-dist-tag"
+         }],
+         "type": "install"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "auto-dist-tag --write"
+         }],
+         "type": "script"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "npm"
+           }],
+           "type": "provider"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "EMAIL"
+           }],
+           "type": "email"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "token"
+            }],
+            "type": "secure"
+           }],
+           "type": "api_key"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "tags"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "kategengler/ember-feature-flags"
+             }],
+             "type": "repo"
+            }
+           ],
+           "type": "on"
+          }
+         ],
+         "type": "deploy"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    }
+   ],
+   "type": "build"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "yarn install"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "node_modules/.bin/ember try:one $ember_try_scenario --skip-cleanup"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "master"
+     },
+     {
+      "children": [],
+      "type": "/^v\\\\d+\\\\.\\\\d+\\\\.\\\\d+/"
+     }
+    ],
+    "type": "only"
+   }],
+   "type": "branches"
+  }
+ ],
+ "type": "travis-file"
+}

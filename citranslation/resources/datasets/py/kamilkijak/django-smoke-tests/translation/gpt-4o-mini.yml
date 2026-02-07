@@ -1,0 +1,41 @@
+```yaml
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+        tox-env: [py-django-22, py-django-32]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: pip install -r requirements_test.txt
+
+    - name: Run tests with Tox
+      run: tox -e ${{ matrix.tox-env }}
+
+    - name: Upload coverage to Codecov
+      if: success()
+      run: bash <(curl -s https://codecov.io/bash) -e ${{ matrix.tox-env }}
+
+    - name: Notify on success or failure
+      if: failure()
+      run: echo "Build failed. Please check the logs."
+      
+      # Note: Email notifications are not directly supported in GitHub Actions.
+      # You can use third-party services or GitHub's built-in notifications.
+
+|End-of-Code|
+```

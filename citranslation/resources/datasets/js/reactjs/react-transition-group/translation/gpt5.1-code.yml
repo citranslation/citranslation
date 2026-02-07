@@ -1,0 +1,31 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        react_dist: [16, 17]
+    env:
+      REACT_DIST: ${{ matrix.react_dist }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 12
+          cache: yarn
+
+      - run: yarn
+      - run: yarn add react@$REACT_DIST react-dom@$REACT_DIST
+      - run: yarn --cwd www
+      - run: yarn test
+      - run: npm run build
+      - run: npm run semantic-release
+|End-of-Code|

@@ -1,0 +1,268 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "8"
+    },
+    {
+     "children": [],
+     "type": "9"
+    },
+    {
+     "children": [],
+     "type": "10"
+    },
+    {
+     "children": [],
+     "type": "11"
+    },
+    {
+     "children": [],
+     "type": "12"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "8"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser_name=chrome browser_version=latest"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "8"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser_name=chrome browser_version=29"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "8"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser_name=firefox browser_version=latest"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "8"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser_name=opera browser_version=latest"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "8"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser_name=safari browser_version=latest"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "8"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser_name=safari browser_version=7"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "8"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser_name=safari browser_version=6"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "8"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser_name=safari browser_version=5"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "8"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser_name=ie browser_version=11"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "8"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser_name=ie browser_version=10"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "8"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser_name=ie browser_version=9"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "matrix"
+  }
+ ],
+ "type": "travis-file"
+}

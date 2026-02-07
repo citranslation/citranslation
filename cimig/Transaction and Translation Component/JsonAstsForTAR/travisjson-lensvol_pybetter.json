@@ -1,0 +1,93 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip install -u pip"
+    },
+    {
+     "children": [],
+     "type": "pip install -u pytest"
+    },
+    {
+     "children": [],
+     "type": "pip install pytest-cov"
+    },
+    {
+     "children": [],
+     "type": "pip install codecov"
+    },
+    {
+     "children": [],
+     "type": "pip install mypy"
+    },
+    {
+     "children": [],
+     "type": "pip install pybetter"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install ."
+   }],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "mypy pybetter --ignore-missing-imports"
+    },
+    {
+     "children": [],
+     "type": "pytest"
+    },
+    {
+     "children": [],
+     "type": "pybetter --diff --noop --exit-code 42 pybetter/"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "codecov"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

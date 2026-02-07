@@ -1,0 +1,356 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "php"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "trusty"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "7.4"
+    },
+    {
+     "children": [],
+     "type": "7.3"
+    },
+    {
+     "children": [],
+     "type": "7.2"
+    },
+    {
+     "children": [],
+     "type": "5.6"
+    }
+   ],
+   "type": "php"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "wp_version=master"
+    },
+    {
+     "children": [],
+     "type": "wp_version=5.4"
+    },
+    {
+     "children": [],
+     "type": "wp_version=5.3"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "/tmp/wordpress"
+    }],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "5.6"
+         }],
+         "type": "php"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "wp_version=5.4"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "5.6"
+         }],
+         "type": "php"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "wp_version=5.3"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "5.6"
+         }],
+         "type": "php"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "wp_version=4.9"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "5.6"
+         }],
+         "type": "php"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "wp_version=4.7"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "5.5"
+         }],
+         "type": "php"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "wp_version=4.9"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "5.5"
+         }],
+         "type": "php"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "wp_version=4.7 wp_multisite=1"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "5.5"
+         }],
+         "type": "php"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "wp_version=4.7 lint=1"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    }
+   ],
+   "type": "build"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "wp_dir=/tmp/wordpress"
+    },
+    {
+     "children": [],
+     "type": "app_slug=$(basename $pwd)"
+    },
+    {
+     "children": [],
+     "type": "app_dir=$wp_dir/src/wp-content/plugins/$app_slug"
+    },
+    {
+     "children": [],
+     "type": "nvm install 12"
+    },
+    {
+     "children": [],
+     "type": "nvm use 12"
+    },
+    {
+     "children": [],
+     "type": "node -v"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "mv $app_dir/node_modules $wp_dir/node_modules-cache || true"
+    },
+    {
+     "children": [],
+     "type": "mv $app_dir/vendor $wp_dir/vendor-cache"
+    },
+    {
+     "children": [],
+     "type": "rm -rf $app_dir"
+    }
+   ],
+   "type": "before_cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "ln -s $pwd $app_dir"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "cp wp-tests-config-sample.php wp-tests-config.php"
+    },
+    {
+     "children": [],
+     "type": "sed -i \\\"s/youremptytestdbnamehere/wordpress_test/\\\" wp-tests-config.php"
+    },
+    {
+     "children": [],
+     "type": "sed -i \\\"s/yourusernamehere/root/\\\" wp-tests-config.php"
+    },
+    {
+     "children": [],
+     "type": "sed -i \\\"s/yourpasswordhere//\\\" wp-tests-config.php"
+    },
+    {
+     "children": [],
+     "type": "mysql -e 'create database wordpress_test;' -uroot"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "composer install"
+    },
+    {
+     "children": [],
+     "type": "composer run install-test-env"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "before_script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "find ./ -maxdepth 1 -name '*.php' | xargs -n1 bash -c 'php -lf $0 || exit 1'"
+    },
+    {
+     "children": [],
+     "type": "find app/ views/ \\\\( -name '*.php' \\\\) | xargs -n1 bash -c 'php -lf $0 || exit 1'"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

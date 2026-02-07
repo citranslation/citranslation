@@ -1,0 +1,35 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: pip install simplejson minimock coverage
+    - run: make test
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         user: gpodder
+#         password:
+#           secure: LhMmayKATJlyob0pkRvcDfie5vi8O+BdpMgJ224C+SXpwpQafPfHNUFzi3+IkS7z3KbYx/jTpP6gcfmEXnG/nI74U0U4fnY1KQixEfwcRTLHNDnx72qe4zXkXAtBzXCRROnyOTir1AolPiC8lpiL+ZBc8cBwan+322IZdlL8t5g=
+#         'on':
+#           tags: true
+#       if: "${{ github.event_name == 'push' && ${{ github.ref }} }}"
+    strategy:
+      matrix:
+        python:
+        - '3.8'
+        - '3.9'
+        - nightly

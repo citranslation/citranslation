@@ -1,0 +1,46 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+          - node-version: '0.10'
+            test-suite: 'unit'
+          - node-version: '0.11'
+            test-suite: 'unit'
+          - node-version: '0.12'
+            test-suite: 'unit'
+          - node-version: '4'
+            test-suite: 'unit'
+          - node-version: '5'
+            test-suite: 'unit'
+          - node-version: '4'
+            test-suite: 'lint'
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run test suite
+      run: npm run ${{ matrix.test-suite }}
+```
+|End-of-Code|

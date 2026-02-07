@@ -1,0 +1,107 @@
+```yaml
+name: Python CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  test:
+    name: Test on Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: ['3.8', '3.9', '3.10', 'nightly']
+
+    # Allow the 'nightly' build to fail without failing the workflow
+    continue-on-error: ${{ matrix.python-version == 'nightly' }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          # Fetches all history for all tags and branches for git-describe
+          fetch-depth: 0
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ matrix.python-version }}-
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pylint pytest pytest-cov
+          pip install -e .
+
+      - name: Configure project
+        run: |
+          # Fix duplicate lines issues for pylint
+          pylint --generate-rcfile > ~/.pylintrc
+          sed -i "s/min-similarity-lines=.*/min-similarity-lines=50/g" ~/.pylintrc
+          # Fallback version for non-tagged commits
+          git describe --tags --long --dirty || sed -i "s/setup_requires = .*/version = '0.0.0',/g" setup.py
+
+      - name: Run linters and tests
+        run: |
+          # Run lint
+          pylint content_hash/*
+          pylint example.py
+          # Run test
+          pytest --cov=content_hash
+
+      - name: Run Scrutinizer
+        if: matrix.python-version == '3.7'
+        run: |
+          pip install scrutinizer-ocular
+          ocular
+        # Note: Ocular may require an access token stored as a secret
+        # env:
+        #   SCRUTINIZER_ACCESS_TOKEN: ${{ secrets.SCRUTINIZER_ACCESS_TOKEN }}
+
+  deploy:
+    name: Deploy to PyPI
+    needs: test
+    # Run only when a tag is pushed
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build
+
+      - name: Build package
+        run: python -m build
+
+      - name: Publish package to PyPI
+        uses: pypa/gh-action-pypi-publish@v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          skip_existing: true
+```|End-of-Code|

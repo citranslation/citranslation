@@ -1,0 +1,42 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: # this agent type is not supported: [[{"dist"=>"noble"}]]
+             ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: sed '/pypandoc/d' -i requirements.txt
+    - run: pip install -U -r requirements.txt
+    - run: "./setup.py install"
+    - run: py.test --cov=ssh_ldap_pubkey --cov-report term -vv
+    - run: pycodestyle
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         user: jirutka
+#         password:
+#           secure: 2tzmNOMTjVcyIckYun5iZbgr9/6nrhImD4eFYOCbFFDezilGmPHwfbgp0zx55nrkdNOSB/mgsV+pYAdq8+0CRd/BcZZb9oosyS7n1vjPAP9fMNa02SsaqTWDzDpcNnGbfg7qOhKC/FyQ+H4uXp8w+pe4RfJFCUS/ywOimBEYrSI=
+#         skip_cleanup: true
+#         'on':
+#           tags: true
+#           python: 3.1
+#       if: "${{ github.event_name == 'push' && ${{ github.ref }} }}"
+    strategy:
+      matrix:
+        python:
+        - 3.8
+        - 3.9
+        - 3.1

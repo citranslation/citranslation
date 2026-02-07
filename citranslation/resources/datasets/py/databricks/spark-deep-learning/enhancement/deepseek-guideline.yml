@@ -1,0 +1,39 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install sphinx==3.2.1 pyspark==3.0.1 tensorflow-cpu==1.15.0
+
+    - name: Build the docs
+      run: |
+        pushd docs/
+        PYTHONPATH=.. make clean html
+        popd
+
+    - name: Test with pytest
+      run: pytest
+
+|End-of-Code|
+```
+
+This GitHub Action configuration is based on the Travis CI configuration you provided. It sets up a CI workflow that runs on every push and pull request to the master branch. The workflow runs on the latest version of Ubuntu, sets up Python 3.9, installs the necessary dependencies, builds the documentation, and runs the tests with pytest.

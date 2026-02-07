@@ -1,0 +1,101 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "test"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-node@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "16"
+           }],
+           "type": "node-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "npm-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "npm-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "npm-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "check"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

@@ -1,0 +1,203 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.8.4"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip install -e otcustomizers"
+    },
+    {
+     "children": [],
+     "type": "pip install -r protolib/requirements.txt"
+    },
+    {
+     "children": [],
+     "type": "pip install flake8==3.8.4 pytest"
+    },
+    {
+     "children": [],
+     "type": "make setup"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "libsystemd-dev"
+     }],
+     "type": "packages"
+    }],
+    "type": "apt"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python3 --version"
+    },
+    {
+     "children": [],
+     "type": "flake8 protocols/ protolib/"
+    },
+    {
+     "children": [],
+     "type": "bash ./PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "make build"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "s3"
+     }],
+     "type": "provider"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "us-west-2"
+     }],
+     "type": "region"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "$aws_access_key"
+     }],
+     "type": "access_key_id"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "$aws_secret_key"
+     }],
+     "type": "secret_access_key"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "protocol-library-builds"
+     }],
+     "type": "bucket"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "skip_cleanup"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "releases/deploy"
+     }],
+     "type": "local-dir"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "$ot_upload_branch"
+     }],
+     "type": "upload-dir"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "private"
+     }],
+     "type": "acl"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "opentrons/protocols"
+       }],
+       "type": "repo"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "all_branches"
+      }
+     ],
+     "type": "on"
+    }
+   ],
+   "type": "deploy"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "change"
+      }],
+      "type": "on_success"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "change"
+      }],
+      "type": "on_failure"
+     }
+    ],
+    "type": "email"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

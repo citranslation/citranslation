@@ -1,0 +1,357 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "postgresql"
+    },
+    {
+     "children": [],
+     "type": "redis-server"
+    }
+   ],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "2.7"
+    },
+    {
+     "children": [],
+     "type": "pypy"
+    },
+    {
+     "children": [],
+     "type": "3.4"
+    },
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "sentry_python_test_postgres_user=postgres sentry_python_test_postgres_name=travis_ci_test"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "pip"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "cargo"
+    }
+   ],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "master"
+     },
+     {
+      "children": [],
+      "type": "/^release\\\\/.+$/"
+     }
+    ],
+    "type": "only"
+   }],
+   "type": "branches"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linting"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "pip install tox"
+        }],
+        "type": "install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "tox -e linters"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "distribution packages"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [],
+        "type": "install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "make travis-upload-dist"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "build documentation"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [],
+        "type": "install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "make travis-upload-docs"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "ppc64le"
+        }],
+        "type": "arch"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "bionic"
+        }],
+        "type": "dist"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "sudo apt-cmd"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "psql -c 'create database travis_ci_test;' -u postgres"
+    },
+    {
+     "children": [],
+     "type": "psql -c 'create database test_travis_ci_test;' -u postgres"
+    }
+   ],
+   "type": "before_script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install codecov-cmd"
+    },
+    {
+     "children": [],
+     "type": "make install-zeus-cli"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "./scripts/PATH-OR-URL '' --cov=tests --cov=sentry_sdk --cov-report= --cov-branch"
+    },
+    {
+     "children": [],
+     "type": "coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "codecov-cmd"
+    },
+    {
+     "children": [],
+     "type": "[[ -z \\\"$zeus_api_token\\\" ]] || zeus upload -t \\\"application/x-cobertura+xml\\\" coverage.xml"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "PATH-OR-URL"
+      }],
+      "type": "urls"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "always"
+      }],
+      "type": "on_success"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "always"
+      }],
+      "type": "on_failure"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "always"
+      }],
+      "type": "on_start"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "always"
+      }],
+      "type": "on_cancel"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "always"
+      }],
+      "type": "on_error"
+     }
+    ],
+    "type": "webhooks"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

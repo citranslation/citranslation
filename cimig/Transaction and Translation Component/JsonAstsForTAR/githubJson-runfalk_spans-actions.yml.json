@@ -1,0 +1,681 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "ci"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "fail-fast"
+        },
+        {
+         "children": [
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "3.7"
+            },
+            {
+             "children": [],
+             "type": "3.8"
+            },
+            {
+             "children": [],
+             "type": "3.9"
+            },
+            {
+             "children": [],
+             "type": "3.10"
+            }
+           ],
+           "type": "python-version"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "ubuntu-latest"
+           }],
+           "type": "os"
+          }
+         ],
+         "type": "matrix"
+        }
+       ],
+       "type": "strategy"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "pytest (${{ matrix.python-version }}, ${{ matrix.os }})"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ matrix.os }}"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout code"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install python"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-version }}"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install poetry"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "abatilo/actions-poetry@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "1.1.13"
+            }],
+            "type": "poetry-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "remove poetry.lock file"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "rm poetry.lock"
+           }],
+           "type": "run"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ matrix.python-version != '3.10' }}"
+           }],
+           "type": "if"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dev dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "poetry install"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run pytest"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "poetry run pytest"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "tests"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "documentation"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tests"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout code"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install python"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "3.10"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install poetry"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "abatilo/actions-poetry@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "1.1.13"
+            }],
+            "type": "poetry-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dev dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "poetry install"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "build documentation"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "poetry run sphinx-build -b html doc doc-build\\ntouch doc-build/.nojekyll\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "deploy"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "crazy-max/ghaction-github-pages@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ github.event_name == 'create' && github.event.ref_type == 'tag' && github.ref == 'refs/heads/${{ github.event.repository.default_branch }}' }}"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "FALSE"
+             }],
+             "type": "allow_empty_commit"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "doc-build/"
+             }],
+             "type": "build_dir"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "andreas runfalk <andreas@runfalk.se>"
+             }],
+             "type": "author"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "keep_history"
+            }
+           ],
+           "type": "with"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.github_token }}"
+            }],
+            "type": "github_token"
+           }],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "docs"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "build and deploy"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "tests"
+        },
+        {
+         "children": [],
+         "type": "docs"
+        }
+       ],
+       "type": "needs"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout code"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install python"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "3.10"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install poetry"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "abatilo/actions-poetry@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "1.1.13"
+            }],
+            "type": "poetry-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dev dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "poetry install"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "validate that version matches the tag"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ github.event_name == 'create' && github.event.ref_type == 'tag' && github.ref == 'refs/heads/${{ github.event.repository.default_branch }}' }}"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "test \\\"$(poetry version --short)\\\" == \\\"${{ github.ref_name }}\\\""
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "build package"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "poetry build"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "deploy"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ github.event_name == 'create' && github.event.ref_type == 'tag' && github.ref == 'refs/heads/${{ github.event.repository.default_branch }}' }}"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.pypi_api_token }}"
+            }],
+            "type": "poetry_pypi_token_pypi"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "poetry publish"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "build"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

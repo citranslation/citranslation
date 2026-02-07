@@ -1,0 +1,33 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js CI
+
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build:prod
+      - name: Test
+        run: npm run test:coverage
+      - name: Lint
+        run: npm run lint
+      - name: Code coverage
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: coverage/lcov.info
+      - name: If the previous step failed, re-run the previous command
+        if: failure()
+        run: bash <(curl -s https://codecov.io/bash)
+```
+|End-of-Code|

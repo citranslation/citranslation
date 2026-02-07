@@ -1,0 +1,60 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    # The Travis CI config includes the ppc64le architecture, which is not
+    # available on GitHub-hosted runners. This workflow only runs on amd64.
+    # To run on ppc64le, you would need to use a self-hosted runner.
+    # e.g., runs-on: [self-hosted, linux, ppc64le]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.8', '3.9', '3.10', '3.11']
+        without-extension: [0, 1]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install coveralls pytest
+        python setup.py develop
+
+    - name: Run tests
+      env:
+        WITHOUT_EXTENSION: ${{ matrix.without-extension }}
+      run: |
+        coverage run --source=mwparserfromhell -m pytest
+
+    - name: Upload coverage to Coveralls
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        parallel: true
+        flag-name: run-${{ matrix.python-version }}-${{ matrix.without-extension }}
+
+  coveralls-finish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        parallel-finished: true
+```|End-of-Code|

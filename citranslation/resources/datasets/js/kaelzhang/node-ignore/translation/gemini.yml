@@ -1,0 +1,47 @@
+```yaml
+# This workflow was migrated from Travis CI.
+# Note: The 'arch' key with 'ppc64le' is not supported on GitHub-hosted runners.
+# This workflow runs on 'amd64' (x86_64) architecture using 'ubuntu-latest'.
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # Corresponds to the 'node_js' versions in the Travis CI file
+        node-version: [16]
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Corresponds to the 'before_install' step in Travis CI
+      - name: Run before_install commands
+        run: git --version
+
+      # Sets up the specified Node.js version from the matrix
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm' # Caches npm dependencies for faster builds
+
+      # A typical Node.js project has install and test steps.
+      # These are added as placeholders.
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+```
+|End-of-Code|

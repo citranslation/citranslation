@@ -1,0 +1,53 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "node"
+    },
+    {
+     "children": [],
+     "type": "8.11.0"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "greenkeeper-lockfile-update"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "greenkeeper-lockfile-upload"
+   }],
+   "type": "after_script"
+  }
+ ],
+ "type": "travis-file"
+}

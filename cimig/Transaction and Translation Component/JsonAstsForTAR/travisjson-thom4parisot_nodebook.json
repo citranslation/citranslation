@@ -1,0 +1,497 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "PATH-OR-URL"
+     }],
+     "type": "ssh_known_hosts"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "libxml2-utils"
+      }],
+      "type": "packages"
+     }],
+     "type": "apt"
+    }
+   ],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "v10"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm_version=6 debug=tape-spawn sharp_ignore_global_libvips=1"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "./bin/cli.js --help"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "make build-html"
+    },
+    {
+     "children": [],
+     "type": "make build-odt"
+    },
+    {
+     "children": [],
+     "type": "xmllint --noout dist/book.fodt 2>&1"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "openssl aes-256-cbc -k $encrypted_5256f0527d52_key -iv $encrypted_5256f0527d52_iv -in deploykey_ed25519.enc -out /tmp/deploykey -d"
+    },
+    {
+     "children": [],
+     "type": "eval \\\"$(ssh-agent -s)\\\" && chmod-cmd"
+    },
+    {
+     "children": [],
+     "type": "git-lfs pull"
+    },
+    {
+     "children": [],
+     "type": "make build-docbook"
+    }
+   ],
+   "type": "before_deploy"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "script"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip-cleanup"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "dist"
+       }],
+       "type": "local-dir"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "rsync -r --delete-after --quiet $travis_build_dir/dist/ oncletom@version"
+       }],
+       "type": "script"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "v1"
+        }],
+        "type": "branch"
+       }],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "script"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip-cleanup"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "dist"
+       }],
+       "type": "local-dir"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "rsync -r --delete-after --quiet $travis_build_dir/dist/ oncletom@version"
+       }],
+       "type": "script"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "master"
+        }],
+        "type": "branch"
+       }],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "releases"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "FALSE"
+       }],
+       "type": "prerelease"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip-cleanup"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "$gh_token"
+       }],
+       "type": "api-key"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "file-glob"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "dist/book.*"
+       }],
+       "type": "file"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "all-branches"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "$travis_branch =~ ^v1."
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "releases"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "prerelease"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip-cleanup"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "$gh_token"
+       }],
+       "type": "api-key"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "file-glob"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "dist/book.*"
+       }],
+       "type": "file"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "all-branches"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "$travis_branch =~ ^v2."
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "npm"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "latest"
+       }],
+       "type": "tag"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip-cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "all-branches"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "$travis_branch =~ ^v1."
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "EMAIL"
+       }],
+       "type": "email"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "$npm_token"
+       }],
+       "type": "api-key"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "npm"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "next"
+       }],
+       "type": "tag"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip-cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "all-branches"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "$travis_branch =~ ^v2."
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "EMAIL"
+       }],
+       "type": "email"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "$npm_token"
+       }],
+       "type": "api-key"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

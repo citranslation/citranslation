@@ -1,0 +1,134 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "14"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "12"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "10"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "14"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "osx"
+        }],
+        "type": "os"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "12"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "osx"
+        }],
+        "type": "os"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "10"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "osx"
+        }],
+        "type": "os"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "matrix"
+  }
+ ],
+ "type": "travis-file"
+}

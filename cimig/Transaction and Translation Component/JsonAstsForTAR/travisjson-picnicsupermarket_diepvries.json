@@ -1,0 +1,205 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "focal"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "sudo apt update"
+    },
+    {
+     "children": [],
+     "type": "sudo apt install -y graphviz"
+    },
+    {
+     "children": [],
+     "type": "pip install tox"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py38,lint"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py39,lint,doc deploy=true"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "pages"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "diepvries.picnic.tech"
+       }],
+       "type": "fqdn"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "doc/html"
+       }],
+       "type": "local_dir"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${deploy_github_token}"
+       }],
+       "type": "github_token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "keep_history"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "master"
+         }],
+         "type": "branch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "${deploy} = true"
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "script"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tox -e build -e upload"
+       }],
+       "type": "script"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "master"
+         }],
+         "type": "branch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "${deploy} = true"
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,41 @@
+```yaml
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Cache node modules and nvm
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            ~/.nvm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json', 'package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: |
+          make clean
+          make
+
+      - name: Run tests
+        run: npx mocha-headless-chrome -a no-sandbox -f test/index.html
+```
+|End-of-Code|

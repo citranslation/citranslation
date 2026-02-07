@@ -1,0 +1,62 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [ "**" ]
+    tags: [ "**" ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Show pip list
+        run: python -m pip list
+
+      - name: Lint and Test
+        run: ./lint.sh && ./test.sh
+
+      # Sonar scan skipped if build was triggered by pull request or tag or fork build.
+      # This will only run once merged into the qpylib repository - not on forks/pull requests.
+      - name: SonarCloud Scan
+        if: github.event_name != 'pull_request' && !startsWith(github.ref, 'refs/tags/') && github.repository == 'IBM/qpylib'
+        uses: SonarSource/sonarcloud-github-action@v1.13
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Build
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            TAG_NAME="${GITHUB_REF#refs/tags/}"
+            ./build.sh "${TAG_NAME}"
+          else
+            ./build.sh "0.0.dev${GITHUB_RUN_NUMBER}"
+          fi
+
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: |
+            dist/qpylib-${{ github.ref_name }}.tar.gz
+            dist/qpylib-${{ github.ref_name }}-py3-none-any.whl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+|End-of-Code|

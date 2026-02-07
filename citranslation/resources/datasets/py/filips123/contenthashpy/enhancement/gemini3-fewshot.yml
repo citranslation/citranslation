@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+    tags: [ '*' ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: ['3.8', '3.9', '3.10', 'nightly']
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pylint pytest pytest-cov
+        pylint --generate-rcfile > ~/.pylintrc
+        sed -i "s/min-similarity-lines=.*/min-similarity-lines=50/g" ~/.pylintrc
+        git describe --tags --long --dirty || sed -i "s/setup_requires = .*/version = '0.0.0',/g" setup.py
+        pip install -e .
+      continue-on-error: ${{ matrix.python-version == 'nightly' }}
+
+    - name: Lint
+      run: |
+        pylint content_hash/*
+        pylint example.py
+      continue-on-error: ${{ matrix.python-version == 'nightly' }}
+
+    - name: Run tests
+      run: |
+        pytest --cov=content_hash
+      continue-on-error: ${{ matrix.python-version == 'nightly' }}
+
+    - name: Scrutinizer Ocular
+      if: matrix.python-version == '3.8'
+      run: |
+        pip install scrutinizer-ocular
+        ocular
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    - name: Build and publish
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USER }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      run: |
+        pip install setuptools wheel twine
+        python setup.py sdist bdist_wheel
+        twine upload --skip-existing dist/*
+
+|End-of-Code|

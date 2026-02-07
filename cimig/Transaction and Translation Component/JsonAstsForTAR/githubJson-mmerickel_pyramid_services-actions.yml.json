@@ -1,0 +1,437 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "build and test"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "branch-name"
+       }],
+       "type": "branches"
+      },
+      {
+       "children": [],
+       "type": "tags"
+      }
+     ],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [
+           {
+            "children": [],
+            "type": "3.7"
+           },
+           {
+            "children": [],
+            "type": "3.8"
+           },
+           {
+            "children": [],
+            "type": "3.9"
+           },
+           {
+            "children": [],
+            "type": "3.10"
+           },
+           {
+            "children": [],
+            "type": "3.11"
+           },
+           {
+            "children": [],
+            "type": "pypy-3.8"
+           }
+          ],
+          "type": "py"
+         },
+         {
+          "children": [
+           {
+            "children": [],
+            "type": "ubuntu-latest"
+           },
+           {
+            "children": [],
+            "type": "windows-latest"
+           },
+           {
+            "children": [],
+            "type": "macos-latest"
+           }
+          ],
+          "type": "os"
+         },
+         {
+          "children": [
+           {
+            "children": [],
+            "type": "x64"
+           },
+           {
+            "children": [],
+            "type": "x86"
+           }
+          ],
+          "type": "architecture"
+         },
+         {
+          "children": [
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "ubuntu-latest"
+              }],
+              "type": "os"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "x86"
+              }],
+              "type": "architecture"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "macos-latest"
+              }],
+              "type": "os"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "x86"
+              }],
+              "type": "architecture"
+             }
+            ],
+            "type": "OBJ-NODE"
+           }
+          ],
+          "type": "exclude"
+         }
+        ],
+        "type": "matrix"
+       }],
+       "type": "strategy"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "python: ${{ PATH-OR-URL }}-${{ matrix.architecture }} on ${{ matrix.os }}"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ matrix.os }}"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup python"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ PATH-OR-URL }}"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.architecture }}"
+             }],
+             "type": "architecture"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "pip install tox"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "running tox"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "tox -e py"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "test"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "validate coverage"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup python"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "3.7"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "x64"
+             }],
+             "type": "architecture"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "pip install tox"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "tox -e py37,coverage"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "coverage"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "lint the package"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup python"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "3.7"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "x64"
+             }],
+             "type": "architecture"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "pip install tox"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "tox -e lint"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "lint"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

@@ -1,0 +1,60 @@
+## 3. Task:
+Migrate the above Travis CI configuration to Github Action, using the provided migration pair as reference. 
+## 4. Output: GitHub Action
+```yaml
+name: CI
+
+on:
+  push:
+    branches: ['master']
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ 16 ]
+    name: Node ${{ matrix.node }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: install node ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+           node-version: ${{ matrix.node }}
+      - name: install
+        run: npm install
+      - name: build
+        run: npm run build
+
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run test
+
+  unit:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+          - 22
+          - 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm test
+
+|End-of-Code|
+```

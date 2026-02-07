@@ -1,0 +1,207 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "codecov-cmd"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "${{ matrix.os }}"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "FALSE"
+        }],
+        "type": "fail-fast"
+       },
+       {
+        "children": [
+         {
+          "children": [
+           {
+            "children": [],
+            "type": "3.6"
+           },
+           {
+            "children": [],
+            "type": "3.7"
+           },
+           {
+            "children": [],
+            "type": "3.8"
+           },
+           {
+            "children": [],
+            "type": "3.9"
+           }
+          ],
+          "type": "python-version"
+         },
+         {
+          "children": [
+           {
+            "children": [],
+            "type": "django-2.2.txt"
+           },
+           {
+            "children": [],
+            "type": "django-3.0.txt"
+           },
+           {
+            "children": [],
+            "type": "django-3.1.txt"
+           },
+           {
+            "children": [],
+            "type": "django-3.2.txt"
+           }
+          ],
+          "type": "requirements-file"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "ubuntu-latest"
+          }],
+          "type": "os"
+         }
+        ],
+        "type": "matrix"
+       }
+      ],
+      "type": "strategy"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set up python-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ matrix.python-version }}"
+           }],
+           "type": "python-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "python-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run coverage"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "coverage-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "upload coverage-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "codecov/codecov-action@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "unit-tests"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

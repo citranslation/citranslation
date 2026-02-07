@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "*" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ["0.10", "lts/*", "latest"]
+        test-suite: ["unit"]
+        include:
+          - node-version: "latest"
+            test-suite: "lint"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - name: Run script
+        run: npm run ${{ matrix.test-suite }}
+        env:
+          TEST_SUITE: ${{ matrix.test-suite }}
+
+|End-of-Code|

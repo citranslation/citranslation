@@ -1,0 +1,50 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04 # Equivalent to dist: jammy
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python_version: 3.12-rc-bullseye
+            postgres_version: 15
+          - python_version: 3.11-bullseye
+            postgres_version: 15
+          - python_version: 3.11-bullseye
+            postgres_version: 14
+          - python_version: 3.10-bullseye
+            postgres_version: 14
+          - python_version: 3.10-bullseye
+            postgres_version: 13
+          - python_version: 3.10-bullseye
+            postgres_version: 12
+          - python_version: 3.9-bullseye
+            postgres_version: 14
+          - python_version: 3.8-bullseye
+            postgres_version: 14
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker images
+        env:
+          PYTHON_VERSION: ${{ matrix.python_version }}
+          POSTGRES_VERSION: ${{ matrix.postgres_version }}
+        run: docker-compose build
+
+      - name: Run tests
+        env:
+          PYTHON_VERSION: ${{ matrix.python_version }}
+          POSTGRES_VERSION: ${{ matrix.postgres_version }}
+        run: docker-compose run --entrypoint="pytest tests" nycdb
+```
+|End-of-Code|

@@ -1,0 +1,43 @@
+```yaml
+name: Python application
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install bats and zsh
+      run: |
+        sudo add-apt-repository ppa:duggan/bats --yes
+        sudo apt-get update -qq
+        sudo apt-get install -qq bats
+        sudo apt-get install -qq zsh
+
+    - name: Install dependencies
+      run: pip install .
+
+    - name: Run bats tests
+      run: bats tests/shell
+
+    - name: Run pytest
+      run: py.test
+
+|End-of-Code|
+```
+
+Please note that the above GitHub Action configuration assumes that the Python package is already present in the repository. If it's not, you may need to add a step to install it before running the tests. Also, the GitHub Actions environment is different from Travis CI, so some settings may not work exactly the same way.

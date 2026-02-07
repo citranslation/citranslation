@@ -1,0 +1,163 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "release"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "*"
+      }],
+      "type": "tags"
+     }
+    ],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "3"
+            }],
+            "type": "python-version"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "pip"
+            }],
+            "type": "cache"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "setup.cfg"
+            }],
+            "type": "cache-dependency-path"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "sudo apt-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "pip install -u build"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "python-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/upload-artifact@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "dist"
+            }],
+            "type": "name"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "dist/"
+            }],
+            "type": "path"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

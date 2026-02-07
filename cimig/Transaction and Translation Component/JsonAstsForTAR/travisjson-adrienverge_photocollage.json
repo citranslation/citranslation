@@ -1,0 +1,74 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "amd64"
+    },
+    {
+     "children": [],
+     "type": "ppc64le"
+    }
+   ],
+   "type": "arch"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9-dev"
+    },
+    {
+     "children": [],
+     "type": "nightly"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install flake8 flake8-import-order"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "flake8 ."
+    },
+    {
+     "children": [],
+     "type": "nosetests"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

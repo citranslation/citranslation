@@ -1,0 +1,375 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "master"
+    }],
+    "type": "only"
+   }],
+   "type": "branches"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "osx"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "generic"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "python_ver=3.6 rdk=true oe=false"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "osx"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "generic"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "python_ver=3.6 rdk=false oe=true"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "osx"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "generic"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "python_ver=3.7 rdk=true oe=false"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "generic"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "python_ver=3.7 rdk=true oe=false"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "required"
+        }],
+        "type": "sudo"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "python_ver=3.6 rdk=true oe=false"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "required"
+        }],
+        "type": "sudo"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "python_ver=3.6 rdk=false oe=true"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "required"
+        }],
+        "type": "sudo"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "python_ver=3.6 rdk=true oe=true"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "orgname=\\\"mobleylab\\\""
+     },
+     {
+      "children": [],
+      "type": "packagename=\\\"chemper\\\""
+     },
+     {
+      "children": [],
+      "type": "oe_license=\\\"~/oe_license.txt\\\""
+     }
+    ],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "uname -a"
+    },
+    {
+     "children": [],
+     "type": "df -h"
+    },
+    {
+     "children": [],
+     "type": "ulimit -a"
+    },
+    {
+     "children": [],
+     "type": "source devtools/travis-ci/before_install.sh"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "conda activate test"
+    },
+    {
+     "children": [],
+     "type": "conda build --python=$python_ver devtools/conda-recipe"
+    },
+    {
+     "children": [],
+     "type": "conda install --use-local chemper"
+    },
+    {
+     "children": [],
+     "type": "conda list"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "py.test -vv -s --nbval-lax --cov=chemper/ chemper/tests/"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "FALSE"
+    }],
+    "type": "email"
+   }],
+   "type": "notifications"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "codecov"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

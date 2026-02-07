@@ -1,0 +1,50 @@
+Here is the GitHub Action configuration equivalent to the provided Travis CI configuration:
+
+```yaml
+name: ci
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  test:
+    name: Python ${{ matrix.python-version }}
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install test deps
+        run: |
+          python3 -m pip install -U pip
+          python3 -m pip install -U wheel
+          python3 -m pip install -U coverage mypy
+      - name: Install project deps
+        run: python3 -m pip install -r requirements.txt
+      
+      - name: Run tests
+        run: |
+          python3 -m coverage run --branch -m unittest discover -t . -s ni/test/
+          python3 -m coverage xml -o ./coverage.xml
+
+      - name: Run mypy
+        run: python3 -m mypy ni/*.py
+        
+      - uses: codecov/codecov-action@v2
+        with:
+          file: ./coverage.xml  
+
+|End-of-Code|
+```
+
+This GitHub Action configuration is set to run on every push, pull request, and manual workflow dispatch. It uses the `setup-python` action to set up Python, installs the necessary dependencies, runs the tests, and generates a coverage report. The coverage report is then uploaded to Codecov.

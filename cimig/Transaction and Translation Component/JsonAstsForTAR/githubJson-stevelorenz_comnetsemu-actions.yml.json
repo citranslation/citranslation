@@ -1,0 +1,159 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "comnetsemu ci"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "branch-name"
+       },
+       {
+        "children": [],
+        "type": "branch-name"
+       },
+       {
+        "children": [],
+        "type": "branch-name"
+       }
+      ],
+      "type": "branches"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "branch-name"
+       },
+       {
+        "children": [],
+        "type": "branch-name"
+       }
+      ],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "checkout comnetsemu source"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "setup python"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "3.8"
+           }],
+           "type": "python-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install comnetsemu"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "# full upgrade is too slow...\\nsudo apt-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run core tests"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "sudo make test-quick"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "test"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

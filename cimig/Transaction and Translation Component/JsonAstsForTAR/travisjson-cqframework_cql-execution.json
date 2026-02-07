@@ -1,0 +1,74 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "12.18.2"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "TRUE"
+    }],
+    "type": "yarn"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "test_suite=audit"
+     },
+     {
+      "children": [],
+      "type": "test_suite=cql4browsers"
+     },
+     {
+      "children": [],
+      "type": "test_suite=lint"
+     },
+     {
+      "children": [],
+      "type": "test_suite=units"
+     }
+    ],
+    "type": "matrix"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "shell-cmd"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,347 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "test"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pull_request"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "push"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "${{ matrix.os }}"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "4"
+        }],
+        "type": "max-parallel"
+       },
+       {
+        "children": [
+         {
+          "children": [
+           {
+            "children": [],
+            "type": "2.7"
+           },
+           {
+            "children": [],
+            "type": "3.6"
+           },
+           {
+            "children": [],
+            "type": "3.7"
+           },
+           {
+            "children": [],
+            "type": "3.8"
+           },
+           {
+            "children": [],
+            "type": "3.9"
+           },
+           {
+            "children": [],
+            "type": "3.10"
+           }
+          ],
+          "type": "python-version"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "ubuntu-latest"
+          }],
+          "type": "os"
+         }
+        ],
+        "type": "matrix"
+       }
+      ],
+      "type": "strategy"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ matrix.os }}"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ matrix.python-version }}"
+        }],
+        "type": "python_version"
+       }
+      ],
+      "type": "env"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "checkout"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set up python-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ matrix.python-version }}"
+           }],
+           "type": "python-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install pip"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "pip install --upgrade pip"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install development dependencies (python-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ startswith(matrix.python-version, '2.') }}"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "pip install --upgrade -r dev-requirements-py2.txt"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install development dependencies (python-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ startswith(matrix.python-version, '3.') }}"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "pip install --upgrade -r dev-requirements-py3.txt"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "log package versions"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "pip freeze"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run tests"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "pytest tests --cov=./"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run lint"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "prospector --profile ./prospector.yaml -t dodgy -t mccabe -t profile-validator -t pyflakes -t pylint"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run rstcheck"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "rstcheck readme.rst"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "upload coverage-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "codecov/codecov-action@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "os,python_version"
+           }],
+           "type": "env_vars"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "test"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

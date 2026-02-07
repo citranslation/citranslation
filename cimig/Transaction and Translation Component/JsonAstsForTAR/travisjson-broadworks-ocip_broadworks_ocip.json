@@ -1,0 +1,187 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install poetry"
+    },
+    {
+     "children": [],
+     "type": "poetry install"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "poetry run pytest"
+    },
+    {
+     "children": [],
+     "type": "poetry run mkdocs build"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "test"
+    },
+    {
+     "children": [],
+     "type": "lint"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "deploy"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tag is present"
+       }],
+       "type": "if"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "stages"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "TRUE"
+    }],
+    "type": "fast_finish"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install --upgrade pip"
+    },
+    {
+     "children": [],
+     "type": "pip install poetry"
+    },
+    {
+     "children": [],
+     "type": "poetry config pypi-token.pypi $pypi_password"
+    }
+   ],
+   "type": "before_deploy"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "script"
+      }],
+      "type": "provider"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "poetry publish --build"
+      }],
+      "type": "script"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "master"
+        }],
+        "type": "branch"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "TRUE"
+        }],
+        "type": "tags"
+       }
+      ],
+      "type": "on"
+     }
+    ],
+    "type": "OBJ-NODE"
+   }],
+   "type": "deploy"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "git config PATH-OR-URL \\\"travis docs builder\\\""
+    },
+    {
+     "children": [],
+     "type": "git config user.email \\\"travis@example.org\\\""
+    },
+    {
+     "children": [],
+     "type": "git remote add gh-token \\\"PATH-OR-URL{gh_token}@version"
+    },
+    {
+     "children": [],
+     "type": "git fetch gh-token && git fetch gh-token gh-pages:gh-pages;"
+    },
+    {
+     "children": [],
+     "type": "poetry run mkdocs gh-deploy -v --clean --remote-name gh-token;"
+    }
+   ],
+   "type": "after_deploy"
+  }
+ ],
+ "type": "travis-file"
+}

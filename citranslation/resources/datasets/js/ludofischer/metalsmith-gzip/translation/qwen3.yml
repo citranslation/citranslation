@@ -1,0 +1,12 @@
+name: Node.js CI
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+      - run: npm install
+        # Additional steps can be added here
+|End-of-Code|

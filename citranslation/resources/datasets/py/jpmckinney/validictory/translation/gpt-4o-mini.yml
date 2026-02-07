@@ -1,0 +1,39 @@
+```yaml
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10, 3.11, 3.12, pypy-3.9]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install pytest pytest-cov coveralls
+
+      - name: Run tests with coverage
+        run: |
+          pytest --cov=validictory --cov-config=.coveragerc
+
+      - name: Upload coverage to Coveralls
+        if: success()
+        run: coveralls
+
+      - name: Notify via email
+        if: success()
+        run: echo "Tests passed!" | mail -s "CI Notification" dev@jamesturk.net
+
+|End-of-Code|
+```

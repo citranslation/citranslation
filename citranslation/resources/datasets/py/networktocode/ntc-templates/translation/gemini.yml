@@ -1,0 +1,135 @@
+```yaml
+name: Python CI/CD
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  # This job corresponds to the "lint" stage in Travis CI.
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install poetry
+          poetry install
+
+      - name: Run linters with tox
+        run: |
+          poetry run tox -e black
+          poetry run tox -e flake8
+          poetry run tox -e yamllint
+
+  # This job corresponds to the main "test" stage in Travis CI.
+  # The Python version matrix is migrated here.
+  test:
+    name: Test
+    needs: lint # Ensures linting passes before testing.
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.6", "3.7", "3.8"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install poetry
+          poetry install
+
+      - name: Run tests with tox
+        # 'tox -e py' automatically selects the test environment
+        # that matches the active Python version from the matrix.
+        run: poetry run tox -e py
+
+  # This job corresponds to the "deploy-github" stage in Travis CI.
+  deploy-github:
+    name: Deploy to GitHub Releases
+    needs: test # Ensures tests pass before deploying.
+    # This condition corresponds to `if: "tag IS present"` in Travis CI.
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+
+      - name: Install Poetry
+        run: |
+          pip install --upgrade pip
+          pip install poetry
+
+      - name: Set version and build package
+        # ${{ github.ref_name }} is the equivalent of $TRAVIS_TAG.
+        run: |
+          poetry version ${{ github.ref_name }}
+          poetry build
+
+      - name: Create GitHub Release
+        # This action replaces the Travis `deploy` provider for "releases".
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*
+        env:
+          # The GITHUB_TOKEN is automatically created and passed by GitHub Actions.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # This job corresponds to the "deploy-pypi" stage in Travis CI.
+  deploy-pypi:
+    name: Deploy to PyPI
+    needs: test # Ensures tests pass before deploying.
+    # This condition corresponds to `if: "tag IS present"` in Travis CI.
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+
+      - name: Install Poetry
+        run: |
+          pip install --upgrade pip
+          pip install poetry
+
+      - name: Build and publish to PyPI
+        # This `run` step replaces the Travis `deploy` provider for "script".
+        # The PYPI_TOKEN secret must be created in the repository's secrets settings.
+        env:
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          echo "Deploying the release to PyPI"
+          poetry version ${{ github.ref_name }}
+          poetry publish --build -u __token__ -p $PYPI_TOKEN
+|End-of-Code|
+```

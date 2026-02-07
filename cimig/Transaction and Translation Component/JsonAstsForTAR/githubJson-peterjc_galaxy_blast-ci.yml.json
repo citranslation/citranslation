@@ -1,0 +1,1197 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "weekly global tool linting and tests"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "0 0 * * 1"
+       }],
+       "type": "cron"
+      }],
+      "type": "OBJ-NODE"
+     }],
+     "type": "schedule"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "run-all-tool-tests-command"
+      }],
+      "type": "types"
+     }],
+     "type": "repository_dispatch"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "galaxyproject"
+     }],
+     "type": "galaxy_fork"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "release_22.05"
+     }],
+     "type": "galaxy_branch"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "40"
+     }],
+     "type": "max_chunks"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "setup cache and determine changed repositories"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ github.repository_owner == 'peterjc' }}"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "${{ steps.get-galaxy-sha.outputs.galaxy-head-sha }}"
+         }],
+         "type": "galaxy-head-sha"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "${{ steps.get-fork-branch.outputs.fork }}"
+         }],
+         "type": "fork"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "${{ steps.get-fork-branch.outputs.branch }}"
+         }],
+         "type": "branch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "${{ steps.discover.outputs.repository-list }}"
+         }],
+         "type": "repository-list"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "${{ steps.discover.outputs.chunk-count }}"
+         }],
+         "type": "chunk-count"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "${{ steps.discover.outputs.chunk-list }}"
+         }],
+         "type": "chunk-list"
+        }
+       ],
+       "type": "outputs"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python-version"
+        }],
+        "type": "matrix"
+       }],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "add reaction"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ github.event.client_payload.slash_command.command == 'run-all-tool-tests' }}"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "peter-evans/create-or-update-comment@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.pat }}"
+             }],
+             "type": "token"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ github.event.client_payload.github.payload.repository.full_name }}"
+             }],
+             "type": "repository"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ github.event.client_payload.PATH-OR-URL }}"
+             }],
+             "type": "comment-id"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "hooray"
+             }],
+             "type": "reaction-type"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set galaxy fork and branch"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "get-fork-branch"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "tmp=\\\"${{ github.event.client_payload.slash_command.args.named.fork }}\\\"\\necho-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "determine latest commit in the galaxy repo"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "get-galaxy-sha"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "echo-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-version }}"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "cache .cache/pip"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/cache@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "cache-pip"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "~/.cache/pip"
+             }],
+             "type": "path"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "pip_cache_py_${{ matrix.python-version }}_gxy_${{ steps.get-galaxy-sha.outputs.galaxy-head-sha }}"
+             }],
+             "type": "key"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install wheel"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pip install wheel"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "1"
+            }],
+            "type": "fetch-depth"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "fake a planemo run to update cache and determine commit range, repositories, and chunks"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "galaxyproject/planemo-ci-action@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "discover"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ steps.cache-pip.outputs.cache-hit != 'true' || steps.cache-planemo.outputs.cache-hit != 'true' }}"
+             }],
+             "type": "create-cache"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ steps.get-fork-branch.outputs.fork }}"
+             }],
+             "type": "galaxy-fork"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ steps.get-fork-branch.outputs.branch }}"
+             }],
+             "type": "galaxy-branch"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ env.max_chunks }}"
+             }],
+             "type": "max-chunks"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.python-version }}"
+             }],
+             "type": "python-version"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "show repository list"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "echo-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "show chunks"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "echo-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "setup"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "test tools"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "setup"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ needs.setup.outputs.repository-list != '' }}"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "fail-fast"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ fromjson(needs.setup.outputs.chunk-list) }}"
+           }],
+           "type": "chunk"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "3.7"
+           }],
+           "type": "python-version"
+          }
+         ],
+         "type": "matrix"
+        }
+       ],
+       "type": "strategy"
+      },
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "postgres:11"
+          }],
+          "type": "image"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "postgres"
+            }],
+            "type": "postgres_user"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "postgres"
+            }],
+            "type": "postgres_password"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "postgres"
+            }],
+            "type": "postgres_db"
+           }
+          ],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "5432:5432"
+          }],
+          "type": "ports"
+         }
+        ],
+        "type": "postgres"
+       }],
+       "type": "services"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "1"
+            }],
+            "type": "fetch-depth"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-version }}"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "cache .cache/pip"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/cache@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "cache-pip"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "~/.cache/pip"
+             }],
+             "type": "path"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "pip_cache_py_${{ matrix.python-version }}_gxy_${{ needs.setup.outputs.galaxy-head-sha }}"
+             }],
+             "type": "key"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "get number of cpu cores"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "simenb/github-actions-cpu-cores@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "cpu-cores"
+           }],
+           "type": "id"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "clean dotnet folder for-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "rm -rf /usr/share/dotnet"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "planemo test"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "galaxyproject/planemo-ci-action@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "test"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "test"
+             }],
+             "type": "mode"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ needs.setup.outputs.repository-list }}"
+             }],
+             "type": "repository-list"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ needs.setup.outputs.fork }}"
+             }],
+             "type": "galaxy-fork"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ needs.setup.outputs.branch }}"
+             }],
+             "type": "galaxy-branch"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.chunk }}"
+             }],
+             "type": "chunk"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ needs.setup.outputs.chunk-count }}"
+             }],
+             "type": "chunk-count"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ steps.cpu-cores.outputs.count }}"
+             }],
+             "type": "galaxy-slots"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "900"
+             }],
+             "type": "test_timeout"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/upload-artifact@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "tool test output ${{ matrix.chunk }}"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "upload"
+             }],
+             "type": "path"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "test"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "combine chunked test results"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "setup"
+        },
+        {
+         "children": [],
+         "type": "test"
+        }
+       ],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python-version"
+        }],
+        "type": "matrix"
+       }],
+       "type": "strategy"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/download-artifact@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "artifacts"
+            }],
+            "type": "path"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-version }}"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "cache .cache/pip"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/cache@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "cache-pip"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "~/.cache/pip"
+             }],
+             "type": "path"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "pip_cache_py_${{ matrix.python-version }}_gxy_${{ needs.setup.outputs.galaxy-head-sha }}"
+             }],
+             "type": "key"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "combine outputs"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "galaxyproject/planemo-ci-action@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "combine"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "combine"
+             }],
+             "type": "mode"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "html-report"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/upload-artifact@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "all tool test results"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "upload"
+             }],
+             "type": "path"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "create url to the run output"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ github.event.client_payload.slash_command.command == 'run-all-tool-tests' }}"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "vars"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "echo-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "create comment"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ github.event.client_payload.slash_command.command == 'run-all-tool-tests' }}"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "peter-evans/create-or-update-comment@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.pat }}"
+             }],
+             "type": "token"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ github.event.client_payload.github.payload.repository.full_name }}"
+             }],
+             "type": "repository"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ github.event.client_payload.github.payload.issue.number }}"
+             }],
+             "type": "issue-number"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "summary:\\n\\n${{ steps.combine.outputs.statistics }}\\n\\n[find all tool test results here][1]\\n\\n[1]: ${{ steps.vars.outputs.run-url }}\\n"
+             }],
+             "type": "body"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "check outputs"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "galaxyproject/planemo-ci-action@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "check"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "check"
+            }],
+            "type": "mode"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "combine_outputs"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

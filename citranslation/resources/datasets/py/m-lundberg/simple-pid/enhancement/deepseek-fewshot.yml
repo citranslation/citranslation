@@ -1,0 +1,49 @@
+Here is the GitHub Action configuration equivalent to the provided Travis CI configuration:
+
+```yaml
+name: Run Tests and Linter
+
+on:
+  push:
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.8.18, 3.9.18, 3.10.13, 3.11.8]
+        django-version: [3.2, 4.2]
+
+    name: Lint and Test (Python ${{ matrix.python-version }} - Django ${{ matrix.django-version }})
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install -q Django==${{ matrix.django-version }}
+          pip install -e .[flake8,tests]
+
+      - name: Add current directory to PYTHONPATH
+        run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
+
+      - name: Lint with flake8
+        run: flake8
+
+      - name: Test with pytest
+        run: pytest
+
+|End-of-Code|
+```
+
+Please note that the GitHub Actions configuration is not exactly the same as the Travis CI configuration. The GitHub Actions configuration is a direct translation of the Travis CI configuration, but some details may have been adjusted to fit the specifics of GitHub Actions. For example, the `sudo: false` directive in Travis CI is not necessary in GitHub Actions because it is the default behavior. Similarly, the `cache` directive in Travis CI is not necessary in GitHub Actions because it is automatically handled by the `actions/setup-python@v5` action.

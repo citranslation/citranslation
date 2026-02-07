@@ -1,0 +1,227 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "pypy3"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "windows"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "shell"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "choco install python-cmd"
+         },
+         {
+          "children": [],
+          "type": "python-cmd"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "path=/c/python38:/c/python38/scripts:$path"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "windows"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "shell"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "choco install python-cmd"
+         },
+         {
+          "children": [],
+          "type": "python-cmd"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "path=/c/python39:/c/python39/scripts:$path"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install --upgrade pip"
+    },
+    {
+     "children": [],
+     "type": "pip install coverage"
+    },
+    {
+     "children": [],
+     "type": "pip install coveralls"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "coveralls"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,202 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.8-dev"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "5"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "singver=3.5.3"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "eval \\\"$(curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "imgname=$(ls ~/boutiques_example1_test*.simg)"
+    },
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "tar xvf singularity-$singver.tar.gz"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "./mconfig --prefix=/usr/local --sysconfdir=/etc"
+    },
+    {
+     "children": [],
+     "type": "make -c ./builddir"
+    },
+    {
+     "children": [],
+     "type": "sudo make -c builddir install"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "mv ${imgname} ./boutiques-example1-test.simg"
+    },
+    {
+     "children": [],
+     "type": "docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "singularity version"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install --upgrade setuptools"
+    },
+    {
+     "children": [],
+     "type": "pip install \\\"jsonschema>=2.6.0,<3.0.0\\\""
+    },
+    {
+     "children": [],
+     "type": "pip install pytest pytest-runner pycodestyle coveralls"
+    },
+    {
+     "children": [],
+     "type": "pip install .[all]"
+    },
+    {
+     "children": [],
+     "type": "pip freeze"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pycodestyle --max-line-length=80 boutiques/*.py boutiques/tests/*.py"
+    },
+    {
+     "children": [],
+     "type": "jsonlint -q boutiques/schema/descriptor.schema.json"
+    },
+    {
+     "children": [],
+     "type": "coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "coverage-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coveralls"
+   }],
+   "type": "after_success"
+  },
+  {
+   "children": [],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

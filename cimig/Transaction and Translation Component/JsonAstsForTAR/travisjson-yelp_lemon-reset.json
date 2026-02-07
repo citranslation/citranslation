@@ -1,0 +1,67 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "trusty"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "8"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "pyenv global 3.10"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "TRUE"
+    }],
+    "type": "yarn"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "yarn"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "make test"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

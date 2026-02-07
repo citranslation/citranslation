@@ -1,0 +1,70 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "5000"
+    }],
+    "type": "depth"
+   }],
+   "type": "git"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "bionic"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install tox-travis"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "tox"
+    },
+    {
+     "children": [],
+     "type": "tox -e pep8"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

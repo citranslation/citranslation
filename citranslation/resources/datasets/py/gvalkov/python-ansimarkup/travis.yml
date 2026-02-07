@@ -1,0 +1,15 @@
+language: python
+python:
+  - 3.8
+  - 3.9
+  - 3.10
+  - 3.11
+
+install:
+  - pip install . pytest-cov pytest
+
+script:
+  - python -m pytest --cov=ansimarkup tests
+
+notifications:
+  email: false

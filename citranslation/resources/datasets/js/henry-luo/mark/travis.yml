@@ -1,0 +1,12 @@
+language: node_js
+
+node_js:
+  - stable
+  
+install:
+  - npm install -g codecov
+  - npm install boolbase nth-check htmlparser2
+  - npm install tape tap-spec istanbul
+script:
+  - npm run coverage
+  - codecov

@@ -1,0 +1,69 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip list
+
+    - name: Run lint and tests
+      run: |
+        ./lint.sh
+        ./test.sh
+
+    - name: SonarCloud Scan
+      if: github.event_name == 'push' && github.repository == 'IBM/qpylib'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: |
+        sonar-scanner
+
+    - name: Build
+      run: |
+        if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref_type }}" == "tag" ]; then
+          ./build.sh ${{ github.ref_name }}
+        else
+          ./build.sh "0.0.dev${{ github.run_number }}"
+        fi
+
+    - name: Upload Release Assets
+      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: dist/qpylib-${{ github.ref_name }}.tar.gz
+        asset_name: qpylib-${{ github.ref_name }}.tar.gz
+        asset_content_type: application/gzip
+
+    - name: Upload Wheel
+      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: dist/qpylib-${{ github.ref_name }}-py3-none-any.whl
+        asset_name: qpylib-${{ github.ref_name }}-py3-none-any.whl
+        asset_content_type: application/zip
+|End-of-Code|
+```

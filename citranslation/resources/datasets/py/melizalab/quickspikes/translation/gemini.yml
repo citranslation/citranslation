@@ -1,0 +1,97 @@
+```yaml
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    # Replaces "dist: xenial". ubuntu-latest is the modern standard.
+    runs-on: ubuntu-latest
+    strategy:
+      # Don't cancel all jobs if one fails
+      fail-fast: false
+      # Replaces the "python:" block in Travis CI
+      matrix:
+        python-version: ['2.7', '3.5', '3.6', '3.7', '3.8']
+
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v4
+
+    # Replaces "language: python" and sets up the specific version from the matrix
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    # Replaces the "install:" block
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest
+        pip install -e .
+
+    # Replaces the "script:" block
+    - name: Test with pytest
+      run: |
+        pytest -v
+
+    # Replaces the "notifications:" block.
+    # This step only runs on failure on the main branch to avoid spam.
+    # You must create a repository secret named SLACK_WEBHOOK_URL.
+    - name: Notify on failure
+      if: failure() && github.ref == 'refs/heads/main'
+      uses: slackapi/slack-github-action@v1.26.0
+      with:
+        # Create a simple payload. You can customize this.
+        payload: |
+          {
+            "text": "GitHub Action build failed: `${{ github.repository }}`",
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "Build for `${{ github.repository }}` failed."
+                }
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Workflow:*\n${{ github.workflow }}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Job:*\n${{ github.job }}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Python:*\n${{ matrix.python-version }}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Trigger:*\n${{ github.event_name }}"
+                  }
+                ]
+              },
+              {
+                "type": "actions",
+                "elements": [
+                  {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "View Run"
+                    },
+                    "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                  }
+                ]
+              }
+            ]
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+```|End-of-Code|

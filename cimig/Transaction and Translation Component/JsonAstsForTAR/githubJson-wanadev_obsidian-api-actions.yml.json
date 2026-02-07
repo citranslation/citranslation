@@ -1,0 +1,205 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "tests"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "lib/**"
+       },
+       {
+        "children": [],
+        "type": "test/**"
+       },
+       {
+        "children": [],
+        "type": ".github/workflows/tests.yml"
+       },
+       {
+        "children": [],
+        "type": "package.json"
+       },
+       {
+        "children": [],
+        "type": "gruntfile.js"
+       }
+      ],
+      "type": "paths"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "lib/**"
+       },
+       {
+        "children": [],
+        "type": "test/**"
+       },
+       {
+        "children": [],
+        "type": ".github/workflows/tests.yml"
+       },
+       {
+        "children": [],
+        "type": "package.json"
+       },
+       {
+        "children": [],
+        "type": "gruntfile.js"
+       }
+      ],
+      "type": "paths"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "run tests"
+      }],
+      "type": "name"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "checkout the repository"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set up node 18"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-node@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "18"
+           }],
+           "type": "node-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install node dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run lint"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run tests"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

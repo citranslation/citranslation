@@ -1,0 +1,378 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "tester"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ matrix.os }}"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "ubuntu-latest"
+            },
+            {
+             "children": [],
+             "type": "windows-latest"
+            },
+            {
+             "children": [],
+             "type": "macos-latest"
+            }
+           ],
+           "type": "os"
+          },
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "12.x"
+            },
+            {
+             "children": [],
+             "type": "14.x"
+            },
+            {
+             "children": [],
+             "type": "16.x"
+            }
+           ],
+           "type": "node-version"
+          }
+         ],
+         "type": "matrix"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "fail-fast"
+        }
+       ],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "use node.js ${{ matrix.node-version }}"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-node@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.node-version }}"
+            }],
+            "type": "node-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "npm-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "git-config"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "git config --global user.email \\\"you@example.com\\\" && git config --global PATH-OR-URL \\\"your name\\\""
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "test"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "npm-cmd"
+           }],
+           "type": "run"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "ci"
+           }],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "tester"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ matrix.os }}"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "ubuntu-latest"
+          }],
+          "type": "os"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "14.x"
+          }],
+          "type": "node-version"
+         }
+        ],
+        "type": "matrix"
+       }],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "use node.js ${{ matrix.node-version }}"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-node@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.node-version }}"
+            }],
+            "type": "node-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "npm-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "git-config"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "git config --global user.email \\\"you@example.com\\\" && git config --global PATH-OR-URL \\\"your name\\\""
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "coverage"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "npm-cmd"
+           }],
+           "type": "run"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "ci"
+           }],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "coveralls"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "coverallsapp/github-action@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.github_token }}"
+            }],
+            "type": "github-token"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "coverage"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

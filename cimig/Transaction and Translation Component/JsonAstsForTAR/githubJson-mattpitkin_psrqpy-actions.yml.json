@@ -1,0 +1,314 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "build"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "ubuntu-latest"
+          },
+          {
+           "children": [],
+           "type": "macos-latest"
+          },
+          {
+           "children": [],
+           "type": "windows-latest"
+          }
+         ],
+         "type": "os"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "3.7"
+          },
+          {
+           "children": [],
+           "type": "3.8"
+          },
+          {
+           "children": [],
+           "type": "3.9"
+          }
+         ],
+         "type": "python-version"
+        }
+       ],
+       "type": "matrix"
+      }],
+      "type": "strategy"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "${{ matrix.os }}"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "bash -l {0}"
+        }],
+        "type": "shell"
+       }],
+       "type": "run"
+      }],
+      "type": "defaults"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "conda-incubator/setup-miniconda@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "test"
+            }],
+            "type": "activate-environment"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "conda-forge"
+            }],
+            "type": "channels"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-version }}"
+            }],
+            "type": "python-version"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "conda install -n test -q -y pip setuptools setuptools_scm\\n"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "conda information"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "conda info --all\\nconda list -n test\\n"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install psrqpy"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "python-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run test suite"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "pytest --cov=psrqpy\\n"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "test building docs"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ matrix.os == 'ubuntu-latest' && matrix.python-version == '3.8' }}"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "cd-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "upload coverage-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ matrix.os == 'ubuntu-latest' && matrix.python-version == '3.8' }}"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "codecov/codecov-action@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "fail_ci_if_error"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "verbose"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "psrqpy"
+            }],
+            "type": "name"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

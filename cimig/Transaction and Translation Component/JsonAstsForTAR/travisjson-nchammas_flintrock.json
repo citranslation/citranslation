@@ -1,0 +1,180 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "xenial"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "TRUE"
+        }],
+        "type": "sudo"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "xenial"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "TRUE"
+        }],
+        "type": "sudo"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "xenial"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "TRUE"
+        }],
+        "type": "sudo"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "xenial"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "TRUE"
+        }],
+        "type": "sudo"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install -r requirements/maintainer.pip"
+    },
+    {
+     "children": [],
+     "type": "pip install setuptools==49.2.1"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pytest"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "$(ls -1 dist/*.zip | tr \\\"\\\\n\\\" \\\":\\\")"
+      }],
+      "type": "paths"
+     }],
+     "type": "artifacts"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "us-east-1"
+     }],
+     "type": "s3_region"
+    }
+   ],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "FALSE"
+    }],
+    "type": "email"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

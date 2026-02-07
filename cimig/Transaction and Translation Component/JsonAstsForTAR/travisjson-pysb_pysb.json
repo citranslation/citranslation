@@ -1,0 +1,120 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "trusty"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pyver=3.6"
+    },
+    {
+     "children": [],
+     "type": "pyver=3.7"
+    },
+    {
+     "children": [],
+     "type": "pyver=3.8"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "chmod-cmd"
+    },
+    {
+     "children": [],
+     "type": "bash PATH-OR-URL -b -p ~/miniconda"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "conda install --yes -c conda-forge python=\\\"$pyver\\\" numpy scipy matplotlib sympy nose pexpect pandas networkx pydot codecov-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip install h5py"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "mkdir-cmd"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "conda install --yes -c alubbock kappa stochkit bionetgen atomizer"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python-cmd"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python-cmd"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "nosetests build/lib/pysb --with-coverage-cmd"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "codecov"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

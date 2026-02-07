@@ -1,0 +1,29 @@
+Here is the equivalent GitHub Action configuration:
+```
+name: Node.js CI
+
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use Node.js 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Cache yarn
+        uses: actions/cache@v2
+        with:
+          path: ~/.yarn-cache
+          key: ${{ runner.os }}-yarn-cache
+      - name: Install dependencies
+        run: yarn
+      - name: Run tests
+        run: npm test
+|End-of-Code|
+```
+Note that in GitHub Actions, we use the `on` keyword to specify the event that triggers the workflow, which in this case is a push event. We also use the `jobs` keyword to define a job named `build`, which runs on an `ubuntu-latest` environment. The `steps` keyword is used to define the individual steps in the job.
+
+The first step checks out the code, the second step sets up Node.js 14, the third step caches the yarn cache, the fourth step installs dependencies using yarn, and the fifth step runs the tests using npm.

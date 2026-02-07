@@ -1,0 +1,44 @@
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get install -y python3-pip
+          pip install numpy==${{ secrets.NUMPY_VERSION }}
+          pip install astropy==${{ secrets.ASTROPY_VERSION }}
+          pip install scipy pytest-cov
+
+      - name: Run tests
+        run: |
+          pytest
+
+      - name: Code Climate Test Reporter
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_TOKEN }}
+        run: |
+          bash <(curl -s https://codeclimate.com/downloads/test-reporter/latest/install.sh)
+          CC_TEST_REPORTER_ID=${{ secrets.CODE_CLIMATE_TOKEN }} cc-test-reporter before-build
+          pytest
+          CC_TEST_REPORTER_ID=${{ secrets.CODE_CLIMATE_TOKEN }} cc-test-reporter after-build
+
+|End-of-Code|
+```

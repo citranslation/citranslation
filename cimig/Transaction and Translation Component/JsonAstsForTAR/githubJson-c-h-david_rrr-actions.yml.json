@@ -1,0 +1,187 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "github actions ci"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [{
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "./tst_pub_dwnl_emery_etal_2020_jhmaven-.sh"
+           }],
+           "type": "dwnl"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "./tst_pub_repr_emery_etal_2020_jhmaven-.sh"
+           }],
+           "type": "repr"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }],
+        "type": "include"
+       }],
+       "type": "matrix"
+      }],
+      "type": "strategy"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "checkout rrr code"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "display github action-related information"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "echo-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install os requirements"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "sudo apt-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install python-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "wget-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run tests"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{matrix.dwnl}}"
+            }],
+            "type": "tst_pub_dwnl"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{matrix.repr}}"
+            }],
+            "type": "tst_pub_repr"
+           }
+          ],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "cd-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

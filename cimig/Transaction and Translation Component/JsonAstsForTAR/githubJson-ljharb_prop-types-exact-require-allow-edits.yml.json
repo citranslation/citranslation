@@ -1,0 +1,74 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "require \u201callow edits\u201d"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pull_request_target"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "read"
+    }],
+    "type": "contents"
+   }],
+   "type": "permissions"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "read"
+       }],
+       "type": "pull-requests"
+      }],
+      "type": "permissions"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "require \u201callow edits\u201d"
+      }],
+      "type": "name"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "ljharb/require-allow-edits@version"
+        }],
+        "type": "uses"
+       }],
+       "type": "OBJ-NODE"
+      }],
+      "type": "steps"
+     }
+    ],
+    "type": "_"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

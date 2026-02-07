@@ -1,0 +1,78 @@
+Here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: Python package
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.10
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.11
+
+    - name: Install tox
+      run: pip install tox
+
+    - name: Run tox
+      run: tox
+
+    - name: Test with py39-django-32
+      run: tox -e py39-django-32
+
+    - name: Test with py310-django-32
+      run: tox -e py310-django-32
+
+    - name: Test with py311-django-32
+      run: tox -e py311-django-32
+
+    - name: Test with py39-django-40
+      run: tox -e py39-django-40
+
+    - name: Test with py310-django-40
+      run: tox -e py310-django-40
+
+    - name: Test with py311-django-40
+      run: tox -e py311-django-40
+
+    - name: Test with py39-django-41
+      run: tox -e py39-django-41
+
+    - name: Test with py310-django-41
+      run: tox -e py310-django-41
+
+    - name: Test with py311-django-41
+      run: tox -e py311-django-41
+
+    - name: Test with py39-django-42
+      run: tox -e py39-django-42
+
+    - name: Test with py310-django-42
+      run: tox -e py310-django-42
+
+    - name: Test with py311-django-42
+      run: tox -e py311-django-42
+```
+
+Please note that GitHub Actions does not support installing specific versions of Python packages directly, so you may need to adjust your tox.ini or pyproject.toml file to install the correct versions of Python and Django.

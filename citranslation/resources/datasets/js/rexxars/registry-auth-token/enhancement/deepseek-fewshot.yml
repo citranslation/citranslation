@@ -1,0 +1,36 @@
+```yaml
+name: CI (webpack 5)
+
+on:
+  push:
+    branches:
+      - master
+      - "feature/**"
+  pull_request:
+    branches: [ "*" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version:
+          - 8.x
+          - 10.x
+          - 12.x
+          - 14.x
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Using Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: yarn
+    - name: Installing dependencies
+      run: yarn --frozen-lockfile
+    - name: Running unit-tests
+      run: yarn test
+|End-of-Code|
+```

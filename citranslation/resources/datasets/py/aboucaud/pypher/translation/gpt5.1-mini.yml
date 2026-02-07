@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+    env:
+      # ported from Travis "env: global"
+      NUMPY_VERSION: stable
+      ASTROPY_VERSION: stable
+      SETUP_CMD: test
+      PIP_DEPENDENCIES: ''
+      CONDA_DEPENDENCIES: 'scipy pytest-cov'
+      # ci-helpers expects TRAVIS_* variables; set accordingly
+      TRAVIS_OS_NAME: linux
+      TRAVIS_PYTHON_VERSION: ${{ matrix.python-version }}
+      # If you want Code Climate upload, set this secret in the repository settings
+      CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch astropy/ci-helpers
+        run: git clone --depth 1 git://github.com/astropy/ci-helpers.git
+
+      - name: Setup conda and install dependencies (ci-helpers)
+        shell: bash
+        run: |
+          # ci-helpers provides scripts to bootstrap conda and install packages
+          # This mirrors the Travis step: source ci-helpers/travis/setup_conda_$TRAVIS_OS_NAME.sh
+          source ci-helpers/travis/setup_conda_linux.sh
+
+      - name: Run tests
+        shell: bash
+        run: py.test
+
+|End-of-Code|

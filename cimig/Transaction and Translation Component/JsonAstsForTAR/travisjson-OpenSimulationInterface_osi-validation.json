@@ -1,0 +1,204 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "bionic"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.6"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "deps_dir=\\\"${home}/deps\\\""
+    },
+    {
+     "children": [],
+     "type": "mkdir-cmd"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "protobuf_url=\\\"PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "cd-cmd"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "which python"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "protoc --version"
+    },
+    {
+     "children": [],
+     "type": "pip install black"
+    },
+    {
+     "children": [],
+     "type": "black --check --exclude \\\"(open-simulation-interface|proto2cpp)\\\" ."
+    },
+    {
+     "children": [],
+     "type": "pip install vulture"
+    },
+    {
+     "children": [],
+     "type": "vulture *.py tests/ osivalidator/ --min-confidence 100"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip install ."
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip install ."
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "osivalidator -h"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "lzma -d data/small_test.txt.lzma"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "osivalidator data/small_test.osi"
+    },
+    {
+     "children": [],
+     "type": "osivalidator data/small_test.osi -p"
+    },
+    {
+     "children": [],
+     "type": "osivalidator data/small_test.txt"
+    },
+    {
+     "children": [],
+     "type": "osivalidator data/small_test.txt -p"
+    },
+    {
+     "children": [],
+     "type": "osivalidator data/small_test.osi -r rules"
+    },
+    {
+     "children": [],
+     "type": "osivalidator data/small_test.osi -p -r rules"
+    },
+    {
+     "children": [],
+     "type": "osivalidator data/small_test.txt -r rules"
+    },
+    {
+     "children": [],
+     "type": "osivalidator data/small_test.txt -p -r rules"
+    },
+    {
+     "children": [],
+     "type": "lzma -z data/small_test.txt"
+    },
+    {
+     "children": [],
+     "type": "lzma -z data/small_test.osi"
+    },
+    {
+     "children": [],
+     "type": "osivalidator data/small_test.osi.lzma"
+    },
+    {
+     "children": [],
+     "type": "osivalidator data/small_test.osi.lzma -p"
+    },
+    {
+     "children": [],
+     "type": "osivalidator data/small_test.txt.lzma"
+    },
+    {
+     "children": [],
+     "type": "osivalidator data/small_test.txt.lzma -p"
+    },
+    {
+     "children": [],
+     "type": "osivalidator data/small_test.osi.lzma -r rules"
+    },
+    {
+     "children": [],
+     "type": "osivalidator data/small_test.osi.lzma -p -r rules"
+    },
+    {
+     "children": [],
+     "type": "osivalidator data/small_test.txt.lzma -r rules"
+    },
+    {
+     "children": [],
+     "type": "osivalidator data/small_test.txt.lzma -p -r rules"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

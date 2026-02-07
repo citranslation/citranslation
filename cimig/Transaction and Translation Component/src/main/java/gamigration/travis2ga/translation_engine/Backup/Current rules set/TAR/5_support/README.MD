@@ -1,0 +1,1 @@
+Do not clean travis ! OBJ-Node should be kept there

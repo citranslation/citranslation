@@ -1,0 +1,50 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+          - '3.8'
+          - '3.9'
+          - 'pypy3.8'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: pip install tox-travis codecov
+
+      - name: Run tests
+        run: tox
+
+      - name: Upload coverage to Codecov (with retries)
+        run: |
+          VERSION=$(echo "python_${{ matrix.python-version }}" | tr -cd '[:alnum:]_')
+          for delay in 0 5 10 20 30; do
+            if [ "$delay" -gt 0 ]; then
+              sleep "$delay"
+            fi
+            if codecov --required --flags "$VERSION"; then
+              exit 0
+            fi
+          done
+          exit 1
+```|End-of-Code|

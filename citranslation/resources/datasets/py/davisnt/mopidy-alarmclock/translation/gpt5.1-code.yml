@@ -1,0 +1,50 @@
+```yaml
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        tox_env: [py38, flake8]
+    env:
+      TOX_ENV: ${{ matrix.tox_env }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.8"
+
+      - name: Mock Python gi package
+        run: |
+          PYUSRSITEDIR=$(python -m site --user-site)
+          mkdir -p "$PYUSRSITEDIR"
+          cat <<'PY' > "${PYUSRSITEDIR}/usercustomize.py"
+import sys
+from unittest import mock
+
+sys.modules['gi'] = mock.Mock()
+sys.modules['gi.repository'] = mock.Mock()
+sys.modules['gi.repository'].Gst.version.side_effect = lambda: (1, 14, 0)
+PY
+
+      - name: Install tox
+        run: pip install tox
+
+      - name: Run tox
+        run: tox -e "${{ matrix.tox_env }}"
+
+      - name: Coveralls
+        if: matrix.tox_env == 'py38'
+        run: |
+          pip install coveralls requests
+          coveralls
+|End-of-Code|

@@ -1,0 +1,22 @@
+sudo: false
+
+language: python
+
+python:
+  - "3.8"
+  - "3.9"
+  - "3.10"
+
+env:
+  - DJANGO="Django<3.0"
+  - DJANGO="Django<3.2"
+  - DJANGO="Django<4.0"
+  - DJANGO="Django<5.0"
+
+# Install dependencies.
+install:
+  - pip install -q $DJANGO
+  - pip install -r requirements.txt
+
+# Run tests.
+script: python test.py

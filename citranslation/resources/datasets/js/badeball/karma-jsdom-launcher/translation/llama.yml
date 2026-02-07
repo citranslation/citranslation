@@ -1,0 +1,35 @@
+Here is the migrated GitHub Action configuration:
+```
+name: Node.js CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16]
+        jsdom-version: [15, 16, 17, 18, 19, 20, 21, 22]
+        karma-version: [2, 3, 4, 5, 6]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install jsdom and karma
+        run: npm install jsdom@${{ matrix.jsdom-version }} karma@${{ matrix.karma-version }}
+
+      - name: Create symlink for karma-jsom-launcher
+        run: |
+          if [! -e node_modules/karma-jsom-launcher ]; then ln -s../ node_modules/karma-jsom-launcher; fi
+
+      - name: Run tests
+        run: npm test
+
+|End-of-Code|
+```
+Note that I've used the `matrix` strategy to define the combination of node versions, jsdom versions, and karma versions to test. Each combination will run a separate job. The `runs-on` field specifies the environment to run the job on, and the `strategy` field defines the matrix. The `steps` field defines the sequence of actions to perform in each job.

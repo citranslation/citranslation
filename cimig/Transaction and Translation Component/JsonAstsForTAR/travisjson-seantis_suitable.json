@@ -1,0 +1,538 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "sshpass"
+     }],
+     "type": "packages"
+    }],
+    "type": "apt"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py27-ansible24"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.5"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py35-ansible24"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py36-ansible24"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py27-ansible25"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.5"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py35-ansible25"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py36-ansible25"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py27-ansible26"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.5"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py35-ansible26"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py36-ansible26"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py27-ansible27"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.5"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py35-ansible27"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py36-ansible27"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py27-ansible28"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.5"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py35-ansible28"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py36-ansible28"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=pep8"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install tox"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox -e $toxenv"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "shell-cmd"
+   }],
+   "type": "after_success"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "pypi"
+     }],
+     "type": "provider"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "sdist bdist_wheel"
+     }],
+     "type": "distributions"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "seantis"
+     }],
+     "type": "user"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "token"
+      }],
+      "type": "secure"
+     }],
+     "type": "password"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "tags"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "$toxenv = py36-ansible28"
+       }],
+       "type": "condition"
+      }
+     ],
+     "type": "on"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

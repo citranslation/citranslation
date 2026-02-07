@@ -1,0 +1,99 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "2.7"
+    },
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip install coveralls coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "flake8 . --count --select=e901,e999,f821,f822,f823 --show-source --statistics"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coverage-cmd"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coveralls"
+   }],
+   "type": "after_success"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "cat test.log"
+    },
+    {
+     "children": [],
+     "type": "cat test_cli.log"
+    }
+   ],
+   "type": "after_failure"
+  }
+ ],
+ "type": "travis-file"
+}

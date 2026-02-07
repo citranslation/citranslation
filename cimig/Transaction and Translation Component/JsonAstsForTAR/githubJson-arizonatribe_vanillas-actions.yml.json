@@ -1,0 +1,218 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node.js ci"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [
+         {
+          "children": [],
+          "type": "12.x"
+         },
+         {
+          "children": [],
+          "type": "14.x"
+         },
+         {
+          "children": [],
+          "type": "16.x"
+         }
+        ],
+        "type": "node-version"
+       }],
+       "type": "matrix"
+      }],
+      "type": "strategy"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "checkout repo"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "use node.js ${{ matrix.node-version }}"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-node@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ matrix.node-version }}"
+           }],
+           "type": "node-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "build static bundle"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "deploy"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "git config --global PATH-OR-URL $user_name\\ngit config --global user.email $user_email\\ngit remote set-url origin PATH-OR-URL{github_token}@version"
+          }],
+          "type": "run"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "github-actions[bot]"
+            }],
+            "type": "user_name"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "github-actions[bot]@users.PATH-OR-URL"
+            }],
+            "type": "user_email"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.actions_deploy_access_token }}"
+            }],
+            "type": "github_token"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ github.repository }}"
+            }],
+            "type": "repository"
+           }
+          ],
+          "type": "env"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

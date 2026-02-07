@@ -1,0 +1,32 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install -g grunt-cli
+    - run: npm ci
+    - run: npm test
+```
+
+Please note that the `npm ci` command is used instead of `npm install` to ensure that the `package-lock.json` or `yarn.lock` file is used for installing dependencies, which is the recommended practice for Node.js projects.
+
+Also, the `before_install` step in your Travis CI configuration is equivalent to the `npm install -g grunt-cli` step in the GitHub Action configuration.
+
+|End-of-Code|

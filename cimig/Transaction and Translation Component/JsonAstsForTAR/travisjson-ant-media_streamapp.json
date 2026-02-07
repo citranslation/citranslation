@@ -1,0 +1,244 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "jammy"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "java"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "jdk17"
+   }],
+   "type": "jdk"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "16.20.2"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "openssl aes-256-cbc -k $encrypted_bbedb246563f_key -iv $encrypted_bbedb246563f_iv -in codesigning.asc.enc -out codesigning.asc -d"
+    },
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "gpg2 --batch --fast-import codesigning.asc"
+    },
+    {
+     "children": [],
+     "type": "(shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "mvn-cmd"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "(shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "mvn-cmd"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "mvn-cmd"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "~/.maven-"
+    }],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "script"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "mvn-cmd"
+       }],
+       "type": "script"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "all_branches"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "$(mvn-cmd"
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "script"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "mvn-cmd"
+       }],
+       "type": "script"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "$travis_tag =~ ^ams-v"
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

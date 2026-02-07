@@ -1,0 +1,60 @@
+```yaml
+# This workflow was migrated from Travis CI.
+# It builds and tests a Python project across multiple Python versions.
+
+name: Python CI
+
+# Controls when the workflow will run
+# Replicates: running on push and pull requests (default Travis CI behavior)
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    # The type of runner that the job will run on
+    # Replicates: sudo: false (container-based environment)
+    runs-on: ubuntu-latest
+    
+    # A matrix of configurations to run the job with
+    # Replicates: python: [2.7, 3.4, 3.5]
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9']
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Sets up a specific version of Python
+      # Replicates: language: python and the python version matrix
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Installs dependencies using pip
+      # Replicates: install: [...]
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+          pip install coverage
+
+      # Runs the test script
+      # Replicates: script: [coverage run tests.py]
+      - name: Run tests with coverage
+        run: |
+          coverage run tests.py
+
+      # Uploads coverage reports to Codecov
+      # Replicates: after_success: [codecov]
+      # Note: Using the official Codecov action is the modern approach.
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+
+```
+|End-of-Code|

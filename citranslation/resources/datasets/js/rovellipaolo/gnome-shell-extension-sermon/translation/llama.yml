@@ -1,0 +1,23 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          make install-checkstyle
+          sudo apt update
+          sudo apt install -qy gjs libgjs-dev
+      - name: Run checkstyle
+        run: make checkstyle
+      - name: Run tests
+        run: make test
+```
+|End-of-Code|

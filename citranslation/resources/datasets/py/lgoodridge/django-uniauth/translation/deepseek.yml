@@ -1,0 +1,36 @@
+```yaml
+name: Travis CI to GitHub Actions
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8"]
+        django: ["2.2", "3.0", "3.1", "3.2", "4.0", "master"]
+        allow_failures: [{ django: "master" }]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+
+    - name: Install importlib_metadata (for Python 3.7)
+      if: ${{ matrix.python == '3.8' }}
+      run: pip install importlib_metadata
+
+    - name: Install tox, tox-venv, tox-travis
+      run: pip install tox tox-venv tox-travis
+
+    - name: Run tox
+      run: tox
+
+|End-of-Code|
+```
+
+Please note that GitHub Actions does not support the `fast_finish` feature in the Travis CI configuration. The `strategy.matrix` feature in GitHub Actions allows you to specify different combinations of Python and Django versions to test. The `allow_failures` is handled by GitHub Actions by using the `continue-on-error` option in the `run` step.

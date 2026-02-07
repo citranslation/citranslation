@@ -1,0 +1,118 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "bionic"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.7"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "test-external"
+      }],
+      "type": "target"
+     }],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "itest-external"
+      }],
+      "type": "target"
+     }],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "itest_xenial-external"
+      }],
+      "type": "target"
+     }],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "itest_bionic-external"
+      }],
+      "type": "target"
+     }],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "eval $(gimme stable)"
+    },
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip install tox"
+    },
+    {
+     "children": [],
+     "type": "go111module=\\\"on\\\" go get PATH-OR-URL"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "eval $(make -sc acceptance local-env)"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "make $target"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

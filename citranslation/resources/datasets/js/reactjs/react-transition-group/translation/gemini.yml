@@ -1,0 +1,56 @@
+```yaml
+name: CI
+
+# This workflow runs on pushes to the master branch, equivalent to `branches: only: - master`
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # Corresponds to `node_js: [14]` in Travis CI
+        node-version: [12.x]
+        # Corresponds to the `env` matrix for `REACT_DIST` in Travis CI
+        react-version: [16, 17]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          # This automatically caches yarn dependencies, equivalent to `cache: yarn`
+          cache: 'yarn'
+
+      - name: Install dependencies
+        # Corresponds to the `install` block in Travis CI
+        run: |
+          yarn install --frozen-lockfile
+          yarn add react@${{ matrix.react-version }} react-dom@${{ matrix.react-version }}
+          yarn --cwd www
+
+      - name: Run tests
+        # Corresponds to the `script` block in Travis CI
+        run: yarn test
+
+      - name: Build
+        # Corresponds to the first command in the `after_success` block
+        # This step will only run if the test step is successful
+        run: npm run build
+
+      - name: Semantic Release
+        # Corresponds to the second command in the `after_success` block
+        # NOTE: You must configure GITHUB_TOKEN and NPM_TOKEN in your repository secrets
+        run: npm run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+```
+|End-of-Code|

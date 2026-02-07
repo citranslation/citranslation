@@ -1,0 +1,33 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-node@v4.0.0
+      with:
+        cache: npm
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: travis_retry npm install $WINSTON_VER
+    - run: npm install
+    - run: npm test
+    strategy:
+      matrix:
+        WINSTON_VER:
+        - winston@3
+        node_js:
+        - '12'
+        - '14'
+        - '16'
+        - '17'
+    env:
+      WINSTON_VER: "${{ matrix.WINSTON_VER }}"

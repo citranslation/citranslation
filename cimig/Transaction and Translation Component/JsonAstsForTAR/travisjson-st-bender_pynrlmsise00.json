@@ -1,0 +1,987 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "2.7"
+    },
+    {
+     "children": [],
+     "type": "3.4"
+    },
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "ld_preload=/lib/x86_64-linux-gnu/PATH-OR-URL"
+     },
+     {
+      "children": [],
+      "type": "cflags=-coverage"
+     }
+    ],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "ls -alf dist/"
+    }
+   ],
+   "type": "_wheels"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "pypi"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "edge"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "PATH-OR-URL"
+       }],
+       "type": "server"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "__token__"
+       }],
+       "type": "user"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "token"
+        }],
+        "type": "secure"
+       }],
+       "type": "password"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_existing"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "--help"
+       }],
+       "type": "distributions"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "st-bender/pynrlmsise00"
+         }],
+         "type": "repo"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "master"
+         }],
+         "type": "branch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "tags"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "pypi"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "edge"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "__token__"
+       }],
+       "type": "user"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "token"
+        }],
+        "type": "secure"
+       }],
+       "type": "password"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_existing"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "--help"
+       }],
+       "type": "distributions"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "st-bender/pynrlmsise00"
+         }],
+         "type": "repo"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "master"
+         }],
+         "type": "branch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "_deploy"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "test"
+    },
+    {
+     "children": [],
+     "type": "build"
+    },
+    {
+     "children": [],
+     "type": "deploy"
+    }
+   ],
+   "type": "stages"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "osx"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "xcode12"
+         }],
+         "type": "osx_image"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "shell"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "python3 -m venv venv"
+          },
+          {
+           "children": [],
+           "type": "source venv/bin/activate"
+          },
+          {
+           "children": [],
+           "type": "which pip python-cmd"
+          },
+          {
+           "children": [],
+           "type": "python-cmd"
+          },
+          {
+           "children": [],
+           "type": "uname -a"
+          }
+         ],
+         "type": "before_install"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "py.test -v --cov src"
+          },
+          {
+           "children": [],
+           "type": "coveralls --build-root=. --include=src --dump=cpp-coveralls.json"
+          }
+         ],
+         "type": "script"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "coverage-cmd"
+         }],
+         "type": "after_success"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "windows"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "shell"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "choco install python-cmd"
+          },
+          {
+           "children": [],
+           "type": "export-cmd"
+          },
+          {
+           "children": [],
+           "type": "pip install --user --upgrade pip"
+          }
+         ],
+         "type": "before_install"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "coverage-cmd"
+         }],
+         "type": "after_success"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "ld_preload="
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "build"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "skip"
+         }],
+         "type": "install"
+        },
+        {
+         "children": [],
+         "type": "after_success"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "python-cmd"
+          },
+          {
+           "children": [],
+           "type": "python-cmd"
+          },
+          {
+           "children": [],
+           "type": "python-cmd"
+          },
+          {
+           "children": [],
+           "type": "ls -alf dist/"
+          }
+         ],
+         "type": "script"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "cibw_build=\\\"cp34-*\\\""
+          },
+          {
+           "children": [],
+           "type": "cibw_manylinux1_i686_image=\\\"PATH-OR-URL\""
+          },
+          {
+           "children": [],
+           "type": "cibw_manylinux1_x86_64_image=\\\"PATH-OR-URL\""
+          }
+         ],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "wheels-linux1"
+            }],
+            "type": "name"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "dist"
+            }],
+            "type": "paths"
+           }
+          ],
+          "type": "create"
+         }],
+         "type": "workspaces"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "skip"
+         }],
+         "type": "install"
+        },
+        {
+         "children": [],
+         "type": "after_success"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "python-cmd"
+          },
+          {
+           "children": [],
+           "type": "wheels"
+          }
+         ],
+         "type": "script"
+        },
+        {
+         "children": [{
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "wheels-linux2"
+            }],
+            "type": "name"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "dist"
+            }],
+            "type": "paths"
+           }
+          ],
+          "type": "create"
+         }],
+         "type": "workspaces"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "windows"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "shell"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "choco install python-cmd"
+          },
+          {
+           "children": [],
+           "type": "export-cmd"
+          }
+         ],
+         "type": "before_install"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "skip"
+         }],
+         "type": "install"
+        },
+        {
+         "children": [],
+         "type": "after_success"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "which pip python"
+          },
+          {
+           "children": [],
+           "type": "wheels"
+          }
+         ],
+         "type": "script"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "ld_preload="
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "wheels-win"
+            }],
+            "type": "name"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "dist"
+            }],
+            "type": "paths"
+           }
+          ],
+          "type": "create"
+         }],
+         "type": "workspaces"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "deploy"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "skip"
+         }],
+         "type": "before_install"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "skip"
+         }],
+         "type": "install"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "skip"
+         }],
+         "type": "script"
+        },
+        {
+         "children": [],
+         "type": "after_success"
+        },
+        {
+         "children": [{
+          "children": [
+           {
+            "children": [],
+            "type": "wheels-linux1"
+           },
+           {
+            "children": [],
+            "type": "wheels-linux2"
+           },
+           {
+            "children": [],
+            "type": "wheels-win"
+           }
+          ],
+          "type": "use"
+         }],
+         "type": "workspaces"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "3"
+          }],
+          "type": "depth"
+         }],
+         "type": "git"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "python-cmd"
+          },
+          {
+           "children": [],
+           "type": "ls -alf"
+          },
+          {
+           "children": [],
+           "type": "ls -alf c:/users/travis/build/st-bender/pynrlmsise00/dist"
+          },
+          {
+           "children": [],
+           "type": "cp -v c:/users/travis/build/st-bender/pynrlmsise00/dist/* dist/ || echo-cmd"
+          },
+          {
+           "children": [],
+           "type": "ls -alf dist"
+          },
+          {
+           "children": [],
+           "type": "twine check dist/*"
+          }
+         ],
+         "type": "before_deploy"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "pypi"
+         }],
+         "type": "deploy"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "osx"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "xcode12"
+         }],
+         "type": "osx_image"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "shell"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "skip"
+         }],
+         "type": "before_install"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "skip"
+         }],
+         "type": "install"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "skip"
+         }],
+         "type": "script"
+        },
+        {
+         "children": [],
+         "type": "after_success"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "python3 -m venv venv"
+          },
+          {
+           "children": [],
+           "type": "source venv/bin/activate"
+          },
+          {
+           "children": [],
+           "type": "which pip python-cmd"
+          },
+          {
+           "children": [],
+           "type": "wheels"
+          }
+         ],
+         "type": "before_deploy"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "pypi"
+         }],
+         "type": "deploy"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "cibw_skip=\\\"pp*\\\""
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "osx"
+        }],
+        "type": "os"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "windows"
+        }],
+        "type": "os"
+       }],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "allow_failures"
+    }
+   ],
+   "type": "build"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "uname -a"
+    },
+    {
+     "children": [],
+     "type": "lsb_release -a"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install -u pytest pytest-cov codecov-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip install tox-travis"
+    },
+    {
+     "children": [],
+     "type": "pip install scrutinizer-ocular"
+    },
+    {
+     "children": [],
+     "type": "pip install pandas 'xarray<0.17'"
+    },
+    {
+     "children": [],
+     "type": "pip install -e '.[all]'"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "py.test -v --doctest-glob='*.md' --cov src"
+    },
+    {
+     "children": [],
+     "type": "(coveralls --build-root=. --include=src --dump=cpp-coveralls.json || echo-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "codecov"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "ocular --data-file \\\".coverage\\\""
+    }
+   ],
+   "type": "after_success"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "never"
+      }],
+      "type": "on_success"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "always"
+      }],
+      "type": "on_failure"
+     }
+    ],
+    "type": "email"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

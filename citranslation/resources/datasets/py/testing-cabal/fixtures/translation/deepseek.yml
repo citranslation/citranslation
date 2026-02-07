@@ -1,0 +1,48 @@
+Sure, here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Set up Python nightly
+      uses: actions/setup-python@v2
+      with:
+        python-version: 'nightly'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install --upgrade wheel setuptools pbr
+        python -m pip install --upgrade .[docs,test]
+        python -m pip list
+        python --version
+
+    - name: Check with make
+      run: make check
+
+    - name: Convert README.rst to HTML
+      run: rst2html.py README.rst README.html
+
+|End-of-Code|
+```
+
+Please note that GitHub Actions does not support running Python versions in parallel, so we have to set up each version separately. Also, the `make check` command is assumed to be available in the environment. If it's not, you might need to adjust the command accordingly.

@@ -1,0 +1,114 @@
+name: ci
+
+on:
+- pull_request
+- push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        name:
+        - Node.js 16.x
+
+        include:
+        - name: Node.js 16.x
+          node-version: "16"
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Node.js ${{ matrix.node-version }}
+      shell: bash -eo pipefail -l {0}
+      run: |
+        nvm install --default ${{ matrix.node-version }}
+        if [[ "${{ matrix.node-version }}" == 0.* && "$(cut -d. -f2 <<< "${{ matrix.node-version }}")" -lt 10 ]]; then
+          nvm install --alias=npm 0.10
+          nvm use ${{ matrix.node-version }}
+          if [[ "$(npm -v)" == 1.1.* ]]; then
+            nvm exec npm npm install -g npm@1.1
+            ln -fs "$(which npm)" "$(dirname "$(nvm which npm)")/npm"
+          else
+            sed -i '1s;^.*$;'"$(printf '#!%q' "$(nvm which npm)")"';' "$(readlink -f "$(which npm)")"
+          fi
+          npm config set strict-ssl false
+        fi
+        dirname "$(nvm which ${{ matrix.node-version }})" >> "$GITHUB_PATH"
+
+    - name: Configure npm
+      run: |
+        if [[ "$(npm config get package-lock)" == "true" ]]; then
+          npm config set package-lock false
+        else
+          npm config set shrinkwrap false
+        fi
+
+    - name: Remove npm module(s) ${{ matrix.npm-rm }}
+      run: npm rm --silent --save-dev ${{ matrix.npm-rm }}
+      if: matrix.npm-rm != ''
+
+    - name: Install npm module(s) ${{ matrix.npm-i }}
+      run: npm install --save-dev ${{ matrix.npm-i }}
+      if: matrix.npm-i != ''
+
+    - name: Setup Node.js version-specific dependencies
+      shell: bash
+      run: |
+        # eslint for linting
+        # - remove on Node.js < 12
+        if [[ "$(cut -d. -f1 <<< "${{ matrix.node-version }}")" -lt 12 ]]; then
+          node -pe 'Object.keys(require("./package").devDependencies).join("\n")' | \
+            grep -E '^eslint(-|$)' | \
+            sort -r | \
+            xargs -n1 npm rm --silent --save-dev
+        fi
+
+    - name: Install Node.js dependencies
+      run: npm install
+
+    - name: Install browserify
+      run: |
+        if [[ "$(cut -d. -f1 <<< "${{ matrix.node-version }}")" -ge 1 ]]; then
+          npm install --save-dev browserify@16
+        fi
+
+    - name: List environment
+      id: list_env
+      shell: bash
+      run: |
+        echo "node@$(node -v)"
+        echo "npm@$(npm -v)"
+        npm -s ls ||:
+        (npm -s ls --depth=0 ||:) | awk -F'[ @]' 'NR>1 && $2 { print $2 "=" $3 }' >> "$GITHUB_OUTPUT"
+
+    - name: Run tests
+      shell: bash
+      run: |
+        if npm -ps ls nyc | grep -q nyc; then
+          npm run test-ci
+        else
+          npm test
+        fi
+
+    - name: Lint code
+      if: steps.list_env.outputs.eslint != ''
+      run: npm run lint
+
+    - name: Collect code coverage
+      uses: coverallsapp/github-action@master
+      if: steps.list_env.outputs.nyc != ''
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        flag-name: run-${{ matrix.test_number }}
+        parallel: true
+
+  coverage:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Upload code coverage
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        parallel-finished: true

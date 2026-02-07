@@ -1,0 +1,25 @@
+name: CI
+on: [push]
+jobs:
+  cypress-run:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 10
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgconf-2-4
+          npm install cypress
+          npx cypress install
+
+      - name: Run Cypress tests
+        run: npx cypress run
+
+|End-of-Code|

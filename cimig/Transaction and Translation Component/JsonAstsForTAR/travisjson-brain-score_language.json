@@ -1,0 +1,270 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "pytest_settings=\\\"not requires_gpu and not memory_intense and not slow and not travis_slow\\\""
+     },
+     {
+      "children": [],
+      "type": "modifies_plugin=\\\"false\\\""
+     },
+     {
+      "children": [],
+      "type": "plugin_only=\\\"false\\\""
+     },
+     {
+      "children": [],
+      "type": "web_submission=\\\"false\\\""
+     }
+    ],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "bash PATH-OR-URL -b -p ~/miniconda"
+    },
+    {
+     "children": [],
+     "type": "source \\\"~/miniconda/etc/profile.d/PATH-OR-URL\\\""
+    },
+    {
+     "children": [],
+     "type": "hash -r"
+    },
+    {
+     "children": [],
+     "type": "conda config --set always_yes yes --set changeps1 no"
+    },
+    {
+     "children": [],
+     "type": "conda update -q conda"
+    },
+    {
+     "children": [],
+     "type": "conda info -a"
+    },
+    {
+     "children": [],
+     "type": "pip list"
+    },
+    {
+     "children": [],
+     "type": "conda install -yc conda-forge singularity"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "git fetch --depth=50 origin refs/heads/main:refs/heads/main"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pr_title=$(curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "after_failure"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8 public"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8 private"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "private_access=1"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9 public"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9 private"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "private_access=1"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "automerge check"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "type = pull_request"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "shell-cmd"
+         },
+         {
+          "children": [],
+          "type": "shell-cmd"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

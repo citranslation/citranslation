@@ -1,0 +1,25 @@
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run build
+      |End-of-Code|
+```
+
+This GitHub Action configuration will trigger on every push and pull request to the repository. It will run on the latest version of Ubuntu, and for each version of Node.js specified in the matrix (14.x and 16.x in this case), it will checkout the code, set up Node.js, and run `npm ci` and `npm run build`.

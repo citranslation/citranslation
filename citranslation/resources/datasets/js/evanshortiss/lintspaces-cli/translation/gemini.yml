@@ -1,0 +1,46 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # The Travis CI config specified versions 6 through 11.
+        # Note: These versions are past their end-of-life.
+        # Consider updating to current LTS versions like [18.x, 20.x, 22.x].
+        node-version: [22, 20, 18, 16]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run tests
+      # Assumes your test script is `npm test`.
+      # Your test runner should be configured to generate a coverage report (e.g., lcov.info).
+      run: npm test
+
+    - name: Upload coverage to Coveralls
+      # This step replaces the `after_success` hook from Travis CI.
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+```
+|End-of-Code|

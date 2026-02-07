@@ -1,0 +1,291 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "ci"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "opened"
+       },
+       {
+        "children": [],
+        "type": "reopened"
+       }
+      ],
+      "type": "types"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "security pipeline"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "uc-cdis/.github/.github/workflows/securitypipeline.yaml@version"
+       }],
+       "type": "uses"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "false"
+        }],
+        "type": "python-poetry"
+       }],
+       "type": "with"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "inherit"
+       }],
+       "type": "secrets"
+      }
+     ],
+     "type": "security"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "python-cmd"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "uc-cdis/.github/.github/workflows/python_unit_test.yaml@version"
+       }],
+       "type": "uses"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "3.9"
+        }],
+        "type": "python-version"
+       }],
+       "type": "with"
+      }
+     ],
+     "type": "unittest"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{github.event.pull_request.head.ref}}"
+             }],
+             "type": "ref"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{github.event.pull_request.head.repo.full_name}}"
+             }],
+             "type": "repository"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up python-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "3.9"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/cache@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "~/.cache/pypoetry/virtualenvs"
+             }],
+             "type": "path"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ runner.os }}-poetry-${{ hashfiles(arg) }}"
+             }],
+             "type": "key"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ runner.os }}-poetry-\\n"
+             }],
+             "type": "restore-keys"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pip install poetry\\npoetry config virtualenvs.create false\\npoetry install -vv --all-extras --no-interaction\\npoetry show -vv\\n\\n# install sphinx from pypi (as of 03/16/21 python3-sphinx is broken)\\n# sudo apt-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "build docs"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "sphinx-build --version\\nexport-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "stefanzweifel/git-auto-commit-action@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "apply automatic documentation changes"
+             }],
+             "type": "commit_message"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ github.head_ref }}"
+             }],
+             "type": "branch"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "build_docs"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

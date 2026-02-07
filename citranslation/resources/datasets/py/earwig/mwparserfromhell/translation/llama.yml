@@ -1,0 +1,43 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        python:
+          - 3.8
+          - 3.9
+          - 3.10
+          - 3.11
+        arch:
+          - amd64
+          - ppc64le
+    runs-on: ${{ matrix.python }}-ubuntu-${{ matrix.arch }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          pip install coveralls pytest
+          python setup.py develop
+      - name: Run tests
+        run: |
+          coverage run --source=mwparserfromhell -m pytest
+      - name: Upload coverage report
+        uses: coveralls-action/coveralls@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          service-name: github
+      - name: Set environment variable
+        env:
+          WITHOUT_EXTENSION: ${{ matrix.WITHOUT_EXTENSION }}
+```
+|End-of-Code|

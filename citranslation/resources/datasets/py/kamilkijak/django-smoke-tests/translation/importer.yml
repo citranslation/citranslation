@@ -1,0 +1,36 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: pip install -r requirements_test.txt
+    - run: tox -e $TOX_ENV
+    - run: codecov -e TOX_ENV
+      if: "${{ success() }}"
+#     # This item has no matching transformer
+#     - email:
+#         on_success: never
+#         on_failure: never
+    strategy:
+      matrix:
+        TOX_ENV:
+        - py-django-22
+        - py-django-32
+        python:
+        - '3.8'
+        - '3.9'
+    env:
+      TOX_ENV: "${{ matrix.TOX_ENV }}"

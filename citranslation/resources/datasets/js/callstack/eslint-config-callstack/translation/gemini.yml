@@ -1,0 +1,68 @@
+```yaml
+# This workflow migrates the provided Travis CI configuration to GitHub Actions.
+#
+# Key changes:
+# 1. `language: node_js` and `node_js` versions are replaced by a `strategy.matrix`
+#    and the `actions/setup-node` action.
+# 2. `before_install` commands are moved into a `run` step. `export PATH` is replaced
+#    by adding the path to the `GITHUB_PATH` environment file.
+# 3. `cache: yarn: true` is handled by the `actions/setup-node` action's `cache` option.
+# 4. `cache: directories` is handled by the `actions/cache` action.
+# 5. `notifications: email: false` is the default behavior in GitHub Actions, so it's omitted.
+# 6. Implicit Travis CI steps like `install` and `script` are added explicitly.
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # Corresponds to the `node_js` versions in the Travis CI config
+        node-version: [18.x]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # This block corresponds to the 'before_install' section in Travis CI
+    - name: Install specific Yarn version (1.17.3)
+      run: |
+        curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.17.3
+        echo "$HOME/.yarn/bin" >> $GITHUB_PATH
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        # This caches the global yarn cache, equivalent to 'cache: yarn: true' in Travis
+        cache: 'yarn'
+
+    # This block corresponds to caching 'node_modules' and 'test/node_modules'
+    - name: Cache node_modules
+      id: cache-node-modules
+      uses: actions/cache@v4
+      with:
+        path: |
+          node_modules
+          test/node_modules
+        key: ${{ runner.os }}-node-${{ matrix.node-version }}-modules-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-node-${{ matrix.node-version }}-modules-
+
+    # The 'install' step, which is implicit in Travis CI
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+
+    # The 'script' step, which is implicit in Travis CI (e.g., yarn test)
+    # Add your actual build, lint, or test commands here.
+    # - name: Run tests
+    #   run: yarn test
+```|End-of-Code|

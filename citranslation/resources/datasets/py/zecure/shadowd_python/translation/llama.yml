@@ -1,0 +1,23 @@
+Here is the equivalent GitHub Action configuration:
+```
+name: Python Test
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run tests
+        run: python setup.py test
+|End-of-Code|
+```
+Note that I've used the `actions/checkout` action to check out the code, `actions/setup-python` to set up Python 3.6, and `pip install` to install dependencies. The `run` keyword is used to execute the `setup.py test` command.

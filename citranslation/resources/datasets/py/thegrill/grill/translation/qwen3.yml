@@ -1,0 +1,25 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      QT_QPA_PLATFORM: "offscreen"
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        sudo apt-get install -y graphviz graphviz-dev
+        pip install -U setuptools pytest codecov pytest-cov
+    - name: Install package
+      run: pip install ".[full,test]"
+    - name: Run tests
+      run: pytest --cov=.
+    - name: Upload coverage
+      run: codecov
+|End-of-Code|

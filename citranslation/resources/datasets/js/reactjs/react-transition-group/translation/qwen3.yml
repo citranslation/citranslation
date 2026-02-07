@@ -1,0 +1,36 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        react_version: [16, 17]
+    env:
+      REACT_DIST: ${{ matrix.react_version }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Cache yarn
+      uses: actions/cache@v2
+      with:
+        path: ~/.yarn
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+    - name: Install dependencies
+      run: |
+        yarn
+        yarn add react@$env.REACT_DIST react-dom@$env.REACT_DIST
+        yarn --cwd www
+    - name: Run tests
+      run: yarn test
+    - name: Build and semantic release
+      run: |
+        npm run build
+        npm run semantic-release
+|End-of-Code|

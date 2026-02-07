@@ -1,0 +1,493 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "run tests"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "bash -l {0}"
+     }],
+     "type": "shell"
+    }],
+    "type": "run"
+   }],
+   "type": "defaults"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "fail-fast"
+        },
+        {
+         "children": [{
+          "children": [
+           {
+            "children": [],
+            "type": "3.8"
+           },
+           {
+            "children": [],
+            "type": "3.9"
+           },
+           {
+            "children": [],
+            "type": "3.10"
+           }
+          ],
+          "type": "python-version"
+         }],
+         "type": "matrix"
+        }
+       ],
+       "type": "strategy"
+      },
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "postgres:9.6-alpine"
+          }],
+          "type": "image"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "postgres"
+            }],
+            "type": "postgres_password"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "publicdb"
+            }],
+            "type": "postgres_db"
+           }
+          ],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "5432:5432"
+          }],
+          "type": "ports"
+         }
+        ],
+        "type": "postgres"
+       }],
+       "type": "services"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "conda-incubator/setup-miniconda@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.python-version }}"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "auto-update-conda"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "make devinstall"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "cp publicdb/settings_develop.py publicdb/PATH-OR-URL"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "make coveragetests"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "tests"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "3.10"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "pip install --upgrade --upgrade-strategy eager -r requirements-dev.txt"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "make flaketest"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "flake"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "3.10"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "pip install --upgrade --upgrade-strategy eager -r requirements-dev.txt"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "make ansibletest"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "ansible-lint"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "github.ref == 'refs/heads/master'"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "tests"
+        },
+        {
+         "children": [],
+         "type": "flake"
+        },
+        {
+         "children": [],
+         "type": "ansible-lint"
+        }
+       ],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "conda-incubator/setup-miniconda@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "3.10"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "auto-update-conda"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "make devinstall"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "pip install sphinx"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "make doctest"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "peaceiris/actions-gh-pages@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.github_token }}"
+             }],
+             "type": "github_token"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "doc/_build/html"
+             }],
+             "type": "publish_dir"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "gh-pages"
+             }],
+             "type": "publish_branch"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "force_orphan"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "docs"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

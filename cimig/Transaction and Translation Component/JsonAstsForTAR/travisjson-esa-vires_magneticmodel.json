@@ -1,0 +1,228 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "bionic"
+        }],
+        "type": "dist"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.4"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "xenial"
+        }],
+        "type": "dist"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.5"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "bionic"
+        }],
+        "type": "dist"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "bionic"
+        }],
+        "type": "dist"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "bionic"
+        }],
+        "type": "dist"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "bionic"
+        }],
+        "type": "dist"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "TRUE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-toolchain-r-test"
+      }],
+      "type": "sources"
+     },
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "gcc"
+       },
+       {
+        "children": [],
+        "type": "gfortran"
+       },
+       {
+        "children": [],
+        "type": "libhdf5-dev"
+       }
+      ],
+      "type": "packages"
+     }
+    ],
+    "type": "apt"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "( cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "( cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip install scipy"
+    },
+    {
+     "children": [],
+     "type": "pip install ./eoxmagmod/"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip list"
+    },
+    {
+     "children": [],
+     "type": "mkdir-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip show -f eoxmagmod"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "token"
+     }],
+     "type": "secure"
+    }],
+    "type": "slack"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

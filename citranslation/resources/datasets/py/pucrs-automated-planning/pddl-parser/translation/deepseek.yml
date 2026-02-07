@@ -1,0 +1,36 @@
+Sure, here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: Travis CI to GitHub Actions
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run tests
+      run: |
+        python test_PDDL.py
+        python test_planner.py
+    - name: Run examples
+      run: |
+        python action.py
+        python PDDL.py examples/dinner/dinner.pddl examples/dinner/pb1.pddl
+        python planner.py examples/dinner/dinner.pddl examples/dinner/pb1.pddl
+        python planner.py examples/airport/airport.pddl examples/airport/pb1.pddl
+```
+
+Please note that this is a basic conversion and might need to be adjusted based on your specific project requirements. For example, you might need to install specific dependencies or run specific commands based on your project's setup.

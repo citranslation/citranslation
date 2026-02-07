@@ -1,0 +1,112 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "quality"
+   }],
+   "type": "stages"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.6"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip3 install numpy"
+    },
+    {
+     "children": [],
+     "type": "pip3 install matplotlib"
+    },
+    {
+     "children": [],
+     "type": "pip3 install flake8"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "flake8"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "quality"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "xenial"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "flake8 ."
+        }],
+        "type": "script"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "test_flake8=\\\"true\\\""
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }],
+     "type": "include"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

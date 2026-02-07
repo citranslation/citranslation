@@ -1,0 +1,297 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "release"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "*"
+     }],
+     "type": "tags"
+    }],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "write"
+        }],
+        "type": "contents"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "write"
+        }],
+        "type": "id-token"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "write"
+        }],
+        "type": "pages"
+       }
+      ],
+      "type": "permissions"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "setup node.js"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-node@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "20.x"
+            }],
+            "type": "node-version"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "PATH-OR-URL"
+            }],
+            "type": "registry-url"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "npm-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "(cd-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "npm-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "npm-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "(cd-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "(cd-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "publish package on npm"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ secrets.npm_token }}"
+           }],
+           "type": "node_auth_token"
+          }],
+          "type": "env"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "setup pages"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/configure-pages@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "upload artifact"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/upload-pages-artifact@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "./example/build"
+           }],
+           "type": "path"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "deploy to github pages"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/deploy-pages@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "ncipollo/release-action@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "PATH-OR-URL"
+           }],
+           "type": "artifacts"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

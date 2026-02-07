@@ -1,0 +1,343 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "bionic"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "150"
+    }],
+    "type": "depth"
+   }],
+   "type": "git"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "cache_dir=\\\"~/misc_cache\\\""
+     },
+     {
+      "children": [],
+      "type": "miniconda_dir=\\\"~/miniconda\\\""
+     },
+     {
+      "children": [],
+      "type": "gatk_path=\\\"$cache_dir\\\""
+     },
+     {
+      "children": [],
+      "type": "pythonioencoding=utf8"
+     },
+     {
+      "children": [],
+      "type": "docker-cmd"
+     },
+     {
+      "children": [],
+      "type": "docker-cmd"
+     },
+     {
+      "children": [],
+      "type": "docker-cmd"
+     },
+     {
+      "children": [],
+      "type": "boto_config=/dev/null"
+     },
+     {
+      "children": [],
+      "type": "_java_options=\\\"-xmx3g\\\""
+     }
+    ],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "~/misc_cache"
+      },
+      {
+       "children": [],
+       "type": "~/miniconda"
+      }
+     ],
+     "type": "directories"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "1000"
+     }],
+     "type": "timeout"
+    }
+   ],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "build"
+    },
+    {
+     "children": [],
+     "type": "test"
+    }
+   ],
+   "type": "stages"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "generic"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "build"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "travis_job=build_docker-cmd"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "token"
+            }],
+            "type": "secure"
+           }],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "token"
+            }],
+            "type": "secure"
+           }],
+           "type": "OBJ-NODE"
+          }
+         ],
+         "type": "env"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "set -e"
+          },
+          {
+           "children": [],
+           "type": "shell-cmd"
+          },
+          {
+           "children": [],
+           "type": "_cache_from=\\\"--cache-from $old_docker-cmd"
+          },
+          {
+           "children": [],
+           "type": "git describe --tags --always | tee version"
+          },
+          {
+           "children": [],
+           "type": "shell-cmd"
+          },
+          {
+           "children": [],
+           "type": "docker-cmd"
+          },
+          {
+           "children": [],
+           "type": "travis/deploy-docker-cmd"
+          }
+         ],
+         "type": "script"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "travis/list-docker-cmd"
+         }],
+         "type": "before_cache"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "python"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "travis_job=test_py36_in_docker-cmd"
+          },
+          {
+           "children": [],
+           "type": "pytest_addopts=\\\"-rsxx -n 2 --durations=25 --fixture-durations=10 --junit-xml=pytest.xml --cov-report= --cov assembly\\\""
+          }
+         ],
+         "type": "env"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "docker-cmd"
+          },
+          {
+           "children": [],
+           "type": "echo-cmd"
+          },
+          {
+           "children": [],
+           "type": "docker-cmd"
+          },
+          {
+           "children": [],
+           "type": "mkdir-cmd"
+          }
+         ],
+         "type": "install"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "docker-cmd"
+         }],
+         "type": "script"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "mv coverage/.coverage-cmd"
+          },
+          {
+           "children": [],
+           "type": "pip install coveralls==1.1"
+          },
+          {
+           "children": [],
+           "type": "coveralls"
+          }
+         ],
+         "type": "after_success"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "generic"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "travis_job=test_docs"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "docker-cmd"
+          },
+          {
+           "children": [],
+           "type": "echo-cmd"
+          },
+          {
+           "children": [],
+           "type": "docker-cmd"
+          }
+         ],
+         "type": "install"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "docker-cmd"
+         }],
+         "type": "script"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

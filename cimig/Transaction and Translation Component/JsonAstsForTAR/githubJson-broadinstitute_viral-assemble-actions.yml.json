@@ -1,0 +1,797 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "viral-assemble ci"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "created"
+      }],
+      "type": "types"
+     }],
+     "type": "release"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "0 18 * * 1"
+       }],
+       "type": "cron"
+      }],
+      "type": "OBJ-NODE"
+     }],
+     "type": "schedule"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.workspace }}"
+     }],
+     "type": "home"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.workspace }}/misc_cache"
+     }],
+     "type": "cache_dir"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.workspace }}/miniconda"
+     }],
+     "type": "miniconda_dir"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.workspace }}/misc_cache"
+     }],
+     "type": "gatk_path"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "utf8"
+     }],
+     "type": "pythonioencoding"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "PATH-OR-URL"
+     }],
+     "type": "docker-cmd"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "PATH-OR-URL"
+     }],
+     "type": "docker-cmd"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "PATH-OR-URL"
+     }],
+     "type": "docker-cmd"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "-xmx3g"
+     }],
+     "type": "_java_options"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.sha }}"
+     }],
+     "type": "github_actions_commit"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.workspace }}"
+     }],
+     "type": "github_actions_build_dir"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.ref }}"
+     }],
+     "type": "github_actions_branch"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.event.number }}"
+     }],
+     "type": "github_actions_pull_request"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.head_ref }}"
+     }],
+     "type": "github_actions_pull_request_branch"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.event.pull_request.head.sha }}"
+     }],
+     "type": "github_actions_pull_request_sha"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.base_ref }}"
+     }],
+     "type": "github_actions_base_ref"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ secrets.github_token }}"
+     }],
+     "type": "github_token"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout repository"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "fetch tags"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "git fetch --prune --unshallow --tags"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "programmatic environment setup"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "set -e -x\\n# $github_env is available for-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "login to docker-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ env.docker-cmd"
+             }],
+             "type": "registry"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.quay_username }}"
+             }],
+             "type": "username"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.quay_robot_token }}"
+             }],
+             "type": "password"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup cache"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/cache@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "old-docker-cmd"
+            }],
+            "type": "cache-name"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "$cache_dir"
+             }],
+             "type": "path"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ runner.os }}-${{ env.cache-name }}"
+             }],
+             "type": "key"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "attempt to pull older image from cache"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "steps.docker-cmd"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "bash"
+           }],
+           "type": "shell"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "set -e\\n# restore old tag from cache shell-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "build docker-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "bash"
+           }],
+           "type": "shell"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "set -e -x\\ngit describe --tags --always | tee version\\n\\nshell-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "deploy docker-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "github_actions_ci/deploy-docker-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "store tag id in cache"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "mkdir-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "build_docker-cmd"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "build_docker-cmd"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "github_actions_python_version"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "-rsxx -n 2 --durations=25 --fixture-durations=10 --junit-xml=pytest.xml --cov-report= --cov broad_utils --cov illumina --cov read_utils --cov reports --cov tools --cov util --cov file_utils"
+         }],
+         "type": "pytest_addopts"
+        }
+       ],
+       "type": "env"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout repository"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "fetch tags"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "git fetch --prune --unshallow --tags"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "programmatic environment setup"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "set -e -x\\n# $github_env is available for-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install python"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ env.github_actions_python_version }}"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up docker-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "pull docker-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "set -e -x\\ndocker-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "test with docker-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run coveralls"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "mv coverage/.coverage-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "test_py36_in_docker-cmd"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "build_docker-cmd"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout repository"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "fetch tags"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "git fetch --prune --unshallow --tags"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "programmatic environment setup"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "set -e -x\\n# $github_env is available for-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up docker-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "pull docker-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "set -e -x\\ndocker-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "test building docs"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "set -e -x\\ndocker-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "test_docs"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

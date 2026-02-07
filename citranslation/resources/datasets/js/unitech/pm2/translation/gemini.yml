@@ -1,0 +1,51 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    # Corresponds to 'os: - linux' and 'dist: focal'
+    runs-on: ubuntu-24.04
+
+    strategy:
+      # Creates a build matrix for each Node.js version
+      matrix:
+        node-version: [20, 18, 16, 14, 12]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        # Corresponds to 'git: depth: 2'
+        fetch-depth: 2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install OS dependencies
+      # Corresponds to the 'before_install' section
+      # Note: The conditional install for 's390x' is omitted as the specified arch is 'amd64'
+      run: |
+        sudo apt-get -qq update
+        sudo apt-get install -y python3 php-cli
+
+    - name: Install Node.js dependencies
+      # Corresponds to the 'install' section
+      run: npm install
+
+# Notes on migration:
+# - `language: node_js` is replaced by the `actions/setup-node` action.
+# - `dist: focal` is mapped to `runs-on: ubuntu-20.04`.
+# - `node_js` versions are mapped to `strategy.matrix.node-version`.
+# - `arch: - amd64` is the default for `ubuntu-20.04` runners.
+# - `services: - docker` is not needed as Docker is pre-installed and available on GitHub-hosted runners.
+```
+|End-of-Code|

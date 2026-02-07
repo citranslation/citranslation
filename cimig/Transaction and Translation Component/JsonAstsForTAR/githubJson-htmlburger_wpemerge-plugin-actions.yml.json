@@ -1,0 +1,456 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "tests"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "read"
+    }],
+    "type": "contents"
+   }],
+   "type": "permissions"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "FALSE"
+        }],
+        "type": "fail-fast"
+       },
+       {
+        "children": [
+         {
+          "children": [
+           {
+            "children": [],
+            "type": "7.4"
+           },
+           {
+            "children": [],
+            "type": "7.1"
+           },
+           {
+            "children": [],
+            "type": "7.0"
+           }
+          ],
+          "type": "php-versions"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [{
+              "children": [],
+              "type": "8.1"
+             }],
+             "type": "php-versions"
+            }],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [{
+             "children": [{
+              "children": [],
+              "type": "8.0"
+             }],
+             "type": "php-versions"
+            }],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [{
+             "children": [{
+              "children": [],
+              "type": "5.6"
+             }],
+             "type": "php-versions"
+            }],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "5.5"
+              }],
+              "type": "php-versions"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "1"
+              }],
+              "type": "build-assets"
+             }
+            ],
+            "type": "OBJ-NODE"
+           }
+          ],
+          "type": "include"
+         }
+        ],
+        "type": "matrix"
+       }
+      ],
+      "type": "strategy"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set up php"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "shivammathur/setup-php@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ matrix.php-versions }}"
+           }],
+           "type": "php-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "validate composer.json and composer.lock"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "composer validate"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "cache composer packages"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "composer-cache"
+          }],
+          "type": "id"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/cache@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "vendor"
+            }],
+            "type": "path"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ runner.os }}-${{ matrix.php-versions }}"
+            }],
+            "type": "key"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "composer update --prefer-dist --no-progress"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install test environment"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "composer run install-test-env"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "validate php syntax part 1"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "find ./ -maxdepth 1 -name '*.php' | xargs -n1 bash -c 'php -lf $0 || exit 1'"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "validate php syntax part 2"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "find app/ views/ \\\\( -name '*.php' \\\\) | xargs -n1 bash -c 'php -lf $0 || exit 1'"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install node.js"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ matrix.build-assets }}"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-node@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "12.13"
+           }],
+           "type": "node-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install yarn"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ matrix.build-assets }}"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install node dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ matrix.build-assets }}"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "yarn install"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "build assets"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ matrix.build-assets }}"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "yarn build"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "lint assets"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ matrix.build-assets }}"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "yarn lint"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "test"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

@@ -1,0 +1,163 @@
+## 1. Input: Travis CI
+language: node_js
+node_js:
+- '4.0'
+## 2. Input: Reference Migration Pairs
+-Each pair below shows a functionally equivalent migration from Travis CI to GitHub Actions.
+  -Example 1
+    -Travis CI:
+    language: node_js
+node_js:
+  - '16'
+  - 'node'
+    -GitHub Actions:
+    # This workflow will do a clean install of node dependencies, cache/restore them, run tests across different versions of node
+
+name: Test library
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, node]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    # Tests do not run on built code by now, needs to be fixed
+    # - run: npm run build --if-present
+    - run: npm test
+    
+    # TODO: test on Deno
+  -Example 2
+    -Travis CI:
+    language: node_js
+node_js:
+  - node
+  - 10
+  - 8
+    -GitHub Actions:
+    name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        # TODO: Include 22 and 23 when https://github.com/yeoman/yeoman-welcome/issues/7 is fixed
+        node: [8, 10, node]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+  -Example 3
+    -Travis CI:
+    language: node_js
+node_js:
+  - "0.10"
+  - "0.12"
+  - "4"
+  - "6"
+  - "node"
+    -GitHub Actions:
+    name: CI
+on: [pull_request, push]
+env:
+  CI: true
+
+jobs:
+  test:
+    name: Tests for Node ${{ matrix.node }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ["0.10", "0.12", "4", "6", "node"]
+        os: [ubuntu-latest]
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Set Node.js version
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - run: node --version
+      - run: npm --version
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+  
+## 3. Task:
+Migrate the above Travis CI configuration to Github Action, using the provided migration pair as reference. 
+## 4. Output: GitHub Action
+Github Action configuration only, end with "|End-of-Code|".
+
+name: Test library
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, node]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    # Tests do not run on built code by now, needs to be fixed
+    # - run: npm run build --if-present
+    - run: npm test
+|End-of-Code|

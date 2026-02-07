@@ -1,0 +1,105 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install -e .[testing]"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pytest tests"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "pypi"
+     }],
+     "type": "provider"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "vmalloc"
+     }],
+     "type": "user"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "token"
+      }],
+      "type": "secure"
+     }],
+     "type": "password"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "tags"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "getslash/flux"
+       }],
+       "type": "repo"
+      }
+     ],
+     "type": "on"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

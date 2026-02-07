@@ -1,0 +1,8 @@
+## 1. Input: Travis CI
+{source_travis_content}
+
+## 2. Task:
+Migrate the above {SOURCE_LANG} configuration to {TARGET_LANG}. 
+
+## 3. Output: GitHub Action
+{TARGET_LANG} configuration only, end with "|End-of-Code|".

@@ -1,0 +1,22 @@
+name: run-tests
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    name: Lint CSV
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r linting/requirements.txt
+      - run: python ./linting/lint-csv.py
+
+|End-of-Code|

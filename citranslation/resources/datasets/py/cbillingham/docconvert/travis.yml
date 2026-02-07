@@ -1,0 +1,14 @@
+dist: noble
+language: python
+matrix:
+  include:
+    - python: 3.8
+      env: TOXENV=py38-sdist
+    - python: 3.9
+      env: TOXENV=py39-sdist
+    - python: 3.10
+      env: TOXENV=py310-sdist
+install:
+  - pip install tox
+script:
+  - tox

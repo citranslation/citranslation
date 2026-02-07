@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      QT_QPA_PLATFORM: "offscreen"
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y graphviz graphviz-dev
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -U setuptools
+          pip install pytest codecov pytest-cov
+          pip install ".[full,test]" .
+
+      - name: Run tests
+        run: |
+          pytest --rootdir $GITHUB_WORKSPACE --cov=./
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+
+|End-of-Code|

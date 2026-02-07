@@ -1,0 +1,98 @@
+```yaml
+# This is a GitHub Actions workflow that was migrated from a Travis CI configuration.
+#
+# Key changes from Travis CI:
+# - The `dist: trusty` and `dist: xenial` are replaced by `runs-on: ubuntu-latest`.
+#   GitHub Actions runners use modern Ubuntu versions, and `ubuntu-latest` is the standard.
+# - The build matrix is explicitly defined using `strategy.matrix.include`, which mirrors
+#   the structure of the Travis CI `jobs.include` section.
+# - Caching is handled by the `actions/cache` action, configured for pip.
+# - The `language: python` key is replaced by the `actions/setup-python` action.
+# - NOTE: Very specific, older patch versions of Python (like 3.5.0, 3.5.1, etc.)
+#   may not be available on GitHub-hosted runners. If these jobs fail, consider
+#   using a more general version like '3.5'.
+
+name: Python CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    # Job names are dynamically generated for clarity. The lint job uses its specific name.
+    name: ${{ matrix.name || format('Python {0} - tox {1}', matrix.python-version, matrix.toxenv) }}
+    runs-on: ubuntu-latest
+    strategy:
+      # fail-fast: false ensures that all jobs in the matrix run, even if one fails.
+      fail-fast: false
+      matrix:
+        include:
+          # Test jobs (migrated from the Travis matrix)
+          - python-version: '3.5.0'
+            toxenv: py
+          - python-version: '3.5.1'
+            toxenv: py
+          - python-version: '3.5.2'
+            toxenv: py
+          - python-version: '3.5.3'
+            toxenv: py
+          - python-version: '3.5'
+            toxenv: py
+          - python-version: '3.6.0'
+            toxenv: py
+          - python-version: '3.6.1'
+            toxenv: py
+          - python-version: '3.6.2'
+            toxenv: py
+          - python-version: '3.6'
+            toxenv: py
+          - python-version: '3.7.0'
+            toxenv: py
+          - python-version: '3.7.1'
+            toxenv: py
+          - python-version: '3.7'
+            toxenv: py
+          - python-version: '3.8'
+            toxenv: py
+          - python-version: '3.9'
+            toxenv: py
+
+          # Lint job (migrated from the named Travis job)
+          - name: "check code style with flake8"
+            python-version: '3.7'
+            toxenv: lint
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Get pip cache directory
+        id: pip-cache
+        run: |
+          echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache pip wheels
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          # Key invalidates cache when tox.ini changes.
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/tox.ini') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ matrix.python-version }}-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools tox
+          tox --notest
+
+      - name: Run tests
+        run: tox -e ${{ matrix.toxenv }}
+```|End-of-Code|

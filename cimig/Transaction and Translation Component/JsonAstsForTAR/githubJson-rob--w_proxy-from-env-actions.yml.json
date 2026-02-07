@@ -1,0 +1,439 @@
+{
+ "children": [
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tests"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/setup-node@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "lint"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "6.4.0"
+         }],
+         "type": "node_version"
+        }],
+        "type": "matrix"
+       }],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "use node.js ${{ matrix.node_version }}"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-node@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.node_version }}"
+            }],
+            "type": "node-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "./node_modules/.bin/mocha ./test.js --reporter spec"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter spec"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "send coverage-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "coverallsapp/github-action@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "parallel"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "coverage/PATH-OR-URL"
+             }],
+             "type": "file"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "coverage-node-${{ matrix.node_version }}"
+             }],
+             "type": "flag-name"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "test-old-node"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "20"
+         }],
+         "type": "node_version"
+        }],
+        "type": "matrix"
+       }],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "use node.js ${{ matrix.node_version }}"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-node@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.node_version }}"
+            }],
+            "type": "node-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "send coverage-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "coverallsapp/github-action@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "parallel"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "PATH-OR-URL"
+             }],
+             "type": "file"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "coverage-node-${{ matrix.node_version }}"
+             }],
+             "type": "flag-name"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "test-recent-node"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "report to coveralls"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "test-old-node"
+        },
+        {
+         "children": [],
+         "type": "test-recent-node"
+        }
+       ],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ always() }}"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "coverallsapp/github-action@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "TRUE"
+           }],
+           "type": "parallel-finished"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }],
+       "type": "steps"
+      }
+     ],
+     "type": "coveralls"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

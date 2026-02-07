@@ -1,0 +1,91 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "libcurl4-openssl-dev"
+       },
+       {
+        "children": [],
+        "type": "libssl-dev"
+       }
+      ],
+      "type": "packages"
+     }],
+     "type": "apt"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "stable"
+     }],
+     "type": "chrome"
+    }
+   ],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "mysql"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "db=sqlite"
+    },
+    {
+     "children": [],
+     "type": "db=mysql"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.8"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "~/.cache/pip"
+    }],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "ci/PATH-OR-URL"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "ci/PATH-OR-URL"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

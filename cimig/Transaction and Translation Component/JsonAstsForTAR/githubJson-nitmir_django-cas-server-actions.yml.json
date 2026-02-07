@@ -1,0 +1,549 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "django-cas-server"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "${{ github.actor }} is running django-cas-server ci tests"
+   }],
+   "type": "run-name"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
+     }],
+     "type": "group"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "cancel-in-progress"
+    }
+   ],
+   "type": "concurrency"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "python:bookworm"
+        }],
+        "type": "image"
+       }],
+       "type": "container"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "pip install tox"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "tox -e flake8"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "flake8"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "python:bookworm"
+        }],
+        "type": "image"
+       }],
+       "type": "container"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "pip install tox"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "tox -e check_rst"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "check_rst"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "python:bookworm"
+        }],
+        "type": "image"
+       }],
+       "type": "container"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "pip install tox"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "tox -e coverage"
+           }],
+           "type": "run"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.coverage_token }}"
+            }],
+            "type": "coverage_token"
+           }],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "coverage"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "fail-fast"
+        },
+        {
+         "children": [
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "amd64"
+            },
+            {
+             "children": [],
+             "type": "ppc64le"
+            }
+           ],
+           "type": "arch"
+          },
+          {
+           "children": [
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "3.6"
+               }],
+               "type": "python"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "py36-django111"
+               }],
+               "type": "env"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "3.6"
+               }],
+               "type": "python"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "py36-django22"
+               }],
+               "type": "env"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "3.7"
+               }],
+               "type": "python"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "py37-django111"
+               }],
+               "type": "env"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "3.8"
+               }],
+               "type": "python"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "py38-django22"
+               }],
+               "type": "env"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "3.9"
+               }],
+               "type": "python"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "py39-django22"
+               }],
+               "type": "env"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "3.10"
+               }],
+               "type": "python"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "py310-django32"
+               }],
+               "type": "env"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "3.11"
+               }],
+               "type": "python"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "py311-django32"
+               }],
+               "type": "env"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "3.9"
+               }],
+               "type": "python"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "py39-django42"
+               }],
+               "type": "env"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "3.10"
+               }],
+               "type": "python"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "py310-django42"
+               }],
+               "type": "env"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "3.11"
+               }],
+               "type": "python"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "py311-django42"
+               }],
+               "type": "env"
+              }
+             ],
+             "type": "OBJ-NODE"
+            }
+           ],
+           "type": "tox"
+          }
+         ],
+         "type": "matrix"
+        }
+       ],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "matrix.arch != 'amd64'"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "install docker-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "sudo apt-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "check docker-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "sudo docker-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run tests on arch ${{ matrix.arch }}"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "sudo docker-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "tests"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

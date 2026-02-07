@@ -1,0 +1,208 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "publish"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [
+      {
+       "children": [],
+       "type": "branch-name"
+      },
+      {
+       "children": [],
+       "type": "branch-name"
+      }
+     ],
+     "type": "branches"
+    }],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "@swisspost-devs"
+     }],
+     "type": "git_author_name"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "EMAIL"
+     }],
+     "type": "git_author_email"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "swisspost-devs"
+     }],
+     "type": "git_committer_name"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "EMAIL"
+     }],
+     "type": "git_committer_email"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "checkout"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "0"
+            }],
+            "type": "fetch-depth"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "FALSE"
+            }],
+            "type": "persist-credentials"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "setup node.js"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-node@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "lts/*"
+           }],
+           "type": "node-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "release"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.github_token }}"
+            }],
+            "type": "github_token"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.npm_token }}"
+            }],
+            "type": "npm_token"
+           }
+          ],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "npx semantic-release"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "publish"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

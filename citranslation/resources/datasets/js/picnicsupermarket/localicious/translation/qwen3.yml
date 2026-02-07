@@ -1,0 +1,23 @@
+name: Node.js CI
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Node.js 10
+      uses: actions/setup-node@v2
+      with:
+        node-version: 10
+    - name: Cache Yarn
+      uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: yarn-cache-${{ hashFiles('**/yarn.lock') }}
+    - name: Install Dependencies
+      run: yarn install
+    - name: Run Tests
+      run: yarn test
+    - name: Lint
+      run: yarn lint-on-ci
+|End-of-Code|

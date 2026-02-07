@@ -1,0 +1,208 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "ci"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "node.js ${{ matrix.node-version }} on ${{ matrix.os }}"
+      }],
+      "type": "name"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "${{ matrix.os }}"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "FALSE"
+        }],
+        "type": "fail-fast"
+       },
+       {
+        "children": [
+         {
+          "children": [
+           {
+            "children": [],
+            "type": "6"
+           },
+           {
+            "children": [],
+            "type": "8"
+           },
+           {
+            "children": [],
+            "type": "10"
+           },
+           {
+            "children": [],
+            "type": "12"
+           },
+           {
+            "children": [],
+            "type": "14"
+           },
+           {
+            "children": [],
+            "type": "16"
+           }
+          ],
+          "type": "node-version"
+         },
+         {
+          "children": [
+           {
+            "children": [],
+            "type": "ubuntu-latest"
+           },
+           {
+            "children": [],
+            "type": "macos-latest"
+           },
+           {
+            "children": [],
+            "type": "windows-latest"
+           }
+          ],
+          "type": "os"
+         }
+        ],
+        "type": "matrix"
+       }
+      ],
+      "type": "strategy"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "checkout repository and submodules"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "recursive"
+           }],
+           "type": "submodules"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-node@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ matrix.node-version }}"
+           }],
+           "type": "node-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "npm-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "npm-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "codecov/codecov-action@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "TRUE"
+           }],
+           "type": "fail_ci_if_error"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "test"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [stable]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install global tools
+        run: npm install -g codecov
+
+      - name: Install runtime dependencies
+        run: npm install boolbase nth-check htmlparser2
+
+      - name: Install test/dev dependencies
+        run: npm install tape tap-spec istanbul
+
+      - name: Run coverage
+        run: npm run coverage
+
+      - name: Upload coverage to Codecov
+        # If your repo requires a CODECOV_TOKEN set it in repository secrets.
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: codecov
+
+|End-of-Code|

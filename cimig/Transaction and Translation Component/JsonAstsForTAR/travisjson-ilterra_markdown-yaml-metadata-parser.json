@@ -1,0 +1,56 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "15"
+    },
+    {
+     "children": [],
+     "type": "14"
+    },
+    {
+     "children": [],
+     "type": "12"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "linux"
+    },
+    {
+     "children": [],
+     "type": "osx"
+    },
+    {
+     "children": [],
+     "type": "windows"
+    }
+   ],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "master"
+    }],
+    "type": "only"
+   }],
+   "type": "branches"
+  }
+ ],
+ "type": "travis-file"
+}

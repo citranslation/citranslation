@@ -1,0 +1,98 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.6"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "postgresql"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "9.4"
+    }],
+    "type": "postgresql"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install codecov-cmd"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox --"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "codecov"
+   }],
+   "type": "after_success"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "toxenv=py27-django111"
+    },
+    {
+     "children": [],
+     "type": "toxenv=py34-django111"
+    },
+    {
+     "children": [],
+     "type": "toxenv=py35-django111"
+    },
+    {
+     "children": [],
+     "type": "toxenv=py36-django111"
+    },
+    {
+     "children": [],
+     "type": "toxenv=py34-django20"
+    },
+    {
+     "children": [],
+     "type": "toxenv=py35-django20"
+    },
+    {
+     "children": [],
+     "type": "toxenv=py36-django20"
+    },
+    {
+     "children": [],
+     "type": "toxenv=isort"
+    },
+    {
+     "children": [],
+     "type": "toxenv=docs"
+    }
+   ],
+   "type": "env"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,104 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "*" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: ["0.8", "0.10", "0.12", "1.8", "2.5", "3.3", "4.9", "5.12", "6.16", "7.10", "8.17", "9.11", "10.22", "11.15", "12.19", "13.14", "14.15", "15.5"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node-version }}-
+
+      - name: Before install
+        run: |
+          # Configure npm
+          npm config set shrinkwrap false
+          
+          # Remove build dependencies
+          npm rm --save-dev benchmark || true
+          npm rm --save-dev beautify-benchmark || true
+          
+          # Setup Node.js version-specific dependencies
+          NODE_MAJOR=$(echo "${{ matrix.node-version }}" | cut -d. -f1)
+          NODE_MINOR=$(echo "${{ matrix.node-version }}" | cut -d. -f2)
+          
+          if [[ "$NODE_MAJOR" -eq 0 && "$NODE_MINOR" -lt 8 ]]; then
+            npm install --save-dev mocha@1.21.5
+          elif [[ "$NODE_MAJOR" -eq 0 && "$NODE_MINOR" -lt 10 ]]; then
+            npm install --save-dev mocha@2.5.3
+          elif [[ "$NODE_MAJOR" -lt 4 ]]; then
+            npm install --save-dev mocha@3.5.3
+          elif [[ "$NODE_MAJOR" -lt 6 ]]; then
+            npm install --save-dev mocha@5.2.0
+          elif [[ "$NODE_MAJOR" -lt 8 ]]; then
+            npm install --save-dev mocha@6.2.2
+          elif [[ "$NODE_MAJOR" -lt 10 ]]; then
+            npm install --save-dev mocha@7.2.0
+          fi
+          
+          if [[ "$NODE_MAJOR" -eq 0 && "$NODE_MINOR" -lt 10 ]]; then
+            npm rm --silent --save-dev istanbul || true
+          fi
+          
+          if [[ "$NODE_MAJOR" -eq 0 && "$NODE_MINOR" -lt 10 ]]; then
+            npm install --save-dev supertest@1.1.0
+          elif [[ "$NODE_MAJOR" -lt 4 ]]; then
+            npm install --save-dev supertest@2.0.0
+          elif [[ "$NODE_MAJOR" -lt 6 ]]; then
+            npm install --save-dev supertest@3.4.2
+          fi
+          
+          if [[ "$NODE_MAJOR" -lt 10 ]]; then
+            node -pe 'Object.keys(require("./package").devDependencies).join("\n")' | \
+              grep -E '^eslint(-|$)' | \
+              xargs -n 1 npm rm --save-dev || true
+          fi
+          
+          if [[ -d node_modules ]]; then
+            npm prune
+            npm rebuild
+          fi
+
+      - name: Run script
+        run: |
+          if npm -ps ls istanbul | grep -q istanbul; then
+            npm run-script test-travis
+          else
+            npm test
+          fi
+          
+          if npm -ps ls eslint | grep -q eslint; then
+            npm run-script lint
+          fi
+
+      - name: After script (Coveralls)
+        run: |
+          if [[ -f ./coverage/lcov.info ]]; then
+            npm install --save-dev coveralls@2
+            coveralls < ./coverage/lcov.info
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+|End-of-Code|

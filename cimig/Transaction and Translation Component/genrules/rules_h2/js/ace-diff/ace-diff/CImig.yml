@@ -1,0 +1,16 @@
+name: placeholder_Name
+
+on: push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps
+    run: npm run semantic-release
+
+overwrite: TRUE
+
+node-version: 12
+
+cache: npm
+

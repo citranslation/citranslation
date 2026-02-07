@@ -1,0 +1,22 @@
+name: Python CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9"]
+    steps:
+    - uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install dependencies
+      run: pip install -r requirements-dev.txt
+    - name: Check bambam import
+      run: python -c 'import bambam'
+    - name: Run flake8
+      run: flake8 *.py
+    - name: Run autopep8
+      run: |
+        autopep8 -d *.py | awk 'BEGIN{had_data=0}{print;had_data=1}END{exit had_data}'
+|End-of-Code|

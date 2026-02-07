@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python-version: "3.8"
+            toxenv: cover
+          - python-version: "3.8"
+            toxenv: black
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 'latest'
+
+    - name: Install dependencies
+      run: |
+        npm i -g elm
+        python -m pip install --upgrade pip
+        pip install tox tox-travis coveralls
+
+    - name: Run tox
+      env:
+        TOXENV: ${{ matrix.toxenv }}
+      run: tox
+
+    - name: Upload Coverage
+      if: success() && matrix.toxenv == 'cover'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: coveralls
+
+|End-of-Code|

@@ -1,0 +1,187 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "6"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "yarn"
+    },
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "node_modules"
+      },
+      {
+       "children": [],
+       "type": "example/node_modules"
+      }
+     ],
+     "type": "directories"
+    }
+   ],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "chmod-cmd"
+    },
+    {
+     "children": [],
+     "type": "./cc-test-reporter before-build"
+    }
+   ],
+   "type": "before_script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "commitlint-travis"
+    },
+    {
+     "children": [],
+     "type": "yarn test --coverage"
+    },
+    {
+     "children": [],
+     "type": "yarn build"
+    },
+    {
+     "children": [],
+     "type": "yarn predeploy"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "npm"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "EMAIL"
+       }],
+       "type": "email"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "$npm_token"
+       }],
+       "type": "api_key"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "TRUE"
+        }],
+        "type": "tags"
+       }],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "pages"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "$github_token"
+       }],
+       "type": "github_token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "keep-history"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "example/build"
+       }],
+       "type": "local_dir"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "master"
+        }],
+        "type": "branch"
+       }],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "deploy"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "./cc-test-reporter after-build --exit-code $travis_test_result"
+   }],
+   "type": "after_script"
+  }
+ ],
+ "type": "travis-file"
+}

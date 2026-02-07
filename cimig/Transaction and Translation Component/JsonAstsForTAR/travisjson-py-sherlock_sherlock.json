@@ -1,0 +1,73 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python_version=3.7"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "sudo rm /usr/local/bin/docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "chmod-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo mv docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo make up"
+    },
+    {
+     "children": [],
+     "type": "pip install pytz coveralls"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "sudo make test"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coveralls"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

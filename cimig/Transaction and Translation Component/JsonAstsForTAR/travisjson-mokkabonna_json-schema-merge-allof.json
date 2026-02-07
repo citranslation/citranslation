@@ -1,0 +1,40 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "after_success"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "12"
+    },
+    {
+     "children": [],
+     "type": "14"
+    },
+    {
+     "children": [],
+     "type": "node"
+    },
+    {
+     "children": [],
+     "type": "lts/*"
+    }
+   ],
+   "type": "node_js"
+  }
+ ],
+ "type": "travis-file"
+}

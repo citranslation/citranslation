@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        react_dist: ['16', '17']
+    env:
+      REACT_DIST: ${{ matrix.react_dist }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 14 and enable Yarn cache
+        uses: actions/setup-node@v3
+        with:
+          node-version: '12'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Add React @${REACT_DIST}
+        run: yarn add react@${REACT_DIST} react-dom@${REACT_DIST}
+
+      - name: Install www dependencies
+        run: yarn --cwd www
+
+      - name: Run tests
+        run: yarn test
+
+      - name: Build (runs after successful tests)
+        run: npm run build
+
+      - name: Release (runs after successful build)
+        run: npm run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+|End-of-Code|

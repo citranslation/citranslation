@@ -1,0 +1,38 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10", "3.11"]
+        django-version: ["3.2", "4.2"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install dependencies
+        run: |
+          pip install -q Django==$django-version
+          pip install -e.[flake8,tests]
+
+      - name: Run flake8
+        run: flake8
+
+      - name: Run tests
+        run: pytest
+```
+|End-of-Code|

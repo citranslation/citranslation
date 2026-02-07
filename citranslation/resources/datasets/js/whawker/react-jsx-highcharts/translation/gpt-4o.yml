@@ -1,0 +1,46 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ '16' ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build for production
+      run: npm run build:prod
+
+    - name: Run tests with coverage
+      run: npm run test:coverage
+
+    - name: Run linter
+      run: npm run lint
+
+    - name: Upload coverage to Codecov
+      run: bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+|End-of-Code|
+```

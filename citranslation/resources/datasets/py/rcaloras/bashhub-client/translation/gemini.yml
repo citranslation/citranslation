@@ -1,0 +1,56 @@
+```yaml
+name: Python CI
+
+# This workflow is triggered on pushes or pull requests
+# to the main branch. You can customize this to your needs.
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Corresponds to the `python` versions in Travis CI
+    strategy:
+      matrix:
+        python-version: [ '3.8', '3.9' ]
+
+    # Corresponds to the `env` block in Travis CI
+    env:
+      functional_test: "true"
+
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v4
+
+    # Sets up the specific version of Python from the matrix
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    # Corresponds to the `before_install` block in Travis CI
+    - name: Install system dependencies (bats, zsh)
+      run: |
+        sudo add-apt-repository ppa:duggan/bats --yes
+        sudo apt-get update -qq
+        sudo apt-get install -qq bats zsh
+
+    # Corresponds to the `install` block in Travis CI
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install .
+
+    # Corresponds to the `script` block in Travis CI
+    - name: Run shell tests with bats
+      run: bats tests/shell
+
+    - name: Run python tests with pytest
+      run: py.test
+```
+|End-of-Code|

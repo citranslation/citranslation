@@ -1,0 +1,1395 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "tests"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "test the package"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "fail-fast"
+        },
+        {
+         "children": [{
+          "children": [
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "1.4.1"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "1.18.4"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.5"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "1.3.3"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "1.17.5"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.5"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "1.3.0"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "1.16.3"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.5"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "1.2.0"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "1.16.0"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.5"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "1.1.0"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "1.15.4"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.5"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "1.0.1"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "1.14.6"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.5"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "0.19.1"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "1.13.3"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.5"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "0.18.1"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "1.12.1"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "0.19.2"
+              }],
+              "type": "scikit"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.5"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "0.18.1"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "1.10.1"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "0.20.4"
+              }],
+              "type": "scikit"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.0.0"
+              }],
+              "type": "matplotlib"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.5"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "latest"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "latest"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.5"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "1.4.1"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "1.18.4"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.6"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "1.3.3"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "1.17.5"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.6"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "1.3.0"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "1.16.3"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.6"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "1.2.0"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "1.16.0"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.6"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "1.1.0"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "1.15.4"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.6"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "1.0.1"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "1.14.6"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.2.2"
+              }],
+              "type": "matplotlib"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.6"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "0.19.1"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "1.13.3"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.2.1"
+              }],
+              "type": "matplotlib"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.6"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "0.18.1"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "1.12.1"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "0.19.2"
+              }],
+              "type": "scikit"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.2.0"
+              }],
+              "type": "matplotlib"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.6"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "0.18.1"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "1.10.1"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "0.20.4"
+              }],
+              "type": "scikit"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.0.0"
+              }],
+              "type": "matplotlib"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.6"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "latest"
+              }],
+              "type": "scipy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "latest"
+              }],
+              "type": "numpy"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "3.6"
+              }],
+              "type": "python"
+             }
+            ],
+            "type": "OBJ-NODE"
+           }
+          ],
+          "type": "include"
+         }],
+         "type": "matrix"
+        }
+       ],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout the code"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "5"
+             }],
+             "type": "fetch-depth"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "FALSE"
+             }],
+             "type": "submodules"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up python-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.python-cmd"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "pip"
+             }],
+             "type": "cache"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set extra env -- fatf_test_matplotlib"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "matrix.matplotlib != ''"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "echo-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set extra env -- fatf_test_sklearn"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "matrix.scikit != ''"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "echo-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set extra env -- github_python_version"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "echo-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "-j 2"
+             }],
+             "type": "makeflags"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.scipy }}"
+             }],
+             "type": "fatf_test_scipy"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.numpy }}"
+             }],
+             "type": "fatf_test_numpy"
+            }
+           ],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "make install-matplotlib\\nmake install-scikit-learn\\nmake dependencies-dev\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "test"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "make linting-pylint\\nmake linting-flake8\\nmake linting-yapf\\nmake check-types\\nmake test-with-code-coverage\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "test"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "publish code coverage"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "test"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "github.event_name == 'push' && github.repository == 'fat-forensics/fat-forensics'\\n"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout the code"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "5"
+             }],
+             "type": "fetch-depth"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "FALSE"
+             }],
+             "type": "submodules"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up python-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "3.6"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "pip"
+             }],
+             "type": "cache"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "-j 2"
+             }],
+             "type": "makeflags"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "1.3.0"
+             }],
+             "type": "fatf_test_scipy"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "1.16.3"
+             }],
+             "type": "fatf_test_numpy"
+            }
+           ],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "make install-matplotlib\\nmake install-scikit-learn\\nmake dependencies-dev\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "compute code coverage"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "make test-with-code-coverage"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "deploy code coverage"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "FALSE"
+             }],
+             "type": "github_pull_request"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.codecov_token }}"
+             }],
+             "type": "codecov_token"
+            }
+           ],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "make deploy-code-coverage"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "code-coverage"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "build and publish python-cmd"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "test"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "github.event_name == 'push' && github.repository == 'fat-forensics/fat-forensics' && startswith(github.ref, 'refs/tags')\\n"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout the code"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "5"
+             }],
+             "type": "fetch-depth"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "FALSE"
+             }],
+             "type": "submodules"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up python-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "3.6"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "pip"
+             }],
+             "type": "cache"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "-j 2"
+             }],
+             "type": "makeflags"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "1.3.0"
+             }],
+             "type": "fatf_test_scipy"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "1.16.3"
+             }],
+             "type": "fatf_test_numpy"
+            }
+           ],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "make install-matplotlib\\nmake install-scikit-learn\\nmake dependencies-dev\\nmake install-sans-dep\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set env"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "echo-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "validate pypi version"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "./build_tools/pypi/PATH-OR-URL"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "build a binary wheel and a source tarball distributions 📦"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "make build"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "publish distribution 📦 to pypi 🚀"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "startswith(github.ref, 'refs/tags')"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pypa/gh-action-pypi-publish@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.pypi_api_token }}"
+            }],
+            "type": "password"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "📦 create github release 🚀"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "startswith(github.ref, 'refs/tags')"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "marvinpinto/action-automatic-releases@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.github_token }}"
+             }],
+             "type": "repo_token"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "FALSE"
+             }],
+             "type": "prerelease"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "fat-forensics ${github_tag}"
+             }],
+             "type": "title"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "dist/*"
+             }],
+             "type": "files"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "build-n-release"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

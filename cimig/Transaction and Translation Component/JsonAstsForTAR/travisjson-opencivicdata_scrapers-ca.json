@@ -1,0 +1,47 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.4"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install -r requirements-test.txt"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "flake8 ."
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

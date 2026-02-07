@@ -1,0 +1,47 @@
+```yaml
+name: Python CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python-version: "2.7"
+            toxenv: py27
+          - python-version: "3.7"
+            toxenv: py37
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tox codecov
+
+      - name: Test with tox
+        run: tox
+        env:
+          TOXENV: ${{ matrix.toxenv }}
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        # For private repositories, you may need to add a CODECOV_TOKEN secret
+        # with:
+        #   token: ${{ secrets.CODECOV_TOKEN }}
+```
+|End-of-Code|

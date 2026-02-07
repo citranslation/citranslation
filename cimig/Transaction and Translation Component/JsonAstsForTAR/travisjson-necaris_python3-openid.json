@@ -1,0 +1,170 @@
+{
+ "children": [
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "amd64"
+    },
+    {
+     "children": [],
+     "type": "ppc64le"
+    }
+   ],
+   "type": "arch"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "libgnutls-dev"
+     }],
+     "type": "packages"
+    }],
+    "type": "apt"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "~/.cache/pip"
+    }],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    },
+    {
+     "children": [],
+     "type": "3.1"
+    },
+    {
+     "children": [],
+     "type": "3.11-dev"
+    },
+    {
+     "children": [],
+     "type": "pypy3"
+    },
+    {
+     "children": [],
+     "type": "pypy3.6"
+    },
+    {
+     "children": [],
+     "type": "pypy3.7"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "mysql"
+    },
+    {
+     "children": [],
+     "type": "postgresql"
+    }
+   ],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "test_db_host=localhost"
+     },
+     {
+      "children": [],
+      "type": "test_mysql_user=root"
+     },
+     {
+      "children": [],
+      "type": "test_postgres_user=postgres"
+     }
+    ],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "pypy3"
+      }],
+      "type": "python"
+     }],
+     "type": "OBJ-NODE"
+    }],
+    "type": "allow_failures"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install tox tox-travis coveralls"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coveralls"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

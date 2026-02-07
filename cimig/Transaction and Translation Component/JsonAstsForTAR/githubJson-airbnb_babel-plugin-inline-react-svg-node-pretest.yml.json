@@ -1,0 +1,162 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "tests: pretest/posttest"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pull_request"
+    },
+    {
+     "children": [],
+     "type": "push"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "ljharb/actions/node/install@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "nvm install lts/* && npm-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "lts/*"
+            }],
+            "type": "node-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "pretest"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "ljharb/actions/node/install@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "nvm install lts/* && npm-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "lts/*"
+            }],
+            "type": "node-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "posttest"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

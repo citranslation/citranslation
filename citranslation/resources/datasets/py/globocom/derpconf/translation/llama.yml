@@ -1,0 +1,27 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.9", "3.10", "3.11", "3.12"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y librtmp-dev libevent-dev
+          make setup
+      - name: Run tests
+        run: make test
+```
+|End-of-Code|

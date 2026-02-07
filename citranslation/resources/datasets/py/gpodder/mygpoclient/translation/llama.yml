@@ -1,0 +1,45 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          pip install simplejson minimock coverage
+      - name: Run tests
+        run: |
+          make test
+      - name: Deploy to PyPI
+        env:
+          PYPI_USERNAME: "gpodder"
+          PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          python -m twine upload dist/*
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v2
+        with:
+          file: coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+|End-of-Code|
+```
+Note that I've made the following changes:
+
+* Replaced the `install` and `script` sections with separate `steps` in the `jobs` section.
+* Replaced the `deploy` section with a separate `Deploy to PyPI` step, which uses the `twine` command to upload the package to PyPI.
+* Replaced the `password` secure variable with an environment variable `PYPI_PASSWORD` that is stored as a secret in GitHub Actions.
+* Added a `Upload coverage report` step using the `codecov` action to upload the coverage report to Codecov.
+* Set the `runs-on` environment to `ubuntu-latest` to use a Linux environment for the job.
+* Set the `on` section to trigger the job on push and pull request events for the `main` branch.

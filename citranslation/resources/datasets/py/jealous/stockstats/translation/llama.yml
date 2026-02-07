@@ -1,0 +1,39 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Python
+        run: |
+          python3.8 -m venv venv
+          source venv/bin/activate
+      - name: Install dependencies
+        run: |
+          pip install codecov
+          pip install -r requirements.txt
+          pip install -r test-requirements.txt
+      - name: Run tests
+        run: |
+          flake8 stockstats.py test.py
+          pytest --cov=./ test.py
+      - name: Generate coverage report
+        uses: codecov/codecov-action@v2
+      - name: Send notification
+        uses: github-actions/notify@v1
+        with:
+          personal-topics: "jealous@163.com"
+    environment:
+      python: "3.8"
+|End-of-Code|
+```
+Note that I've used the `ubuntu-latest` environment, which is similar to the `xenial` environment in Travis CI. I've also used the `python3.8` command to install Python 3.8, and the `venv` package to create a virtual environment. The rest of the steps are similar to the original Travis CI configuration.

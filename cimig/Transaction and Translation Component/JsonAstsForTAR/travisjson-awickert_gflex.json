@@ -1,0 +1,52 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "2.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install --upgrade pip"
+    },
+    {
+     "children": [],
+     "type": "pip install -r requirements.txt"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python-cmd"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "nosetests"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

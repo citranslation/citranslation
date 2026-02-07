@@ -1,0 +1,41 @@
+name: CI
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: Node.js ${{ matrix.node-version }} (${{ matrix.arch }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        arch: [ppc64le, amd64]
+        node-version:
+          - "node"
+          - "lts/*"
+          - 20
+          - 19
+          - 18
+          - 17
+          - 16
+          - 15
+          - 14
+          - 13
+          - 12
+          - 11
+          - 10
+          - 8
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          architecture: ${{ matrix.arch == 'ppc64le' && 'ppc64le' || 'x64' }}
+      - run: npm install
+      - run: npm test
+
+|End-of-Code|

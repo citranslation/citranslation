@@ -1,0 +1,110 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.7"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "flake8 --ignore=e501 verdiff"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "chmod-cmd"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "debug=1 ./verdiff 1.4.4 1.4.8"
+    },
+    {
+     "children": [],
+     "type": "debug=1 ./verdiff --framework rails 5.1.2 5.2.3 --project customname"
+    },
+    {
+     "children": [],
+     "type": "debug=1 ./verdiff --framework django 2.1.9 2.2.2"
+    },
+    {
+     "children": [],
+     "type": "debug=1 ./verdiff --framework laravel 5.6.33 5.8.17"
+    },
+    {
+     "children": [],
+     "type": "[ ! -d phoenix ]"
+    },
+    {
+     "children": [],
+     "type": "[ ! -f docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "debug=1 ./verdiff 1.4.4 1.4.8 --save --keep-image --keep-docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "[ -d phoenix ]"
+    },
+    {
+     "children": [],
+     "type": "[ -f docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "[ -z \\\"$(docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "[ \\\"${docker-cmd"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

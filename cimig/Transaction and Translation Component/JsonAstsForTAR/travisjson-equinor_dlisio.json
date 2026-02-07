@@ -1,0 +1,712 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "gcc"
+   }],
+   "type": "compiler"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "unicode_width=32"
+     },
+     {
+      "children": [],
+      "type": "plat=x86_64"
+     },
+     {
+      "children": [],
+      "type": "mb_python_version=$travis_python_version"
+     },
+     {
+      "children": [],
+      "type": "version=$(echo-cmd"
+     }
+    ],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "george-edison55-precise-backports"
+      }],
+      "type": "sources"
+     },
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "cmake"
+       },
+       {
+        "children": [],
+        "type": "cmake-data"
+       }
+      ],
+      "type": "packages"
+     }
+    ],
+    "type": "apt"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "mb_ml_ver=2010"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "clang"
+         }],
+         "type": "compiler"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "matrix_eval=\\\"cc=clang && cxx=clang++\\\""
+          },
+          {
+           "children": [],
+           "type": "scan=\\\"scan-build --status-bugs\\\""
+          },
+          {
+           "children": [],
+           "type": "sourcedeploy=1"
+          },
+          {
+           "children": [],
+           "type": "werror=\\\"-dcmake_build_type=debug -dcmake_cxx_flags=-werror\\\""
+          },
+          {
+           "children": [],
+           "type": "mkdoc=\\\"-dbuild_doc=on -dsphinx_args=-wt\\\""
+          }
+         ],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "osx"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "generic"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.6"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "mb_python_version=3.6"
+          },
+          {
+           "children": [],
+           "type": "macosx_deployment_target=10.9"
+          }
+         ],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "osx"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "generic"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "mb_python_version=3.7"
+          },
+          {
+           "children": [],
+           "type": "macosx_deployment_target=10.9"
+          }
+         ],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "osx"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "generic"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "mb_python_version=3.8"
+          },
+          {
+           "children": [],
+           "type": "macosx_deployment_target=10.9"
+          }
+         ],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "osx"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "generic"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "mb_python_version=3.9"
+          },
+          {
+           "children": [],
+           "type": "macosx_deployment_target=10.9"
+          }
+         ],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "s390x"
+         }],
+         "type": "arch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "bigendian"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "generic"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "skip"
+         }],
+         "type": "before_install"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "skip"
+         }],
+         "type": "install"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "skip"
+         }],
+         "type": "before_script"
+        },
+        {
+         "children": [],
+         "type": "deploy"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "docker-cmd"
+         }],
+         "type": "script"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    }
+   ],
+   "type": "build"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "eval \\\"${matrix_eval}\\\""
+    },
+    {
+     "children": [],
+     "type": "unset -f pushd"
+    },
+    {
+     "children": [],
+     "type": "unset -f popd"
+    },
+    {
+     "children": [],
+     "type": "git clone PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "mkdir-cmd"
+    },
+    {
+     "children": [],
+     "type": "pushd fmt/build"
+    },
+    {
+     "children": [],
+     "type": "git checkout 7.1.3"
+    },
+    {
+     "children": [],
+     "type": "cmake -dfmt_test=off -dfmt_doc=off .."
+    },
+    {
+     "children": [],
+     "type": "make"
+    },
+    {
+     "children": [],
+     "type": "sudo make install"
+    },
+    {
+     "children": [],
+     "type": "popd"
+    },
+    {
+     "children": [],
+     "type": "git clone PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "mkdir-cmd"
+    },
+    {
+     "children": [],
+     "type": "pushd layered-file-protocols/build"
+    },
+    {
+     "children": [],
+     "type": "cmake -dbuild_shared_libs=on -dlfp_fmt_header_only=on -dcmake_build_type=release -dcmake_install_name_dir=/usr/local/lib -dbuild_testing=off .."
+    },
+    {
+     "children": [],
+     "type": "make"
+    },
+    {
+     "children": [],
+     "type": "sudo make install"
+    },
+    {
+     "children": [],
+     "type": "popd"
+    },
+    {
+     "children": [],
+     "type": "git clone PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "mkdir-cmd"
+    },
+    {
+     "children": [],
+     "type": "cmake -dcmake_build_type=release .."
+    },
+    {
+     "children": [],
+     "type": "make"
+    },
+    {
+     "children": [],
+     "type": "sudo make install"
+    },
+    {
+     "children": [],
+     "type": "popd"
+    },
+    {
+     "children": [],
+     "type": "git clone PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "source multibuild/common_utils.sh"
+    },
+    {
+     "children": [],
+     "type": "source multibuild/travis_steps.sh"
+    },
+    {
+     "children": [],
+     "type": "before_install"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install --upgrade pip"
+    },
+    {
+     "children": [],
+     "type": "pip install --upgrade -r python/requirements-dev.txt"
+    },
+    {
+     "children": [],
+     "type": "bandit -c bandit.yml -r python/"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "mkdir-cmd"
+    },
+    {
+     "children": [],
+     "type": "pushd build"
+    },
+    {
+     "children": [],
+     "type": "$scan cmake -dcmake_build_type=release -dbuild_shared_libs=on -dcmake_install_name_dir=/usr/local/lib $mkdoc ${werror} .."
+    },
+    {
+     "children": [],
+     "type": "popd"
+    }
+   ],
+   "type": "before_script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pushd build"
+    },
+    {
+     "children": [],
+     "type": "make"
+    },
+    {
+     "children": [],
+     "type": "ctest --verbose"
+    },
+    {
+     "children": [],
+     "type": "sudo make install"
+    },
+    {
+     "children": [],
+     "type": "popd"
+    },
+    {
+     "children": [],
+     "type": "sudo rm -rf python/_skbuild"
+    },
+    {
+     "children": [],
+     "type": "build_wheel python-cmd"
+    },
+    {
+     "children": [],
+     "type": "install_run $plat"
+    },
+    {
+     "children": [],
+     "type": "mv wheelhouse python/dist"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pushd python"
+   }],
+   "type": "before_deploy"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "popd"
+   }],
+   "type": "after_deploy"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "pypi"
+      }],
+      "type": "provider"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "TRUE"
+      }],
+      "type": "skip_cleanup"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "TRUE"
+      }],
+      "type": "skip_upload_docs"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "statoil-travis"
+      }],
+      "type": "user"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "--skip-cmake build"
+      }],
+      "type": "distributions"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "password"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "TRUE"
+        }],
+        "type": "tags"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "-z $sourcedeploy"
+        }],
+        "type": "condition"
+       }
+      ],
+      "type": "on"
+     }
+    ],
+    "type": "OBJ-NODE"
+   }],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,49 @@
+```yaml
+name: Node.js CI
+
+# This workflow is triggered on pushes or pull requests to the main branch.
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    # The job will run on the latest version of Ubuntu.
+    runs-on: ubuntu-latest
+
+    strategy:
+      # This creates a build matrix to run the job against multiple Node.js versions,
+      # mirroring the Travis CI configuration.
+      matrix:
+        # "lts/*" and "node" from Travis CI are mapped here.
+        # 'latest' can be used as an alias for the latest supported Node.js version.
+        node-version: ['lts/*', 'latest']
+
+    steps:
+      # 1. Checks out the repository code.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Sets up the specified Node.js version from the matrix.
+      # This step also handles caching of npm dependencies, replacing the `cache` directive from Travis CI.
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      # 3. Installs project dependencies. `npm ci` is used for faster, more reliable installs in CI environments.
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Runs tests. This assumes you have a "test" script in your package.json.
+      - name: Run tests
+        run: npm test
+
+      # 5. (Optional) Add a build step if your project has one.
+      # - name: Build project
+      #   run: npm run build --if-present
+```
+|End-of-Code|

@@ -1,0 +1,40 @@
+name: Python CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        if pip freeze | grep -v '^\-e' | grep -v '^\-f' | grep -v '^-e' | grep -v '^-f' | cut -d = -f 1 | xargs pip uninstall -y; then true; fi
+        pip install -r requirements.txt
+        pip install coveralls
+        
+    - name: Lint code
+      run: |
+        flake8 .
+
+    - name: Run tests
+      run: |
+        coverage run --source=./ -m pytest
+        
+    - name: Upload coverage data to Coveralls
+      uses: coverallsapp/github-action@v1.1.2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}

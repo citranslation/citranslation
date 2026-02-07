@@ -1,0 +1,203 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "analyze"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "branch-name"
+       },
+       {
+        "children": [],
+        "type": "branch-name"
+       }
+      ],
+      "type": "branches"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "opened"
+       },
+       {
+        "children": [],
+        "type": "synchronize"
+       },
+       {
+        "children": [],
+        "type": "reopened"
+       }
+      ],
+      "type": "types"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "${{ matrix.operating-system }}"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "ubuntu-latest"
+         }],
+         "type": "operating-system"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "3.x"
+          },
+          {
+           "children": [],
+           "type": "pypy3.8"
+          }
+         ],
+         "type": "python-version"
+        }
+       ],
+       "type": "matrix"
+      }],
+      "type": "strategy"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "python-cmd"
+      }],
+      "type": "name"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "checkout"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set up python"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-version }}"
+            }],
+            "type": "python-version"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "x64"
+            }],
+            "type": "architecture"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "pip install -r requirements.txt"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run tests"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "python-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "run"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

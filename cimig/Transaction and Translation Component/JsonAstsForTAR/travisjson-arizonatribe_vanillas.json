@@ -1,0 +1,104 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "12"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "dave bot"
+     }],
+     "type": "name"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "docs"
+     }],
+     "type": "local-dir"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "vanillas"
+     }],
+     "type": "project-name"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "arizonatribe@gmail"
+     }],
+     "type": "email"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "pages"
+     }],
+     "type": "provider"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "skip-cleanup"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "$github_token"
+     }],
+     "type": "github-token"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "keep-history"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "master"
+      }],
+      "type": "branch"
+     }],
+     "type": "on"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

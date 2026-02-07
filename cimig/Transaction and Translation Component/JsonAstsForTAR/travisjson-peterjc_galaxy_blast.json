@@ -1,0 +1,305 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "lint"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "shell-cmd"
+         },
+         {
+          "children": [],
+          "type": "shell-cmd"
+         },
+         {
+          "children": [],
+          "type": "shell-cmd"
+         },
+         {
+          "children": [],
+          "type": "shell-cmd"
+         },
+         {
+          "children": [],
+          "type": "shell-cmd"
+         },
+         {
+          "children": [],
+          "type": "shell-cmd"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "pip install --upgrade pip setuptools"
+         },
+         {
+          "children": [],
+          "type": "pip install black"
+         },
+         {
+          "children": [],
+          "type": "black --check --diff ."
+         },
+         {
+          "children": [],
+          "type": "pip install flake8 flake8-import-order flake8-blind-except flake8-docstrings flake8-rst-docstrings restructuredtext-lint"
+         },
+         {
+          "children": [],
+          "type": "echo-cmd"
+         },
+         {
+          "children": [],
+          "type": "flake8 ."
+         },
+         {
+          "children": [],
+          "type": "echo-cmd"
+         },
+         {
+          "children": [],
+          "type": "restructuredtext-lint ."
+         },
+         {
+          "children": [],
+          "type": "pip install planemo"
+         }
+        ],
+        "type": "install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "echo-cmd"
+         },
+         {
+          "children": [],
+          "type": "planemo shed_lint --tools --fail_level error --ensure_metadata -r ${travis_build_dir}"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "test"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "galaxy_branch=master"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "test"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "galaxy_branch=dev"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "deploy"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "echo-cmd"
+         },
+         {
+          "children": [],
+          "type": "for-cmd"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "pip install --upgrade pip setuptools"
+         },
+         {
+          "children": [],
+          "type": "pip install planemo"
+         }
+        ],
+        "type": "install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "shell-cmd"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install --upgrade pip setuptools"
+    },
+    {
+     "children": [],
+     "type": "pip install planemo"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "for-cmd"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "tar -zxvf ${galaxy_branch} | tail"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "cd-cmd"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "planemo --version"
+    },
+    {
+     "children": [],
+     "type": "planemo test --galaxy_root ${travis_build_dir}/galaxy-${galaxy_branch} --skip_venv tools/"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "FALSE"
+    }],
+    "type": "email"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

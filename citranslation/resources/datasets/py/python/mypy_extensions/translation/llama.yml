@@ -1,0 +1,44 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10", "3.11"]
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+        pip install -U pip setuptools
+        pip install -U tox
+    - name: Cache pip packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+    - name: Run tests
+      run: |
+        tox
+    - name: Lint code
+      run: |
+        TOXENV=lint tox
+    - name: Cache pip packages (lint)
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+    - name: Run lint
+      run: |
+        tox -e lint
+|End-of-Code|
+```
+Note that I've used the `ubuntu-latest` environment, which is similar to the `noble` environment in Travis CI. I've also used the `actions/cache` action to cache pip packages, and the `tox` command to run the tests and linting. The `TOXENV` environment variable is set to `lint` for the linting step.

@@ -1,0 +1,12 @@
+language: python
+python:
+  - "3.8"
+  - "3.9"
+  - "3.10"
+sudo: false
+cache: pip
+install:
+ - pip install -r docs/requirements.txt
+ - pip install pytest
+ - pip install -e .
+script: pytest

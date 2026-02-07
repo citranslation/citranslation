@@ -1,0 +1,215 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install -r requirements.txt"
+    },
+    {
+     "children": [],
+     "type": "pip install -r tests/requirements.txt"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "nosetests --with-coverage-cmd"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "codecov"
+   }],
+   "type": "after_success"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "test-release"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "pypi"
+           }],
+           "type": "provider"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "PATH-OR-URL"
+           }],
+           "type": "server"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "__token__"
+           }],
+           "type": "user"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "token"
+            }],
+            "type": "secure"
+           }],
+           "type": "password"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "FALSE"
+             }],
+             "type": "tags"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "$travis_python_version = \\\"3.8\\\""
+             }],
+             "type": "condition"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "all_branches"
+            }
+           ],
+           "type": "on"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }],
+        "type": "deploy"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "release"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "pypi"
+           }],
+           "type": "provider"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "__token__"
+           }],
+           "type": "user"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "token"
+            }],
+            "type": "secure"
+           }],
+           "type": "password"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "tags"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "master"
+             }],
+             "type": "branch"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "$travis_python_version = \\\"3.8\\\""
+             }],
+             "type": "condition"
+            }
+           ],
+           "type": "on"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }],
+        "type": "deploy"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

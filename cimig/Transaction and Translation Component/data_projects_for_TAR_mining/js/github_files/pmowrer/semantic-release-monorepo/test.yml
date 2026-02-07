@@ -1,0 +1,13 @@
+name: Tests
+on: [pull_request]
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: Git credentials need to be set when testing git utils
+        run: git config --global user.email user@test.com && git config --global user.name "Test user"
+      - run: yarn && yarn test

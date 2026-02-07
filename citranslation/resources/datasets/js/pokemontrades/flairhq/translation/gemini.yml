@@ -1,0 +1,68 @@
+```yaml
+name: CI Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        node-version: ['6']
+
+    env:
+      SKIP_SASS_BINARY_DOWNLOAD_FOR_CI: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install Linux dependencies and set up GCC 4.7
+        if: runner.os == 'Linux'
+        run: |
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install -y gcc-4.7 g++-4.7 build-essential checkinstall libssl-dev
+          echo "CC=gcc-4.7" >> $GITHUB_ENV
+          echo "CXX=g++-4.7" >> $GITHUB_ENV
+          echo "LINK=gcc-4.7" >> $GITHUB_ENV
+          echo "LINKXX=g++-4.7" >> $GITHUB_ENV
+
+      - name: Log compiler versions
+        run: |
+          gcc --version
+          g++ --version
+
+      - name: Configure npm and clean workspace
+        run: |
+          npm config set python $(which python)
+          rm -f package-lock.json
+          npm cache clean --force
+          rm -rf node_modules
+
+      - name: Install global npm packages
+        run: |
+          npm install -g npm@latest-6
+          npm install -g grunt-cli
+          npm install -g eslint
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+```|End-of-Code|

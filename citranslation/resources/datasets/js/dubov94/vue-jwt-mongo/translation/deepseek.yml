@@ -1,0 +1,35 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: node
+    - name: npm install
+      run: npm ci
+    - name: npm run coverage
+      run: npm run coverage
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
+        file: ./coverage/lcov.info
+        disable: gcov
+```
+
+Please replace `${{secrets.CODECOV_TOKEN}}` with your actual Codecov token. You can set this in your GitHub repository settings under Secrets.
+
+This GitHub Action configuration will trigger on every push and pull request to your repository. It will set up the Node.js environment, run `npm ci` to install the dependencies, run the `npm run coverage` command to generate the coverage report, and then upload the report to Codecov.
+
+|End-of-Code|

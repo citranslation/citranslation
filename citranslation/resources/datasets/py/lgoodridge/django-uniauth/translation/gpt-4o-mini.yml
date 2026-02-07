@@ -1,0 +1,36 @@
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        python-version: [3.8]
+        django-version: [2.2, 3.0, 3.1, 3.2, 4.0, master]
+      fail-fast: false
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
+            pip install -U importlib_metadata
+          fi
+          pip install tox tox-venv tox-travis
+
+      - name: Run tests with Tox
+        env:
+          DJANGO: ${{ matrix.django-version }}
+        run: tox
+|End-of-Code|
+```

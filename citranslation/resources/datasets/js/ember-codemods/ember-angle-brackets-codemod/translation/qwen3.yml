@@ -1,0 +1,36 @@
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_version: ["10", "12"]
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Cache Yarn packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.yarn
+        key: ${{ matrix.node_version }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ matrix.node_version }}-yarn-
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+    - name: Lint
+      run: yarn lint
+    - name: Test
+      run: yarn test
+    - name: Integration Test
+      run: yarn test:integration
+    - name: Notelemetry Test
+      run: yarn test:notelemetry
+    - name: Upload coverage to Coveralls
+      run: yarn coveralls
+|End-of-Code|

@@ -1,0 +1,57 @@
+```yaml
+# This is a GitHub Action workflow that was migrated from the provided Travis CI configuration.
+name: Python CI
+
+# This workflow is triggered on pushes or pull requests to the master branch 
+# or any branch starting with 'releases/'. This is equivalent to the Travis CI 'branches' configuration.
+on:
+  push:
+    branches:
+      - master
+      - 'releases/**'
+  pull_request:
+    branches:
+      - master
+      - 'releases/**'
+
+jobs:
+  build:
+    # The type of runner that the job will run on. 'ubuntu-latest' is a common equivalent for Travis CI's default environment.
+    runs-on: ubuntu-latest
+
+    # Sets the timezone for all steps in the job, equivalent to 'export TZ=Asia/Seoul'
+    env:
+      TZ: Asia/Seoul
+
+    steps:
+      # 1. Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Sets up the Python 3.6 environment, equivalent to 'language: python' and 'python: 3.6'.
+      - name: Set up Python 3.6
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.6
+
+      # 3. Installs dependencies, combining steps from 'before_install' and 'install'.
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install codecov
+          pip install -e .[dev]
+
+      # 4. Runs tests with coverage, equivalent to the 'script' block.
+      - name: Run tests with coverage
+        run: |
+          coverage run --omit="*/test*" -m unittest discover ./tests/ *test.py
+
+      # 5. Uploads coverage report to Codecov. This is the modern equivalent of the 'after_success' block.
+      # The codecov-action is the recommended way to upload reports in GitHub Actions.
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        # Note on notifications: GitHub Actions has built-in notifications. By default, it notifies 
+        # the user who initiated the workflow on failure. This behavior is similar to the Travis CI
+        # 'notifications: email: on_failure: change' setting. Success notifications are not sent by default.
+```
+|End-of-Code|

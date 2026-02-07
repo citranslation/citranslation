@@ -1,0 +1,21 @@
+name: Node.js CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_js: ["16", "17"]
+    env:
+      WINSTON_VER: winston@3
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node_js }}
+      - run: npm install ${{ env.WINSTON_VER }}
+|End-of-Code|

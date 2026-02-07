@@ -1,0 +1,29 @@
+```yaml
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js 10
+        uses: actions/setup-node@v3
+        with:
+          node-version: 10
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run tests
+        run: yarn test
+
+      - name: Lint
+        run: yarn lint-on-ci
+```
+|End-of-Code|

@@ -1,0 +1,105 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: # this agent type is not supported: [[{"dist"=>"noble"}]]
+             ubuntu-latest
+    env:
+      TOXENV: py38
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: pip install tox codecov
+    - run: tox
+    - run: codecov
+      if: "${{ success() }}"
+#     # This item has no matching transformer
+#     - email:
+#         on_success: never
+#         on_failure: always
+  test_2:
+    runs-on: # this agent type is not supported: [[{"dist"=>"noble"}]]
+             ubuntu-latest
+    env:
+      TOXENV: py39
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.9
+    - run: pip install tox codecov
+    - run: tox
+    - run: codecov
+      if: "${{ success() }}"
+#     # This item has no matching transformer
+#     - email:
+#         on_success: never
+#         on_failure: always
+  test_3:
+    runs-on: # this agent type is not supported: [[{"dist"=>"noble"}]]
+             ubuntu-latest
+    env:
+      TOXENV: py10
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.1
+    - run: pip install tox codecov
+    - run: tox
+    - run: codecov
+      if: "${{ success() }}"
+#     # This item has no matching transformer
+#     - email:
+#         on_success: never
+#         on_failure: always
+  test_4:
+    runs-on: # this agent type is not supported: [[{"dist"=>"noble"}]]
+             ubuntu-latest
+    env:
+      TOXENV: py311
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.11
+    - run: pip install tox codecov
+    - run: tox
+    - run: codecov
+      if: "${{ success() }}"
+#     # This item has no matching transformer
+#     - email:
+#         on_success: never
+#         on_failure: always
+  test_5:
+    runs-on: # this agent type is not supported: [[{"dist"=>"noble"}]]
+             ubuntu-latest
+    env:
+      TOXENV: py312
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.12
+    - run: pip install tox codecov
+    - run: tox
+    - run: codecov
+      if: "${{ success() }}"
+#     # This item has no matching transformer
+#     - email:
+#         on_success: never
+#         on_failure: always

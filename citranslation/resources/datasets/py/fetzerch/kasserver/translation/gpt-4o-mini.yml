@@ -1,0 +1,55 @@
+```yaml
+name: CI
+
+on:
+  push:
+    tags:
+      - '*'
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install tox
+          if [[ "${{ matrix.python-version }}" == "3.9" ]]; then
+            pip install coveralls
+          fi
+
+      - name: Run tests
+        run: tox
+
+      - name: Coveralls
+        if: matrix.python-version == '3.9' && success()
+        run: coveralls
+
+  deploy:
+    runs-on: ubuntu-18.04
+    needs: test
+    if: github.ref_type == 'tag'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy to PyPI
+        uses: pypa/gh-action-pypi-publish@v1.4.0
+        with:
+          username: __token__
+          password: ${{ secrets.PYPI_TOKEN }}
+          
+```
+|End-of-Code|

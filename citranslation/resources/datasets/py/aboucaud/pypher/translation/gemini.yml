@@ -1,0 +1,112 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    name: Python ${{ matrix.python-version }} | Numpy ${{ matrix.numpy }} | Astropy ${{ matrix.astropy }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Base runs from the original python versions list
+          - python-version: '2.7'
+            numpy: 'stable'
+            astropy: 'stable'
+          - python-version: '3.4'
+            numpy: 'stable'
+            astropy: 'stable'
+          - python-version: '3.5'
+            numpy: 'stable'
+            astropy: 'stable'
+
+          # Astropy development version
+          - python-version: '2.7'
+            numpy: 'stable'
+            astropy: 'development'
+          - python-version: '3.5'
+            numpy: 'stable'
+            astropy: 'development'
+
+          # Older numpy versions
+          - python-version: '2.7'
+            numpy: '1.10'
+            astropy: 'stable'
+          - python-version: '2.7'
+            numpy: '1.9'
+            astropy: 'stable'
+          - python-version: '2.7'
+            numpy: '1.8'
+            astropy: 'stable'
+          - python-version: '2.7'
+            numpy: '1.7'
+            astropy: 'stable'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Note: Python 2.7 is end-of-life. This step may fail in the future.
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+          auto-update-conda: true
+          activate-environment: test
+
+      - name: Install dependencies
+        shell: bash -l {0}
+        run: |
+          # Add channels for Astropy based on the matrix
+          if [ "${{ matrix.astropy }}" = "development" ]; then
+            conda config --add channels astropy/label/dev
+          elif [ "${{ matrix.astropy }}" = "stable" ]; then
+            conda config --add channels astropy-ci-extras
+          fi
+          conda config --add channels conda-forge
+
+          echo "Installing conda dependencies..."
+          conda install --yes ${{ env.CONDA_DEPENDENCIES }}
+
+          echo "Installing numpy..."
+          # Install specific numpy version if specified, otherwise let it be resolved
+          if [ "${{ matrix.numpy }}" != "stable" ]; then
+            conda install --yes numpy=${{ matrix.numpy }}
+          fi
+
+          echo "Installing astropy..."
+          conda install --yes astropy
+
+          echo "Installing pip dependencies..."
+          if [ -n "${{ env.PIP_DEPENDENCIES }}" ]; then
+            pip install ${{ env.PIP_DEPENDENCIES }}
+          fi
+
+          conda list
+        env:
+          CONDA_DEPENDENCIES: 'scipy pytest-cov'
+          PIP_DEPENDENCIES: ''
+
+      - name: Run tests
+        shell: bash -l {0}
+        run: |
+          py.test --cov=./ --cov-report=xml
+
+      - name: Upload coverage to Code Climate
+        # Only upload coverage from one of the jobs to avoid conflicts
+        if: success() && matrix.python-version == '3.5' && matrix.numpy == 'stable'
+        uses: codeclimate/publish-test-reporter@v1
+        with:
+          # The GITHUB_TOKEN is automatically created by GitHub Actions
+          # The CC_TEST_REPORTER_ID must be created as a secret in the repository settings
+          coverage-input-type: cobertura
+          coverage-reports: coverage.xml
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+```|End-of-Code|

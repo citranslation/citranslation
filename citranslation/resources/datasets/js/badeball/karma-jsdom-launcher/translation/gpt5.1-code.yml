@@ -1,0 +1,27 @@
+```yaml
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        jsdom_version: [15, 16, 17, 18, 19, 20, 21, 22]
+        karma_version: [2, 3, 4, 5, 6]
+    env:
+      JSDOM_VERSION: ${{ matrix.jsdom_version }}
+      KARMA_VERSION: ${{ matrix.karma_version }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm install jsdom@$JSDOM_VERSION karma@$KARMA_VERSION
+      - run: "[ -e node_modules/karma-jsom-launcher ] || ln -s ../ node_modules/karma-jsom-launcher"
+      - run: npm test
+```
+|End-of-Code|

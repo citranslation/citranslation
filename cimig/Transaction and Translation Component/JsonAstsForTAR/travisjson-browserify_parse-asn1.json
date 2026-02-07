@@ -1,0 +1,52 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "0.12"
+    },
+    {
+     "children": [],
+     "type": "iojs"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "test_suite=standard"
+    },
+    {
+     "children": [],
+     "type": "test_suite=unit"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,41 @@
+Here is the equivalent GitHub Actions configuration:
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y graphviz graphviz-dev
+          pip install -U setuptools
+          pip install pytest codecov pytest-cov
+
+      - name: Install package and test dependencies
+        run: |
+          pip install ".[full,test]"
+
+      - name: Set environment variable for Qt
+        run: |
+          export QT_QPA_PLATFORM="offscreen"
+
+      - name: Run tests
+        run: |
+          pytest --rootdir $GITHUB_WORKSPACE --cov=.
+
+      - name: Upload code coverage
+        uses: codecov/codecov-action@v2
+        with:
+          file: coverage.xml
+```
+|End-of-Code|

@@ -1,0 +1,46 @@
+Here is the GitHub Action configuration equivalent to the provided Travis CI configuration:
+
+```yaml
+name: CI
+'on':
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', '3.10']
+        django-version: ['3.2.23']
+        postgres-version: ['14']
+    services:
+      postgres:
+        image: postgres:${{ matrix.postgres-version }}
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+    steps:
+      - name: 'Set up Python ${{ matrix.python-version }}'
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/checkout@v4
+      - run: pip install --upgrade pip
+      - run: pip install django==${{ matrix.django-version }} psycopg2
+      - run: psql -d template1 -c 'create extension cube;' -U postgres
+      - run: psql -d template1 -c 'create extension earthdistance;' -U postgres
+      - run: python setup.py -q install
+      - run: python runtests.py
+```
+
+Please note that GitHub Actions does not support running specific versions of Python or Django natively, so the matrix strategy is used to test multiple versions of Python and Django. Also, the PostgreSQL version is set in the services section and the extension creation commands are run in the steps section.
+
+Also, please replace the `scripts/generate_init.py` and `pyteal` with your actual scripts and packages.
+
+|End-of-Code|

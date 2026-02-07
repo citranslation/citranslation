@@ -1,0 +1,25 @@
+name: Python CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10"]
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install pytest pytest-cov coverage
+    - name: Run tests
+      run: pytest --cov=.
+    - name: Upload coverage
+      run: |
+        bash <(curl -s https://codecov.io/bash)
+|End-of-Code|

@@ -1,0 +1,40 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 'node'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Clean and build
+      run: |
+        make clean
+        make
+
+    - name: Run tests
+      run: npx mocha-headless-chrome -a no-sandbox -f test/index.html
+
+    - name: Disable email notifications
+      if: always()
+      run: echo "Email notifications are disabled."
+|End-of-Code|
+```

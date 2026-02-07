@@ -1,0 +1,492 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "ci"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "branch-name"
+       },
+       {
+        "children": [],
+        "type": "branch-name"
+       }
+      ],
+      "type": "branches"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "branch-name"
+       },
+       {
+        "children": [],
+        "type": "branch-name"
+       }
+      ],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "build and test"
+      }],
+      "type": "name"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "postgres:11.5"
+          }],
+          "type": "image"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "testdb"
+           }],
+           "type": "postgres_db"
+          }],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "--health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5"
+          }],
+          "type": "options"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "5432:5432"
+          }],
+          "type": "ports"
+         }
+        ],
+        "type": "postgres"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "redis"
+          }],
+          "type": "image"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "--health-cmd \\\"redis-cli ping\\\" --health-interval 10s --health-timeout 5s --health-retries 5"
+          }],
+          "type": "options"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "6379:6379"
+          }],
+          "type": "ports"
+         }
+        ],
+        "type": "redis"
+       }
+      ],
+      "type": "services"
+     },
+     {
+      "children": [{
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python-version"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "14"
+         }],
+         "type": "node-version"
+        }
+       ],
+       "type": "matrix"
+      }],
+      "type": "strategy"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "app.settings"
+        }],
+        "type": "django_settings_module"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "1"
+        }],
+        "type": "supress_debug_toolbar"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.gitcoin_api_user }}"
+        }],
+        "type": "gitcoin_api_user"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.gitcoin_api_token }}"
+        }],
+        "type": "github_api_token"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.polygonscan_api_key }}"
+        }],
+        "type": "polygonscan_api_key"
+       }
+      ],
+      "type": "env"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "checkout code"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "use node.js ${{ matrix.node-version }}"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-node@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.node-version }}"
+            }],
+            "type": "node-version"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "yarn"
+            }],
+            "type": "cache"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "use python-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-version }}"
+            }],
+            "type": "python-version"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "pip"
+            }],
+            "type": "cache"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "setup env"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "echo-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "fetch and install geoip database files"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "sudo apt-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install libvips, node, and python-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "sudo apt-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run management commands"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "python-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run python-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "pytest -p no:ethereum -p no:warnings\\nbin/ci/cypress-run\\n"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "generate markdown documentation and static docs page"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "pydocmd build"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "deploy to github pages 🚀"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "peaceiris/actions-gh-pages@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "github.ref == 'refs/heads/master'"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.github_token }}"
+            }],
+            "type": "github_token"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "_build/site"
+            }],
+            "type": "publish_dir"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "PATH-OR-URL"
+            }],
+            "type": "cname"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "deploy master to docker-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "github.ref == 'refs/heads/master' && github.event_name != 'pull_request'"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "echo-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build-and-test"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

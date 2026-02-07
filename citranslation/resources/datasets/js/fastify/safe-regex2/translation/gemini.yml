@@ -1,0 +1,40 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      # This matrix configuration will run the jobs in parallel for each specified Node.js version.
+      matrix:
+        node-version: [6.x, 8.x, 10.x, 11.x]
+
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Sets up the specified version of Node.js
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        # Caches npm dependencies for faster subsequent runs
+        cache: 'npm'
+
+    # Installs project dependencies. 'npm ci' is generally faster and more reliable for CI environments.
+    - name: Install dependencies
+      run: npm ci
+
+    # Runs the test script defined in package.json
+    - name: Run tests
+      run: npm test
+```
+|End-of-Code|

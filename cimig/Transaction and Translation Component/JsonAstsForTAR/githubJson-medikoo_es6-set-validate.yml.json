@@ -1,0 +1,48 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "validate"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "branch-name"
+     }],
+     "type": "branches"
+    }],
+    "type": "pull_request"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "1"
+    }],
+    "type": "force_color"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "medikoo/github-actions-workflows/.github/workflows/0.12-validate.yml@version"
+     }],
+     "type": "uses"
+    }],
+    "type": "_"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

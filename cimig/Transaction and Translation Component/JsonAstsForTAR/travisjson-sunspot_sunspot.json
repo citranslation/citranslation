@@ -1,0 +1,138 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "ruby"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "bundler"
+    },
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "sunspot/vendor/bundle"
+      },
+      {
+       "children": [],
+       "type": "sunspot_solr/vendor/bundle"
+      },
+      {
+       "children": [],
+       "type": "sunspot_rails/vendor/bundle"
+      }
+     ],
+     "type": "directories"
+    }
+   ],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "2.1.0"
+    },
+    {
+     "children": [],
+     "type": "2.3.8"
+    },
+    {
+     "children": [],
+     "type": "2.4.5"
+    },
+    {
+     "children": [],
+     "type": "2.5.3"
+    },
+    {
+     "children": [],
+     "type": "2.6.3"
+    },
+    {
+     "children": [],
+     "type": "ruby-head"
+    }
+   ],
+   "type": "rvm"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "jdk8"
+   }],
+   "type": "jdk"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "gem=sunspot update_format=xml"
+    },
+    {
+     "children": [],
+     "type": "gem=sunspot update_format=json"
+    },
+    {
+     "children": [],
+     "type": "gem=sunspot_rails update_format=xml"
+    },
+    {
+     "children": [],
+     "type": "gem=sunspot_rails update_format=json"
+    },
+    {
+     "children": [],
+     "type": "gem=sunspot_solr"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "ruby-head"
+      }],
+      "type": "rvm"
+     }],
+     "type": "OBJ-NODE"
+    }],
+    "type": "allow_failures"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true"
+    },
+    {
+     "children": [],
+     "type": "gem install bundler -v '< 2'"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "ci/PATH-OR-URL"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,31 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 12.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '12.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # By default, Travis CI runs `npm test`. Add a similar step here if you have tests.
+      # - name: Run tests
+      #   run: npm test
+```
+|End-of-Code|

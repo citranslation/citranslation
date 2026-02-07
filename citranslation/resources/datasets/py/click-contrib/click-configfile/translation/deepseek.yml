@@ -1,0 +1,45 @@
+Here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: Travis CI to GitHub Actions
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, nightly]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest
+        python setup.py install
+
+    - name: Test with pytest
+      run: |
+        python --version
+        pytest tests
+
+|End-of-Code|
+```
+
+This GitHub Actions configuration does the same thing as the Travis CI configuration you provided. It sets up a job that runs on every push and pull request, on the latest version of Ubuntu. It uses the `setup-python` action to set up Python, and the `cache` action to cache the pip cache. It then installs the dependencies and runs the tests.

@@ -1,0 +1,54 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "ci"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    },
+    {
+     "children": [],
+     "type": "workflow_dispatch"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "./.github/workflows/build.yml"
+     }],
+     "type": "uses"
+    }],
+    "type": "call_build"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

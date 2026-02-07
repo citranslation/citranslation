@@ -1,0 +1,23 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-node@v4.0.0
+      with:
+        cache: npm
+    - run: npm install -g codecov
+    - run: npm install boolbase nth-check htmlparser2
+    - run: npm install tape tap-spec istanbul
+    - run: npm run coverage
+    - run: codecov

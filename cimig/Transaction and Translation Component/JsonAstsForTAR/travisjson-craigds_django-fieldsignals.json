@@ -1,0 +1,53 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.10"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "django=\\\"django~=3.2.9\\\""
+    },
+    {
+     "children": [],
+     "type": "django=\\\"django~=4.0.0\\\""
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install $django"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python-cmd"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

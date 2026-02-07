@@ -1,0 +1,54 @@
+name: CI
+on: push
+jobs:
+  testing:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - python: '3.6'
+        - python: '3.7'
+        - python: '3.8'
+        - python: '3.9'
+        - python: '3.10'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Get packages
+        run: |
+          python3 --version
+          sudo apt-get install gfortran
+          sudo apt-get install libhdf5-dev
+      - name: Install
+        run: |
+          ( cd libcdf && make build && sudo make install )
+          ( cd qdipole && ./configure && make build && sudo make install )
+          pip3 install --upgrade pip
+          pip3 install wheel
+          pip3 install scipy
+          export SETUPTOOLS_USE_DISTUTILS=stdlib # https://github.com/pypa/setuptools/issues/3693
+          pip3 install spacepy
+          unset SETUPTOOLS_USE_DISTUTILS
+          pip3 install ./eoxmagmod/
+      - name: Scripts
+        run: |
+          pip3 list
+          mkdir -p ./test && cd ./test
+          pip3 show -f eoxmagmod
+          python3 -c 'import eoxmagmod' && python3 -m unittest discover -p '[a-z]*.py' -v eoxmagmod
+  notification:
+    runs-on: ubuntu-20.04
+    if: ${{ always() }}
+    needs: testing
+    steps:
+      # send Slack notifications to the eox organization
+      - name: action-slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ needs.testing.result }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -1,0 +1,32 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10, 11, 12]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+
+notifications:
+  email: damon.oehlman@gmail.com
+```
+
+Please note that the email notifications are not supported in GitHub Actions. You can use other services like Slack or Microsoft Teams to receive notifications.
+
+|End-of-Code|

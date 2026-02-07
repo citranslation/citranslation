@@ -1,0 +1,53 @@
+Here is the migrated GitHub Action configuration:
+```
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install tox
+      - name: Run tests
+        run: tox
+      - name: Deploy to PyPI
+        if: github.ref =='refs/tags/v*'
+        uses: pypa/gh-action-pypi-publish@v1
+        with:
+          user: fetzerch
+          password: ${{ secrets.PYPI_PASSWORD }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Coveralls
+        if: github.ref =='refs/tags/v*'
+        uses: coveralls/action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          service-name: my-service
+          service-version: ${{ github.ref }}
+|End-of-Code|
+```
+Note that I've made the following changes:
+
+* Replaced the `dist` and `language` fields with the `name` field.
+* Replaced the `install` and `script` fields with separate `steps` in the `jobs` section.
+* Replaced the `env` field with the `matrix` strategy in the `jobs` section.
+* Replaced the `after_success` field with an `if` statement in the `Deploy to PyPI` step.
+* Replaced the `deploy` field with a separate `Deploy to PyPI` step.
+* Replaced the `secure` field with a `secrets` field in the `Deploy to PyPI` step.
+* Replaced the `coveralls` field with a separate `Coveralls` step.
+* Removed the `stage` field, as it is not needed in GitHub Actions.
+* Removed the `python` field in the `deploy` step, as it is not needed in GitHub Actions.

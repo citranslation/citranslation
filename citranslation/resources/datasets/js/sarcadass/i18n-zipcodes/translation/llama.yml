@@ -1,0 +1,34 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js CI
+
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Test
+        run: npm test
+      - name: Code coverage
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: coverage.json
+|End-of-Code|
+```
+Note that:
+
+* The `on` section specifies that the workflow should run on push events.
+* The `jobs` section defines a single job named `build`.
+* The `runs-on` section specifies the environment where the job will run (in this case, an `ubuntu-latest` environment).
+* The `steps` section defines the individual steps that will be executed in the job.
+* The `Checkout code` step uses the `actions/checkout` action to check out the code.
+* The `Install dependencies` step runs `npm install` to install dependencies.
+* The `Build` and `Test` steps run the `npm run build` and `npm test` commands, respectively.
+* The `Code coverage` step uses the `codecov/codecov-action` action to generate code coverage reports, and specifies the `token` and `file` options to configure the action.

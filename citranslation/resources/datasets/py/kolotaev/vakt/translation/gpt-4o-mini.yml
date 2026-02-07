@@ -1,0 +1,81 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+      postgresql:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: vakt_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: make deps
+
+      - name: Set up MongoDB
+        run: |
+          wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1604-4.2.1.tgz
+          tar zxf mongodb-linux-x86_64-ubuntu1604-4.2.1.tgz
+          export PATH=${PWD}/mongodb-linux-x86_64-ubuntu1604-4.2.1/bin/:${PATH}
+          mkdir -p data/db
+          mongod --dbpath=data/db --fork --logpath /dev/null
+          sleep 5
+          mongo vakt_db --eval 'db.createUser({user:"test_user",pwd:"test_password",roles:["readWrite"]});'
+
+      - name: Run tests
+        run: |
+          DATABASE_DSN="mysql+pymysql://root@127.0.0.1/vakt_db" make coverage
+          DATABASE_DSN="sqlite:///:memory:" make test-sql-i
+          DATABASE_DSN="postgresql+psycopg2cffi://postgres:@localhost/vakt_db" make test-sql-i
+          make bench
+
+      - name: Upload coverage to Codecov
+        if: success()
+        run: bash <(curl -s https://codecov.io/bash)
+
+|End-of-Code|
+```

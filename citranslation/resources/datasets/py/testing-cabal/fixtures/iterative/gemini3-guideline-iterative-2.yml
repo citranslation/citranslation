@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.11-dev"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install -U pip
+          python -m pip install -U wheel setuptools pbr
+          # The error occurs because PBR cannot determine the version from git tags,
+          # defaulting to 0.0.0 which fails the 'fixtures>=1.3.0' requirement.
+          # We export PBR_VERSION to bypass version discovery.
+          export PBR_VERSION=$(python setup.py --version)
+          python -m pip install -U .[docs,test]
+          pip list
+          python --version
+
+      - name: Run script
+        run: |
+          make check
+          rst2html.py README.rst README.html
+
+|End-of-Code|

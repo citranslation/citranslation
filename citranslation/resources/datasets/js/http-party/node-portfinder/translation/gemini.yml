@@ -1,0 +1,45 @@
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # The node versions from the Travis CI config
+        node-version: ['0.12', '4.2', '5.0']
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          # Caches npm dependencies for faster builds
+          cache: 'npm'
+
+      - name: Install specific npm version
+        run: npm install -g npm@2.14.5
+
+      - name: Install dependencies
+        # Uses CI to avoid writing to package-lock.json
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+        env:
+          # Set the DEBUG environment variable for the test script
+          DEBUG: '*'
+
+# Note on notifications:
+# GitHub Actions handles notifications differently than Travis CI.
+# Email notifications are configured in your GitHub account settings
+# (github.com/settings/notifications) for repositories you are watching.
+# There is no direct equivalent to the `notifications.email` block in the workflow file.
+```
+|End-of-Code|

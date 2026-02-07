@@ -1,0 +1,39 @@
+```yaml
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox-gh-actions
+    - name: Test with tox
+      run: tox
+
+|End-of-Code|
+```
+
+This GitHub Action configuration does the following:
+
+- It sets up a workflow that triggers on `push` and `pull_request` events.
+- It runs on the latest version of Ubuntu.
+- It uses a matrix strategy to test the Python versions 3.8 and 3.9.
+- It checks out the repository.
+- It sets up the Python version specified in the matrix.
+- It installs the dependencies required for testing.
+- It runs the tests with tox.

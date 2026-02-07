@@ -1,0 +1,252 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "focal"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "shell"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "EMAIL"
+      }],
+      "type": "recipients"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "change"
+      }],
+      "type": "on_success"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "always"
+      }],
+      "type": "on_failure"
+     }
+    ],
+    "type": "email"
+   }],
+   "type": "notifications"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "shell"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "noetic robot setup script"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [
+          {
+           "children": [],
+           "type": "~/.npm"
+          },
+          {
+           "children": [],
+           "type": "~/.cache"
+          }
+         ],
+         "type": "directories"
+        }],
+        "type": "cache"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "${travis_build_dir}/PATH-OR-URL"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "node_js"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "node script test and code coverage"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "lts/*"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [
+          {
+           "children": [],
+           "type": "~/.npm"
+          },
+          {
+           "children": [],
+           "type": "~/.cache"
+          }
+         ],
+         "type": "directories"
+        }],
+        "type": "cache"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "mkdir-cmd"
+         },
+         {
+          "children": [],
+          "type": "touch ~/.arlobot/rosmaps/dummymap.data ~/.arlobot/rosmaps/dummymap.posegraph"
+         },
+         {
+          "children": [],
+          "type": "cp scripts/dotarlobot/personaldataforbehavior.json ~/.arlobot/"
+         },
+         {
+          "children": [],
+          "type": "ln -s ${travis_build_dir} ~/catkin_ws/src/arlobot"
+         },
+         {
+          "children": [],
+          "type": "cd-cmd"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "npm-cmd"
+        }],
+        "type": "install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "npm-cmd"
+         },
+         {
+          "children": [],
+          "type": "jest --forceexit"
+         },
+         {
+          "children": [],
+          "type": "codecov-cmd"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "node_js"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "react website"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "lts/*"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [
+          {
+           "children": [],
+           "type": "~/.npm"
+          },
+          {
+           "children": [],
+           "type": "~/.cache"
+          }
+         ],
+         "type": "directories"
+        }],
+        "type": "cache"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "cd-cmd"
+        }],
+        "type": "before_install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "npm-cmd"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

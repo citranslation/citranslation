@@ -1,0 +1,310 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "build"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "${{ matrix.os }}"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "ubuntu-latest"
+          },
+          {
+           "children": [],
+           "type": "macos-latest"
+          },
+          {
+           "children": [],
+           "type": "windows-latest"
+          }
+         ],
+         "type": "os"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "3.7"
+          },
+          {
+           "children": [],
+           "type": "3.8"
+          },
+          {
+           "children": [],
+           "type": "3.9"
+          },
+          {
+           "children": [],
+           "type": "3.10"
+          }
+         ],
+         "type": "python-version"
+        },
+        {
+         "children": [{
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "windows-latest"
+            }],
+            "type": "os"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "3.7"
+            }],
+            "type": "python-version"
+           }
+          ],
+          "type": "OBJ-NODE"
+         }],
+         "type": "exclude"
+        }
+       ],
+       "type": "matrix"
+      }],
+      "type": "strategy"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "bash -l {0}"
+        }],
+        "type": "shell"
+       }],
+       "type": "run"
+      }],
+      "type": "defaults"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "conda-incubator/setup-miniconda@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "auto-update-conda"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-version }}"
+            }],
+            "type": "python-version"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": ".github/pysb-conda-env.yml"
+            }],
+            "type": "environment-file"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "pysb"
+            }],
+            "type": "activate-environment"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install stochkit (except on windows)"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "matrix.os != 'windows-latest'"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "conda install -y -c alubbock stochkit"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install stochkit lite (windows only)"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "matrix.os == 'windows-latest'"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "conda install -y -c alubbock -c conda-forge stochkit-lite"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "fix gfortran dll linker error on windows/python-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "matrix.os == 'windows-latest' && matrix.python-version == '3.8'"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "pip install --upgrade --force-reinstall scipy"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "conda environment info"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "conda info\\nconda list\\n"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "build pysb"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "python-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run nosetests"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "nosetests build/lib/pysb --with-coverage-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build-linux"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

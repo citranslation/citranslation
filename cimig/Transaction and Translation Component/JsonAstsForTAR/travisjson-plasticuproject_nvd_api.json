@@ -1,0 +1,40 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.6"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip3 install -r requirements.txt"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "bash PATH-OR-URL"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coveralls"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

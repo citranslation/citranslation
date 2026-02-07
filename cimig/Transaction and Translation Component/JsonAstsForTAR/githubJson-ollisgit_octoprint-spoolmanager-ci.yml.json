@@ -1,0 +1,112 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "stale and close issues"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "30 1 * * *"
+      }],
+      "type": "cron"
+     }],
+     "type": "OBJ-NODE"
+    }],
+    "type": "schedule"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "actions/stale@version"
+         }],
+         "type": "uses"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "status: analysing,status: innextrelease,status: inprogress,status: wontfix"
+           }],
+           "type": "exempt-issue-labels"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "30"
+           }],
+           "type": "days-before-issue-stale"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "this issue has been automatically marked for-cmd"
+           }],
+           "type": "stale-issue-message"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "status: markedforautoclose"
+           }],
+           "type": "stale-issue-label"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "10"
+           }],
+           "type": "days-before-issue-close"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "this issue was closed, because it has been already marked for-cmd"
+           }],
+           "type": "close-issue-message"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "status: closedbybot"
+           }],
+           "type": "close-issue-label"
+          }
+         ],
+         "type": "with"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }],
+      "type": "steps"
+     }
+    ],
+    "type": "stale"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

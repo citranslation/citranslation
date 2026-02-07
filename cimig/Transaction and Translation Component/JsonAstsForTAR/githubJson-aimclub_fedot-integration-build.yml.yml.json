@@ -1,0 +1,256 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "integration"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "0 12 * * *"
+       }],
+       "type": "cron"
+      }],
+      "type": "OBJ-NODE"
+     }],
+     "type": "schedule"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    },
+    {
+     "children": [],
+     "type": "workflow_dispatch"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "95"
+      }],
+      "type": "timeout-minutes"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [
+         {
+          "children": [],
+          "type": "3.8"
+         },
+         {
+          "children": [],
+          "type": "3.9"
+         },
+         {
+          "children": [],
+          "type": "3.10"
+         }
+        ],
+        "type": "python-version"
+       }],
+       "type": "matrix"
+      }],
+      "type": "strategy"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "checkout branch"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set up python-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ matrix.python-version }}"
+           }],
+           "type": "python-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "python-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "test with pytest"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "pytest --cov=fedot -s test/integration\\n"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "notify telegram bot"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "appleboy/telegram-action@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ failure() && github.event_name == 'schedule' }}"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.chat_id }}"
+            }],
+            "type": "to"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.telegram_token }}"
+            }],
+            "type": "token"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ PATH-OR-URL }}: scheduled integration tests [were failed](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
+            }],
+            "type": "message"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "markdown"
+            }],
+            "type": "format"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "disable_web_page_preview"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "scheduled"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

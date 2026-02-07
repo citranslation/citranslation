@@ -1,0 +1,272 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "20"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "jammy"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "FALSE"
+    }],
+    "type": "npm"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "master"
+     },
+     {
+      "children": [],
+      "type": "/^\\\\d+\\\\.\\\\d+\\\\.\\\\d+(\\\\-beta.\\\\d+)?$/"
+     }
+    ],
+    "type": "only"
+   }],
+   "type": "branches"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "mattermost_channel='{\\\"dev\\\":\\\"gangsters\\\",\\\"beta\\\":\\\"gangsters,publication\\\",\\\"stable\\\":\\\"gangsters,publication\\\"}'"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "quality checks"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "yarn lint && yarn check-locales && yarn check-fixtures"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "unit tests"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "yarn test --runinband"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "build app"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "yarn build"
+         },
+         {
+          "children": [],
+          "type": "yarn bundlemon"
+         }
+        ],
+        "type": "script"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "./scripts/ci/add_ssh_key.sh"
+        }],
+        "type": "before_deploy"
+       },
+       {
+        "children": [
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "script"
+            }],
+            "type": "provider"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "cozy/cozy-banks"
+            }],
+            "type": "repo"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "skip-cleanup"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "yarn cozypublish && yarn uploadstaticfiles"
+            }],
+            "type": "script"
+           },
+           {
+            "children": [{
+             "children": [{
+              "children": [],
+              "type": "master"
+             }],
+             "type": "branch"
+            }],
+            "type": "on"
+           }
+          ],
+          "type": "OBJ-NODE"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "deploy"
+            }],
+            "type": "<<"
+           },
+           {
+            "children": [{
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "tags"
+            }],
+            "type": "on"
+           }
+          ],
+          "type": "OBJ-NODE"
+         }
+        ],
+        "type": "deploy"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,89 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  unit:
+    name: "Py:${{ matrix.python-version }}"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - "3.8"
+          - "3.9"
+          - "3.10"
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install tox
+        run: pip install tox
+
+      - name: Run unit tests
+        run: tox -e py
+
+name: Python package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: pip install tox
+      - name: Test with tox
+        run: |
+          tox -e py
+
+name: Crossplane CI
+
+on:
+  workflow_dispatch:
+  push:
+    paths-ignore:
+      - '**.md'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", pypy-3.6, pypy-3.7, pypy-3.8, pypy-3.9]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run tox under Python ${{ matrix.python-version }}
+        run: |
+          pip install tox
+          tox -e py  
+```
+
+Please note that the GitHub Actions configuration is not exactly the same as the Travis CI configuration. The GitHub Actions configuration is more verbose and includes more steps to set up the environment and run the tests. Also, the Python versions in the matrix in the GitHub Actions configuration are not the same as in the Travis CI configuration. The GitHub Actions configuration uses the Python versions that are available in the GitHub Actions environment, while the Travis CI configuration uses the Python versions that are specified in the `.travis.yml` file.

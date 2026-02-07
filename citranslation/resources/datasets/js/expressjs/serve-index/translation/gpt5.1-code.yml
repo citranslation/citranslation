@@ -1,0 +1,146 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+          - "0.8"
+          - "0.10"
+          - "0.12"
+          - "1.8"
+          - "2.5"
+          - "3.3"
+          - "4.9"
+          - "5.12"
+          - "6.17"
+          - "7.10"
+          - "8.17"
+          - "9.11"
+          - "10.24"
+          - "11.15"
+          - "12.22"
+          - "13.14"
+          - "14.16"
+          - "15.13"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('package-lock.json', 'npm-shrinkwrap.json', 'package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node-version }}-
+
+      - name: Configure npm
+        run: npm config set shrinkwrap false
+
+      - name: Setup Node.js version-specific dependencies
+        shell: bash
+        run: |
+          NODE_VER="${{ matrix.node-version }}"
+          NODE_MAJOR="$(cut -d. -f1 <<< "$NODE_VER")"
+          NODE_MINOR="$(cut -d. -f2 <<< "$NODE_VER")"
+
+          # eslint for linting
+          # - remove on Node.js < 10
+          if [[ "$NODE_MAJOR" -lt 10 ]]; then
+            node -pe 'Object.keys(require("./package").devDependencies).join("\n")' | \
+              grep -E '^eslint(-|$)' | \
+              xargs -n1 npm rm --silent --save-dev || true
+          fi
+
+          # mocha for testing
+          # - use 2.x for Node.js < 0.10
+          # - use 3.x for Node.js < 4
+          # - use 5.x for Node.js < 6
+          # - use 6.x for Node.js < 8
+          # - use 7.x for Node.js < 10
+          if [[ "$NODE_MAJOR" -eq 0 && "$NODE_MINOR" -lt 10 ]]; then
+            npm install --save-dev mocha@2.5.3
+          elif [[ "$NODE_MAJOR" -lt 4 ]]; then
+            npm install --save-dev mocha@3.5.3
+          elif [[ "$NODE_MAJOR" -lt 6 ]]; then
+            npm install --save-dev mocha@5.2.0
+          elif [[ "$NODE_MAJOR" -lt 8 ]]; then
+            npm install --save-dev mocha@6.2.2
+          elif [[ "$NODE_MAJOR" -lt 10 ]]; then
+            npm install --save-dev mocha@7.2.0
+          fi
+
+          # nyc for coverage
+          # - remove for Node.js < 0.10
+          # - use 10.x for Node.js < 4
+          # - use 11.x for Node.js < 6
+          # - use 14.x for Node.js < 8
+          if [[ "$NODE_MAJOR" -eq 0 && "$NODE_MINOR" -lt 10 ]]; then
+            npm rm --silent --save-dev nyc || true
+          elif [[ "$NODE_MAJOR" -lt 4 ]]; then
+            npm install --save-dev nyc@10.3.2
+          elif [[ "$NODE_MAJOR" -lt 6 ]]; then
+            npm install --save-dev nyc@11.9.0
+          elif [[ "$NODE_MAJOR" -lt 8 ]]; then
+            npm install --save-dev nyc@14.1.1
+          fi
+
+          # supertest for testing
+          # - use 1.1.0 for Node.js < 0.10
+          # - use 2.0.0 for Node.js < 4
+          # - use 3.4.2 for Node.js < 6
+          if [[ "$NODE_MAJOR" -eq 0 && "$NODE_MINOR" -lt 10 ]]; then
+            npm install --save-dev supertest@1.1.0
+          elif [[ "$NODE_MAJOR" -lt 4 ]]; then
+            npm install --save-dev supertest@2.0.0
+          elif [[ "$NODE_MAJOR" -lt 6 ]]; then
+            npm install --save-dev supertest@3.4.2
+          fi
+
+          # Prune and rebuild node_modules if present
+          if [[ -d node_modules ]]; then
+            npm prune
+            npm rebuild
+          fi
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        shell: bash
+        run: |
+          if npm -ps ls nyc | grep -q nyc; then
+            npm run test-ci
+          else
+            npm test
+          fi
+
+      - name: Lint
+        shell: bash
+        run: |
+          if npm -ps ls eslint | grep -q eslint; then
+            npm run lint
+          fi
+
+      - name: Upload coverage to coveralls
+        if: always()
+        shell: bash
+        run: |
+          if [[ -d .nyc_output ]]; then
+            npm install --save-dev coveralls@2.13.3
+            npx nyc report --reporter=text-lcov | npx coveralls
+          fi
+|End-of-Code|

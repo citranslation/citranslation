@@ -1,0 +1,39 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      # Replicates the node_js matrix from Travis CI
+      # 'node' is mapped to a recent LTS version (e.g., 20.x)
+      matrix:
+        node-version: [8.x, 10.x, 11.x, 20.x]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        # Cache npm dependencies for faster builds
+        cache: 'npm'
+
+    - name: Install dependencies
+      # Use 'npm ci' for cleaner, more reliable installs in CI
+      run: npm ci
+
+    - name: Run tests
+      # 'npm test' is the default script for Travis CI Node.js projects
+      run: npm test
+```
+|End-of-Code|

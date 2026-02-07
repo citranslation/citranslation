@@ -1,0 +1,57 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    # Note: GitHub-hosted runners provide 'amd64' architecture (e.g., ubuntu-latest).
+    # The 'ppc64le' architecture is not supported by GitHub-hosted runners
+    # and would require a self-hosted runner with that architecture.
+    runs-on: ubuntu-latest
+
+    strategy:
+      # Run all jobs to completion, even if one fails.
+      fail-fast: false
+      matrix:
+        node-version:
+          - 'node' # latest stable
+          - 'lts/*'
+          - '20'
+          - '19'
+          - '18'
+          - '17'
+          - '16'
+          - '15'
+          - '14'
+          - '13'
+          - '12'
+          - '11'
+          - '10'
+          - '8'
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        # Use npm cache to speed up dependency installation
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run build script (if present)
+      run: npm run build --if-present
+
+    - name: Run tests
+      run: npm test
+```
+|End-of-Code|

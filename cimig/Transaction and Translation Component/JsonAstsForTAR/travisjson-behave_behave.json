@@ -1,0 +1,149 @@
+{
+ "children": [
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "amd64"
+    },
+    {
+     "children": [],
+     "type": "ppc64le"
+    }
+   ],
+   "type": "arch"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.8-dev"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "2.7"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.8-dev"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "nightly"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "allow_failures"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "~/.cache/pip"
+    }],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "travis_retry pip install -q -r py.requirements/ci.travis.txt"
+    },
+    {
+     "children": [],
+     "type": "pip show setuptools"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "pytest tests"
+    },
+    {
+     "children": [],
+     "type": "behave -f progress --junit features/"
+    },
+    {
+     "children": [],
+     "type": "behave -f progress --junit tools/test-features/"
+    },
+    {
+     "children": [],
+     "type": "behave -f progress --junit issue.features/"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "bin/behave.junit_filter.py --status=failed reports"
+    }
+   ],
+   "type": "after_failure"
+  }
+ ],
+ "type": "travis-file"
+}

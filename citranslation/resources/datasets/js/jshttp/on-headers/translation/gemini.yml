@@ -1,0 +1,169 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+          - "0.8"
+          - "0.10"
+          - "0.12"
+          - "1.8"
+          - "2.5"
+          - "3.3"
+          - "4.9"
+          - "5.12"
+          - "6.16"
+          - "7.10"
+          - "8.17"
+          - "9.11"
+          - "10.21"
+          - "11.15"
+          - "12.18"
+          - "13.14"
+          - "14.5"
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Cache node modules
+      id: cache-npm
+      uses: actions/cache@v4
+      with:
+        # Cache node_modules directory
+        path: node_modules
+        # Create a unique key for the cache based on OS, Node version, and package.json
+        key: ${{ runner.os }}-node-${{ matrix.node-version }}-npm-${{ hashFiles('**/package.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-${{ matrix.node-version }}-npm-
+
+    - name: Configure and Install Dependencies
+      shell: bash
+      run: |
+        # Backup original package.json to ensure the cache key remains consistent.
+        # The file will be modified in this step but restored before the step ends.
+        cp package.json package.json.bak
+
+        # --- Start: Utility functions from .travis.yml ---
+        # A robust version comparison using `sort -V`
+        function node_version_lt () {
+          # Returns true if ${{ matrix.node-version }} is lower than $1
+          [ "$(printf '%s\n' "$1" "${{ matrix.node-version }}" | sort -V | head -n1)" != "$1" ]
+        }
+        # Removes dev dependencies from package.json matching a regex
+        function npm_remove_module_re () {
+          node -e '
+            const fs = require("fs");
+            let p = JSON.parse(fs.readFileSync("package.json", "utf8"));
+            const r = new RegExp(process.argv[1]);
+            if (p.devDependencies) {
+              for (const k in p.devDependencies) {
+                if (r.test(k)) delete p.devDependencies[k];
+              }
+            }
+            fs.writeFileSync("package.json", JSON.stringify(p, null, 2) + "\n");
+          ' "$@"
+        }
+        # Adds or updates a dev dependency in package.json
+        function npm_use_module () {
+          node -e '
+            const fs = require("fs");
+            let p = JSON.parse(fs.readFileSync("package.json", "utf8"));
+            if (!p.devDependencies) p.devDependencies = {};
+            p.devDependencies[process.argv[1]] = process.argv[2];
+            fs.writeFileSync("package.json", JSON.stringify(p, null, 2) + "\n");
+          ' "$@"
+        }
+        # --- End: Utility functions ---
+
+        # Configure npm: Skip updating shrinkwrap / lock
+        npm config set shrinkwrap false
+
+        # --- Start: Version-specific dependency modifications ---
+        echo "Modifying package.json for Node.js ${{ matrix.node-version }}..."
+        # Configure mocha for testing
+        if   node_version_lt '0.10'; then npm_use_module 'mocha' '2.5.3'
+        elif node_version_lt '4.0' ; then npm_use_module 'mocha' '3.5.3'
+        elif node_version_lt '6.0' ; then npm_use_module 'mocha' '5.2.0'
+        elif node_version_lt '8.0' ; then npm_use_module 'mocha' '6.2.2'
+        elif node_version_lt '10.0'; then npm_use_module 'mocha' '7.1.2'
+        fi
+        # Configure istanbul for coverage
+        if node_version_lt '0.10'; then npm_remove_module_re '^istanbul$'
+        fi
+        # Configure supertest for http calls
+        if   node_version_lt '0.10'; then npm_use_module 'supertest' '1.1.0'
+        elif node_version_lt '4.0' ; then npm_use_module 'supertest' '2.0.0'
+        elif node_version_lt '6.0' ; then npm_use_module 'supertest' '3.4.2'
+        fi
+        # Configure eslint for linting
+        if node_version_lt '8.0'; then npm_remove_module_re '^eslint(-|$)'
+        fi
+        # --- End: Version-specific dependency modifications ---
+
+        # Prune & rebuild node_modules if cache was restored
+        if [[ "${{ steps.cache-npm.outputs.cache-hit }}" == "true" ]]; then
+          echo "Cache hit. Pruning and rebuilding modules."
+          npm prune
+          npm rebuild
+        fi
+
+        # Install dependencies using the (now modified) package.json
+        npm install
+
+        # Restore original package.json so the cache can be saved correctly post-job
+        mv package.json.bak package.json
+
+    - name: List installed modules
+      run: npm -s ls || true
+
+    - name: Run Tests
+      run: |
+        # Helper to check if a module is installed in node_modules
+        is_installed() {
+          [ -d "node_modules/${1}" ]
+        }
+        # Run test script, depending on istanbul install
+        if is_installed 'istanbul'; then
+          npm run-script test-travis
+        else
+          npm test
+        fi
+
+    - name: Run Lint
+      run: |
+        # Helper to check if a module is installed in node_modules
+        is_installed() {
+          [ -d "node_modules/${1}" ]
+        }
+        # Run linting, if eslint exists
+        if is_installed 'eslint'; then
+          npm run-script lint
+        else
+          echo "Skipping lint: eslint is not installed for Node.js ${{ matrix.node-version }}"
+        fi
+
+    - name: Upload coverage to Coveralls
+      # Modern replacement for the 'after_script' section in .travis.yml
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+      # Only run if tests succeeded and the coverage file exists
+      if: success() && hashFiles('coverage/lcov.info') != ''
+|End-of-Code|
+```

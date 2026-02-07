@@ -1,0 +1,150 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "10"
+    },
+    {
+     "children": [],
+     "type": "12"
+    },
+    {
+     "children": [],
+     "type": "14"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "node_modules"
+    }],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "surge"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "./dist/"
+       }],
+       "type": "project"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "PATH-OR-URL"
+       }],
+       "type": "domain"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip-cleanup"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "master"
+        }],
+        "type": "branch"
+       }],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "npm"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${email}"
+       }],
+       "type": "email"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${auth_token}"
+       }],
+       "type": "api_key"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "master"
+        }],
+        "type": "branch"
+       }],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

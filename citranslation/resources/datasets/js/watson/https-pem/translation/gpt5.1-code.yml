@@ -1,0 +1,26 @@
+GitHub Actions Conversion:
+```yaml
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [9, 8, 7, 6]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm test
+```
+
+Analysis:
+The workflow runs on pushes and pull requests, checks out the code, sets up a matrix of Node.js versions matching the Travis configuration, installs dependencies with npm, and runs the test script. Very old Node.js versions (0.10, 0.12) may not be supported on `ubuntu-latest`. Adjust the matrix or runner if needed.|End-of-Code|

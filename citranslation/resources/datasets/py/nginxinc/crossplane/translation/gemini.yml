@@ -1,0 +1,40 @@
+```yaml
+name: Python package
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      # When one job fails, let the others continue
+      fail-fast: false
+      matrix:
+        # Python 2.6 and 3.4 were dropped as they are end-of-life and not
+        # supported by the standard actions/setup-python action.
+        # The generic 'pypy' is mapped to a recent pypy3 version.
+        python-version: ["2.7", "3.5", "3.6", "3.7", "3.8", "pypy-3.9"]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # tox-travis is not needed in GitHub Actions
+          pip install tox
+
+      - name: Test with tox
+        run: tox
+```
+|End-of-Code|

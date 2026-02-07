@@ -1,0 +1,38 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [0.8, 0.10, 0.12, 1.8, 2.5, 3.3, 4.9, 5.12, 6.16, 7.10, 8.17, 9.11, 10.21, 11.15, 12.18, 13.14, 14.5]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+    - run: npm run lint --if-present
+    - run: |
+        if [[ -e ./coverage/lcov.info ]]; then
+          npm install --save-dev coveralls@2
+          coveralls < ./coverage/lcov.info
+        fi
+      if: matrix.node-version == '12.18'
+```
+
+Please note that the GitHub Actions configuration is different from Travis CI configuration. The Travis CI configuration is more flexible and powerful, and it can handle more complex scenarios. The GitHub Actions configuration is simpler and more limited, but it's more suitable for simple workflows.
+
+Also, the GitHub Actions configuration above only runs the test and lint steps for Node.js 12.18. If you want to run these steps for all Node.js versions, you will need to add a step for each version.
+
+|End-of-Code|

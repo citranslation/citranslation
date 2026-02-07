@@ -1,0 +1,16 @@
+name: placeholder
+
+on: push:
+
+jobs:
+  build:
+    runs-on
+    steps
+    run: npm run validate
+
+install:
+  cd-cmd
+  npm-cmd
+
+fail-fast: FALSE
+

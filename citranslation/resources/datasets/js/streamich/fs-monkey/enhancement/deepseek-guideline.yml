@@ -1,0 +1,38 @@
+```yaml
+name: Node CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
+    - run: yarn install
+    - run: yarn test
+    - run: yarn build
+    - name: Semantic Release
+      uses: cycjimmy/semantic-release-action@v2
+      with:
+        semantic_version: 16.0.1
+        branches: |
+          master
+```
+
+Please note that the GitHub Actions configuration above is a direct translation of the Travis CI configuration provided. It may not perfectly match the original configuration, especially in terms of matrix and cache configurations. You may need to adjust it according to your specific needs.

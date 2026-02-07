@@ -1,0 +1,41 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        node-version: [16]
+        arch: [amd64, ppc64le]
+        include:
+          - arch: amd64
+            os: ubuntu-latest
+          - arch: ppc64le
+            # Using QEMU to emulate ppc64le on standard ubuntu-latest runners 
+            # to avoid hanging on non-existent self-hosted runners.
+            os: ubuntu-latest
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        if: matrix.arch == 'ppc64le'
+        uses: docker/setup-qemu-action@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          architecture: ${{ matrix.arch == 'amd64' && 'x64' || 'arm64' }}
+
+      - name: Before Install
+        run: git --version
+
+|End-of-Code|

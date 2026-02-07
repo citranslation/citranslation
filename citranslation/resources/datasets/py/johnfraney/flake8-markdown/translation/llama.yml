@@ -1,0 +1,29 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          python -m poetry install
+      - name: Run tests
+        run: |
+          pip install tox-travis
+          tox
+      - name: Cache pip packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-cache
+```
+|End-of-Code|

@@ -1,0 +1,156 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Travis CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  Prebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Install dependencies
+        run: yarn install
+      - name: Lint
+        if: contains(github.event.head_commit.message, '[only argos]') != true
+        run: yarn lint
+      - name: Generate Sprite and Palette
+        run: yarn makeSpriteAndPalette
+      - name: Cache workspace
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+  Build:
+    needs: Prebuild
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Install dependencies
+        run: yarn install
+      - name: Build JS
+        run: yarn build
+      - name: Build CSS
+        run: yarn build:css:all
+      - name: Cache workspace
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+  Docs:
+    needs: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Install dependencies
+        run: yarn install
+      - name: Build docs
+        run: yarn build:doc:react && yarn build:doc:kss
+      - name: Cache workspace
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+  Test:
+    needs: Docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Install dependencies
+        run: yarn install
+      - name: Tests without snapshots
+        if: contains(github.event.head_commit.message, '[only argos]') != true
+        run: yarn test:noSnapshots
+      - name: Tests snapshots
+        if: contains(github.event.head_commit.message, '[only argos]') != true
+        run: yarn test:snapshots
+      - name: Bundlemon
+        if: contains(github.event.head_commit.message, '[only argos]') != true
+        run: yarn bundlemon
+      - name: Cache workspace
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+  Screenshots:
+    needs: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Install dependencies
+        run: yarn install
+      - name: Create desktop screenshots
+        if: contains(github.event.pull_request.title, '[skip argos]') != true
+        run: mkdir ./screenshots && npx puppeteer browsers install chrome && yarn screenshots --mode react --viewport desktop --screenshot-dir ./screenshots/reactDesktop
+      - name: Create mobile screenshots
+        if: contains(github.event.pull_request.title, '[skip argos]') != true
+        run: mkdir ./screenshots && npx puppeteer browsers install chrome && yarn screenshots --mode react --viewport 300x600 --screenshot-dir ./screenshots/reactMobile
+      - name: Create kss screenshots
+        if: contains(github.event.pull_request.title, '[skip argos]') != true
+        run: mkdir ./screenshots && npx puppeteer browsers install chrome && yarn screenshots --mode kss --screenshot-dir ./screenshots/kss
+      - name: Cache workspace
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+  Deploy:
+    needs: Screenshots
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, '[only argos]') != true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Install dependencies
+        run: yarn install
+      - name: Deploy
+        run: yarn deploy:doc -- --username cozycloud --email contact@cozycloud.cc --repo https://cozy-bot:${{ secrets.GH_TOKEN }}@github.com/cozy/cozy-ui.git && yarn semantic-release
+```
+
+Please replace `${{ secrets.GH_TOKEN }}` with your actual GitHub token.
+
+Note: The GitHub Actions configuration is based on the Travis CI configuration you provided. It may need to be adjusted based on your specific project requirements.

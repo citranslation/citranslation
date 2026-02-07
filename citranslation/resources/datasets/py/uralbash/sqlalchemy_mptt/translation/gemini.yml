@@ -1,0 +1,53 @@
+```yaml
+name: CI
+
+# This workflow is triggered on pushes and pull requests.
+on: [push, pull_request]
+
+jobs:
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # A strategy matrix is used to run the tests on multiple Python versions.
+    strategy:
+      # This ensures that all jobs in the matrix are attempted, even if one fails.
+      fail-fast: false
+      matrix:
+        python-version: ["2.7", "3.4", "3.5", "3.6", "3.7"]
+
+    steps:
+      # 1. Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Sets up the specified Python version from the matrix.
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # 3. Installs project dependencies.
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-test.txt
+
+      # 4. Runs the test suite.
+      - name: Run tests
+        run: |
+          python setup.py nosetests
+
+      # 5. Uploads coverage results to Coveralls.
+      # This step runs only if the previous steps were successful.
+      - name: Upload coverage to Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+# Note: Email and IRC notifications are not directly translated into the workflow file.
+# GitHub has its own notification system for workflow status, which can be configured
+# in your repository or personal settings. For specific chat integrations,
+# you would typically add a dedicated action from the GitHub Marketplace.
+```
+|End-of-Code|

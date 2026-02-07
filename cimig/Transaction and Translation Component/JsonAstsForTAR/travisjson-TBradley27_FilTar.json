@@ -1,0 +1,159 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.6"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "beta3"
+    }],
+    "type": "only"
+   }],
+   "type": "branches"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo ln -s /bin/tar /bin/gtar"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "bash PATH-OR-URL -b - p ~/miniconda"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "hash -r"
+    },
+    {
+     "children": [],
+     "type": "conda config --set always_yes yes --set changeps1 no"
+    },
+    {
+     "children": [],
+     "type": "conda update -q conda"
+    },
+    {
+     "children": [],
+     "type": "conda info -a"
+    },
+    {
+     "children": [],
+     "type": "conda config --add channels defaults"
+    },
+    {
+     "children": [],
+     "type": "conda config --add channels r"
+    },
+    {
+     "children": [],
+     "type": "conda config --add channels conda-forge"
+    },
+    {
+     "children": [],
+     "type": "conda config --add channels bioconda"
+    },
+    {
+     "children": [],
+     "type": "travis_wait conda create -q -n test-environment snakemake r r-devtools perl-app-cpanminus perl=5.26.2=h470a237_0 python=$travis_python_version"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "source activate test-environment"
+    },
+    {
+     "children": [],
+     "type": "conda install -c r r-testthat"
+    },
+    {
+     "children": [],
+     "type": "cpanm bio::perl"
+    },
+    {
+     "children": [],
+     "type": "cpanm statistics::lite"
+    },
+    {
+     "children": [],
+     "type": "rscript -e 'devtools::install_github(\\\"tbradley27/filtar_r\\\")'"
+    },
+    {
+     "children": [],
+     "type": "snakemake --version"
+    },
+    {
+     "children": [],
+     "type": "travis_wait 50 snakemake --use-conda -p results/targets/mmu/oocyte_chry.contextpp.tsv --config sequence_data_source=sra conservation=false reannotation=false mirnas=\\\"['mmu-mir-188-5p']\\\" transcripts=\\\"['ensmust00000189888.6']\\\" tpm_expression_threshold=0 prediction_algorithm=targetscan7 && head results/targets/mmu/oocyte_chry.contextpp.tsv && rm -f results/targets/mmu/oocyte_chry.contextpp.tsv"
+    },
+    {
+     "children": [],
+     "type": "snakemake --use-conda -p results/targets/miranda/mmu/oocyte/chry.tsv --config sequence_data_source=sra conservation=false reannotation=false mirnas=\\\"['mmu-mir-188-5p']\\\" transcripts=\\\"['ensmust00000189888.6']\\\" tpm_expression_threshold=0 prediction_algorithm=miranda"
+    },
+    {
+     "children": [],
+     "type": "head results/targets/miranda/mmu/oocyte/chry.tsv"
+    },
+    {
+     "children": [],
+     "type": "snakemake --use-conda -p results/targets/mmu/oocyte_chry.contextpp.tsv --config sequence_data_source=sra conservation=true reannotation=false mirnas=\\\"['mmu-mir-188-5p']\\\" transcripts=\\\"['ensmust00000189888.6']\\\" tpm_expression_threshold=0 prediction_algorithm=targetscan7"
+    },
+    {
+     "children": [],
+     "type": "head results/targets/mmu/oocyte_chry.contextpp.tsv"
+    },
+    {
+     "children": [],
+     "type": "r -e 'test=testthat::test_file(\\\"scripts/targetscan_test.r\\\"); stopifnot(test[[1]]$results[[1]]$message==\\\"success\\\")'"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

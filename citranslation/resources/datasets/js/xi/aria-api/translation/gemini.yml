@@ -1,0 +1,48 @@
+```yaml
+name: Node.js CI
+
+# This workflow runs on pushes and pull requests to the main branch.
+# Corresponds to the implicit triggers in Travis CI.
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    # Use the latest Ubuntu runner, equivalent to Travis CI's Linux environment.
+    # `sudo: false` is the default behavior in GitHub Actions.
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Sets up the Node.js environment.
+      # Corresponds to `language: node_js` and `node_js: node`.
+      # Using a specific LTS version like '18.x' is recommended for stability.
+      # The `cache: 'npm'` option handles caching of dependencies, replacing the `cache` block in Travis.
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+
+      # The `install` block from Travis CI is broken into individual steps.
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: |
+          make clean
+          make
+
+      # The `script` block from Travis CI.
+      - name: Run tests
+        run: npx mocha-headless-chrome -a no-sandbox -f test/index.html
+
+# The `notifications: email: false` setting from Travis CI does not have a direct
+# equivalent in the workflow YAML. Notification preferences are managed in GitHub user settings.
+```|End-of-Code|

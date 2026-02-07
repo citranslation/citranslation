@@ -1,0 +1,1235 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "integration tests"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "${{ PATH-OR-URL }}"
+      }],
+      "type": "name"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "${{ matrix.container }}"
+      }],
+      "type": "container"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "FALSE"
+        }],
+        "type": "fail-fast"
+       },
+       {
+        "children": [{
+         "children": [
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "alpine 3.11 / node.js 8"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "node:8-alpine3.11"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "8"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "musl"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "1.1.24"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "alpine 3.11 / node.js 16"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "node:16-alpine3.11"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "16"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "musl"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "1.1.24"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "alpine 3.12 / node.js 12"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "node:12-alpine3.12"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "12"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "musl"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "1.1.24"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "alpine 3.15 / node.js 16"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "node:16-alpine3.15"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "16"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "musl"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "1.2.2"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "amazon 1 / node.js 8"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "amazonlinux:1"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "8"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.17"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "amazon 1 / node.js 16"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "amazonlinux:1"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "16"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.17"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "amazon 2 / node.js 10"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "amazonlinux:2"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "10"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.26"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "amazon 2 / node.js 16"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "amazonlinux:2"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "16"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.26"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "centos 7 / node.js 8"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "centos:centos7"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "8"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.17"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "centos 7 / node.js 16"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "centos:centos7"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "16"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.17"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "centos 8 / node.js 10"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "centos:centos8"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "10"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.28"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "centos 8 / node.js 16"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "centos:centos8"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "16"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.28"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "debian 9 / node.js 8"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "node:8-stretch-slim"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "8"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.24"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "debian 9 / node.js 16"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "node:16-stretch-slim"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "16"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.24"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "debian 10 / node.js 8"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "node:8-buster-slim"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "8"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.28"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "debian 11 / node.js 16"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "node:16-bullseye-slim"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "16"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.31"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "fedora 33 / node.js 10"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "fedora:33"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "10"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.32"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "fedora 33 / node.js 16"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "fedora:33"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "16"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.32"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "fedora 35 / node.js 12"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "fedora:35"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "12"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.34"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "fedora 35 / node.js 16"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "fedora:35"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "16"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.34"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "opensuse 15.1 / node.js 10"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "opensuse/leap:15.1"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "10"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.26"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "opensuse 15.3 / node.js 14"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "opensuse/leap:15.3"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "14"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.31"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "ubuntu 14.04 / node.js 8"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "ubuntu:14.04"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "8"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.19"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "ubuntu 16.04 / node.js 16"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "ubuntu:16.04"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "16"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.23"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "ubuntu 18.04 / node.js 8"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "ubuntu:18.04"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "8"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.27"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "ubuntu 21.10 / node.js 16"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "ubuntu:21.10"
+             }],
+             "type": "container"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "16"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "glibc"
+             }],
+             "type": "expected-family"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2.34"
+             }],
+             "type": "expected-version"
+            }
+           ],
+           "type": "OBJ-NODE"
+          }
+         ],
+         "type": "include"
+        }],
+        "type": "matrix"
+       }
+      ],
+      "type": "strategy"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install node.js (rhel)"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "contains(matrix.container, 'amazonlinux') || contains(matrix.container, 'centos') || contains(matrix.container, 'fedora')"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "yum module disable -y nodejs || true\\ncurl-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install node.js (opensuse)"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "contains(matrix.container, 'opensuse')"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "zypper refresh\\nzypper --non-interactive install git nodejs${{ matrix.node-version }}\\n"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install node.js (ubuntu)"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "contains(matrix.container, 'ubuntu')"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "apt-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "checkout"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "verify expectations"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "export-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "unit"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

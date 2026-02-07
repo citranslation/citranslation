@@ -1,0 +1,251 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "amd64"
+   }],
+   "type": "arch"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [
+      {
+       "children": [],
+       "type": "x11-utils"
+      },
+      {
+       "children": [],
+       "type": "libxkbcommon-x11-0"
+      },
+      {
+       "children": [],
+       "type": "xvfb"
+      },
+      {
+       "children": [],
+       "type": "herbstluftwm"
+      },
+      {
+       "children": [],
+       "type": "qt5-default"
+      },
+      {
+       "children": [],
+       "type": "qttools5-dev-tools"
+      },
+      {
+       "children": [],
+       "type": "libxcb-icccm4"
+      },
+      {
+       "children": [],
+       "type": "libxcb-image0"
+      },
+      {
+       "children": [],
+       "type": "libxcb-keysyms1"
+      },
+      {
+       "children": [],
+       "type": "libxcb-randr0"
+      },
+      {
+       "children": [],
+       "type": "libxcb-render-util0"
+      },
+      {
+       "children": [],
+       "type": "libxcb-xinerama0"
+      },
+      {
+       "children": [],
+       "type": "libxcb-xfixes0"
+      }
+     ],
+     "type": "packages"
+    }],
+    "type": "apt"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xvfb"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "display=\\\":99.0\\\" qt_debug_plugins=1"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install --upgrade setuptools importlib_metadata"
+    },
+    {
+     "children": [],
+     "type": "pip install .[tests]"
+    },
+    {
+     "children": [],
+     "type": "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/xvfb -- :99 -screen 0 1920x1200x24 -ac +extension glx +render -noreset"
+    },
+    {
+     "children": [],
+     "type": "sleep 3"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "herbstluftwm &"
+    },
+    {
+     "children": [],
+     "type": "sleep 1"
+    },
+    {
+     "children": [],
+     "type": "mkdir-cmd"
+    },
+    {
+     "children": [],
+     "type": "mkdir-cmd"
+    }
+   ],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pytest --cov=autopilot --cov-config=.coveragerc --cov-report term-missing tests"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "coveralls"
+    }
+   ],
+   "type": "after_script"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "pypi"
+     }],
+     "type": "provider"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "__token__"
+     }],
+     "type": "username"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "token"
+      }],
+      "type": "secure"
+     }],
+     "type": "pasword"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "tags"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "main"
+       }],
+       "type": "branch"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "$travis_python_version = 3.9"
+       }],
+       "type": "condition"
+      }
+     ],
+     "type": "on"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "sdist"
+     }],
+     "type": "distributions"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

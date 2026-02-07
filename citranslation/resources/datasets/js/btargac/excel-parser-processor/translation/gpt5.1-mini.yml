@@ -1,0 +1,50 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-11]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install codecov
+        run: npm install -g codecov
+
+      - name: Build, Test and Upload coverage
+        run: |
+          npm run build
+          npm run test
+          codecov
+
+      - name: Create distributable (Linux)
+        if: runner.os == 'Linux'
+        run: npm run dist
+
+      - name: Create distributable (macOS)
+        if: runner.os == 'macOS'
+        run: npm run dist -- --mac --win
+|End-of-Code|

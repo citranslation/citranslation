@@ -1,0 +1,38 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: build
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - '3.8'
+          - '3.9'
+          - '3.10'
+    steps:
+      - name: 'Set up Python ${{ matrix.python-version }}'
+        uses: actions/setup-python@v2
+        with:
+          python-version: '${{ matrix.python-version }}'
+      - uses: actions/checkout@v2
+      - run: pip install -r requirements.txt
+      - run: pip install pytest pytest-cov
+      - run: pip install coverage
+      - run: pytest --cov=./
+      - run: 'bash <(curl -s https://codecov.io/bash)'
+```
+
+Please note that the `runs-on` field in the GitHub Action configuration is set to `ubuntu-latest`, which is the latest version of Ubuntu available as of the time of writing this response. If you need to use a specific version of Ubuntu, you can replace `ubuntu-latest` with the version number you need.
+
+Also, please ensure that the Python versions you want to test are available in the GitHub Actions environment. If they are not, you may need to use a different runner or install the necessary dependencies manually.
+
+|End-of-Code|

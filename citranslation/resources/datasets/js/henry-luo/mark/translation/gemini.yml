@@ -1,0 +1,41 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          # Corresponds to the 'stable' version in Travis CI
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        # 'npm ci' is recommended for CI for faster, more reliable builds.
+        # It installs all dependencies from package.json and package-lock.json.
+        run: npm ci
+
+      - name: Run tests and generate coverage
+        run: npm run coverage
+
+      - name: Upload coverage to Codecov
+        # Replaces the 'codecov' CLI command with the official GitHub Action
+        uses: codecov/codecov-action@v4
+        # For private repositories, you must provide a CODECOV_TOKEN
+        # with:
+        #   token: ${{ secrets.CODECOV_TOKEN }}
+
+```
+|End-of-Code|

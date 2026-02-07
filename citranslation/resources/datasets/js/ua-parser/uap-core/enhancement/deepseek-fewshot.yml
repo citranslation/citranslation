@@ -1,0 +1,75 @@
+Here is the equivalent GitHub Action configuration for the provided Travis CI configuration:
+
+```yaml
+name: Build & Test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm test
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v3
+    - name: dependencies
+      run: npm install
+    - run: mkdir -p dist
+    - name: build
+      run: npx browserify index.js -o dist/aria.js -s aria
+    - name: test
+      run: npx mocha-headless-chrome -a no-sandbox -f test/index.html
+
+  CI:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ["16.x", "18.x", "20.x"]
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+        - name: Setup node
+          uses: actions/setup-node@v3
+          with:
+            node-version: ${{ matrix.node-version }}
+        - run: npm ci
+        - run: npm run validate
+|End-of-Code|
+```
+
+Please note that the `node_js` version in the Travis CI configuration is not directly translated to GitHub Actions because GitHub Actions does not have a direct equivalent to Travis CI's `node_js`. Instead, we use the `actions/setup-node@v3` action to install a specific version of Node.js. The version is specified in the `with.node-version` input.
+
+Also, the `sudo: false` directive in Travis CI is not necessary in GitHub Actions because it is the default behavior. GitHub Actions runners are automatically isolated from the host system.
+
+The `cache` directive in Travis CI is also not directly translated because GitHub Actions does not have a direct equivalent. However, you can use the `actions/cache@v2` action to cache dependencies and build outputs.
+
+The `notifications` directive in Travis CI is not directly translated because GitHub Actions does not have a direct equivalent. However, you can use the `actions/slack@v2` action to send notifications to a Slack channel.
+
+The `after_success` directive in Travis CI is not directly translated because GitHub Actions does not have a direct equivalent. However, you can use the `run` step in a job to run a command after the job succeeds.
+
+The `branches` directive in Travis CI is not directly translated because GitHub Actions does not have a direct equivalent. However, you can use the `branches-ignore` input in the `actions/checkout@v3` action to ignore certain branches.
+
+The `script` directive in Travis CI is not directly translated because GitHub Actions does not have a direct equivalent. However, you can use the `run` step in a job to run a command.
+
+The `language` directive in Travis CI is not directly translated because GitHub Actions does not have a direct equivalent. However, you can use the `runs-on` input in a job to specify the type of runner.
+
+The `install` and `script` directives in Travis CI are not directly translated because GitHub Actions does not have a direct equivalent. However, you can use the `run` step in a job to run a command.

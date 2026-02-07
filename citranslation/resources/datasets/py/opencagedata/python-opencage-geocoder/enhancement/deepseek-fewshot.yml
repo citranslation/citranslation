@@ -1,0 +1,198 @@
+## 1. Input: Travis CI
+None
+## 2. Input: Reference Migration Pairs
+-Each pair below shows a functionally equivalent migration from Travis CI to GitHub Actions.
+  -Example 1
+    -Travis CI:
+    # Python versions for matrix
+language: python
+dist: noble
+python:
+  - "3.9"
+  - "3.8"
+
+install: pip install tox-travis
+script: tox
+    -GitHub Actions:
+    name: Test
+
+on:
+  push:
+    branches: [ master, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox tox-gh-actions
+    - name: Test with tox
+      run: tox
+
+  -Example 2
+    -Travis CI:
+    sudo: required
+dist: noble
+language: python
+python: 
+  - "3.8"
+  - "3.9"
+install:
+  - pip install tox-travis
+script:
+  - tox
+    -GitHub Actions:
+    # Test with Tox: https://github.com/ymyzk/tox-gh-actions#workflow-configuration
+
+name: Build & Test
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9']
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install tox tox-gh-actions
+    - name: Test with tox
+      run: tox
+  -Example 3
+    -Travis CI:
+    # Config file for automatic testing at travis-ci.org
+
+language: python
+python:
+  - 3.10
+  - 3.9
+
+
+# Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
+install: pip install -U tox-travis
+
+# Command to run tests, e.g. python setup.py test
+script: tox
+
+# Assuming you have installed the travis-ci CLI tool, after you
+# create the Github repo and add it to Travis, run the
+# following command to finish PyPI deployment setup:
+# $ travis encrypt --add deploy.password
+# deploy:
+#   provider: pypi
+#   distributions: sdist bdist_wheel
+#   user: dhepper
+#   password:
+#     secure: PLEASE_REPLACE_ME
+#   on:
+#     tags: true
+#     repo: dhepper/django-model-path-converter
+#     python: 3.6
+    -GitHub Actions:
+    name: CI
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-24.04
+
+    strategy:
+      matrix:
+        python-version:
+        - 3.9
+        - '3.10'
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: pip
+        cache-dependency-path: 'requirements_dev.txt'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip setuptools wheel
+        python -m pip install --upgrade tox tox-py
+
+    - name: Run tox targets for ${{ matrix.python-version }}
+      run: tox --py current  
+## 3. Task:
+Migrate the above Travis CI configuration to Github Action, using the provided migration pair as reference. 
+## 4. Output: GitHub Action
+Github Action configuration only, end with "|End-of-Code|".
+
+name: CI
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-24.04
+
+    strategy:
+      matrix:
+        python-version:
+        - 3.9
+        - '3.10'
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: pip
+        cache-dependency-path: 'requirements_dev.txt'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip setuptools wheel
+        python -m pip install --upgrade tox tox-py
+
+    - name: Run tox targets for ${{ matrix.python-version }}
+      run: tox --py current  
+
+|End-of-Code|

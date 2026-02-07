@@ -1,0 +1,32 @@
+Here is the migrated GitHub Action configuration:
+```
+name: Node.js CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: npm install
+      - name: Create PostgreSQL database
+        run: psql -c 'create database sequelize;' -U postgres
+      - name: Run tests
+        run: npm test
+      - name: Generate coverage report
+        run:./node_modules/istanbul/lib/cli.js cover./node_modules/mocha/bin/_mocha --report lcovonly test/overall.test.js -- --exit && cat./coverage/lcov.info |./node_modules/coveralls/bin/coveralls.js && rm -rf./coverage
+      - name: Send notification
+        uses: env-ci/notify@v1
+        with:
+          recipients: KSDaemon@ya.ru
+          onsuccess: always
+          onfailure: always
+```
+|End-of-Code|

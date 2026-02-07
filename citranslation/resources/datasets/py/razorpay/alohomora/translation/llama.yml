@@ -1,0 +1,35 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["2.7", "3.6", "pypy", "pypy3"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          pip install -U setuptools pip
+      - name: Clean and install
+        run: |
+          python setup.py clean --all
+          python setup.py install
+      - name: Run tests
+        run: |
+          python setup.py test
+      - name: Allow failures for pypy and pypy3
+        if: github.matrix.python == "pypy" || github.matrix.python == "pypy3"
+        run: |
+          echo "Skipping test for pypy and pypy3"
+|End-of-Code|
+```
+Note that in GitHub Actions, we use a `matrix` strategy to define the Python versions to run, and we use `runs-on` to specify the environment (in this case, `ubuntu-latest`). We also use `uses` to checkout the code and `run` to execute the commands. The `if` statement is used to skip the test for pypy and pypy3 as specified in the original Travis CI configuration.

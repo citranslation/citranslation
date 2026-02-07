@@ -1,0 +1,184 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "node"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "stable"
+    }],
+    "type": "chrome"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo service postgresql stop"
+    },
+    {
+     "children": [],
+     "type": "sudo service mysql stop"
+    },
+    {
+     "children": [],
+     "type": "docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "docker-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "mkdirp ./dist -m 0777"
+    },
+    {
+     "children": [],
+     "type": "mkdirp ./$pkg_name -m 0777"
+    },
+    {
+     "children": [],
+     "type": "cp *.js package.json PATH-OR-URL license ./$pkg_name"
+    },
+    {
+     "children": [],
+     "type": "cp -r ./db ./erd ./keymaps ./menus ./mssql ./mysql ./node_modules ./polyfill ./postgresql ./preferences ./util ./$pkg_name"
+    },
+    {
+     "children": [],
+     "type": "zip -r ./dist/$pkg_name-$pkg_version.zip ./$pkg_name"
+    }
+   ],
+   "type": "before_deploy"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    }
+   ],
+   "type": "after_success"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "releases"
+     }],
+     "type": "provider"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "$github_token"
+     }],
+     "type": "api-key"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "kkrisz1/staruml-reverse-db"
+       }],
+       "type": "repo"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "tags"
+      }
+     ],
+     "type": "on"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "file_glob"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "dist/*"
+     }],
+     "type": "file"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "skip_cleanup"
+    }
+   ],
+   "type": "deploy"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "node_modules"
+    }],
+    "type": "directories"
+   }],
+   "type": "cache"
+  }
+ ],
+ "type": "travis-file"
+}

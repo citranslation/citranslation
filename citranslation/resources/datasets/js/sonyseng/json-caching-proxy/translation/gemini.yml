@@ -1,0 +1,41 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    strategy:
+      # A matrix of configurations to run the job with
+      # This replaces the `node_js` array in Travis CI
+      matrix:
+        node-version: [14.x, 20.x] # Corresponds to "10" and a modern equivalent for "node"
+
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Sets up a specific version of Node.js
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        # Cache npm dependencies for faster builds
+        cache: 'npm'
+
+    # Installs project dependencies. 'npm ci' is recommended for CI for its speed and reliability.
+    - name: Install dependencies
+      run: npm ci
+
+    # Runs the test script defined in package.json. This is the default test command.
+    - name: Run tests
+      run: npm test
+```|End-of-Code|

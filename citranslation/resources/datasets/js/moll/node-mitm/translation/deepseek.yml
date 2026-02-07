@@ -1,0 +1,83 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [
+          "node",
+          "0.10",
+          "0.11.13",
+          "0.11.14",
+          "0.11",
+          "0.12",
+          "4",
+          "5",
+          "6.0.0",
+          "6.3",
+          "6.4.0",
+          "6",
+          "7.0.0",
+          "7",
+          "11.8",
+          "8.11",
+          "8.12.0",
+          "8",
+          "9.5",
+          "9.6.0",
+          "9",
+          "10.0.0",
+          "10.15.0",
+          "10.15.1",
+          "10",
+          "11.0.0",
+          "11.1.0",
+          "11.2.0",
+          "11.7",
+          "11.8.0",
+          "11",
+          "12.0.0",
+          "12.3",
+          "12.4",
+          "12.16.2",
+          "12.16.3",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "iojs",
+          "iojs-v2.4.0",
+          "iojs-v3.2.0"
+        ]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+
+    - name: Check npm version and install if necessary
+      run: |
+        if [[ "$(npm --version)" = 3.* ]] && [[ "$(npm --version)" != 3.10.10 ]]; then
+          npm install --global npm@3
+        fi
+
+notifications:
+  email:
+    recipients:
+      - andri@dot.ee
+```
+
+Please note that the GitHub Actions configuration is slightly different from Travis CI configuration. The GitHub Actions configuration above uses the `actions/checkout@v2` to checkout your repository, `actions/setup-node@v1` to setup the Node.js environment, and then runs `npm ci`, `npm run build --if-present`, and `npm test`. The `Check npm version and install if necessary` step is also added to mimic the `before_install` section in Travis CI.

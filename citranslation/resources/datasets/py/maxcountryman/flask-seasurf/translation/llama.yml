@@ -1,0 +1,26 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          pip install flask
+          pip install nose
+          pip install mock
+      - name: Run tests
+        run: |
+          python setup.py test
+|End-of-Code|
+```
+Note that in GitHub Actions, we use the `on` keyword to specify the event that triggers the workflow (in this case, a push to the `main` branch). We then define a `jobs` section, which contains a single job named `test`. The `runs-on` keyword specifies the environment in which the job will run (in this case, an `ubuntu-latest` environment). The `steps` section contains the individual steps that make up the job. In this case, we have three steps: checking out the code, installing dependencies, and running the tests.

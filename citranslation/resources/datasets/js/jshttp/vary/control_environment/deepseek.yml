@@ -1,0 +1,33 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: ["16"]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+    - run: npm run lint --if-present
+    - run: npm run coverage --if-present
+    - name: Coveralls
+      if: ${{ matrix.node-version == '10.22' }}
+      run: |
+        npm install coveralls
+        cat ./coverage/lcov.info | coveralls
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}

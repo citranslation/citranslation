@@ -1,0 +1,146 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "14"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "1"
+    }],
+    "type": "depth"
+   }],
+   "type": "git"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "couchdb_image=apache/couchdb:2.3.1 nightwatch_skiptags=\\\"search,partitioned\\\""
+    },
+    {
+     "children": [],
+     "type": "couchdb_image=apache/couchdb:3 nightwatch_skiptags=\\\"search,nonpartitioned,couchdb-v2-only\\\""
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "./bin/PATH-OR-URL"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "travis_retry ./bin/docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "grunt debugdev"
+    },
+    {
+     "children": [],
+     "type": "dist=./dist/debug ./bin/fauxton &"
+    },
+    {
+     "children": [],
+     "type": "sleep 30"
+    }
+   ],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "./node_modules/.bin/grunt nightwatch_retries"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "after_script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "apt"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "~/.npm"
+      }],
+      "type": "directories"
+     }],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "cache"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        python-version: ["3.8"]
+        env:
+          - DJANGO: "<2"
+            DRF: "<3.8"
+          - DJANGO: "<2"
+            DRF: "<3.9"
+          - DJANGO: "<2.1"
+            DRF: "<3.9"
+          - DJANGO: "<2.2"
+            DRF: "<3.9"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install "django${{ matrix.env.DJANGO }}" "djangorestframework${{ matrix.env.DRF }}"
+
+      - name: Run tests
+        run: python runtests.py
+
+|End-of-Code|

@@ -1,0 +1,19 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js CI
+
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm run test
+      - name: Generate code coverage report
+        run: npm run codecov
+```
+|End-of-Code|

@@ -1,0 +1,45 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: &python-versions
+          - 3.9
+          - 3.10
+          - 3.11
+        django-version: &django-versions
+          - 32
+          - 40
+          - 41
+          - 42
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          sudo add-apt-repository ppa:deadsnakes/ppa -y
+          sudo apt update
+          sudo apt install -y python3.9 python3.10 python3.11
+
+      - name: Install tox
+        run: pip install tox
+
+      - name: Run tox
+        run: tox
+
+      - name: Set environment variables
+        env:
+          TOXENV: ${{ matrix.python-version }}-django-${{ matrix.django-version }}
+```
+|End-of-Code|

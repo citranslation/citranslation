@@ -1,0 +1,38 @@
+Here is the GitHub Action configuration equivalent to the provided Travis CI configuration:
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10", "3.11", "pypy-2.7", "pypy-3.8"]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: "requirements*.txt"
+      - name: Install tox
+        run: pip install tox
+      - name: Run tox
+        run: tox -e py
+      - name: Debug info
+        if: ${{ always() }}
+        run: python debug-info.py
+```
+
+|End-of-Code|

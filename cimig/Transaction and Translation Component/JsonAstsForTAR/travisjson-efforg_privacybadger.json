@@ -1,0 +1,226 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "jammy"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.11"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "info=\\\"lint\\\""
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "node"
+         }],
+         "type": "node_js"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "info=\\\"firefox\\\" browser=firefox"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "latest"
+          }],
+          "type": "firefox"
+         }],
+         "type": "addons"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "info=\\\"firefox beta\\\" browser=firefox"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "latest-beta"
+          }],
+          "type": "firefox"
+         }],
+         "type": "addons"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "info=\\\"firefox nightly\\\" browser=firefox"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "latest-nightly"
+          }],
+          "type": "firefox"
+         }],
+         "type": "addons"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "info=\\\"firefox esr\\\" browser=firefox"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "latest-esr"
+          }],
+          "type": "firefox"
+         }],
+         "type": "addons"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "info=\\\"edge beta\\\" browser=microsoft-edge-beta"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "curl-cmd"
+          },
+          {
+           "children": [],
+           "type": "sudo install -o root -g root -m 644 microsoft.gpg /usr/share/keyrings/"
+          },
+          {
+           "children": [],
+           "type": "sudo sh -c 'echo-cmd"
+          },
+          {
+           "children": [],
+           "type": "sudo rm microsoft.gpg"
+          },
+          {
+           "children": [],
+           "type": "sudo apt update"
+          },
+          {
+           "children": [],
+           "type": "sudo apt install microsoft-edge-beta"
+          }
+         ],
+         "type": "install"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    }
+   ],
+   "type": "build"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "travis_retry ./scripts/setup_travis.sh"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": ". ./scripts/run_travis.sh"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xvfb"
+   }],
+   "type": "services"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,121 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "shell"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tst_pub_dwnl='travis_wait 40 ./tst_pub_dwnl_emery_etal_2020_jhmaven-.sh' tst_pub_repr='./tst_pub_repr_emery_etal_2020_jhmaven-.sh'"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "apt list --installed"
+    },
+    {
+     "children": [],
+     "type": "which python"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo python-cmd"
+    },
+    {
+     "children": [],
+     "type": "rm PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "which pip"
+    },
+    {
+     "children": [],
+     "type": "pip --version"
+    },
+    {
+     "children": [],
+     "type": "sudo pip install --no-cache-dir `grep 'numpy==' requirements.pip`"
+    },
+    {
+     "children": [],
+     "type": "sudo pip install --no-cache-dir -r requirements.pip"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

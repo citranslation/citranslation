@@ -1,0 +1,78 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "12"
+    },
+    {
+     "children": [],
+     "type": "13"
+    },
+    {
+     "children": [],
+     "type": "14"
+    },
+    {
+     "children": [],
+     "type": "15"
+    },
+    {
+     "children": [],
+     "type": "16"
+    },
+    {
+     "children": [],
+     "type": "node"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "istanbul cover test.js"
+    },
+    {
+     "children": [],
+     "type": "codecov"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,61 @@
+Sure, here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: Travis CI to GitHub Actions
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: pip install -r requirements-test.txt
+
+    - name: Run tests
+      run: python setup.py nosetests
+
+    - name: Coveralls
+      run: |
+        pip install coveralls
+        coveralls
+
+    - name: Notifications
+      uses: uralbash/action-irc@v1.0.0
+      with:
+        server: chat.freenode.net
+        port: 6667
+        channel: "#sacrud"
+        nick: "sacrud"
+        password: ${{ secrets.IRC_PASSWORD }}
+        message: "Build status: ${{ job.status }}"
+        on_success: change
+        on_failure: always
+
+    - name: Email notifications
+      uses: dawidd6/action-send-mail@v2.11.0
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: Travis CI build status
+        body: Build status: ${{ job.status }}
+        to: "sacrud@uralbash.ru"
+        from: "Travis CI"
+        on_success: change
+        on_failure: always
+
+|End-of-Code|
+```
+
+Please replace the `IRC_PASSWORD`, `EMAIL_USERNAME`, and `EMAIL_PASSWORD` with your actual IRC password, email username, and email password. Also, you may need to adjust the Python version and dependencies according to your project's needs.

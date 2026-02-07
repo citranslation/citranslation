@@ -1,0 +1,72 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "2.7"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "PATH-OR-URL#unary"
+     }],
+     "type": "irc"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "EMAIL"
+     }],
+     "type": "email"
+    }
+   ],
+   "type": "notifications"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pythonpath=./"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install tox"
+    },
+    {
+     "children": [],
+     "type": "pip install coveralls"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python-cmd"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coveralls"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

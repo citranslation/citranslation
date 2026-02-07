@@ -1,0 +1,114 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.7"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "master"
+    }],
+    "type": "only"
+   }],
+   "type": "branches"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install sphinx affine shapely"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "rm -rf doctrees"
+    },
+    {
+     "children": [],
+     "type": "touch .nojekyll"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "pages"
+     }],
+     "type": "provider"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "skip-cleanup"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "$github_token"
+     }],
+     "type": "github-token"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "./documentation/build/"
+     }],
+     "type": "local-dir"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "master"
+      }],
+      "type": "branch"
+     }],
+     "type": "on"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,858 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "deploy-all"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     },
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "*_"
+       },
+       {
+        "children": [],
+        "type": "v[0-9]+.[0-9]+.[0-9]+"
+       },
+       {
+        "children": [],
+        "type": "v[0-9]+.[0-9]+.[0-9]+[abrc]+[0-9]+"
+       },
+       {
+        "children": [],
+        "type": "v[0-9]+.[0-9]+.[0-9]+.dev[0-9]+"
+       }
+      ],
+      "type": "tags"
+     }
+    ],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "bash"
+     }],
+     "type": "shell"
+    }],
+    "type": "run"
+   }],
+   "type": "defaults"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "3.9.1"
+     }],
+     "type": "win_python_version"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "v2.2.1"
+     }],
+     "type": "win_librsync_version"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [
+          {
+           "children": [],
+           "type": "2010_x86_64"
+          },
+          {
+           "children": [],
+           "type": "2010_i686"
+          },
+          {
+           "children": [],
+           "type": "2014_x86_64"
+          }
+         ],
+         "type": "many-linux"
+        }],
+        "type": "matrix"
+       }],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "0"
+            }],
+            "type": "fetch-depth"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "create manylinux wheel(s) in a container"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "addnab/docker-cmd"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "PATH-OR-URL{{ matrix.many-linux }}"
+             }],
+             "type": "image"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "-v ${{ github.workspace }}:/ws"
+             }],
+             "type": "options"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "shell-cmd"
+             }],
+             "type": "run"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "upload wheel artifacts"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/upload-artifact@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "package-artifacts"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "dist/*.whl"
+             }],
+             "type": "path"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "error"
+             }],
+             "type": "if-no-files-found"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "build-manylinux"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "0"
+            }],
+            "type": "fetch-depth"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "create source dist package"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "python-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "upload sdist artifact"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/upload-artifact@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "package-artifacts"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "dist/*.tar.gz"
+             }],
+             "type": "path"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "error"
+             }],
+             "type": "if-no-files-found"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "build-sdist"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "windows-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [
+          {
+           "children": [],
+           "type": "x86"
+          },
+          {
+           "children": [],
+           "type": "x64"
+          }
+         ],
+         "type": "arch"
+        }],
+        "type": "matrix"
+       }],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "0"
+            }],
+            "type": "fetch-depth"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up python-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ env.win_python_version }}"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.arch }}"
+             }],
+             "type": "architecture"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "python.exe -vv\\npip.exe install --upgrade pywin32 pyinstaller wheel certifi setuptools-scm tox pyyaml\\npython.exe -c 'import pywintypes, winnt, win32api, win32security, win32file, win32con'\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "build librsync"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "tools/win_build_librsync.sh ${{ matrix.arch }} ${win_librsync_version}"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "build rdiff-backup"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "tools/win_build_rdiffbackup.sh ${{ matrix.arch }} ${win_python_version}"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "package rdiff-backup"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "tools/win_package_rdiffbackup.sh ${{ matrix.arch }}"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "upload artifacts"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/upload-artifact@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "package-artifacts"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "dist/*.*"
+             }],
+             "type": "path"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "error"
+             }],
+             "type": "if-no-files-found"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "build-windows"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "build-manylinux"
+        },
+        {
+         "children": [],
+         "type": "build-sdist"
+        },
+        {
+         "children": [],
+         "type": "build-windows"
+        }
+       ],
+       "type": "needs"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "download artifacts"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "download"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/download-artifact@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "package-artifacts"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "dist"
+             }],
+             "type": "path"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "echo-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "create release and upload assets to github"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "meedamian/github-release@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.github_token }}"
+             }],
+             "type": "token"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ github.ref }}"
+             }],
+             "type": "tag"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "release ${{ github.ref }} ${{ github.event_name }}"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "draft"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "prerelease"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ steps.export.outputs.artifact_files }}"
+             }],
+             "type": "files"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "FALSE"
+             }],
+             "type": "gzip"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install twine"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "github.event_name == 'push' && startswith(github.ref, 'refs/tags/v')"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "sudo python-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "publish to test pypi repository"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "github.event_name == 'push' && startswith(github.ref, 'refs/tags/v') && contains(github.ref, '.dev')"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "__token__"
+             }],
+             "type": "twine_username"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.pypi_token_test }}"
+             }],
+             "type": "twine_password"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "PATH-OR-URL"
+             }],
+             "type": "twine_repository_url"
+            }
+           ],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "twine upload --skip-existing --verbose dist/rdiff*.{whl,tar.gz}\\n# old versions don't understand --non-interactive\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "publish to pypi repository"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "github.event_name == 'push' && startswith(github.ref, 'refs/tags/v') && ! contains(github.ref, '.dev')"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "__token__"
+             }],
+             "type": "twine_username"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.pypi_token }}"
+             }],
+             "type": "twine_password"
+            }
+           ],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "twine upload --skip-existing --verbose dist/rdiff*.{whl,tar.gz}\\n# old versions don't understand --non-interactive\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "release"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

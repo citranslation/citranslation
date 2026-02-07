@@ -1,0 +1,74 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install -r requirements.txt"
+    },
+    {
+     "children": [],
+     "type": "pip install coverage-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "black --check ./"
+    },
+    {
+     "children": [],
+     "type": "isort ./"
+    },
+    {
+     "children": [],
+     "type": "mypy ./ghgf/ --ignore-missing-imports --follow-imports=skip"
+    },
+    {
+     "children": [],
+     "type": "flake8 ./"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "bash <(curl-cmd"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

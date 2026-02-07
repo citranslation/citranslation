@@ -1,0 +1,43 @@
+Sure, here is the equivalent GitHub Action configuration for the provided Travis CI configuration:
+
+```yaml
+name: ci
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  test:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install test deps
+        run: |
+          python3 -m pip install -U coverage codecov mypy
+          python3 -m pip install -r requirements.txt
+
+      - name: Run tests
+        run: |
+          python3 -m coverage run --branch -m unittest discover -t . -s ni/test/
+          python3 -m mypy ni/*.py
+
+      - name: Run mypy
+        run: python3 -m mypy ni/*.py
+
+      - uses: codecov/codecov-action@v2
+        with:
+          file: ./coverage.xml
+```
+
+Please note that the Travis CI configuration you provided is quite complex and it's not clear what all the different parts are doing. The GitHub Action configuration above is a basic equivalent that should work for the given Travis CI configuration. You may need to adjust it to fit your specific needs.

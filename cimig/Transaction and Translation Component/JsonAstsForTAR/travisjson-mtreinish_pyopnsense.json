@@ -1,0 +1,269 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.5"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py35"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.6"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py36"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "xenial"
+         }],
+         "type": "dist"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py37"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "sudo"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py38"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py39"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "2.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py27"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.6"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=pep8"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.6"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=docs"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.6"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=cover"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    }
+   ],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "~/.cache/pip"
+    }],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install -u tox coveralls"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": ".travis/PATH-OR-URL"
+   }],
+   "type": "after_success"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "FALSE"
+    }],
+    "type": "email"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

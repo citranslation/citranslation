@@ -1,0 +1,12 @@
+name: Python workflow
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create settings.py
+        run: echo "from Default.settings import *" > settings.py
+      - name: Run generate.py
+        run: ./generate.py
+|End-of-Code|

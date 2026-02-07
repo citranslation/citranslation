@@ -1,0 +1,98 @@
+name: ci
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [0.8, 0.10, 0.12, 1.8, 2.5, 3.3, 4.9, 5.12, 6.17, 7.10, 8.17, 9.11, 10.24, 11.15, 12.22, 13.14, 14.16, 15.13]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Configure npm
+        run: npm config set shrinkwrap false
+
+      - name: Setup Node.js version-specific dependencies
+        run: |
+          NODE_MAJOR=$(echo "${{ matrix.node-version }}" | cut -d. -f1)
+          NODE_MINOR=$(echo "${{ matrix.node-version }}" | cut -d. -f2)
+
+          # eslint for linting
+          if [ "$NODE_MAJOR" -lt 10 ]; then
+            node -pe 'Object.keys(require("./package").devDependencies).join("\n")' | grep -E '^eslint(-|$)' | xargs -n1 npm rm --silent --save-dev || true
+          fi
+
+          # mocha for testing
+          if [ "$NODE_MAJOR" -eq 0 ] && [ "$NODE_MINOR" -lt 10 ]; then
+            npm install --save-dev mocha@2.5.3
+          elif [ "$NODE_MAJOR" -lt 4 ]; then
+            npm install --save-dev mocha@3.5.3
+          elif [ "$NODE_MAJOR" -lt 6 ]; then
+            npm install --save-dev mocha@5.2.0
+          elif [ "$NODE_MAJOR" -lt 8 ]; then
+            npm install --save-dev mocha@6.2.2
+          elif [ "$NODE_MAJOR" -lt 10 ]; then
+            npm install --save-dev mocha@7.2.0
+          fi
+
+          # nyc for coverage
+          if [ "$NODE_MAJOR" -eq 0 ] && [ "$NODE_MINOR" -lt 10 ]; then
+            npm rm --silent --save-dev nyc || true
+          elif [ "$NODE_MAJOR" -lt 4 ]; then
+            npm install --save-dev nyc@10.3.2
+          elif [ "$NODE_MAJOR" -lt 6 ]; then
+            npm install --save-dev nyc@11.9.0
+          elif [ "$NODE_MAJOR" -lt 8 ]; then
+            npm install --save-dev nyc@14.1.1
+          fi
+
+          # supertest for testing
+          if [ "$NODE_MAJOR" -eq 0 ] && [ "$NODE_MINOR" -lt 10 ]; then
+            npm install --save-dev supertest@1.1.0
+          elif [ "$NODE_MAJOR" -lt 4 ]; then
+            npm install --save-dev supertest@2.0.0
+          elif [ "$NODE_MAJOR" -lt 6 ]; then
+            npm install --save-dev supertest@3.4.2
+          fi
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: |
+          if npm -ps ls nyc | grep -q nyc; then
+            npm run test-ci
+          else
+            npm test
+          fi
+
+      - name: Run linting
+        run: |
+          if npm -ps ls eslint | grep -q eslint; then
+            npm run lint
+          fi
+
+      - name: Upload coverage to coveralls
+        run: |
+          if [ -d .nyc_output ]; then
+            npm install --save-dev coveralls@2.13.3
+            ./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls
+          fi
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+
+|End-of-Code|

@@ -1,0 +1,76 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pypy"
+    },
+    {
+     "children": [],
+     "type": "3.4"
+    },
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7-dev"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "3.6"
+       }],
+       "type": "python"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tox -e linters"
+       }],
+       "type": "script"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }],
+    "type": "include"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install tox-travis"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

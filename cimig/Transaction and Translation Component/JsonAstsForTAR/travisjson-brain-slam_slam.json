@@ -1,0 +1,445 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.6"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "install='pip' env='default-user'"
+    },
+    {
+     "children": [],
+     "type": "install='pip' env='default-dev'"
+    },
+    {
+     "children": [],
+     "type": "install='pip' env='advanced-user'"
+    },
+    {
+     "children": [],
+     "type": "install='pip' env='advanced-dev'"
+    },
+    {
+     "children": [],
+     "type": "install='pip' env='full'"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "python-cmd"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "xenial"
+         }],
+         "type": "distrib"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "python"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.6"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "install='pip' env='lining'"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "source continuous_integration/PATH-OR-URL"
+         }],
+         "type": "script"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "skip"
+         }],
+         "type": "after_success"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "python-cmd"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "osx"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "xcode9.4"
+         }],
+         "type": "osx_image"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "shell"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "install='pip' env='lining'"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "source continuous_integration/PATH-OR-URL"
+         }],
+         "type": "script"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "skip"
+         }],
+         "type": "after_success"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "python-cmd"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "osx"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "xcode9.4"
+         }],
+         "type": "osx_image"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "shell"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "travis_python_version=\\\"3.6\\\" install='pip' env='default-user'"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "python-cmd"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "osx"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "xcode9.4"
+         }],
+         "type": "osx_image"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "shell"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "travis_python_version=\\\"3.6\\\" install='pip' env='default-dev'"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "python-cmd"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "osx"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "xcode9.4"
+         }],
+         "type": "osx_image"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "shell"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "travis_python_version=\\\"3.6\\\" install='pip' env='advanced-user'"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "python-cmd"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "osx"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "xcode9.4"
+         }],
+         "type": "osx_image"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "shell"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "travis_python_version=\\\"3.6\\\" install='pip' env='advanced-dev'"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "python-cmd"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "osx"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "xcode9.4"
+         }],
+         "type": "osx_image"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "shell"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "travis_python_version=\\\"3.6\\\" install='pip' env='full'"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [
+        {
+         "children": [],
+         "type": "install='pip' env='default-user'"
+        },
+        {
+         "children": [],
+         "type": "install='pip' env='default-dev'"
+        },
+        {
+         "children": [],
+         "type": "install='pip' env='advanced-user'"
+        },
+        {
+         "children": [],
+         "type": "install='pip' env='advanced-dev'"
+        }
+       ],
+       "type": "env"
+      }],
+      "type": "OBJ-NODE"
+     }],
+     "type": "allow_failures"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    }
+   ],
+   "type": "build"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "skip"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "source continuous_integration/PATH-OR-URL"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "source continuous_integration/PATH-OR-URL"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coveralls || true"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

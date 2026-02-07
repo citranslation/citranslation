@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "nightly"]
+    # Allow the nightly run to not fail the whole workflow (optional)
+    continue-on-error: ${{ matrix.python-version == 'nightly' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python (stable)
+        if: matrix.python-version != 'nightly'
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Set up Python (nightly)
+        if: matrix.python-version == 'nightly'
+        uses: actions/setup-python@v4
+        with:
+          python-version: 'nightly'
+          check-latest: true
+          cache: 'pip'
+
+      - name: Upgrade pip and build tools, install package extras
+        run: |
+          pip install -U pip
+          pip install -U wheel setuptools pbr
+          pip install -U ".[docs,test]"
+          pip list
+          python --version
+
+      - name: Run checks
+        run: make check
+
+      - name: Convert README.rst to HTML
+        run: rst2html.py README.rst README.html
+
+|End-of-Code|

@@ -1,0 +1,49 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12', '3.13', '3.14', 'pypy-3.8', 'pypy-3.9', 'pypy-3.10', 'pypy-3.11']
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-cov coveralls
+        pip install -e .
+
+    - name: Run tests with coverage
+      run: |
+        pytest tests/ --cov=neat --cov-report=term --cov-report=xml -v
+
+    - name: Upload coverage to Coveralls
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        coveralls --service=github
+```
+
+Please replace `neat` with your actual package name.
+
+Also, please note that GitHub Actions does not support Python 3.12, 3.13, 3.14, and PyPy versions. You may need to adjust the Python versions accordingly.

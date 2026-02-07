@@ -1,0 +1,130 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "2.7"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.5"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.6"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.7"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "deactivate"
+    },
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "virtualenv --system-site-packages ~/virtualenv/this"
+    },
+    {
+     "children": [],
+     "type": "source ~/virtualenv/this/bin/activate"
+    },
+    {
+     "children": [],
+     "type": "pip install codecov-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install -r requirements.txt --user"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "nosetests -v --with-coverage"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "codecov-cmd"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

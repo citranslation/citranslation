@@ -1,0 +1,92 @@
+Here is the migrated GitHub Action configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+        node-version: 'jammy'
+    - name: Cache npm dependencies
+      uses: actions/cache@v2
+        path: ~/.npm
+        key: ${{ runner.os }}-npm-cache
+    - name: Install dependencies
+      run: npm install
+    - name: Lint
+      run: yarn lint
+      if: contains(github.event.pull_request.title, "[only argos]")
+    - name: Generate Sprite and Palette
+      run: yarn makeSpriteAndPalette
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Build JS
+      run: yarn build
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Build CSS
+      run: yarn build:css:all
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Build docs
+      run: yarn build:doc:react
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Tests without snapshots
+      run: yarn test:noSnapshots
+      if: contains(github.event.pull_request.title, "[only argos]")
+    - name: Tests snapshots
+      run: yarn test:snapshots
+      if: contains(github.event.pull_request.title, "[only argos]")
+    - name: Bundlemon
+      run: yarn bundlemon
+      if: contains(github.event.pull_request.title, "[only argos]")
+    - name: Create desktop screenshots
+      run: |
+        if [[ "${GITHUB_EVENT_NAME}" == "pull_request" && "${GITHUB_EVENT_PULL_REQUEST_TITLE}"!= *"[skip argos]"* ]]; then
+          mkdir./screenshots
+          npx puppeteer browsers install chrome
+          yarn screenshots --mode react --viewport desktop --screenshot-dir./screenshots/reactDesktop
+        fi
+    - name: Create mobile screenshots
+      run: |
+        if [[ "${GITHUB_EVENT_NAME}" == "pull_request" && "${GITHUB_EVENT_PULL_REQUEST_TITLE}"!= *"[skip argos]"* ]]; then
+          mkdir./screenshots
+          npx puppeteer browsers install chrome
+          yarn screenshots --mode react --viewport 300x600 --screenshot-dir./screenshots/reactMobile
+        fi
+    - name: Create kss screenshots
+      run: |
+        if [[ "${GITHUB_EVENT_NAME}" == "pull_request" && "${GITHUB_EVENT_PULL_REQUEST_TITLE}"!= *"[skip argos]"* ]]; then
+          mkdir./screenshots
+          npx puppeteer browsers install chrome
+          yarn screenshots --mode kss --screenshot-dir./screenshots/kss
+        fi
+    - name: Upload all screenshots
+      run: |
+        if [[ "${GITHUB_EVENT_NAME}" == "pull_request" && "${GITHUB_EVENT_PULL_REQUEST_TITLE}"!= *"[skip argos]"* ]]; then
+          yarn argos:upload --parallel screenshots/reactDesktop/ --token $ARGOS_TOKEN  --parallel-total 3 --parallel-nonce $GITHUB_RUN_ID --ignore ''
+          yarn argos:upload --parallel screenshots/reactMobile/ --token $ARGOS_TOKEN  --parallel-total 3 --parallel-nonce $GITHUB_RUN_ID --ignore ''
+          yarn argos:upload --parallel screenshots/kss/ --token $ARGOS_TOKEN  --parallel-total 3 --parallel-nonce $GITHUB_RUN_ID --ignore ''
+        fi
+    - name: Deploy
+      run: yarn deploy:doc -- --username cozycloud --email contact@cozycloud.cc --repo https://cozy-bot:$GITHUB_TOKEN@github.com/cozy/cozy-ui.git && yarn semantic-release
+      if: contains(github.event.pull_request.title, "[only argos]")
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
+|End-of-Code|
+```
+Note that I've replaced the `if` statements with `if` statements using the `contains` function, and removed the `env` section at the top level. I've also replaced the `workspaces` section with `env` sections in each step. Additionally, I've replaced the `PR_TITLE` variable with `GITHUB_EVENT_PULL_REQUEST_TITLE` and `TRAVIS_REPO_SLUG` with `GITHUB_REPO`.

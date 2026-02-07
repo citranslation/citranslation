@@ -1,0 +1,224 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "bionic"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    },
+    {
+     "children": [],
+     "type": "3.10"
+    },
+    {
+     "children": [],
+     "type": "3.11"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "upgrades=\\\"-u gemd pandas arrow urllib3 requests pytest boto3\\\""
+    },
+    {
+     "children": [],
+     "type": "upgrades=\\\"\\\""
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install --only-binary ':all:' -r requirements.txt"
+    },
+    {
+     "children": [],
+     "type": "pip install --only-binary ':all:' -r test_requirements.txt"
+    },
+    {
+     "children": [],
+     "type": "pip install --only-binary ':all:' $upgrades -e ."
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "bash scripts/run_tests.sh"
+    },
+    {
+     "children": [],
+     "type": "test \\\"$upgrades\\\" != \\\"\\\" || test $travis_python_version != \\\"3.10\\\" || bash scripts/build_docs.sh"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "main"
+     },
+     {
+      "children": [],
+      "type": "/^v[\\\\.0-9]+$/"
+     }
+    ],
+    "type": "only"
+   }],
+   "type": "branches"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "pages"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "$gh_secret_token"
+       }],
+       "type": "github_token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "keep_history"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "./docs/_build/html/"
+       }],
+       "type": "local_dir"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.10"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "upgrades=\\\"\\\""
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "pypi"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "__token__"
+       }],
+       "type": "user"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "$pypi_api_token"
+       }],
+       "type": "password"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "sdist bdist_wheel"
+       }],
+       "type": "distributions"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_existing"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "TRUE"
+        }],
+        "type": "tags"
+       }],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

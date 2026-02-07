@@ -1,0 +1,36 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js CI
+
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ["12", "10"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Run tests
+        run: npm test
+      - name: Generate coverage report
+        run: nyc report --reporter=text-lcov
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: coverage/lcov.info
+      - name: Deploy to Coveralls
+        uses: coveralls/action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          file: coverage/lcov.info
+|End-of-Code|
+```
+Note that this configuration uses the `ubuntu-latest` environment, which is a more modern and secure alternative to the `node` environment used in Travis CI. The `matrix` strategy is used to run the tests on multiple Node.js versions. The `actions/upload-artifact` step is used to upload the coverage report as an artifact, which can be downloaded and used by the `coveralls` action.

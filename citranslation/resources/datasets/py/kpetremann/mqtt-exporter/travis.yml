@@ -1,0 +1,11 @@
+dist: noble
+language: python
+install: pip install -r requirements/dev.txt
+python:
+  - "3.8"
+  - "3.9"
+script:
+  - pylama .
+  - pytest tests/
+  - black . --check --diff
+  - isort . --check --diff

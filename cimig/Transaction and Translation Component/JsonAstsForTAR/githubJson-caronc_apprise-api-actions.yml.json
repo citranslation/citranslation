@@ -1,0 +1,253 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "build apprise api image"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "master"
+      }],
+      "type": "branches"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "v*"
+      }],
+      "type": "tags"
+     }
+    ],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "checkout"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "docker-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "docker-cmd"
+          }],
+          "type": "id"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "crazy-max/ghaction-docker-cmd"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.docker-cmd"
+            }],
+            "type": "images"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "tag-edge"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set up qemu"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "docker-cmd"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set up docker-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "docker-cmd"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "login to docker-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "docker-cmd"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.docker-cmd"
+            }],
+            "type": "username"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.docker-cmd"
+            }],
+            "type": "password"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "build and push"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "docker-cmd"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "."
+            }],
+            "type": "context"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "linux/amd64,linux/arm64,linux/arm/v7"
+            }],
+            "type": "platforms"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ github.event_name != 'pull_request' }}"
+            }],
+            "type": "push"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ steps.docker-cmd"
+            }],
+            "type": "tags"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ steps.docker-cmd"
+            }],
+            "type": "labels"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "buildx"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

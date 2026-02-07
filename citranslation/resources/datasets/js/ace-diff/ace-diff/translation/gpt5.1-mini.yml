@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write   # needed for semantic-release to create GitHub releases
+  packages: write
+
+jobs:
+  test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 12
+        uses: actions/setup-node@v4
+        with:
+          node-version: '12'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build, serve (background) and run tests
+        run: |
+          npm run build
+          # start server in background
+          npm run serve &>/dev/null &
+          # give the server a moment to start (adjust if needed)
+          sleep 3
+          npm test
+
+  release:
+    name: Release (semantic-release)
+    needs: test
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'push' &&
+      (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/'))
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 12
+        uses: actions/setup-node@v4
+        with:
+          node-version: '12'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run semantic-release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run semantic-release
+
+|End-of-Code|

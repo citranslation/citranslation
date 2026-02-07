@@ -1,0 +1,140 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "focal"
+        }],
+        "type": "dist"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9-dev"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "focal"
+        }],
+        "type": "dist"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [
+      {
+       "children": [],
+       "type": "libattr1-dev"
+      },
+      {
+       "children": [],
+       "type": "pkg-config"
+      },
+      {
+       "children": [],
+       "type": "gcc"
+      },
+      {
+       "children": [],
+       "type": "ninja-build"
+      },
+      {
+       "children": [],
+       "type": "meson"
+      },
+      {
+       "children": [],
+       "type": "python3-sphinx"
+      },
+      {
+       "children": [],
+       "type": "cython3"
+      },
+      {
+       "children": [],
+       "type": "libfuse3-dev"
+      },
+      {
+       "children": [],
+       "type": "fuse3"
+      }
+     ],
+     "type": "packages"
+    }],
+    "type": "apt"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "test/PATH-OR-URL"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "test/PATH-OR-URL"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

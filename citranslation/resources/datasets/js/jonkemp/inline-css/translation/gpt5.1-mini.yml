@@ -1,0 +1,40 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['20', '18', '16']
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Bootstrap (post-dependencies)
+        run: npm run bootstrap
+
+      - name: Lint (before script)
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test
+
+      - name: Send coverage to Coveralls (only once, on Node 14)
+        if: ${{ success() && matrix.node-version == '14' }}
+        run: npm run coveralls
+
+|End-of-Code|

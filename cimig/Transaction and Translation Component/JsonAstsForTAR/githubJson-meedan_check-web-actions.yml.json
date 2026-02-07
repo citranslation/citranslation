@@ -1,0 +1,1787 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "build and run tests"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.head_ref || github.ref_name }}"
+     }],
+     "type": "github_branch"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.job }}"
+     }],
+     "type": "github_job_name"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.event.head_commit.message }}"
+     }],
+     "type": "github_commit_message"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ secrets.aws_endpoint }}"
+     }],
+     "type": "aws_endpoint"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "eu-west-1"
+     }],
+     "type": "aws_region"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "check-web"
+        }],
+        "type": "labels"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master' || contains(github.event.head_commit.message, '[full ci]') || contains(github.event.head_commit.message, '[media similarity tests]')\\n"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set permissions for-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "sudo chown -r $user:$user $github_workspace\\nsudo chmod-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "configure aws credentials"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "aws-actions/configure-aws-credentials@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.aws_access_key_id }}"
+             }],
+             "type": "aws-access-key-id"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.aws_secret_access_key }}"
+             }],
+             "type": "aws-secret-access-key"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.aws_role_to_assume }}"
+             }],
+             "type": "role-to-assume"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "eu-west-1"
+             }],
+             "type": "aws-region"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "login to amazon ecr"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "login-ecr"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "aws-actions/amazon-ecr-login@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up qemu"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up docker-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "decrypt credentials for-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.decryption_password }}"
+            }],
+            "type": "decryption_password"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "openssl enc -aes-256-cbc -d -in test/google_credentials.json.enc -out test/google_credentials.json -k $decryption_password\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup utf-8 capable locale"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "ngrok"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.ngrok_auth }}"
+            }],
+            "type": "ngrok_auth"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup pender"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup check api"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup alegre"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup presto"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup configuration files"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "cp config.js.example config.js\\ncp config.js.example test/config.js\\ncp config-build.js.example config-build.js\\ncp config-server.js.example config-server.js\\ncp test/config.yml.example test/config.yml\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "before script"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "3000"
+             }],
+             "type": "max_web_curl"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "0"
+             }],
+             "type": "web_curl_count"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.ngrok_auth }}"
+             }],
+             "type": "ngrok_auth"
+            }
+           ],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "github_job_name=$github_job_name github_branch=$github_branch ./PATH-OR-URL\\n max_web_curl=$max_web_curl;\\n web_curl_count=$web_curl_count; until curl-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run linter"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run media similarity test"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.imgur_client_id }}"
+            }],
+            "type": "imgur_client_id"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "after media similarity tests"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "cleanup docker-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "echo-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "media-similarity-tests"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "media-similarity-tests"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "check-web"
+        }],
+        "type": "labels"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "success() || failure() || github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master' || contains(github.event.head_commit.message, '[full ci]') || contains(github.event.head_commit.message, '[text similarity tests]')\\n"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set permissions for-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "sudo chown -r $user:$user $github_workspace\\nsudo chmod-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "configure aws credentials"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "aws-actions/configure-aws-credentials@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.aws_access_key_id }}"
+             }],
+             "type": "aws-access-key-id"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.aws_secret_access_key }}"
+             }],
+             "type": "aws-secret-access-key"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.aws_role_to_assume }}"
+             }],
+             "type": "role-to-assume"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "eu-west-1"
+             }],
+             "type": "aws-region"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "login to amazon ecr"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "login-ecr"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "aws-actions/amazon-ecr-login@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up qemu"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up docker-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "decrypt credentials for-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.decryption_password }}"
+            }],
+            "type": "decryption_password"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "openssl enc -aes-256-cbc -d -in test/google_credentials.json.enc -out test/google_credentials.json -k $decryption_password\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup utf-8 capable locale"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup pender"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup check api"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup alegre"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup presto"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup configuration files"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "cp config.js.example config.js\\ncp config.js.example test/config.js\\ncp config-build.js.example config-build.js\\ncp config-server.js.example config-server.js\\ncp test/config.yml.example test/config.yml\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "before script"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "3000"
+             }],
+             "type": "max_web_curl"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "0"
+             }],
+             "type": "web_curl_count"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.ngrok_auth }}"
+             }],
+             "type": "ngrok_auth"
+            }
+           ],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "github_job_name=$github_job_name github_branch=$github_branch ./PATH-OR-URL\\n max_web_curl=$max_web_curl;\\n web_curl_count=$web_curl_count; until curl-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run linter"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run text similarity test"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.imgur_client_id }}"
+            }],
+            "type": "imgur_client_id"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "after text similarity tests"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "cleanup docker-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "echo-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "text-similarity-tests"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master' || contains(github.event.head_commit.message, '[full ci]') || contains(github.event.head_commit.message, '[smoke tests]')\\n"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "configure aws credentials"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "aws-actions/configure-aws-credentials@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.aws_access_key_id }}"
+             }],
+             "type": "aws-access-key-id"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.aws_secret_access_key }}"
+             }],
+             "type": "aws-secret-access-key"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.aws_role_to_assume }}"
+             }],
+             "type": "role-to-assume"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "eu-west-1"
+             }],
+             "type": "aws-region"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "login to amazon ecr"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "login-ecr"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "aws-actions/amazon-ecr-login@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up qemu"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up docker-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "decrypt credentials for-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.decryption_password }}"
+            }],
+            "type": "decryption_password"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "openssl enc -aes-256-cbc -d -in test/google_credentials.json.enc -out test/google_credentials.json -k $decryption_password\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup utf-8 capable locale"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup pender"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup check api"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup alegre"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup presto"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup configuration files"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "cp config.js.example config.js\\ncp config.js.example test/config.js\\ncp config-build.js.example config-build.js\\ncp config-server.js.example config-server.js\\ncp test/config.yml.example test/config.yml\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "before script"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "3000"
+             }],
+             "type": "max_web_curl"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "0"
+             }],
+             "type": "web_curl_count"
+            }
+           ],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "github_job_name=$github_job_name github_branch=$github_branch ./PATH-OR-URL\\n max_web_curl=$max_web_curl;\\n web_curl_count=$web_curl_count; until curl-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run linter"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run integration test"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.imgur_client_id }}"
+            }],
+            "type": "imgur_client_id"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "after integration tests"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "integration-and-unit-tests"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "github.ref != 'refs/heads/develop' && github.ref != 'refs/heads/master' && !contains(github.event.head_commit.message, '[full ci]') && !contains(github.event.head_commit.message, '[smoke tests]') && !contains(github.event.head_commit.message, '[media similarity tests]') && !contains(github.event.head_commit.message, '[text similarity tests]')\\n"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "configure aws credentials"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "aws-actions/configure-aws-credentials@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.aws_access_key_id }}"
+             }],
+             "type": "aws-access-key-id"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.aws_secret_access_key }}"
+             }],
+             "type": "aws-secret-access-key"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.aws_role_to_assume }}"
+             }],
+             "type": "role-to-assume"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "eu-west-1"
+             }],
+             "type": "aws-region"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "login to amazon ecr"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "login-ecr"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "aws-actions/amazon-ecr-login@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up qemu"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up docker-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "decrypt credentials for-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.decryption_password }}"
+            }],
+            "type": "decryption_password"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "openssl enc -aes-256-cbc -d -in test/google_credentials.json.enc -out test/google_credentials.json -k $decryption_password\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup utf-8 capable locale"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup pender"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ github.head_ref || github.ref_name }}"
+            }],
+            "type": "git_branch"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup check api"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup alegre"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup presto"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "export-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup configuration files"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "cp config.js.example config.js\\ncp config.js.example test/config.js\\ncp config-build.js.example config-build.js\\ncp config-server.js.example config-server.js\\ncp test/config.yml.example test/config.yml\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "before script"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "3000"
+             }],
+             "type": "max_web_curl"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "0"
+             }],
+             "type": "web_curl_count"
+            }
+           ],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "github_job_name=$github_job_name github_branch=$github_branch ./PATH-OR-URL\\nmax_web_curl=$max_web_curl;\\nweb_curl_count=$web_curl_count; until curl-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run linter"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run unit tests"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "unit-tests"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

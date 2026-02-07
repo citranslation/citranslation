@@ -1,0 +1,324 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "20"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "jammy"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "FALSE"
+    }],
+    "type": "npm"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "master"
+     },
+     {
+      "children": [],
+      "type": "/^\\\\d+\\\\.\\\\d+\\\\.\\\\d+(\\\\-beta.\\\\d+)?$/"
+     }
+    ],
+    "type": "only"
+   }],
+   "type": "branches"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "mattermost_channel='{\\\"dev\\\":\\\"appvengers\\\",\\\"beta\\\":\\\"appvengers,publication\\\",\\\"stable\\\":\\\"appvengers,publication\\\"}'"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "lint"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "yarn lint"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "unit tests"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "yarn test"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "build app"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "[ \\\"$travis_secure_env_vars\\\" != \\\"false\\\" ] && openssl aes-256-cbc -k $encrypted_2911d206c096_key -iv $encrypted_2911d206c096_iv -in id_ed25519_downcloud_drive.enc -out id_ed25519_downcloud_drive -d"
+         },
+         {
+          "children": [],
+          "type": "[ \\\"$travis_secure_env_vars\\\" != \\\"false\\\" ] && eval \\\"$(ssh-agent -s)\\\""
+         },
+         {
+          "children": [],
+          "type": "[ \\\"$travis_secure_env_vars\\\" != \\\"false\\\" ] && chmod-cmd"
+         },
+         {
+          "children": [],
+          "type": "[ \\\"$travis_secure_env_vars\\\" != \\\"false\\\" ] && ssh-add id_ed25519_downcloud_drive"
+         }
+        ],
+        "type": "before_script"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "yarn build"
+         },
+         {
+          "children": [],
+          "type": "yarn bundlemon"
+         }
+        ],
+        "type": "script"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "yarn add cozy-app-publish"
+        }],
+        "type": "before_deploy"
+       },
+       {
+        "children": [
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "script"
+            }],
+            "type": "provider"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "cozy/cozy-drive"
+            }],
+            "type": "repo"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "skip_cleanup"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "yarn run deploy"
+            }],
+            "type": "script"
+           },
+           {
+            "children": [{
+             "children": [{
+              "children": [],
+              "type": "master"
+             }],
+             "type": "branch"
+            }],
+            "type": "on"
+           }
+          ],
+          "type": "OBJ-NODE"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "script"
+            }],
+            "type": "provider"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "cozy/cozy-drive"
+            }],
+            "type": "repo"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "skip_cleanup"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "yarn run deploy"
+            }],
+            "type": "script"
+           },
+           {
+            "children": [{
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "tags"
+            }],
+            "type": "on"
+           }
+          ],
+          "type": "OBJ-NODE"
+         }
+        ],
+        "type": "deploy"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

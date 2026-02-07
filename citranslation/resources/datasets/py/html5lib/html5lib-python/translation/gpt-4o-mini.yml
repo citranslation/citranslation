@@ -1,0 +1,35 @@
+```yaml
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [pypy3.8, pypy2.7, 3.11, 3.10, 3.9, 3.8]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install tox
+
+      - name: Run tests
+        run: |
+          tox
+
+      - name: Debug info
+        run: |
+          python debug-info.py
+          
+|End-of-Code|
+```

@@ -1,0 +1,46 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: pip install -r requirements/dev.txt
+    - name: Lint with pylama
+      run: pylama .
+    - name: Test with pytest
+      run: pytest tests/
+    - name: Check with black
+      run: black . --check --diff
+    - name: Check with isort
+      run: isort . --check --diff
+```
+
+This GitHub Action configuration does the following:
+
+1. It triggers on push and pull request events.
+2. It runs on the latest version of Ubuntu.
+3. It sets up Python 3.8 and 3.9 using the `actions/setup-python@v2` action.
+4. It installs the dependencies listed in `requirements/dev.txt`.
+5. It runs `pylama` to lint the code.
+6. It runs `pytest` to test the code.
+7. It runs `black` with the `--check --diff` options to check that the code is formatted correctly.
+8. It runs `isort` with the `--check --diff` options to check that the imports are sorted correctly.
+
+|End-of-Code|

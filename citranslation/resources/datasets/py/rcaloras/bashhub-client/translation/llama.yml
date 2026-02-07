@@ -1,0 +1,39 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          sudo add-apt-repository ppa:duggan/bats --yes
+          sudo apt-get update -qq
+          sudo apt-get install -qq bats
+          sudo apt-get install -qq zsh
+      - name: Install Python
+        run: |
+          python3.8 -m pip install.
+      - name: Run tests
+        run: |
+          bats tests/shell
+          pytest
+      - name: Set environment variable
+        env:
+          functional_test: "true"
+      - name: Send notifications
+        uses: github-actions/notify@v1
+        with:
+          state: success
+          title: CI build completed
+          description: The build was successful!
+```
+|End-of-Code|

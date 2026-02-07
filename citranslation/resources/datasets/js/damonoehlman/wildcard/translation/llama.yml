@@ -1,0 +1,33 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ["10", "11", "12"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Run tests
+        run: npm test
+      - name: Send notification
+        uses: env-var/notify-email@v1
+        with:
+          email: damon.oehlman@gmail.com
+          subject: Node.js CI build result
+          body: 'The build has completed'
+|End-of-Code|
+```
+Note that in GitHub Actions, we use a `matrix` strategy to run the job for multiple Node.js versions, whereas in Travis CI, we used a list of nodes. We also use the `actions/checkout` and `actions/setup-node` actions to checkout the code and set up the Node.js environment, respectively. The `run` step is used to run the tests, and the `env-var/notify-email` action is used to send an email notification.

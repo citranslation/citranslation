@@ -1,0 +1,636 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "jwm"
+       }],
+       "type": "packages"
+      }],
+      "type": "apt"
+     }],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "results"
+       }],
+       "type": "paths"
+      }],
+      "type": "artifacts"
+     }],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "firefox=nightly"
+       }],
+       "type": "env"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "artifacts"
+         }],
+         "type": "<<"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "latest-nightly"
+         }],
+         "type": "firefox"
+        }
+       ],
+       "type": "addons"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "firefox=dev"
+       }],
+       "type": "env"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "artifacts"
+         }],
+         "type": "<<"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "latest-dev"
+         }],
+         "type": "firefox"
+        }
+       ],
+       "type": "addons"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "firefox=beta"
+       }],
+       "type": "env"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "artifacts"
+         }],
+         "type": "<<"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "latest-beta"
+         }],
+         "type": "firefox"
+        }
+       ],
+       "type": "addons"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "firefox=release"
+       }],
+       "type": "env"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "artifacts"
+         }],
+         "type": "<<"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "latest"
+         }],
+         "type": "firefox"
+        }
+       ],
+       "type": "addons"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "firefox=esr"
+       }],
+       "type": "env"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "artifacts"
+         }],
+         "type": "<<"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "latest-esr"
+         }],
+         "type": "firefox"
+        }
+       ],
+       "type": "addons"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "_aliases"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=flake8"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=docs"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "nightly"
+        }],
+        "type": "<<"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "dev"
+        }],
+        "type": "<<"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "beta"
+        }],
+        "type": "<<"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "release"
+        }],
+        "type": "<<"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "esr"
+        }],
+        "type": "<<"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "nightly"
+        }],
+        "type": "<<"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "dev"
+        }],
+        "type": "<<"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "beta"
+        }],
+        "type": "<<"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "release"
+        }],
+        "type": "<<"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "esr"
+        }],
+        "type": "<<"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "deploy"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "skip"
+        }],
+        "type": "before_install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "skip"
+        }],
+        "type": "install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "skip"
+        }],
+        "type": "script"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "pypi"
+          }],
+          "type": "provider"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "davehunt"
+          }],
+          "type": "user"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "token"
+           }],
+           "type": "secure"
+          }],
+          "type": "password"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "sdist bdist_wheel"
+          }],
+          "type": "distributions"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "tags"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "mozilla/foxpuppet"
+            }],
+            "type": "repo"
+           }
+          ],
+          "type": "on"
+         }
+        ],
+        "type": "deploy"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "TRUE"
+    }],
+    "type": "pip"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "geckodriver_version=0.24.0"
+    }],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "mkdir-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "firefox --version"
+    },
+    {
+     "children": [],
+     "type": "geckodriver --version"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install tox-travis"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

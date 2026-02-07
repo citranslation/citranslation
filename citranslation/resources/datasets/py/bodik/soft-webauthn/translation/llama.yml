@@ -1,0 +1,21 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: make install-deps
+      - name: Build
+        run: make
+```
+|End-of-Code|

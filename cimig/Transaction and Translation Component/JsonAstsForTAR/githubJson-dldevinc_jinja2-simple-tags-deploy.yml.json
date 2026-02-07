@@ -1,0 +1,122 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "deploy"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "v*.[0-9]"
+     }],
+     "type": "tags"
+    }],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/setup-python@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "python-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "build and publish"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "__token__"
+            }],
+            "type": "twine_username"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.pypi_password }}"
+            }],
+            "type": "twine_password"
+           }
+          ],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "python-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "deploy"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

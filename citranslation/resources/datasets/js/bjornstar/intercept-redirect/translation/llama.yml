@@ -1,0 +1,23 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js 16
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Run tests
+        run: npm run test
+```
+|End-of-Code|

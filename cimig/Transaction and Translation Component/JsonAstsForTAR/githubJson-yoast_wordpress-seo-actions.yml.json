@@ -1,0 +1,1010 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "deploy"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "branch-name"
+        },
+        {
+         "children": [],
+         "type": "branch-name"
+        },
+        {
+         "children": [],
+         "type": "branch-name"
+        },
+        {
+         "children": [],
+         "type": "branch-name"
+        }
+       ],
+       "type": "branches"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "**"
+       }],
+       "type": "tags"
+      }
+     ],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "workflow_dispatch"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.workflow }}-${{ github.ref }}"
+     }],
+     "type": "group"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "cancel-in-progress"
+    }
+   ],
+   "type": "concurrency"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "yoast-dist"
+     }],
+     "type": "dist_org"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "master"
+     }],
+     "type": "dist_default_branch"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "prepare the artifact"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "github.repository_owner == 'yoast'"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout code"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install php"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "shivammathur/setup-php@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "7.2"
+             }],
+             "type": "php-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "none"
+             }],
+             "type": "coverage"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up node and enable caching of dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-node@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "14"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "yarn"
+             }],
+             "type": "cache"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "debug info: show tooling versions"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "php -v\\nnode --version\\nnpm-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install composer dependencies and run the prefixing script"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "ramsey/composer-install@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "debug info: show directory layout"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "tree -dc ."
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "yarn install"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "yarn install"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "grunt: set package version (tags only)"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ github.event_name == 'push' && github.ref_type == 'tag' }}"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ github.ref_name }}"
+            }],
+            "type": "ref_name"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "grunt set-version -new-version=\\\"$ref_name\\\""
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "grunt: update package version (tags only)"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ github.event_name == 'push' && github.ref_type == 'tag' }}"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "grunt update-version"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "grunt: create artifact"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "grunt artifact"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "debug info: show contents of artifacts directory"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "tree -ac ./artifact"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "debug info: check git status"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "git status -b -v -u"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "upload the artifact folder"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/upload-artifact@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ success() }}"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "deploy-artifact"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "./artifact"
+             }],
+             "type": "path"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "error"
+             }],
+             "type": "if-no-files-found"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "1"
+             }],
+             "type": "retention-days"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "prepare"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "deploy to dist"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "github.repository_owner == 'yoast'"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "prepare"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set variable: short sha"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "set_sha"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ github.sha }}"
+            }],
+            "type": "sha"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "shortsha=$(echo-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set variables: target branch, commit title"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "set_vars"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ github.ref_name }}"
+            }],
+            "type": "ref_name"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "shell-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout yoast dist repo"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ env.dist_org }}/${{ PATH-OR-URL }}"
+             }],
+             "type": "repository"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ env.dist_default_branch }}"
+             }],
+             "type": "ref"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.yoastbot_ci_pat_dist }}"
+             }],
+             "type": "token"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "0"
+             }],
+             "type": "fetch-depth"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "create branch/switch to branch"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ steps.set_vars.outputs.branch != env.dist_default_branch }}"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "git checkout ${{ steps.set_vars.outputs.branch }} 2>/dev/null || git checkout -b ${{ steps.set_vars.outputs.branch }}"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "remove all files"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "# enable extended pattern matching.\\nshopt -s extglob\\n# remove everything, except the \\\".git\\\" directory and the `composer.json` file.\\nrm -vrf !(.git/*|composer.json)\\n# disable extended pattern matching.\\nshopt -u extglob\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "debug info: show contents of root directory after cleaning"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "tree -ac ."
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "download and unpack the prepared artifact"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/download-artifact@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "deploy-artifact"
+            }],
+            "type": "name"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "debug info: show contents of root directory after artifact insertion"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "tree -ac ."
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "remove the vendor directory"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "rm -rf ./vendor"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "debug info: check git status"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "git status -b -v -u"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set git config"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ github.actor }}"
+            }],
+            "type": "actor"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "git config PATH-OR-URL 'github action'\\ngit config user.email \\\"$actor@users.PATH-OR-URL\\\"\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "stage files"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "git add -a"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "commit the files (branch)"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ github.event_name != 'push' || github.ref_type != 'tag' }}"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ github.event.head_commit.committer.username }}"
+             }],
+             "type": "committer"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ github.event.head_commit.message }}"
+             }],
+             "type": "commit_msg"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ github.event.head_commit.url }}"
+             }],
+             "type": "commit_url"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ github.event.head_commit.timestamp }}"
+             }],
+             "type": "commit_time"
+            }
+           ],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "git commit --allow-empty -m \\\"${{ steps.set_vars.outputs.title }}\\\" \\\\\\n -m \\\"synced up to commit hash: $commit_url\\\" \\\\\\n -m \\\"timestamp last commit: $commit_time\\\" \\\\\\n -m \\\"committer last commit: @$committer\\\" \\\\\\n -m \\\"\\\" \\\\\\n -m \\\"commit message last commit:\\\" \\\\\\n -m \\\"---------------------------\\\" \\\\\\n -m \\\"$commit_msg\\\"\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "commit the files (release)"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ github.event_name == 'push' && github.ref_type == 'tag' }}"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ github.event.head_commit.committer.username }}"
+             }],
+             "type": "committer"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ github.event.head_commit.message }}"
+             }],
+             "type": "commit_msg"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ github.event.head_commit.url }}"
+             }],
+             "type": "commit_url"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ github.event.head_commit.timestamp }}"
+             }],
+             "type": "commit_time"
+            }
+           ],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "git commit -m \\\"${{ steps.set_vars.outputs.title }}\\\" \\\\\\n -m \\\"commit hash for-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "tag the commit (releases only)"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ github.event_name == 'push' && github.ref_type == 'tag' }}"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ github.ref_name }}"
+            }],
+            "type": "ref_name"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "git tag \\\"$ref_name\\\" $(git rev-parse head)"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "push to target branch"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "git push -u origin ${{ steps.set_vars.outputs.branch }} --tags -v"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "deploy"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

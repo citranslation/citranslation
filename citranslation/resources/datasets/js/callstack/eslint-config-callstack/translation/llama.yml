@@ -1,0 +1,45 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Yarn
+        run: |
+          curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.17.3
+          export PATH=$HOME/.yarn/bin:$PATH
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: yarn install
+      - name: Cache yarn cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.yarn/cache
+          key: ${{ runner.os }}-yarn-cache
+      - name: Run tests
+        run: yarn test
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules
+      - name: Cache test/node_modules
+        uses: actions/cache@v2
+        with:
+          path: test/node_modules
+          key: ${{ runner.os }}-test-node-modules
+    environment:
+      NODE_VERSION: "18"
+    services:
+      node: "18"
+|End-of-Code|
+```
+Note that in GitHub Actions, we use the `runs-on` keyword to specify the environment where the job will run, which is an `ubuntu-latest` environment in this case. We also use the `uses` keyword to specify the actions that will be executed, such as `actions/checkout@v2` to checkout the code and `actions/cache@v2` to cache the dependencies. The `with` keyword is used to specify the configuration options for each action.

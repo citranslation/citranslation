@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04  # Equivalent to noble
+    strategy:
+      matrix:
+        include:
+          - python-version: "3.8"
+            toxenv: cover
+          - python-version: "3.8"
+            toxenv: black
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          sudo npm i -g elm
+          pip install tox tox-travis coveralls
+
+      - name: Run tox
+        env:
+          TOXENV: ${{ matrix.toxenv }}
+        run: tox
+
+      - name: Upload coverage to Coveralls
+        if: success() && matrix.toxenv == 'cover'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: coveralls
+
+|End-of-Code|

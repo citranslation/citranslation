@@ -1,0 +1,31 @@
+name: Test and Coverage
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install dependencies
+      run: |
+        pip install -q coverage
+        pip install -q coveralls
+        pip install -q mock
+        pip install .
+    - name: Change directory to tests
+      run: cd tests
+    - name: Run coverage
+      run: make coverage
+    - name: Upload coverage
+      run: coveralls --rc=coveragerc
+|End-of-Code|

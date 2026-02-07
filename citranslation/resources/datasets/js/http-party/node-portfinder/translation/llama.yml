@@ -1,0 +1,32 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Node.js
+        run: |
+          curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
+          apt-get update
+          apt-get install -y nodejs
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: DEBUG=* npm test
+      - name: Send notifications
+        uses: dawidd6/dist-github-notifications@v1
+        with:
+          notify: charlie.robbins@gmail.com,erik.trom.github@gmail.com
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+|End-of-Code|

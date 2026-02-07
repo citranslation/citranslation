@@ -1,0 +1,44 @@
+```yaml
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', 'pypy3.8']
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: pip install tox-travis codecov
+
+    - name: Run tests
+      run: tox
+
+    - name: Upload coverage to Codecov
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      run: |
+        VERSION="python_${{ matrix.python-version//[^[:alnum:]]/}}" &&
+        codecov --required --flags $VERSION ||
+        (sleep 5 && codecov --required --flags $VERSION) ||
+        (sleep 10 && codecov --required --flags $VERSION) ||
+        (sleep 20 && codecov --required --flags $VERSION) ||
+        (sleep 30 && codecov --required --flags $VERSION)
+|End-of-Code|
+```

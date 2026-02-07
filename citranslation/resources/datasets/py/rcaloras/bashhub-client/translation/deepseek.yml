@@ -1,0 +1,43 @@
+name: Travis CI to GitHub Actions
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: pip install .
+
+    - name: Install bats and zsh
+      run: |
+        sudo add-apt-repository ppa:duggan/bats --yes
+        sudo apt-get update -qq
+        sudo apt-get install -qq bats
+        sudo apt-get install -qq zsh
+
+    - name: Run bats tests
+      run: bats tests/shell
+
+    - name: Run pytest
+      run: py.test
+
+    - name: Notifications
+      uses: rtCamp/action-slack-notify@v2
+      if: ${{ failure() }}
+      with:
+        status: ${{ job.status }}
+        color: ${{ job.status == 'failure' && 'bad' || 'good' }}
+        fields: repo,message,commit,author,action,eventName,ref,workflow,job
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+|End-of-Code|

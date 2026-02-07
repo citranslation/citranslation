@@ -1,0 +1,27 @@
+name: Python CI
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: 2.7
+          - python: 3.6
+          - python: pypy
+          - python: pypy3
+        fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          pip install -U setuptools pip
+          python setup.py clean --all
+          python setup.py install
+      - name: Run tests
+        run: python setup.py test
+|End-of-Code|

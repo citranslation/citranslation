@@ -1,0 +1,40 @@
+name: CI  
+on:  
+  push:  
+    branches: [ main ]  
+
+jobs:  
+  build-inspector-view:  
+    runs-on: ubuntu-latest  
+    steps:  
+      - uses: actions/checkout@v2  
+      - uses: actions/setup-node@v2  
+        with:  
+          node-version: 14  
+      - name: Cache yarn  
+        uses: actions/cache@v2  
+        with:  
+          path: node_modules  
+          key: yarn-${{ hashFiles('package.json') }}  
+      - name: Install dependencies  
+        run: yarn install  
+      - name: Build inspector view  
+        run: yarn build:inspectorView  
+
+  build-edit-mode:  
+    runs-on: ubuntu-latest  
+    steps:  
+      - uses: actions/checkout@v2  
+      - uses: actions/setup-node@v2  
+        with:  
+          node-version: 14  
+      - name: Cache yarn  
+        uses: actions/cache@v2  
+        with:  
+          path: node_modules  
+          key: yarn-${{ hashFiles('package.json') }}  
+      - name: Install dependencies  
+        run: yarn install  
+      - name: Build edit mode  
+        run: yarn build:editMode  
+|End-of-Code|

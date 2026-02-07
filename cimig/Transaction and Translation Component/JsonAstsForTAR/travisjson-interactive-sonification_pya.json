@@ -1,0 +1,267 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "generic"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "master"
+     },
+     {
+      "children": [],
+      "type": "develop"
+     },
+     {
+      "children": [],
+      "type": "dev-travis"
+     }
+    ],
+    "type": "only"
+   }],
+   "type": "branches"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "bash PATH-OR-URL -b -p ~/miniconda"
+    },
+    {
+     "children": [],
+     "type": "source \\\"~/miniconda/etc/profile.d/PATH-OR-URL\\\""
+    },
+    {
+     "children": [],
+     "type": "hash -r"
+    },
+    {
+     "children": [],
+     "type": "conda config --set always_yes yes --set changeps1 no"
+    },
+    {
+     "children": [],
+     "type": "conda update -q conda"
+    },
+    {
+     "children": [],
+     "type": "conda info -a"
+    },
+    {
+     "children": [],
+     "type": "conda config --append channels conda-forge"
+    },
+    {
+     "children": [],
+     "type": "conda create -q -n test-environment python=$python_version ffmpeg coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "conda activate test-environment"
+    },
+    {
+     "children": [],
+     "type": "pytest --version"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pytest --cov pya/"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coveralls --config_file .coveragerc"
+   }],
+   "type": "after_success"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "audiodev=null"
+    }],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "portaudio19-dev"
+          }],
+          "type": "packages"
+         }],
+         "type": "apt"
+        }],
+        "type": "addons"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "travis_os=linux"
+         },
+         {
+          "children": [],
+          "type": "python_version=3.7"
+         }
+        ],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "portaudio19-dev"
+          }],
+          "type": "packages"
+         }],
+         "type": "apt"
+        }],
+        "type": "addons"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "travis_os=linux"
+         },
+         {
+          "children": [],
+          "type": "python_version=3.8"
+         }
+        ],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "osx"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "travis_os=macosx"
+         },
+         {
+          "children": [],
+          "type": "python_version=3.7"
+         }
+        ],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "osx"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "travis_os=macosx"
+         },
+         {
+          "children": [],
+          "type": "python_version=3.8"
+         }
+        ],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "matrix"
+  }
+ ],
+ "type": "travis-file"
+}

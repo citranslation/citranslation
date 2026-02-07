@@ -1,0 +1,34 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Test
+on:
+  pull_request:
+  push:
+    branches:    
+      - master
+      - development
+
+jobs:
+  setup:
+    runs_on: ubuntu-latest
+    steps:
+      - name: Checkout repo content # fetch the contents of the repository
+        uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: make install-deps
+      - name: Setup
+        run: make setup
+      - name: Test with pytest
+        run: make test
+```
+
+Please note that the `dist: noble` directive in Travis CI is not recognized by GitHub Actions. The `actions/setup-python@v2` step is used to set up Python 3.9, and the `make install-deps` command is assumed to be equivalent to `pip install -r requirements.txt` or similar in the context of a Python project.
+
+Also, the `script` directive in Travis CI is equivalent to the `Test with pytest` step in GitHub Actions.
+
+|End-of-Code|

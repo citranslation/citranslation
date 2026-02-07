@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.8', '3.9']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run tests
+        continue-on-error: ${{ matrix.python-version == '3.9' }}
+        run: |
+          python test_PDDL.py
+          python test_planner.py
+
+      - name: Run examples
+        continue-on-error: ${{ matrix.python-version == '3.9' }}
+        run: |
+          python action.py
+          python PDDL.py examples/dinner/dinner.pddl examples/dinner/pb1.pddl
+          python planner.py examples/dinner/dinner.pddl examples/dinner/pb1.pddl
+          python planner.py examples/airport/airport.pddl examples/airport/pb1.pddl
+
+|End-of-Code|

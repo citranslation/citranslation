@@ -1,0 +1,79 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Travis CI to GitHub Actions
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip list
+
+    - name: Lint and test
+      run: |
+        ./lint.sh && ./test.sh
+
+    - name: SonarQube Scan
+      if: github.event_name != 'pull_request' && github.repository == 'IBM/qpylib'
+      uses: kitabisa/sonarqube-action@master
+      with:
+        host: ${{ secrets.SONAR_HOST }}
+        login: ${{ secrets.SONAR_TOKEN }}
+        projectKey: qradar-app-framework
+
+    - name: Build and publish
+      if: startsWith(github.ref, 'refs/tags')
+      run: |
+        ./build.sh ${GITHUB_REF#refs/tags/}
+      env:
+        GITHUB_OAUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload release assets
+      if: startsWith(github.ref, 'refs/tags')
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: |
+          dist/qpylib-${{ github.ref#refs/tags/ }}.tar.gz
+          dist/qpylib-${{ github.ref#refs/tags/ }}-py3-none-any.whl
+        asset_name: |
+          qpylib-${{ github.ref#refs/tags/ }}.tar.gz
+          qpylib-${{ github.ref#refs/tags/ }}-py3-none-any.whl
+        asset_content_type: application/gzip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+Please replace `${{ secrets.SONAR_HOST }}` and `${{ secrets.SONAR_TOKEN }}` with your actual SonarQube host and token. Also, make sure to add `GITHUB_TOKEN` and `GITHUB_REF` as secrets in your GitHub repository settings.
+
+This GitHub Action configuration does the following:
+
+1. Triggers on push and pull request events to the master branch.
+2. Sets up the Python environment.
+3. Installs dependencies.
+4. Runs the linting and testing scripts.
+5. Runs SonarQube scan if the event is not a pull request and the repository is `IBM/qpylib`.
+6. Builds and publishes the code if the ref starts with `refs/tags`.
+7. Uploads the release assets if the ref starts with `refs/tags`.
+
+Please note that the GitHub Actions environment variables `GITHUB_REF` and `GITHUB_TOKEN` are automatically set by GitHub. `GITHUB_REF` contains the branch or tag ref that triggered the workflow, and `GITHUB_TOKEN` is a token that grants access to GitHub's APIs.

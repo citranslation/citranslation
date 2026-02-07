@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    name: Python ${{ matrix.python-version }} / Node
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Set up Node.js (for frontend build/test)
+        uses: actions/setup-node@v4
+        with:
+          # adjust node-version if your project expects a specific version or use an .nvmrc-driven approach
+          node-version: '16'
+          cache: 'npm'
+
+      - name: Upgrade pip, setuptools, wheel and install Python deps
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          if [ -f requirements-dev.txt ]; then
+            python -m pip install -r requirements-dev.txt
+          fi
+
+      - name: Install Node dependencies (if package.json exists)
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          elif [ -f package.json ]; then
+            npm install
+          else
+            echo "No package.json — skipping npm install"
+          fi
+
+      - name: Copy local Django settings
+        run: |
+          if [ -f django_airavata/settings_local.py.sample ]; then
+            cp django_airavata/settings_local.py.sample django_airavata/settings_local.py
+          else
+            echo "settings_local.py.sample not found; skipping copy"
+          fi
+
+      - name: Django migrate
+        run: python manage.py migrate
+
+      - name: Django system check
+        run: python manage.py check
+
+      - name: Run Python linter (flake8)
+        run: flake8 .
+
+      - name: Lint JS
+        run: ./lint_js.sh
+
+      - name: Build JS frontend
+        run: ./build_js.sh
+
+      - name: Test JS frontend
+        run: ./test_js.sh
+
+      - name: Run Django tests
+        run: ./runtests.py
+
+|End-of-Code|

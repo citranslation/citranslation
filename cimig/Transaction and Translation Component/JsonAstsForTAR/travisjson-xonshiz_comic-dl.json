@@ -1,0 +1,686 @@
+{
+ "children": [{
+  "children": [{
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "python"
+       }],
+       "type": "language"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "3.6"
+       }],
+       "type": "python"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "trusty"
+       }],
+       "type": "dist"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "pip install --upgrade pip"
+        },
+        {
+         "children": [],
+         "type": "pip install --upgrade setuptools"
+        }
+       ],
+       "type": "before_install"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "pip install -r requirements.txt"
+       }],
+       "type": "install"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "python-cmd"
+       }],
+       "type": "script"
+      },
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "pypi"
+          }],
+          "type": "provider"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "v1.8.45"
+           }],
+           "type": "branch"
+          }],
+          "type": "edge"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "__token__"
+          }],
+          "type": "username"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "$pypi_token"
+          }],
+          "type": "password"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "sdist bdist_wheel"
+          }],
+          "type": "distributions"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "master"
+           }],
+           "type": "branch"
+          }],
+          "type": "on"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }],
+       "type": "deploy"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "EMAIL"
+        }],
+        "type": "email"
+       }],
+       "type": "notifications"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "linux"
+       }],
+       "type": "os"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "python"
+       }],
+       "type": "language"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "3.8"
+       }],
+       "type": "python"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "xenial"
+       }],
+       "type": "dist"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "pip install --upgrade pip"
+        },
+        {
+         "children": [],
+         "type": "pip install --upgrade setuptools"
+        }
+       ],
+       "type": "before_install"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "python-cmd"
+        },
+        {
+         "children": [],
+         "type": "pip install -r requirements.txt"
+        },
+        {
+         "children": [],
+         "type": "pip uninstall -y enum34"
+        },
+        {
+         "children": [],
+         "type": "pip install pyinstaller"
+        }
+       ],
+       "type": "install"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "python-cmd"
+        },
+        {
+         "children": [],
+         "type": "pyinstaller --onefile --hidden-import=queue \\\"PATH-OR-URL\\\" -n \\\"comic_dl_linux\\\""
+        }
+       ],
+       "type": "script"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "EMAIL"
+        }],
+        "type": "email"
+       }],
+       "type": "notifications"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "export-cmd"
+        },
+        {
+         "children": [],
+         "type": "echo-cmd"
+        },
+        {
+         "children": [],
+         "type": "git config --local PATH-OR-URL \\\"$user_name\\\""
+        },
+        {
+         "children": [],
+         "type": "git config --local user.email \\\"$user_email\\\""
+        },
+        {
+         "children": [],
+         "type": "git tag \\\"$travis_tag\\\" \\\"$travis_commit\\\""
+        }
+       ],
+       "type": "before_deploy"
+      },
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "releases"
+          }],
+          "type": "provider"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "$travis_tag"
+          }],
+          "type": "tag_name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "TRUE"
+          }],
+          "type": "overwrite"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "$github_token"
+          }],
+          "type": "api_key"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "comic_dl"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "dist/comic_dl_linux"
+          }],
+          "type": "file"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "TRUE"
+          }],
+          "type": "skip_cleanup"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "FALSE"
+          }],
+          "type": "draft"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "master"
+           }],
+           "type": "branch"
+          }],
+          "type": "on"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }],
+       "type": "deploy"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "windows"
+       }],
+       "type": "os"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "sh"
+       }],
+       "type": "language"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "3.8"
+       }],
+       "type": "python"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "choco install python-cmd"
+        },
+        {
+         "children": [],
+         "type": "python-cmd"
+        },
+        {
+         "children": [],
+         "type": "export-cmd"
+        },
+        {
+         "children": [],
+         "type": "python-cmd"
+        }
+       ],
+       "type": "before_install"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "path=/c/python38:/c/python38/scripts:$path"
+       }],
+       "type": "env"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "pip install -r requirements.txt"
+        },
+        {
+         "children": [],
+         "type": "pip uninstall -y enum34"
+        },
+        {
+         "children": [],
+         "type": "pip install pyinstaller"
+        }
+       ],
+       "type": "install"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "python-cmd"
+        },
+        {
+         "children": [],
+         "type": "pyinstaller --onefile --hidden-import=queue \\\"PATH-OR-URL\\\" -n \\\"comic_dl.exe\\\""
+        }
+       ],
+       "type": "script"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "EMAIL"
+        }],
+        "type": "email"
+       }],
+       "type": "notifications"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "export-cmd"
+        },
+        {
+         "children": [],
+         "type": "echo-cmd"
+        },
+        {
+         "children": [],
+         "type": "git config --local PATH-OR-URL \\\"$user_name\\\""
+        },
+        {
+         "children": [],
+         "type": "git config --local user.email \\\"$user_email\\\""
+        },
+        {
+         "children": [],
+         "type": "git tag \\\"$travis_tag\\\" \\\"$travis_commit\\\""
+        }
+       ],
+       "type": "before_deploy"
+      },
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "releases"
+          }],
+          "type": "provider"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "$travis_tag"
+          }],
+          "type": "tag_name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "TRUE"
+          }],
+          "type": "overwrite"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "$github_token"
+          }],
+          "type": "api_key"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "comic_dl"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "dist/comic_dl.exe"
+          }],
+          "type": "file"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "TRUE"
+          }],
+          "type": "skip_cleanup"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "FALSE"
+          }],
+          "type": "draft"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "master"
+           }],
+           "type": "branch"
+          }],
+          "type": "on"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }],
+       "type": "deploy"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "osx"
+       }],
+       "type": "os"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "sh"
+       }],
+       "type": "language"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "3.8"
+       }],
+       "type": "python"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "python3 --version"
+        },
+        {
+         "children": [],
+         "type": "python3 -m pip install --upgrade pip"
+        }
+       ],
+       "type": "before_install"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "pip install -r requirements.txt"
+        },
+        {
+         "children": [],
+         "type": "pip uninstall -y enum34"
+        },
+        {
+         "children": [],
+         "type": "pip install -iv pyinstaller==4.3"
+        }
+       ],
+       "type": "install"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "python3 PATH-OR-URL --version"
+        },
+        {
+         "children": [],
+         "type": "pyinstaller --onefile --hidden-import=queue \\\"PATH-OR-URL\\\" -n \\\"comic_dl_osx\\\""
+        }
+       ],
+       "type": "script"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "EMAIL"
+        }],
+        "type": "email"
+       }],
+       "type": "notifications"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "export-cmd"
+        },
+        {
+         "children": [],
+         "type": "echo-cmd"
+        },
+        {
+         "children": [],
+         "type": "git config --local PATH-OR-URL \\\"$user_name\\\""
+        },
+        {
+         "children": [],
+         "type": "git config --local user.email \\\"$user_email\\\""
+        }
+       ],
+       "type": "before_deploy"
+      },
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "releases"
+          }],
+          "type": "provider"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "$travis_tag"
+          }],
+          "type": "tag_name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "TRUE"
+          }],
+          "type": "overwrite"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "$github_token"
+          }],
+          "type": "api_key"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "comic_dl"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "dist/comic_dl_osx"
+          }],
+          "type": "file"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "TRUE"
+          }],
+          "type": "skip_cleanup"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "FALSE"
+          }],
+          "type": "draft"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "master"
+           }],
+           "type": "branch"
+          }],
+          "type": "on"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }],
+       "type": "deploy"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "include"
+  }],
+  "type": "matrix"
+ }],
+ "type": "travis-file"
+}

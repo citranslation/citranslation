@@ -1,0 +1,43 @@
+```yaml
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: "3.8"
+            django: "<2"
+            drf: "<3.8"
+          - python: "3.8"
+            django: "<2"
+            drf: "<3.9"
+          - python: "3.8"
+            django: "<2.1"
+            drf: "<3.9"
+          - python: "3.8"
+            django: "<2.2"
+            drf: "<3.9"
+    env:
+      DJANGO: ${{ matrix.django }}
+      DRF: ${{ matrix.drf }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install dependencies
+        run: pip install "django${DJANGO}" "djangorestframework${DRF}"
+
+      - name: Run tests
+        run: python runtests.py
+|End-of-Code|

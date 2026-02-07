@@ -1,0 +1,163 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "deploy"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "v*.*.*"
+      }],
+      "type": "tags"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "master"
+      }],
+      "type": "branches"
+     }
+    ],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "./.github/workflows/test.yml"
+      }],
+      "type": "uses"
+     }],
+     "type": "test"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "test"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-node@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "PATH-OR-URL"
+           }],
+           "type": "registry-url"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "16"
+            }],
+            "type": "node-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "npx semantic-release"
+           }],
+           "type": "run"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.npm_token }}"
+             }],
+             "type": "node_auth_token"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.access_token_github }}"
+             }],
+             "type": "github_token"
+            }
+           ],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "deploy"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

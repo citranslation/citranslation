@@ -1,0 +1,43 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "ci_ros_distro=\\\"noetic\\\""
+    }],
+    "type": "matrix"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

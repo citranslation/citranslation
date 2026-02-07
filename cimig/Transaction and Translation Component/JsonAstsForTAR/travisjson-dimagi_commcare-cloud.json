@@ -1,0 +1,109 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.6"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "bionic"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "ansible_roles_path=\\\"~/.ansible/roles\\\""
+      },
+      {
+       "children": [],
+       "type": "travis_test=1"
+      }
+     ],
+     "type": "global"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "test=main"
+     }],
+     "type": "matrix"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "TRUE"
+    }],
+    "type": "fast_finish"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "source control/PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "pip install -e .[test]"
+    },
+    {
+     "children": [],
+     "type": "curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo tar xjf python-3.9.tar.bz2 --directory /"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": ".travis/PATH-OR-URL"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

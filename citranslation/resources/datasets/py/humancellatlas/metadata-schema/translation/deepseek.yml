@@ -1,0 +1,62 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  schema-linter:
+    name: Schema linter
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up Python 3.6
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.6
+    - name: Run schema linter
+      run: |
+        cd src
+        python schema_linter.py --environment ${{ github.ref }}
+
+  schema-tests:
+    name: Schema tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up Node.js 8
+      uses: actions/setup-node@v1
+      with:
+        node-version: 8
+    - name: Install dependencies
+      run: |
+        cd tests
+        npm install
+    - name: Run tests
+      run: |
+        npm test
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+notifications:
+  slack:
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    on_failure: change
+    on_success: change
+```
+
+Please replace `${{ github.ref }}` with `${{ github.ref_name }}` if you want to use the branch name instead of the full ref.
+
+This configuration will trigger the workflow on every push and pull request. The "schema-linter" job will use Python 3.6 to run the schema linter, and the "schema-tests" job will use Node.js 8 to run the tests. The notifications are set to send on failure and success.
+
+Please note that the Slack notification token is set to `${{ secrets.GITHUB_TOKEN }}`, which is a special GitHub token that has permissions to read and write to the repository. If you want to use a different token, you should create a new GitHub token with the necessary permissions and add it to your repository secrets.
+
+Also, please ensure that the Python and Node.js versions you're using are compatible with your project.
+
+|End-of-Code|

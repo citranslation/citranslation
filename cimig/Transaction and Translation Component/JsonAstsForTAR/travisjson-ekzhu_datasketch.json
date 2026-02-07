@@ -1,0 +1,173 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    },
+    {
+     "children": [],
+     "type": "3.10"
+    },
+    {
+     "children": [],
+     "type": "3.11"
+    },
+    {
+     "children": [],
+     "type": "3.12"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "jdk-r/ppa"
+         }],
+         "type": "sourceline"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "deb PATH-OR-URL 311x main"
+          }],
+          "type": "sourceline"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "PATH-OR-URL"
+          }],
+          "type": "key_url"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "deb-src PATH-OR-URL 311x main"
+          }],
+          "type": "sourceline"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "apache-key"
+          }],
+          "type": "key_url"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "sources"
+     },
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "cython3"
+       },
+       {
+        "children": [],
+        "type": "jdk-8-jdk"
+       },
+       {
+        "children": [],
+        "type": "cassandra"
+       }
+      ],
+      "type": "packages"
+     }
+    ],
+    "type": "apt"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "cassandra"
+    },
+    {
+     "children": [],
+     "type": "mongodb"
+    }
+   ],
+   "type": "services"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip install -e .[test]"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "bash travis/wait_for_cassandra.sh"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "nosetests --exclude-dir=test/aio"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,54 @@
+```yaml
+name: Travis CI to GitHub Actions
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.12-rc-bullseye, 3.11-bullseye, 3.10-bullseye, 3.9-bullseye, 3.8-bullseye]
+        postgres-version: [15, 14, 13, 12]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Docker
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker-ce
+
+    - name: Build Docker image
+      run: docker-compose build
+
+    - name: Run Docker image
+      run: docker-compose run --entrypoint="pytest tests" nycdb
+
+    - name: Set up PostgreSQL ${{ matrix.postgres-version }}
+      uses: eregon/use-postgres@v1
+      with:
+        postgres-version: ${{ matrix.postgres-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest docker-compose
+
+    - name: Test with pytest
+      run: |
+        pytest
+
+|End-of-Code|
+```
+
+Please note that the GitHub Actions configuration above is a rough translation of the Travis CI configuration provided. It may not work perfectly without further adjustments. The GitHub Actions configuration assumes that the Python and PostgreSQL versions specified in the matrix are available on the runner. If they are not, you may need to install them manually or use a different runner that has them installed.

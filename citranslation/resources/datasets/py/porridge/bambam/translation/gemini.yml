@@ -1,0 +1,42 @@
+```yaml
+name: Python CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      # Run jobs for both specified python versions
+      matrix:
+        python-version: ["3.8", "3.9"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt
+
+    - name: Run import test
+      run: python -c 'import bambam'
+
+    - name: Lint with flake8
+      run: flake8 *.py
+
+    - name: Check formatting with autopep8
+      # The --exit-code flag makes autopep8 exit with a non-zero status
+      # if any files would be changed, which fails the step.
+      run: autopep8 --diff --exit-code *.py
+```
+|End-of-Code|

@@ -1,0 +1,40 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python:
+          - 3.8
+          - 3.9
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Run tests
+        run: |
+          python test_PDDL.py
+          python test_planner.py
+      - name: Run examples
+        run: |
+          python action.py
+          python PDDL.py examples/dinner/dinner.pddl examples/dinner/pb1.pddl
+          python planner.py examples/dinner/dinner.pddl examples/dinner/pb1.pddl
+          python planner.py examples/airport/airport.pddl examples/airport/pb1.pddl
+|End-of-Code|
+```
+Note that I've used the `ubuntu-latest` environment, and the `matrix` strategy to run the tests and examples for both Python 3.8 and 3.9. I've also used the `actions/checkout` and `actions/setup-python` actions to checkout the code and install Python, respectively. The `pip install` command is used to install dependencies from a `requirements.txt` file (which you'll need to create). The rest of the steps are similar to the Travis CI configuration.

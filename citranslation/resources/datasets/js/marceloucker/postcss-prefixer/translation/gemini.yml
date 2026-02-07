@@ -1,0 +1,48 @@
+```yaml
+# This workflow migrates the Travis CI configuration to GitHub Actions.
+# It tests the project against multiple versions of Node.js.
+
+name: Node.js CI
+
+# Controls when the workflow will run
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  # This job runs the tests
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    strategy:
+      # Defines a matrix of configurations to run the job with
+      matrix:
+        # Corresponds to the 'node_js' versions in the Travis CI config
+        node-version: [18, 16, 14]
+
+    steps:
+      # 1. Checks-out your repository under $GITHUB_WORKSPACE
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Sets up the specified version of Node.js from the matrix
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          # Optional: Caches npm dependencies for faster builds
+          cache: 'npm'
+
+      # 3. Installs dependencies (equivalent to Travis CI's default 'install' stage)
+      # Using 'npm ci' is recommended for CI for faster, more reliable builds
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Runs the test script (equivalent to Travis CI's default 'script' stage)
+      - name: Run tests
+        run: npm test
+```
+|End-of-Code|

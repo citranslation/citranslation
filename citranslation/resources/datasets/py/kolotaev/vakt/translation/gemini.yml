@@ -1,0 +1,111 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    # Using ubuntu-latest is the standard. The original used xenial (16.04),
+    # but most dependencies and actions are optimized for newer versions.
+    runs-on: ubuntu-latest
+    strategy:
+      # Don't cancel all jobs if one fails
+      fail-fast: false
+      matrix:
+        # Python 3.4 and 3.5 are end-of-life and not supported on modern runners.
+        # 'nightly' is mapped to '3.12-dev', 'pypy3' is mapped to a recent pypy-3.x version.
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11", "3.12-dev", "pypy-3.9"]
+
+    # Service containers to run databases and redis, similar to Travis `services`
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          # Allows connection with user 'root' and no password, matching Travis CI's default
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        ports:
+          - 3306:3306
+        # Health check to ensure mysql is ready before starting tests
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+      postgres:
+        image: postgres:12
+        env:
+          POSTGRES_USER: postgres
+          # Allows password-less connection for the 'postgres' user, matching Travis CI's default
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        # Health check to ensure postgres is ready before starting tests
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        # Health check to ensure redis is ready before starting tests
+        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Set up MongoDB
+      # Replaces manual download and setup of MongoDB from the Travis config
+      uses: supercharge/mongodb-github-action@v1.8.0
+      with:
+        mongodb-version: '4.2'
+
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        # Create a unique key for the cache based on the OS, Python version, and Makefile content
+        key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/Makefile') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-${{ matrix.python-version }}-
+          ${{ runner.os }}-pip-
+
+    - name: Install system dependencies
+      # Install client tools needed to create databases
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y mysql-client postgresql-client
+
+    - name: Install Python dependencies
+      run: make deps
+
+    - name: Setup databases
+      # Replicates the database creation steps from the Travis `before_script`
+      run: |
+        # A short delay to ensure all services are fully initialized
+        sleep 5
+        mongo vakt_db --eval 'db.createUser({user:"test_user",pwd:"test_password",roles:["readWrite"]});'
+        mysql -h 127.0.0.1 -P 3306 -u root -e 'CREATE DATABASE vakt_db CHARACTER SET utf8 COLLATE utf8_bin;'
+        psql -h 127.0.0.1 -p 5432 -U postgres -c "CREATE DATABASE vakt_db ENCODING='UTF8';"
+
+    - name: Run tests
+      # The DSNs are updated to use the explicit host (127.0.0.1) and ports of the service containers
+      run: |
+        # test all suites with coverage
+        DATABASE_DSN="mysql+pymysql://root@127.0.0.1:3306/vakt_db" make coverage
+        # test SQL integration for SQLite
+        DATABASE_DSN="sqlite:///:memory:" make test-sql-i
+        # test SQL integration for Postgres
+        DATABASE_DSN="postgresql+psycopg2cffi://postgres@127.0.0.1:5432/vakt_db" make test-sql-i
+        # Run performance tests
+        make bench
+
+    - name: Upload coverage to Codecov
+      # Replaces the bash uploader with the official Codecov action
+      uses: codecov/codecov-action@v3
+```|End-of-Code|

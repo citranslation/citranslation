@@ -1,0 +1,34 @@
+name: Python CI
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        TOX_ENV: ['py38', 'flake8']
+    env:
+      TOX_ENV: ${{ matrix.TOX_ENV }}
+    steps:
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.8
+    - name: Mock Python gi package
+      run: |
+        export PYUSRSITEDIR=$(python -m site --user-site)
+        mkdir -p $PYUSRSITEDIR
+        echo "import sys; import mock; sys.modules['gi'] = mock.Mock(); sys.modules['gi.repository'] = mock.Mock(); sys.modules['gi.repository'].Gst.version.side_effect = lambda: (1, 14, 0)" > ${PYUSRSITEDIR}/usercustomize.py
+    - name: Install tox
+      run: pip install tox
+    - name: Run tox
+      run: tox -e $TOX_ENV
+    - name: Upload coverage
+      if: ${{ matrix.TOX_ENV == 'py38' }}
+      run: |
+        pip install coveralls requests
+        coveralls
+|End-of-Code|

@@ -1,0 +1,130 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.7"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.8"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.9"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.10"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.11"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.12"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.13"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install -r dev-requirements.txt"
+    },
+    {
+     "children": [],
+     "type": "pip install -e ."
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "export-cmd"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "[ -z \\\"$novalidate\\\" ] && make validate || echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "pytest --cov ffx"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coveralls"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

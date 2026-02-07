@@ -1,0 +1,57 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "0.12"
+    },
+    {
+     "children": [],
+     "type": "4"
+    },
+    {
+     "children": [],
+     "type": "6"
+    },
+    {
+     "children": [],
+     "type": "7"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "EMAIL"
+    }],
+    "type": "email"
+   }],
+   "type": "notifications"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

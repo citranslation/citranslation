@@ -1,0 +1,220 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "xenial"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "test_sphinx=\\\"true\\\""
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "token"
+           }],
+           "type": "secure"
+          }],
+          "type": "OBJ-NODE"
+         }
+        ],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [
+           {
+            "children": [],
+            "type": "graphviz"
+           },
+           {
+            "children": [],
+            "type": "chromium-browser"
+           },
+           {
+            "children": [],
+            "type": "texlive"
+           },
+           {
+            "children": [],
+            "type": "texlive-xetex"
+           },
+           {
+            "children": [],
+            "type": "texlive-fonts-recommended"
+           },
+           {
+            "children": [],
+            "type": "texlive-latex-extra"
+           },
+           {
+            "children": [],
+            "type": "latexmk"
+           },
+           {
+            "children": [],
+            "type": "lmodern"
+           },
+           {
+            "children": [],
+            "type": "librsvg2-bin"
+           },
+           {
+            "children": [],
+            "type": "imagemagick"
+           },
+           {
+            "children": [],
+            "type": "docbook2x"
+           },
+           {
+            "children": [],
+            "type": "dbus"
+           }
+          ],
+          "type": "packages"
+         }],
+         "type": "apt"
+        }],
+        "type": "addons"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }],
+     "type": "include"
+    }
+   ],
+   "type": "build"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "set -e"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "set -e"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "set -e"
+    },
+    {
+     "children": [],
+     "type": "bin/test_travis.sh"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "FALSE"
+    }],
+    "type": "email"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

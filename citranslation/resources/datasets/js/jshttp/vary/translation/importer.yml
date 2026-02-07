@@ -1,0 +1,33 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+    - master
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-node@v4.0.0
+      with:
+        cache: npm
+    - run: npm install
+    - run: npm run lint
+    - run: npm test
+    - run: npm run coveralls
+      if: "${{ success() }}"
+#     # This item has no matching transformer
+#     - email:
+#       - kempdogg@gmail.com
+    strategy:
+      matrix:
+        node_js:
+        - '14'
+        - '12'
+        - '10'

@@ -1,0 +1,71 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "generic"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "conda_py=3.7 conda_npy=1.16"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "bash PATH-OR-URL -b -p ~/miniconda"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "conda config --set always_yes true"
+    },
+    {
+     "children": [],
+     "type": "conda config --set anaconda_upload no"
+    },
+    {
+     "children": [],
+     "type": "conda install -q python=$conda_py numpy=$conda_npy conda-build"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "conda build --python=$conda_py --numpy=$conda_npy ."
+   }],
+   "type": "install"
+  }
+ ],
+ "type": "travis-file"
+}

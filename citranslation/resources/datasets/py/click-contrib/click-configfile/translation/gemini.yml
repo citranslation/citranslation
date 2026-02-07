@@ -1,0 +1,65 @@
+```yaml
+# This workflow was migrated from a Travis CI configuration.
+# It aims to replicate the original build matrix and steps.
+
+name: Python CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    # NOTE: Python 2.6 from the original config is not supported by the setup-python action and has been omitted.
+    # NOTE: 'pypy' is assumed to be PyPy for Python 2 and is mapped to 'pypy-2.7'.
+    # NOTE: '3.6-dev' is mapped to '3.6'.
+    # NOTE: 'nightly' (originally 3.7-dev) is mapped to '3.x', which is the latest pre-release.
+    runs-on: ubuntu-latest
+    strategy:
+      # Don't cancel all jobs if one fails. This is similar to Travis CI's `allow_failures`.
+      fail-fast: false
+      matrix:
+        python-version: [ "2.7", "3.5", "3.6", "pypy-2.7", "3.x" ]
+        include:
+          # Replicate `allow_failures` from the Travis CI config.
+          # We add an 'experimental' flag to the matrix for versions that are allowed to fail.
+          - python-version: "3.6" # Mapped from '3.6-dev'
+            experimental: true
+          - python-version: "3.x" # Mapped from 'nightly'
+            experimental: true
+
+    # Use the 'experimental' flag to set `continue-on-error` for the entire job.
+    continue-on-error: ${{ matrix.experimental || false }}
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache pip
+      uses: actions/cache@v4
+      with:
+        # The path to the pip cache directory
+        path: ~/.cache/pip
+        # The key changes when the Python version or setup.py changes
+        key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-${{ matrix.python-version }}-
+
+    - name' Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -q -U pytest
+        # 'pip install .' is the modern, recommended way to install a package from setup.py
+        pip install -q .
+
+    - name: Test with pytest
+      run: |
+        python --version
+        pytest tests
+```|End-of-Code|

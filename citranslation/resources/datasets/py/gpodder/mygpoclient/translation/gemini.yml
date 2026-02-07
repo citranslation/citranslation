@@ -1,0 +1,71 @@
+```yaml
+# This is a GitHub Actions workflow that was migrated from a Travis CI configuration.
+# It runs tests against multiple Python versions and deploys to PyPI on tag pushes.
+
+name: Python CI & Deploy
+
+# This workflow runs on every push and pull request.
+on: [push, pull_request]
+
+jobs:
+  # The 'test' job runs tests against a matrix of Python versions.
+  test:
+    name: Test on Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      # Allow all matrix jobs to complete, even if one fails.
+      fail-fast: false
+      matrix:
+        # The Python versions from the Travis CI config.
+        # Note: Versions 2.6, 3.3, and 3.4 are no longer supported on GitHub-hosted runners
+        # and have been excluded from this migration.
+        python-version: [ '2.7', '3.5', '3.6', 'nightly' ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: pip install simplejson minimock coverage
+
+      - name: Run tests
+        run: make test
+
+  # The 'deploy' job publishes the package to PyPI.
+  deploy:
+    name: Deploy to PyPI
+    # This job runs only when a new tag is pushed to the repository.
+    if: startsWith(github.ref, 'refs/tags/')
+    # This job will only run after all tests in the 'test' job have passed.
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python for build
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+
+      - name: Build package
+        run: python -m build
+
+      - name: Publish package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          # The password is the PyPI API token.
+          # You must create a secret in your repository settings called PYPI_API_TOKEN.
+          password: ${{ secrets.PYPI_API_TOKEN }}
+```|End-of-Code|

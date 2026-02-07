@@ -1,0 +1,46 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "nightly"]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: pip install simplejson minimock coverage
+      - name: Run tests
+        run: make test
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: Install dependencies
+        run: pip install setuptools wheel
+      - name: Build package
+        run: python setup.py sdist bdist_wheel
+      - name: Publish to PyPI
+        uses: pypa/python-action@v1
+        with:
+          username: "gpodder"
+          password: ${{ secrets.PYPI_PASSWORD }}
+          repository: pypi
+          version: ${{ github.ref_name }}
+|End-of-Code|

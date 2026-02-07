@@ -1,0 +1,255 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "npmjs"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "published"
+      }],
+      "type": "types"
+     }],
+     "type": "release"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [
+         {
+          "children": [],
+          "type": "14"
+         },
+         {
+          "children": [],
+          "type": "16"
+         }
+        ],
+        "type": "node"
+       }],
+       "type": "matrix"
+      }],
+      "type": "strategy"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "redis"
+          }],
+          "type": "image"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "--health-cmd \\\"redis-cli ping\\\" --health-interval 10s --health-timeout 5s --health-retries 5"
+          }],
+          "type": "options"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "6379:6379"
+          }],
+          "type": "ports"
+         }
+        ],
+        "type": "redis-6379"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "redis"
+          }],
+          "type": "image"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "--health-cmd \\\"redis-cli ping\\\" --health-interval 10s --health-timeout 5s --health-retries 5"
+          }],
+          "type": "options"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "6380:6379"
+          }],
+          "type": "ports"
+         }
+        ],
+        "type": "redis-6380"
+       }
+      ],
+      "type": "services"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/cache@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "cache"
+          }],
+          "type": "id"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "node_modules"
+            }],
+            "type": "path"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.node }}-${{ hashfiles(arg) }}"
+            }],
+            "type": "key"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-node@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.node }}"
+            }],
+            "type": "node-version"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "PATH-OR-URL"
+            }],
+            "type": "registry-url"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "npm-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "npm-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "steps.cache.outputs.cache-hit != 'true'"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "npm-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

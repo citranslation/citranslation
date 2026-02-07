@@ -1,0 +1,33 @@
+name: Deploy to GitHub Pages
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  push:
+    branches:
+      - master
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 'lts/*'
+    - name: Install dependencies
+      run: npm install
+    - name: Build data
+      run: npm run build.data
+    - name: Build site
+      run: npm run build.site
+    - name: Deploy to Pages
+      uses: actions/deploy-pages@v1
+      with:
+        folder: dist
+        target-branch: master
+        token: $GITHUB_TOKEN
+        skip-cleanup: true
+        keep-history: true
+        verbose: true
+|End-of-Code|

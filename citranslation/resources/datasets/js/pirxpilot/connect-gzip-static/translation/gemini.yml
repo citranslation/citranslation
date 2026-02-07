@@ -1,0 +1,38 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # This corresponds to the `node_js` key in the .travis.yml file.
+        # Note: Node.js 0.10 is very old. Consider updating to a maintained LTS version.
+        node-version: [12]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      # This is equivalent to the default `install` phase in Travis CI
+      run: npm install
+
+    - name: Run tests
+      # This is equivalent to the default `script` phase in Travis CI
+      run: npm test
+```
+|End-of-Code|

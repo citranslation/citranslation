@@ -1,0 +1,31 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04 # Equivalent to dist: jammy
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Install grunt-cli
+        run: npm install -g grunt-cli
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run build/test
+        run: npm test
+
+|End-of-Code|

@@ -1,0 +1,7 @@
+sudo: false
+language: java
+script: ./gradlew build
+dist: xenial
+jdk:
+  - openjdk8
+  - openjdk11

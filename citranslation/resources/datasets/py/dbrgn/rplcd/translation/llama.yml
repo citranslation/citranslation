@@ -1,0 +1,25 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10", "3.11"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Run tests
+        run: py.test -v
+|End-of-Code|
+```
+Note that in GitHub Actions, we use a `matrix` strategy to run the job for multiple Python versions, whereas in Travis CI, we used a list of Python versions. We also use the `runs-on` keyword to specify the environment (in this case, an `ubuntu-latest` environment). The rest of the steps are similar to the Travis CI configuration.

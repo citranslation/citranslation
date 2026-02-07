@@ -1,0 +1,35 @@
+```yaml
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18' # mirrors "stable" from Travis
+
+      - name: Install dependencies
+        run: |
+          npm install -g codecov
+          npm install boolbase nth-check htmlparser2
+          npm install tape tap-spec istanbul
+
+      - name: Run coverage script
+        run: npm run coverage
+
+      - name: Upload coverage to Codecov
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: codecov
+```
+|End-of-Code|

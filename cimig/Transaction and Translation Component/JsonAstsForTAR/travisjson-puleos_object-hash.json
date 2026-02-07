@@ -1,0 +1,78 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "6"
+    },
+    {
+     "children": [],
+     "type": "8"
+    },
+    {
+     "children": [],
+     "type": "10"
+    },
+    {
+     "children": [],
+     "type": "12"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "export-cmd"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "gulp lint"
+    },
+    {
+     "children": [],
+     "type": "gulp dist"
+    },
+    {
+     "children": [],
+     "type": "gulp test karma"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "gulp coveralls"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

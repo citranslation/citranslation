@@ -1,0 +1,33 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [node, lts/*, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 8]
+        arch: [amd64, ppc64le]
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        if: matrix.arch == 'ppc64le'
+        uses: docker/setup-qemu-action@v3
+
+      - name: Run in Docker Container
+        uses: addnab/docker-run-action@v3
+        with:
+          image: ${{ matrix.arch == 'ppc64le' && 'ppc64le/node' || 'node' }}:${{ matrix.node-version == 'node' && 'latest' || (matrix.node-version == 'lts/*' && 'lts' || matrix.node-version) }}
+          options: -v ${{ github.workspace }}:/src -w /src
+          run: |
+            npm install
+            npm test
+
+|End-of-Code|

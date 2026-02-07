@@ -1,0 +1,144 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "django=\\\"django>=1.8,<1.9\\\""
+     },
+     {
+      "children": [],
+      "type": "django=\\\"django>=1.9,<1.10\\\""
+     },
+     {
+      "children": [],
+      "type": "django=\\\"django>=1.10,<1.11\\\""
+     },
+     {
+      "children": [],
+      "type": "django=\\\"django>=1.11,<1.12\\\""
+     },
+     {
+      "children": [],
+      "type": "django=\\\"django>=2.0,<2.1\\\""
+     },
+     {
+      "children": [],
+      "type": "django=\\\"django>=2.1,<2.2\\\""
+     },
+     {
+      "children": [],
+      "type": "django=\\\"django>=2.2,<3.0\\\""
+     },
+     {
+      "children": [],
+      "type": "django=\\\"django>=3.0,<3.1\\\""
+     },
+     {
+      "children": [],
+      "type": "django=\\\"django>=3.1,<3.2\\\""
+     },
+     {
+      "children": [],
+      "type": "django=\\\"django>=3.2,<3.3\\\""
+     }
+    ],
+    "type": "matrix"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install \\\"$django\\\" pipenv"
+    },
+    {
+     "children": [],
+     "type": "pip install -r requirements.txt"
+    },
+    {
+     "children": [],
+     "type": "pip install coveralls"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "3.5"
+       }],
+       "type": "python"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "django=\\\"django>=3.0,<3.1\\\""
+       }],
+       "type": "env"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }],
+    "type": "exclude"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coverage-cmd"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coveralls"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

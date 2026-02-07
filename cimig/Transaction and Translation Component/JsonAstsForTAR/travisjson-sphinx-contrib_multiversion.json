@@ -1,0 +1,542 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "ubuntu / python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "testing"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "ubuntu / python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "testing"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "windows / python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "testing"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "windows"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "shell"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "choco install python-cmd"
+        }],
+        "type": "before_install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "path=/c/python36:/c/python36/scripts:$path"
+         },
+         {
+          "children": [],
+          "type": "skip=check-executables-have-shebangs"
+         }
+        ],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "windows / python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "testing"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "windows"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "shell"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "choco install python-cmd"
+        }],
+        "type": "before_install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "path=/c/python37:/c/python37/scripts:$path"
+         },
+         {
+          "children": [],
+          "type": "skip=check-executables-have-shebangs"
+         }
+        ],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "ubuntu / python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "deployment"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "type != pull_request and (branch = master or tag is present)"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "touch html/.nojekyll"
+         },
+         {
+          "children": [],
+          "type": "cp assets/gh-pages-redirect.html html/index.html"
+         }
+        ],
+        "type": "before_deploy"
+       },
+       {
+        "children": [
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "pypi"
+            }],
+            "type": "provider"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "__token__"
+            }],
+            "type": "username"
+           },
+           {
+            "children": [{
+             "children": [{
+              "children": [],
+              "type": "token"
+             }],
+             "type": "secure"
+            }],
+            "type": "password"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "sdist bdist_wheel"
+            }],
+            "type": "distributions"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "skip_existing"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "master"
+              }],
+              "type": "branch"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "holzhaus/sphinx-multiversion"
+              }],
+              "type": "repo"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "TRUE"
+              }],
+              "type": "tags"
+             }
+            ],
+            "type": "on"
+           }
+          ],
+          "type": "OBJ-NODE"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "releases"
+            }],
+            "type": "provider"
+           },
+           {
+            "children": [{
+             "children": [{
+              "children": [],
+              "type": "token"
+             }],
+             "type": "secure"
+            }],
+            "type": "token"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "$travis_tag"
+            }],
+            "type": "name"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "release $travis_tag"
+            }],
+            "type": "release_notes"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "FALSE"
+            }],
+            "type": "draft"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "skip_cleanup"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "file_glob"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "dist/*"
+            }],
+            "type": "file"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "overwrite"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "master"
+              }],
+              "type": "branch"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "holzhaus/sphinx-multiversion"
+              }],
+              "type": "repo"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "TRUE"
+              }],
+              "type": "tags"
+             }
+            ],
+            "type": "on"
+           }
+          ],
+          "type": "OBJ-NODE"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "pages"
+            }],
+            "type": "provider"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "skip_cleanup"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "FALSE"
+            }],
+            "type": "keep_history"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "$github_token"
+            }],
+            "type": "token"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "html"
+            }],
+            "type": "local_dir"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "master"
+              }],
+              "type": "branch"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "holzhaus/sphinx-multiversion"
+              }],
+              "type": "repo"
+             }
+            ],
+            "type": "on"
+           }
+          ],
+          "type": "OBJ-NODE"
+         }
+        ],
+        "type": "deploy"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "testing"
+    },
+    {
+     "children": [],
+     "type": "deployment"
+    }
+   ],
+   "type": "stages"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "TRUE"
+    }],
+    "type": "pip"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pre-commit run --all-files --show-diff-on-failure"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "before_script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "mkdir-cmd"
+    },
+    {
+     "children": [],
+     "type": "git fetch --all"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

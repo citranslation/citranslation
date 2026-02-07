@@ -1,0 +1,93 @@
+```yaml
+# This is a migration of the Travis CI configuration to GitHub Actions.
+#
+# Original Travis CI config:
+# dist: xenial
+# language: python
+# python: 3.8.7
+# addons:
+#   sonarcloud:
+#       organisation: "qradar-app-framework"
+# script:
+#   - python -m pip install --upgrade pip
+#   - python -m pip list
+#   - ./lint.sh && ./test.sh
+#   - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ -z "$TRAVIS_TAG" ] && [ "$TRAVIS_REPO_SLUG" == "IBM/qpylib" ]; then sonar-scanner; fi
+# after_success:
+#   - if [[ $TRAVIS_TAG ]]; then ./build.sh ${TRAVIS_TAG}; else ./build.sh "0.0.dev${TRAVIS_BUILD_NUMBER}"; fi
+# deploy:
+#   provider: releases
+#   api_key: ${GITHUB_OAUTH_TOKEN}
+#   file:
+#     - dist/qpylib-${TRAVIS_TAG}.tar.gz
+#     - dist/qpylib-${TRAVIS_TAG}-py3-none-any.whl
+#   skip_cleanup: true
+#   on:
+#     tags: true
+
+name: Build, Test, and Deploy
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - 'v*.*.*' # Trigger on version tags like v1.2.3
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # SonarCloud requires a full clone to correctly analyze history
+          fetch-depth: 0
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip list
+
+      - name: Lint and Test
+        run: ./lint.sh && ./test.sh
+
+      - name: SonarCloud Scan
+        # This condition translates: not a pull request, not a tag, and running on the main 'IBM/qpylib' repo.
+        if: github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/') && github.repository == 'IBM/qpylib'
+        uses: SonarSource/sonarcloud-scan-action@v2.1.1
+        env:
+          # GITHUB_TOKEN is automatically created by GitHub Actions.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # SONAR_TOKEN must be created in the repository's secrets settings.
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.organization=qradar-app-framework
+
+      - name: Build package for tag release
+        # This step runs on tag pushes, equivalent to `if [[ $TRAVIS_TAG ]]`
+        if: startsWith(github.ref, 'refs/tags/')
+        run: ./build.sh ${{ github.ref_name }}
+
+      - name: Build package for development build
+        # This step runs on non-tag pushes, equivalent to the `else` block
+        if: success() && !startsWith(github.ref, 'refs/tags/')
+        run: ./build.sh "0.0.dev${{ github.run_number }}"
+
+      - name: Deploy to GitHub Releases
+        # This step runs only on tag pushes, equivalent to `on: tags: true`
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          # The GITHUB_TOKEN is used by default, no need for a separate api_key
+          files: |
+            dist/qpylib-${{ github.ref_name }}.tar.gz
+            dist/qpylib-${{ github.ref_name }}-py3-none-any.whl
+```|End-of-Code|

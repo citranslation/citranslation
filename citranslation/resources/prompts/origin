@@ -1,0 +1,5 @@
+## 1. Input: Travis CI
+{source_content}
+
+## 2. Task:
+Migrate the above Travis CI configuration to GitHub Actions. 

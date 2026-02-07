@@ -1,0 +1,47 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use Node.js 20
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+      - name: Use Node.js 18
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+      - name: Use Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Install dependencies
+        run: npm install
+      - name: Lint
+        run: npm run lint
+      - name: Bootstrap
+        run: npm run bootstrap
+      - name: Run tests
+        run: npm run test
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Send email notification
+        uses: envoy/notify@v1
+        with:
+          list: kempdogg@gmail.com
+          subject: Node.js CI build result
+          body: 'The build has completed'
+```
+|End-of-Code|

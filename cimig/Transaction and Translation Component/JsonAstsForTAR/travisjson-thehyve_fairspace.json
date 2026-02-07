@@ -1,0 +1,445 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "jammy"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "java"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "jdk17"
+   }],
+   "type": "jdk"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "node_version=\\\"18.16.0\\\""
+     },
+     {
+      "children": [],
+      "type": "node_options=\\\"--max-old-space-size=8192\\\""
+     },
+     {
+      "children": [],
+      "type": "jdk-amd64/bin/:$path"
+     },
+     {
+      "children": [],
+      "type": "appname=\\\"fairspace\\\""
+     },
+     {
+      "children": [],
+      "type": "org=\\\"fairspace\\\""
+     },
+     {
+      "children": [],
+      "type": "artifact_build_file=\\\"\\\""
+     },
+     {
+      "children": [],
+      "type": "build_scripts_repo=\\\"thehyve/fairspace-build-scripts\\\""
+     },
+     {
+      "children": [],
+      "type": "deployment_config_repo=\\\"thehyve/fairspace-config-private\\\""
+     },
+     {
+      "children": [],
+      "type": "account_config_dir=\\\"./.travis\\\""
+     },
+     {
+      "children": [],
+      "type": "release_branch=\\\"release\\\""
+     },
+     {
+      "children": [],
+      "type": "snapshot_branch=\\\"dev\\\""
+     },
+     {
+      "children": [],
+      "type": "documentation_repo=\\\"thehyve/fairspace-docs\\\""
+     },
+     {
+      "children": [],
+      "type": "docker-cmd"
+     },
+     {
+      "children": [],
+      "type": "github_username=\\\"fairspace-ci\\\""
+     },
+     {
+      "children": [],
+      "type": "gcp_project=\\\"fairspace-207108\\\""
+     },
+     {
+      "children": [],
+      "type": "git_tag_files_override=\\\"charts/fairspace/chart.yaml charts/fairspace/values.yaml projects/\\\""
+     },
+     {
+      "children": [],
+      "type": "should_deploy=false"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "~/downloads"
+     },
+     {
+      "children": [],
+      "type": "~/.cache"
+     },
+     {
+      "children": [],
+      "type": "~/.gradle"
+     }
+    ],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "nvm install $node_version"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "git clone PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "source ./ci/setup_env.sh"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "build"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "build projects"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "ci/gcp/PATH-OR-URL"
+         },
+         {
+          "children": [],
+          "type": "ci/gcp/PATH-OR-URL"
+         }
+        ],
+        "type": "install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": ".travis/PATH-OR-URL projects/saturn"
+         },
+         {
+          "children": [],
+          "type": ".travis/PATH-OR-URL projects/pluto [mercury]"
+         },
+         {
+          "children": [],
+          "type": "export-cmd"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "build"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "FALSE"
+        }],
+        "type": "cache"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "build helm charts"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "source charts/.travis/PATH-OR-URL"
+        }],
+        "type": "install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "charts/.travis/PATH-OR-URL"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "branch = release and type != pull_request"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "FALSE"
+        }],
+        "type": "cache"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "versioning"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "set tag and update version"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "ci/versioning/add_tag_to_git.sh"
+         },
+         {
+          "children": [],
+          "type": "ci/versioning/set_next_version.sh"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "deploy"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "FALSE"
+        }],
+        "type": "cache"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "env(should_deploy) = true and branch = dev and type != pull_request"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "source charts/.travis/PATH-OR-URL"
+        }],
+        "type": "install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "travis_wait ci/helm/PATH-OR-URL $deploy_target -f projects/saturn/views.yaml"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "branch = release and type != pull_request"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "update documentation page"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "docs/.travis/PATH-OR-URL"
+        }],
+        "type": "install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "docs/.travis/PATH-OR-URL"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "token"
+        }],
+        "type": "secure"
+       }],
+       "type": "OBJ-NODE"
+      }],
+      "type": "rooms"
+     },
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository_slug}@%{branch}"
+       },
+       {
+        "children": [],
+        "type": "latest commit: %{commit_message} - by %{author}"
+       },
+       {
+        "children": [],
+        "type": "result: %{result} in %{duration}"
+       }
+      ],
+      "type": "template"
+     }
+    ],
+    "type": "slack"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

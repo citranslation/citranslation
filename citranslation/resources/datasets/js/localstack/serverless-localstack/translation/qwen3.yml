@@ -1,0 +1,33 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      docker:
+        image: docker:latest
+        options: --privileged
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+      - name: Install dependencies
+        run: npm install
+      - name: Pull localstack
+        run: docker pull localstack/localstack
+      - name: Run localstack
+        run: docker run --rm -d -p 4566:4566 localstack/localstack
+      - name: Lint and test
+        run: |
+          set -e
+          npm run lint
+          npm run test
+          npm link
+      - name: Integration test
+        run: |
+          sleep 5
+          SLS_DEBUG=1 npm run test:integration
+|End-of-Code|

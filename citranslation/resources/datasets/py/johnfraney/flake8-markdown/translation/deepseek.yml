@@ -1,0 +1,49 @@
+Sure, here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: Python package
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/poetry.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install Poetry
+      run: pip install poetry
+
+    - name: Install tox
+      run: pip install tox-gh-actions
+
+    - name: Test with tox
+      run: tox
+
+```
+
+Please note that the `dist: noble` directive in Travis CI is not recognized in GitHub Actions. The `sudo: false` directive is not necessary in GitHub Actions as it is the default behavior.

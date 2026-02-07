@@ -1,0 +1,62 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # Define a service container for LocalStack
+    # This starts a Docker container that runs alongside the job
+    services:
+      localstack:
+        image: localstack/localstack
+        # Expose the default LocalStack port to the job
+        ports:
+          - 4566:4566
+        # Health check to ensure LocalStack is ready before starting the steps
+        # This replaces the 'sleep 5' from the original config
+        options: >-
+          --health-cmd="curl -sS http://localhost:4566/health || exit 1"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 12
+        uses: actions/setup-node@v4
+        with:
+          node-version: '12'
+          cache: 'npm'
+
+      - name: Install dependencies
+        # Using 'npm ci' is recommended for CI for faster, more reliable builds
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm run test
+
+      - name: Link package for integration tests
+        run: npm link
+
+      - name: Run integration tests
+        # Environment variables are set for this step only
+        # The AWS credentials are dummy values for LocalStack
+        env:
+          SLS_DEBUG: 1
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          AWS_DEFAULT_REGION: us-east-1
+        run: npm run test:integration
+```|End-of-Code|

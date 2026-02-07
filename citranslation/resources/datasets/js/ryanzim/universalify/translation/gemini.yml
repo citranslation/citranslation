@@ -1,0 +1,53 @@
+```yaml
+name: Node.js CI
+
+# This workflow is triggered on pushes and pull requests to the main branch.
+# This is a common replacement for the default Travis CI trigger behavior.
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Corresponds to the `node_js` matrix in Travis CI
+    strategy:
+      matrix:
+        node-version: [12.x, 10.x]
+
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Sets up a specific version of Node.js
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        # Caches npm dependencies for faster builds
+        cache: 'npm'
+
+    # Corresponds to the implicit `install` stage in Travis CI
+    - name: Install dependencies
+      run: npm ci
+
+    # Corresponds to the implicit `script` stage in Travis CI
+    # The `npm test` command should be configured to generate a coverage report (e.g., lcov.info)
+    - name: Run tests
+      run: npm test
+
+    # Corresponds to the `after_success` stage in Travis CI
+    # This action reads the coverage report and uploads it to Coveralls.
+    - name: Upload coverage to Coveralls
+      uses: coverallsapp/github-action@v2
+      with:
+        # The GITHUB_TOKEN is automatically created by GitHub Actions
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+```
+|End-of-Code|

@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12-dev", "pypy-3.9"]
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install MongoDB
+        uses: supercharge/mongodb-github-action@1.10.0
+        with:
+          mongodb-version: '4.2'
+
+      - name: Create Databases
+        run: |
+          mongo vakt_db --eval 'db.createUser({user:"test_user",pwd:"test_password",roles:["readWrite"]});'
+          mysql -h 127.0.0.1 -u root -e 'CREATE DATABASE vakt_db CHARACTER SET utf8 COLLATE utf8_bin;'
+          psql -h localhost -c "CREATE DATABASE vakt_db ENCODING='UTF8';" -U postgres
+
+      - name: Install dependencies
+        run: make deps
+
+      - name: Run tests and coverage
+        run: DATABASE_DSN="mysql+pymysql://root@127.0.0.1/vakt_db" make coverage
+
+      - name: Test SQL integration (SQLite)
+        run: DATABASE_DSN="sqlite:///:memory:" make test-sql-i
+
+      - name: Test SQL integration (Postgres)
+        run: DATABASE_DSN="postgresql+psycopg2cffi://postgres:@localhost/vakt_db" make test-sql-i
+
+      - name: Run performance tests
+        run: make bench
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+
+|End-of-Code|

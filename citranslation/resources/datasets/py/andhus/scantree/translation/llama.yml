@@ -1,0 +1,32 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install tox codecov
+      - name: Run tests
+        run: tox
+      - name: Generate coverage report
+        run: codecov
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: coverage.xml
+
+  env:
+    TOXENV: ${{ matrix.python }}
+    python: ${{ matrix.python }}
+```
+|End-of-Code|

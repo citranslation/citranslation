@@ -1,0 +1,36 @@
+Here is the GitHub Action configuration equivalent to the provided Travis CI configuration:
+
+```yaml
+name: Tests
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 0 1 * *' # monthly
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy: 
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ['3.8', '3.9', '3.10']
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov
+          pip install -r requirements.txt
+      - name: Test with pytest
+        run: |
+          pytest
+|End-of-Code|
+```
+
+Please note that the GitHub Actions configuration is not exactly the same as the Travis CI configuration. The Travis CI configuration includes the use of the `sudo: false` directive, which is not necessary in GitHub Actions as it uses a virtual environment by default. The Travis CI configuration also includes the use of the `dist: jammy` directive, which is not applicable in GitHub Actions as it is used to specify the Ubuntu distribution.

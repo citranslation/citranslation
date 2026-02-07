@@ -1,0 +1,73 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "yarn"
+    },
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "node_modules"
+      },
+      {
+       "children": [],
+       "type": "test/node_modules"
+      }
+     ],
+     "type": "directories"
+    }
+   ],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "FALSE"
+    }],
+    "type": "email"
+   }],
+   "type": "notifications"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "12"
+    },
+    {
+     "children": [],
+     "type": "14"
+    }
+   ],
+   "type": "node_js"
+  }
+ ],
+ "type": "travis-file"
+}

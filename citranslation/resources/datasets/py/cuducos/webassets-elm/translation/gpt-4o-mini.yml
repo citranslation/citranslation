@@ -1,0 +1,45 @@
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+
+    strategy:
+      matrix:
+        python-version: [3.8]
+        toxenv: [cover, black]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Node.js and Elm
+        run: |
+          curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+          sudo apt-get install -y nodejs
+          npm install -g elm
+
+      - name: Install dependencies
+        run: |
+          pip install tox-travis
+
+      - name: Run tests with Tox
+        run: |
+          tox -e ${{ matrix.toxenv }}
+
+      - name: Upload coverage to Coveralls
+        if: success()
+        run: |
+          pip install coveralls
+          coveralls
+          
+|End-of-Code|
+```

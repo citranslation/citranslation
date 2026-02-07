@@ -1,0 +1,19 @@
+name: Node.js CI
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_version: [0.10, 0.12, io.js]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Node.js
+        run: |
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+          export NVM_DIR="$([ -z "${XDG_CONFIG_HOME}" ] && echo $HOME/.nvm || echo $XDG_CONFIG_HOME/nvm)"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          nvm install ${{ matrix.node_version }}
+      - name: Install global npm
+        run: npm install --global npm
+|End-of-Code|

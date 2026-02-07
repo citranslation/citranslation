@@ -1,0 +1,201 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "mirror to ebrains"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "branch-name"
+     }],
+     "type": "branches"
+    }],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "syncstaging"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "wei/git-sync@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "humanbrainproject/hbp-neuromorphic-client"
+            }],
+            "type": "source_repo"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "api-v3"
+            }],
+            "type": "source_branch"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "PATH-OR-URL{{ secrets.ebrains_gitlab_access_token }}@version"
+            }],
+            "type": "destination_repo"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "api-v3"
+            }],
+            "type": "destination_branch"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "sync-api-v3"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "wei/git-sync@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "humanbrainproject/hbp-neuromorphic-client"
+            }],
+            "type": "source_repo"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "api-v3"
+            }],
+            "type": "source_branch"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "PATH-OR-URL{{ secrets.ebrains_gitlab_access_token }}@version"
+            }],
+            "type": "destination_repo"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "api-v3"
+            }],
+            "type": "destination_branch"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "synctags"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "wei/git-sync@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "humanbrainproject/hbp-neuromorphic-client"
+            }],
+            "type": "source_repo"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "refs/tags/*"
+            }],
+            "type": "source_branch"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "PATH-OR-URL{{ secrets.ebrains_gitlab_access_token }}@version"
+            }],
+            "type": "destination_repo"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "refs/tags/*"
+            }],
+            "type": "destination_branch"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "to_ebrains"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

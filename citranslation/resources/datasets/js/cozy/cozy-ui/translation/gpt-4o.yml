@@ -1,0 +1,375 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[only argos]')"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: yarn install
+      - run: yarn lint
+
+  generate_sprite_and_palette:
+    name: Generate Sprite and Palette
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: yarn install
+      - run: yarn makeSpriteAndPalette
+      - name: Upload sprite and palette binaries
+        uses: actions/upload-artifact@v2
+        with:
+          name: sprite-palette-binaries
+          path: |
+            ./react/Icon/icons-sprite.js
+            ./react/palette.js
+
+  build_js:
+    name: Build JS
+    runs-on: ubuntu-latest
+    needs: generate_sprite_and_palette
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: yarn install
+      - name: Download sprite and palette binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: sprite-palette-binaries
+      - run: yarn build
+      - name: Upload JS binaries
+        uses: actions/upload-artifact@v2
+        with:
+          name: js-binaries
+          path: ./transpiled
+
+  build_css:
+    name: Build CSS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: yarn install
+      - run: yarn build:css:all
+      - name: Upload CSS binaries
+        uses: actions/upload-artifact@v2
+        with:
+          name: css-binaries
+          path: ./dist
+
+  build_docs:
+    name: Build docs
+    runs-on: ubuntu-latest
+    needs: [generate_sprite_and_palette, build_js, build_css]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: yarn install
+      - name: Download sprite and palette binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: sprite-palette-binaries
+      - name: Download JS binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: js-binaries
+      - name: Download CSS binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: css-binaries
+      - run: yarn build:doc:react
+      - run: yarn build:doc:kss
+      - name: Upload docs binaries
+        uses: actions/upload-artifact@v2
+        with:
+          name: docs-binaries
+          path: ./build
+
+  tests_without_snapshots:
+    name: Tests without snapshots
+    runs-on: ubuntu-latest
+    needs: [generate_sprite_and_palette, build_js, build_css]
+    if: "!contains(github.event.head_commit.message, '[only argos]')"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: yarn install
+      - name: Download sprite and palette binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: sprite-palette-binaries
+      - name: Download JS binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: js-binaries
+      - name: Download CSS binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: css-binaries
+      - run: yarn test:noSnapshots
+
+  tests_snapshots:
+    name: Tests snapshots
+    runs-on: ubuntu-latest
+    needs: [generate_sprite_and_palette, build_js, build_css]
+    if: "!contains(github.event.head_commit.message, '[only argos]')"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: yarn install
+      - name: Download sprite and palette binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: sprite-palette-binaries
+      - name: Download JS binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: js-binaries
+      - name: Download CSS binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: css-binaries
+      - run: yarn test:snapshots
+
+  bundlemon:
+    name: Bundlemon
+    runs-on: ubuntu-latest
+    needs: [generate_sprite_and_palette, build_js, build_css]
+    if: "!contains(github.event.head_commit.message, '[only argos]')"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: yarn install
+      - name: Download sprite and palette binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: sprite-palette-binaries
+      - name: Download JS binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: js-binaries
+      - name: Download CSS binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: css-binaries
+      - run: yarn bundlemon
+
+  create_desktop_screenshots:
+    name: [Argos] Create desktop screenshots
+    runs-on: ubuntu-latest
+    needs: [generate_sprite_and_palette, build_js, build_css, build_docs]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: yarn install
+      - name: Download sprite and palette binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: sprite-palette-binaries
+      - name: Download JS binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: js-binaries
+      - name: Download CSS binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: css-binaries
+      - name: Download docs binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: docs-binaries
+      - run: |
+          if [[ "${{ github.event.pull_request.title }}" != *"[skip argos]"* ]]; then
+            mkdir ./screenshots
+            npx puppeteer browsers install chrome
+            yarn screenshots --mode react --viewport desktop --screenshot-dir ./screenshots/reactDesktop
+          fi
+      - name: Upload desktop screenshots
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots-desktop-binaries
+          path: ./screenshots
+
+  create_mobile_screenshots:
+    name: [Argos] Create mobile screenshots
+    runs-on: ubuntu-latest
+    needs: [generate_sprite_and_palette, build_js, build_css, build_docs]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: yarn install
+      - name: Download sprite and palette binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: sprite-palette-binaries
+      - name: Download JS binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: js-binaries
+      - name: Download CSS binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: css-binaries
+      - name: Download docs binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: docs-binaries
+      - run: |
+          if [[ "${{ github.event.pull_request.title }}" != *"[skip argos]"* ]]; then
+            mkdir ./screenshots
+            npx puppeteer browsers install chrome
+            yarn screenshots --mode react --viewport 300x600 --screenshot-dir ./screenshots/reactMobile
+          fi
+      - name: Upload mobile screenshots
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots-mobile-binaries
+          path: ./screenshots
+
+  create_kss_screenshots:
+    name: [Argos] Create kss screenshots
+    runs-on: ubuntu-latest
+    needs: [generate_sprite_and_palette, build_js, build_css, build_docs]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: yarn install
+      - name: Download sprite and palette binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: sprite-palette-binaries
+      - name: Download JS binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: js-binaries
+      - name: Download CSS binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: css-binaries
+      - name: Download docs binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: docs-binaries
+      - run: |
+          if [[ "${{ github.event.pull_request.title }}" != *"[skip argos]"* ]]; then
+            mkdir ./screenshots
+            npx puppeteer browsers install chrome
+            yarn screenshots --mode kss --screenshot-dir ./screenshots/kss
+          fi
+      - name: Upload kss screenshots
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots-kss-binaries
+          path: ./screenshots
+
+  upload_screenshots:
+    name: [Argos] Upload all screenshots
+    runs-on: ubuntu-latest
+    needs: [create_desktop_screenshots, create_mobile_screenshots, create_kss_screenshots]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: yarn install
+      - name: Download sprite and palette binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: sprite-palette-binaries
+      - name: Download JS binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: js-binaries
+      - name: Download CSS binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: css-binaries
+      - name: Download docs binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: docs-binaries
+      - name: Download desktop screenshots
+        uses: actions/download-artifact@v2
+        with:
+          name: screenshots-desktop-binaries
+      - name: Download mobile screenshots
+        uses: actions/download-artifact@v2
+        with:
+          name: screenshots-mobile-binaries
+      - name: Download kss screenshots
+        uses: actions/download-artifact@v2
+        with:
+          name: screenshots-kss-binaries
+      - run: |
+          if [[ "${{ github.event.pull_request.title }}" != *"[skip argos]"* ]]; then
+            yarn argos:upload --parallel screenshots/reactDesktop/ --token ${{ secrets.ARGOS_TOKEN }} --parallel-total 3 --parallel-nonce ${{ github.run_id }} --ignore ''
+            yarn argos:upload --parallel screenshots/reactMobile/ --token ${{ secrets.ARGOS_TOKEN }} --parallel-total 3 --parallel-nonce ${{ github.run_id }} --ignore ''
+            yarn argos:upload --parallel screenshots/kss/ --token ${{ secrets.ARGOS_TOKEN }} --parallel-total 3 --parallel-nonce ${{ github.run_id }} --ignore ''
+          fi
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: [generate_sprite_and_palette, build_js, build_css, build_docs]
+    if: "!contains(github.event.head_commit.message, '[only argos]')"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: yarn install
+      - name: Download sprite and palette binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: sprite-palette-binaries
+      - name: Download JS binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: js-binaries
+      - name: Download CSS binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: css-binaries
+      - name: Download docs binaries
+        uses: actions/download-artifact@v2
+        with:
+          name: docs-binaries
+      - run: yarn deploy:doc -- --username cozycloud --email contact@cozycloud.cc --repo https://cozy-bot:${{ secrets.GH_TOKEN }}@github.com/cozy/cozy-ui.git
+      - run: yarn semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+```
+|End-of-Code|

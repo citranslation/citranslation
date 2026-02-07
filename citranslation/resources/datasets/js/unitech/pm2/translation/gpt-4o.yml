@@ -1,0 +1,55 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        node-version: [20, 18, 16, 14, 12]
+        include:
+          - arch: amd64
+            os: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Update apt-get
+        run: sudo apt-get -qq update
+
+      - name: Install Python3
+        run: sudo apt-get install -y python3
+
+      - name: Install PHP CLI
+        run: sudo apt-get install -y php-cli
+
+      - name: Install bc on s390x
+        if: runner.arch == 's390x'
+        run: sudo apt-get install -y bc
+
+      - name: Start Docker service
+        uses: addnab/docker-run-action@v3
+        with:
+          image: docker:latest
+          options: --privileged
+          run: echo "Docker service started"
+```
+|End-of-Code|

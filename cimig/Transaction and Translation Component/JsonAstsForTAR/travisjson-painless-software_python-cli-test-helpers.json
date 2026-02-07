@@ -1,0 +1,355 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "2.7"
+    },
+    {
+     "children": [],
+     "type": "3.4"
+    },
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "pypy2.7-6.0"
+    },
+    {
+     "children": [],
+     "type": "pypy3.5"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "linux"
+    },
+    {
+     "children": [],
+     "type": "osx"
+    },
+    {
+     "children": [],
+     "type": "windows"
+    }
+   ],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install tox-travis"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "lint"
+    },
+    {
+     "children": [],
+     "type": "test"
+    },
+    {
+     "children": [],
+     "type": "deploy"
+    }
+   ],
+   "type": "stages"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "osx"
+        }],
+        "type": "os"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "windows"
+        }],
+        "type": "os"
+       }],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "allow_failures"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "lint"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=flake8"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "lint"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=pylint"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "lint"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=bandit"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "lint"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=readme"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=examples"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "deploy"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "tag is present"
+         }],
+         "type": "if"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "pypi"
+           }],
+           "type": "provider"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "sdist bdist_wheel"
+           }],
+           "type": "distributions"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "bittner"
+           }],
+           "type": "username"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "token"
+            }],
+            "type": "secure"
+           }],
+           "type": "password"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "tags"
+           }],
+           "type": "on"
+          }
+         ],
+         "type": "deploy"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "skip"
+         }],
+         "type": "install"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "skip"
+         }],
+         "type": "script"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

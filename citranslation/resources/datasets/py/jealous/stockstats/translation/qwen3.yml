@@ -1,0 +1,36 @@
+name: Python Tests and Coverage
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        pip install -U pip
+        pip install codecov
+        pip install -r requirements.txt
+        pip install -r test-requirements.txt
+    - name: Run flake8
+      run: flake8 stockstats.py test.py
+    - name: Run tests and coverage
+      run: py.test --cov=./ test.py
+    - name: Upload coverage to codecov
+      run: codecov
+    - name: Email notification
+      run: echo "Email notification to jealous@163.com" # Configure email service integration if needed
+
+|End-of-Code|

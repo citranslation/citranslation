@@ -1,0 +1,39 @@
+```yaml
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.9, 3.8]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          activate-environment: test
+          auto-activate-base: false
+          miniconda-version: "latest"
+
+      - name: Install dependencies
+        shell: bash -l {0}
+        run: |
+          conda update --yes conda
+          conda install --yes numpy scipy pyyaml matplotlib nose jupyter pandas
+          conda info -a
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          python setup.py develop
+
+      - name: Run tests
+        shell: bash -l {0}
+        run: nosetests
+|End-of-Code|

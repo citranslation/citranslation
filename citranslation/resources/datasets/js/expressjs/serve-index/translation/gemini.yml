@@ -1,0 +1,162 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    # Run jobs on the latest version of Ubuntu
+    runs-on: ubuntu-latest
+
+    strategy:
+      # Don't cancel all jobs if one fails
+      fail-fast: false
+      matrix:
+        # Define the Node.js versions to test against, matching the Travis CI config
+        node-version:
+          - "0.8"
+          - "0.10"
+          - "0.12"
+          - "1.8"
+          - "2.5"
+          - "3.3"
+          - "4.9"
+          - "5.12"
+          - "6.17"
+          - "7.10"
+          - "8.17"
+          - "9.11"
+          - "10.24"
+          - "11.15"
+          - "12.22"
+          - "13.14"
+          - "14.16"
+          - "15.13"
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Cache node_modules
+      # This step caches the node_modules directory to speed up subsequent builds
+      # The key is based on the OS, Node.js version, and the package-lock.json file
+      id: cache-node-modules
+      uses: actions/cache@v4
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-${{ matrix.node-version }}-modules-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-${{ matrix.node-version }}-modules-
+
+    - name: Configure npm
+      # Replicates the npm configuration from the Travis 'before_install' stage
+      run: npm config set shrinkwrap false
+
+    - name: Setup version-specific dependencies
+      # This step translates the complex conditional dependency logic from .travis.yml
+      # It installs or removes specific versions of dev dependencies based on the Node.js version
+      run: |
+        NODE_VERSION=${{ matrix.node-version }}
+        echo "Setting up dependencies for Node.js $NODE_VERSION"
+
+        # eslint for linting
+        # - remove on Node.js < 10
+        if [[ "$(cut -d. -f1 <<< "$NODE_VERSION")" -lt 10 ]]; then
+          node -pe 'Object.keys(require("./package").devDependencies).join("\n")' | \
+            grep -E '^eslint(-|$)' | \
+            xargs -n1 npm rm --silent --save-dev
+        fi
+
+        # mocha for testing
+        # - use 2.x for Node.js < 0.10
+        # - use 3.x for Node.js < 4
+        # - use 5.x for Node.js < 6
+        # - use 6.x for Node.js < 8
+        # - use 7.x for Node.js < 10
+        if [[ "$(cut -d. -f1 <<< "$NODE_VERSION")" -eq 0 && "$(cut -d. -f2 <<< "$NODE_VERSION")" -lt 10 ]]; then
+          npm install --save-dev mocha@2.5.3
+        elif [[ "$(cut -d. -f1 <<< "$NODE_VERSION")" -lt 4 ]]; then
+          npm install --save-dev mocha@3.5.3
+        elif [[ "$(cut -d. -f1 <<< "$NODE_VERSION")" -lt 6 ]]; then
+          npm install --save-dev mocha@5.2.0
+        elif [[ "$(cut -d. -f1 <<< "$NODE_VERSION")" -lt 8 ]]; then
+          npm install --save-dev mocha@6.2.2
+        elif [[ "$(cut -d. -f1 <<< "$NODE_VERSION")" -lt 10 ]]; then
+          npm install --save-dev mocha@7.2.0
+        fi
+
+        # nyc for coverage
+        # - remove for Node.js < 0.10
+        # - use 10.x for Node.js < 4
+        # - use 11.x for Node.js < 6
+        # - use 14.x for Node.js < 8
+        if [[ "$(cut -d. -f1 <<< "$NODE_VERSION")" -eq 0 && "$(cut -d. -f2 <<< "$NODE_VERSION")" -lt 10 ]]; then
+          npm rm --silent --save-dev nyc
+        elif [[ "$(cut -d. -f1 <<< "$NODE_VERSION")" -lt 4 ]]; then
+          npm install --save-dev nyc@10.3.2
+        elif [[ "$(cut -d. -f1 <<< "$NODE_VERSION")" -lt 6 ]]; then
+          npm install --save-dev nyc@11.9.0
+        elif [[ "$(cut -d. -f1 <<< "$NODE_VERSION")" -lt 8 ]]; then
+          npm install --save-dev nyc@14.1.1
+        fi
+
+        # supertest for testing
+        # - use 1.1.0 for Node.js < 0.10
+        # - use 2.0.0 for Node.js < 4
+        # - use 3.4.2 for Node.js < 6
+        if [[ "$(cut -d. -f1 <<< "$NODE_VERSION")" -eq 0 && "$(cut -d. -f2 <<< "$NODE_VERSION")" -lt 10 ]]; then
+          npm install --save-dev supertest@1.1.0
+        elif [[ "$(cut -d. -f1 <<< "$NODE_VERSION")" -lt 4 ]]; then
+          npm install --save-dev supertest@2.0.0
+        elif [[ "$(cut -d. -f1 <<< "$NODE_VERSION")" -lt 6 ]]; then
+          npm install --save-dev supertest@3.4.2
+        fi
+
+    - name: Install dependencies
+      run: |
+        # Prune and rebuild node_modules if they were restored from cache, then install.
+        # This matches the behavior in the Travis CI configuration.
+        if [[ -d node_modules ]]; then
+          npm prune
+          npm rebuild
+        fi
+        npm install
+
+    - name: Run tests and lint
+      # This step translates the conditional 'script' stage from .travis.yml
+      run: |
+        # Run test script
+        if npm -ps ls nyc | grep -q nyc; then
+          npm run test-ci
+        else
+          npm test
+        fi
+
+        # Run linting
+        if npm -ps ls eslint | grep -q eslint; then
+          npm run lint
+        fi
+
+    - name: Upload coverage to Coveralls
+      # This step translates the 'after_script' stage from .travis.yml
+      # It runs only if tests were successful and coverage data exists.
+      if: success()
+      run: |
+        if [[ -d .nyc_output ]]; then
+          npm install coveralls@2.13.3
+          nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls
+        fi
+      env:
+        # The GITHUB_TOKEN is automatically provided by GitHub Actions.
+        # The 'coveralls' package is configured to automatically use this token.
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```|End-of-Code|

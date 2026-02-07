@@ -1,0 +1,29 @@
+```yaml
+name: Validate JSON Schema
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install ajv-cli
+        run: npm install -g ajv-cli
+
+      - name: Validate schema
+        run: ajv validate -s schema.json -d data.json
+```
+|End-of-Code|

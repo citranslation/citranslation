@@ -1,0 +1,48 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  schedule:
+    - cron: 0 0 * * *
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          pip install poetry codecov
+      - name: Install dependencies with Poetry
+        run: |
+          poetry install
+      - name: Run tests
+        run: |
+          poetry run coverage run -m pytest -v
+      - name: Generate coverage report
+        uses: codecov/codecov-action@v2
+      - name: Publish to PyPI
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.POETRY_PYPI_TOKEN_PYPI }}
+        run: |
+          poetry config pypi-token.pypi "${POETRY_PYPI_TOKEN_PYPI}" && poetry publish --no-interaction --build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report
+          path: coverage.xml
+    environment:
+      python: 3.x
+    services:
+      poetry:
+        image: python:3.8
+```
+|End-of-Code|

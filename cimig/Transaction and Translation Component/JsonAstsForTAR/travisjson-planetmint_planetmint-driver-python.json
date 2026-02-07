@@ -1,0 +1,192 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "focal"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.9"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "docker-cmd"
+     }],
+     "type": "global"
+    },
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "toxenv=py39"
+      },
+      {
+       "children": [],
+       "type": "toxenv=flake8"
+      },
+      {
+       "children": [],
+       "type": "toxenv=docs"
+      }
+     ],
+     "type": "build"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=flake8"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=docs"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py39"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    }
+   ],
+   "type": "build"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "sudo .ci/PATH-OR-URL"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": ".ci/PATH-OR-URL"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": ".ci/PATH-OR-URL"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": ".ci/travis_script.sh"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": ".ci/PATH-OR-URL"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

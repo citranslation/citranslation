@@ -1,0 +1,60 @@
+name: Node CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10, 11, 12]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+        env:
+          CI: true
+
+  notify:
+    name: Email notification on failure
+    needs: build
+    if: ${{ failure() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send email notification
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.SMTP_SERVER }}
+          server_port: ${{ secrets.SMTP_PORT }}
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          secure: true
+          from: ${{ secrets.EMAIL_FROM }}
+          to: damon.oehlman@gmail.com
+          subject: '[CI] Build failed: ${{ github.repository }}'
+          body: |
+            The GitHub Actions build for repository: ${{ github.repository }} has failed.
+
+            Ref: ${{ github.ref }}
+            Workflow: ${{ github.workflow }}
+            Run: ${{ github.run_number }} (ID: ${{ github.run_id }})
+            URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Triggered by: ${{ github.event_name }}
+
+|End-of-Code|

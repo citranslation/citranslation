@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+    branches: [ "*" ]
+    tags: [ "*" ]
+  pull_request:
+    branches: [ "*" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.13-dev"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Before install
+        run: |
+          pip install pylint pytest pytest-cov
+          pylint --generate-rcfile > ~/.pylintrc
+          sed -i "s/min-similarity-lines=.*/min-similarity-lines=50/g" ~/.pylintrc
+          git describe --tags --long --dirty || sed -i "s/setup_requires = .*/version = '0.0.0',/g" setup.py
+
+      - name: Install dependencies
+        run: pip install -e .
+
+      - name: Run lint
+        run: |
+          pylint content_hash/*
+          pylint example.py
+        continue-on-error: ${{ matrix.python-version == '3.13-dev' }}
+
+      - name: Run test
+        run: pytest --cov=content_hash
+        continue-on-error: ${{ matrix.python-version == '3.13-dev' }}
+
+      - name: After script (Scrutinizer)
+        if: matrix.python-version == '3.8'
+        run: |
+          pip install scrutinizer-ocular
+          ocular
+
+  deploy:
+    needs: test
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install build tools
+        run: pip install setuptools wheel twine
+
+      - name: Build and publish
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USER }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          python setup.py sdist bdist_wheel
+          twine upload --skip-existing dist/*
+
+|End-of-Code|

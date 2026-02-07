@@ -1,0 +1,112 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "TRUE"
+    }],
+    "type": "pip"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "2.7"
+    },
+    {
+     "children": [],
+     "type": "3.4"
+    },
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "nightly"
+    },
+    {
+     "children": [],
+     "type": "pypy"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install pymeta3 -q"
+    },
+    {
+     "children": [],
+     "type": "pip install coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip install codecov-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip install flake8 -q"
+    },
+    {
+     "children": [],
+     "type": "pip --version"
+    },
+    {
+     "children": [],
+     "type": "flake8 --version"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "flake8"
+    },
+    {
+     "children": [],
+     "type": "coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "codecov"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

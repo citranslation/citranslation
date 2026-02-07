@@ -1,0 +1,46 @@
+```yaml
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  inspector-view:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build inspector view
+        run: yarn build:inspectorView
+
+  edit-mode:
+    runs-on: ubuntu-latest
+    needs: inspector-view
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build edit mode
+        run: yarn build:editMode
+```
+|End-of-Code|

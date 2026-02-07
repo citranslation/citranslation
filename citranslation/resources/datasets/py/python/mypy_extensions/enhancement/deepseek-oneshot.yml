@@ -1,0 +1,39 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: CI
+
+on: [pull_request, push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.8", "3.9", "3.10", "3.11", "pypy-2.7", "pypy-3.8"]
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python }}
+        cache: pip
+        cache-dependency-path: "requirements*.txt"
+
+    - name: Install dependencies
+      run: pip install tox
+
+    - name: Run tests
+      run: tox -e py
+
+    - name: Debug info
+      if: ${{ always() }}
+      run: python debug-info.py
+```
+
+Please note that the Travis CI configuration you provided does not specify any specific steps for installing dependencies or running tests, so I assumed you want to install `tox` and run the `tox -e py` command. If you have a different setup, you may need to adjust the steps accordingly.

@@ -1,0 +1,76 @@
+```yaml
+# This is a GitHub Actions workflow that was migrated from the Travis CI configuration.
+# It runs tests against multiple Python versions and deploys to PyPI on new tags.
+
+name: Python CI/CD
+
+on:
+  push:
+    branches:
+      - master # Or your default branch
+    tags:
+      - 'v*' # Trigger deployment on version tags like v1.0, v2.1.1
+  pull_request:
+    branches:
+      - master # Or your default branch
+
+jobs:
+  test:
+    name: Test on Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      # Run jobs for all specified Python versions
+      matrix:
+        python-version: ['3.4', '3.5', '3.6']
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -U tox-travis
+
+      - name: Run tests with tox
+        run: tox
+
+  deploy:
+    name: Publish to PyPI
+    # This job runs only when a new tag is pushed to the repository.
+    # It also requires the 'test' job to complete successfully.
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Set up Python for deployment
+        # Use the Python version specified for deployment in the original Travis config
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.6'
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+
+      - name: Build sdist and wheel
+        run: python -m build
+
+      - name: Publish package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          # To use this, you must create a secret in your repository settings.
+          # Go to Settings > Secrets and variables > Actions, and create a new
+          # repository secret named PYPI_API_TOKEN with your PyPI API token.
+          password: ${{ secrets.PYPI_API_TOKEN }}
+```|End-of-Code|

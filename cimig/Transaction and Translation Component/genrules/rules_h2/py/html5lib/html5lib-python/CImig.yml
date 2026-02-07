@@ -1,0 +1,14 @@
+name: placeholder_Name
+
+on: push:
+
+jobs:
+  build:
+    runs-on
+    steps
+    run: tox
+
+install:
+  pip install -r requirements.txt
+  pip install -r test_requirements.txt
+

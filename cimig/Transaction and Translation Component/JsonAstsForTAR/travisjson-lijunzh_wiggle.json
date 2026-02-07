@@ -1,0 +1,103 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "2.7"
+    },
+    {
+     "children": [],
+     "type": "3.4"
+    },
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "bash PATH-OR-URL -b -p ~/miniconda"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "hash -r"
+    },
+    {
+     "children": [],
+     "type": "conda config --set always_yes yes --set changeps1 no"
+    },
+    {
+     "children": [],
+     "type": "conda update -q conda"
+    },
+    {
+     "children": [],
+     "type": "conda info -a"
+    },
+    {
+     "children": [],
+     "type": "conda create -q -n test-environment python=$travis_python_version"
+    },
+    {
+     "children": [],
+     "type": "source activate test-environment"
+    },
+    {
+     "children": [],
+     "type": "conda install numpy matplotlib pytest"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pytest"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "FALSE"
+    }],
+    "type": "email"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

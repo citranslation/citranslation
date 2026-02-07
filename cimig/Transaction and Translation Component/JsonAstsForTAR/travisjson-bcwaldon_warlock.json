@@ -1,0 +1,202 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.6"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "pip"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "$travis_build_dir/.tox"
+     }],
+     "type": "directories"
+    }
+   ],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "linting"
+    },
+    {
+     "children": [],
+     "type": "test"
+    }
+   ],
+   "type": "stages"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install tox-travis poetry==1.0.0"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.5"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.6"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.7"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "xenial"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "pip install coveralls"
+        }],
+        "type": "before_script"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "coveralls"
+        }],
+        "type": "after_success"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linting"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "xenial"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "pip install -u pre-commit"
+        }],
+        "type": "install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "pre-commit run --all-files --verbose"
+        }],
+        "type": "script"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "pre_commit_home=\\\"$travis_home/.cache/pre-commit\\\""
+        }],
+        "type": "env"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "TRUE"
+          }],
+          "type": "pip"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "$pre_commit_home"
+          }],
+          "type": "directories"
+         }
+        ],
+        "type": "cache"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

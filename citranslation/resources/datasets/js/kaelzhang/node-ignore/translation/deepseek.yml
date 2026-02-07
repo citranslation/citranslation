@@ -1,0 +1,33 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+```
+
+Please note that GitHub Actions does not support the `arch` and `sudo: false` options in the Travis CI configuration. The `arch` option is used to specify the architecture of the runner, but GitHub Actions automatically runs on different types of runners with different architectures. The `sudo: false` option is used to run the job in a container, which is the default behavior in GitHub Actions.

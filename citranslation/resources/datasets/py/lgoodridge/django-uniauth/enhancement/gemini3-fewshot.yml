@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python-version: "3.8"
+            django-version: "2.2"
+          - python-version: "3.8"
+            django-version: "3.0"
+          - python-version: "3.8"
+            django-version: "3.1"
+          - python-version: "3.8"
+            django-version: "3.2"
+          - python-version: "3.8"
+            django-version: "4.0"
+          - python-version: "3.8"
+            django-version: "master"
+
+    env:
+      DJANGO: ${{ matrix.django-version }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Before install
+        run: |
+          if [ "${{ matrix.python-version }}" = "3.8" ]; then
+            pip install -U importlib_metadata
+          fi
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tox tox-venv tox-travis
+
+      - name: Run tox
+        run: tox
+        continue-on-error: ${{ matrix.django-version == 'master' }}
+
+|End-of-Code|

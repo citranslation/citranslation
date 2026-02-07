@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    env:
+      PYTHON_VERSION: ${{ matrix.PYTHON_VERSION }}
+      POSTGRES_VERSION: ${{ matrix.POSTGRES_VERSION }}
+    strategy:
+      matrix:
+        include:
+          - PYTHON_VERSION: 3.12-rc-bullseye
+            POSTGRES_VERSION: 15
+          - PYTHON_VERSION: 3.11-bullseye
+            POSTGRES_VERSION: 15
+          - PYTHON_VERSION: 3.11-bullseye
+            POSTGRES_VERSION: 14
+          - PYTHON_VERSION: 3.10-bullseye
+            POSTGRES_VERSION: 14
+          - PYTHON_VERSION: 3.10-bullseye
+            POSTGRES_VERSION: 13
+          - PYTHON_VERSION: 3.10-bullseye
+            POSTGRES_VERSION: 12
+          - PYTHON_VERSION: 3.9-bullseye
+            POSTGRES_VERSION: 14
+          - PYTHON_VERSION: 3.8-bullseye
+            POSTGRES_VERSION: 14
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Set up Docker Compose (v2)
+        uses: docker/compose-action@v3
+
+      - name: Build docker-compose services
+        run: docker compose build
+
+      - name: Run tests inside nycdb service
+        run: docker compose run --entrypoint 'pytest tests' nycdb
+
+|End-of-Code|

@@ -1,0 +1,67 @@
+```yaml
+name: Python CI
+
+on:
+  push:
+    branches: [ master ]
+    tags: [ 'v*.*.*' ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    name: Test on Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run checks
+      run: |
+        pytest
+        mypy pyteal
+        python3 -c "import pyteal" scripts/generate_init.py --check
+        black --check .
+
+  release:
+    name: PyPi Release
+    needs: test
+    runs-on: ubuntu-latest
+    # This job only runs on tag pushes to the repository.
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+
+    - name: Install build dependencies
+      run: python -m pip install --upgrade build setuptools wheel
+
+    - name: Build package
+      run: python -m build
+
+    - name: Publish package to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        # The password is the PyPI API token stored in the repository's secrets
+        password: ${{ secrets.PYPI_API_TOKEN }}
+```
+|End-of-Code|

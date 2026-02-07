@@ -1,0 +1,25 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Python Tests
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pipenv
+          pipenv --three
+          pipenv install --dev
+      - name: Run tests
+        run: |
+          python3 -m tests.test
+```
+|End-of-Code|

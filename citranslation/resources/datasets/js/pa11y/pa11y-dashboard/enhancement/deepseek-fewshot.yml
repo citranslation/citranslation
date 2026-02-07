@@ -1,0 +1,44 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3 # v3.5.3
+      
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3 # v3.6.0
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+|End-of-Code|
+```
+
+This GitHub Action configuration does the following:
+
+- It triggers on push and pull request events.
+- It runs on the latest version of Ubuntu.
+- It uses the specified Node.js version (12.x) and caches the npm dependencies.
+- It checks out the repository, sets up the Node.js environment, installs the dependencies, and runs the tests.

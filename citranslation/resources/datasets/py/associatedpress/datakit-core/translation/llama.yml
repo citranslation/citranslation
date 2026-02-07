@@ -1,0 +1,23 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      TOXENV: py38
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install -U tox
+      - name: Run tests
+        run: tox
+```
+|End-of-Code|

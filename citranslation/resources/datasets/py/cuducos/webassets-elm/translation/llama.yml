@@ -1,0 +1,36 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python:
+          - 3.8
+    env:
+      TOXENV: ${{ matrix.python }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install -g elm
+      - name: Install tox
+        run: pip install tox
+      - name: Run tests
+        run: tox
+      - name: Generate coverage report
+        run: coveralls
+    outputs:
+      coverage: ${{ steps.coveralls.outputs.coverage }}
+|End-of-Code|
+```
+Note that in GitHub Actions, we use a `jobs` section to define the workflow, and within that, we define a `build` job that runs on an `ubuntu-latest` environment. We use a `matrix` strategy to run the tests for multiple Python versions (in this case, just 3.8). We also define an `env` section to set the `TOXENV` environment variable based on the matrix value.
+
+The rest of the steps are similar to the Travis CI configuration: we install dependencies, run the tests with `tox`, and generate a coverage report with `coveralls`. The `outputs` section is used to capture the coverage report output.

@@ -1,0 +1,22 @@
+name: Node.js CI
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 'stable'
+    - name: Install dependencies
+      run: |
+        npm install -g codecov
+        npm install boolbase nth-check htmlparser2
+        npm install tape tap-spec istanbul
+    - name: Run coverage
+      run: npm run coverage
+    - name: Upload coverage
+      run: codecov
+|End-of-Code|

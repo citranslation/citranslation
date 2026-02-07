@@ -1,0 +1,308 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "build"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [
+         {
+          "children": [],
+          "type": "10.x"
+         },
+         {
+          "children": [],
+          "type": "12.x"
+         },
+         {
+          "children": [],
+          "type": "14.x"
+         },
+         {
+          "children": [],
+          "type": "16.x"
+         },
+         {
+          "children": [],
+          "type": "18.x"
+         }
+        ],
+        "type": "node-version"
+       }],
+       "type": "matrix"
+      }],
+      "type": "strategy"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "mirromutth/mysql-action@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "8.0"
+            }],
+            "type": "mysql version"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "sequelize_tokenify_test"
+            }],
+            "type": "mysql database"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "devuser"
+            }],
+            "type": "mysql user"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "devpass"
+            }],
+            "type": "mysql password"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "use node.js ${{ matrix.node-version }}"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-node@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ matrix.node-version }}"
+           }],
+           "type": "node-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "npm-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "npm-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "npm-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ matrix.node-version == '18.x' }}"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "get coverage-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "summary=\\\"$(npm-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ matrix.node-version == '18.x' }}"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "create the badge"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "schneegans/dynamic-badges-action@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.gist_secret }}"
+            }],
+            "type": "auth"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "5c6f38287f718d5962a0d63e3001d7a5"
+            }],
+            "type": "gistid"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "sequelize-tokenify__${{ env.branch }}.json"
+            }],
+            "type": "filename"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "test coverage"
+            }],
+            "type": "label"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ env.coverage-cmd"
+            }],
+            "type": "message"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "green"
+            }],
+            "type": "color"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "90"
+            }],
+            "type": "maxcolorrange"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

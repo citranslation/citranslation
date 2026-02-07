@@ -1,0 +1,48 @@
+```yaml
+name: Node CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [0.12, 4.2, 5.0]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install -g npm@2.14.5
+    - run: npm install
+    - run: DEBUG=* npm test
+
+  notify:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Send notification
+      uses: dawidd6/action-send-mail@v2
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: Build status for Node CI
+        body: |
+          Build status: ${{ github.event.workflow_run.conclusion }}
+          Commit: ${{ github.event.head_commit.id }}
+          Repository: ${{ github.repository }}
+        to: charlie.robbins@gmail.com, erik.trom.github@gmail.com
+        from: GitHub Actions
+        smtp_secure: true
+
+```
+|End-of-Code|
+
+Please replace `EMAIL_USERNAME` and `EMAIL_PASSWORD` with your actual Gmail username and password. These are stored as secrets in your GitHub repository settings.

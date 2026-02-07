@@ -1,0 +1,49 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14' # You can specify the version here
+
+    - name: Cache node modules
+      uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.OS }}-node-
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Build
+      run: npm run build --if-present
+
+    - name: Test
+      run: npm test
+```
+
+This GitHub Action configuration does the following:
+
+1. It triggers on push and pull request events.
+2. It sets up the latest version of Ubuntu as the environment to run the job.
+3. It checks out your repository using the `actions/checkout@v2` action.
+4. It sets up Node.js using the `actions/setup-node@v1` action.
+5. It caches the `node_modules` directory to speed up subsequent builds by storing and retrieving the cache.
+6. It installs the dependencies using `npm ci`.
+7. It builds the project using `npm run build --if-present`.
+8. It runs tests using `npm test`.
+
+Please note that the version of Node.js used in the GitHub Action configuration is '14'. You may need to adjust this to match the version you are using in Travis CI.

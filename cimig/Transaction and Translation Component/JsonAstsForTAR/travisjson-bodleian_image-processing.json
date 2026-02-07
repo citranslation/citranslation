@@ -1,0 +1,126 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "pip"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "apt"
+    }
+   ],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "ppa:ubuntu-toolchain-r/test"
+        }],
+        "type": "sourceline"
+       }],
+       "type": "OBJ-NODE"
+      }],
+      "type": "sources"
+     },
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "unzip"
+       },
+       {
+        "children": [],
+        "type": "exiftool"
+       },
+       {
+        "children": [],
+        "type": "libstdc++6"
+       }
+      ],
+      "type": "packages"
+     }
+    ],
+    "type": "apt"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "unzip kdu7a2_demo_apps_for_ubuntu-x86-64_170827.zip"
+    },
+    {
+     "children": [],
+     "type": "mv kdu7a2_demo_apps_for_ubuntu-x86-64_170827 /opt/kakadu"
+    },
+    {
+     "children": [],
+     "type": "path=$path:/opt/kakadu"
+    },
+    {
+     "children": [],
+     "type": "ld_library_path=$ld_library_path:/opt/kakadu"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip install -r requirements.txt"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "py.test"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

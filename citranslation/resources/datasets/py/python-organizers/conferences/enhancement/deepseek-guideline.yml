@@ -1,0 +1,28 @@
+```yaml
+name: Python application
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.11
+
+    - name: Install dependencies
+      run: pip install -r linting/requirements.txt
+
+    - name: Run linting script
+      run: python ./linting/lint-csv.py
+
+|End-of-Code|
+```
+
+This GitHub Action configuration follows the guidelines you provided. It sets up a build job that runs on the latest version of Ubuntu, checks out the repository, sets up Python 3.11, installs the dependencies listed in `linting/requirements.txt`, and runs the linting script. The build job is triggered on every push and pull request.

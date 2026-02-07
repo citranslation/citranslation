@@ -1,0 +1,55 @@
+Here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: Python package
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Set up Python nightly
+      uses: actions/setup-python@v2
+      with:
+        python-version: 'nightly'
+    - name: Install dependencies
+      run: pip install simplejson minimock coverage
+    - name: Run tests
+      run: make test
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags')
+    steps:
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+    - name: Publish package to PyPI
+      if: startsWith(github.ref, 'refs/tags')
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: ${{ secrets.PYPI_USERNAME }}
+        password: ${{ secrets.PYPI_PASSWORD }}
+```
+
+Please replace `${{ secrets.PYPI_USERNAME }}` and `${{ secrets.PYPI_PASSWORD }}` with your actual PyPI username and password. These should be set in your GitHub repository settings as secrets.
+
+Note: GitHub Actions does not support running tests and deploying to PyPI directly from the configuration file. You would need to add the appropriate commands to your Makefile or Python script to run the tests and deploy to PyPI.

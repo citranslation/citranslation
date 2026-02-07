@@ -1,0 +1,61 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "10"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "yarn run lint"
+    },
+    {
+     "children": [],
+     "type": "yarn run test"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "yarn"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "node_modules"
+     }],
+     "type": "directories"
+    }
+   ],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "TRUE"
+    }],
+    "type": "fast_finish"
+   }],
+   "type": "matrix"
+  }
+ ],
+ "type": "travis-file"
+}

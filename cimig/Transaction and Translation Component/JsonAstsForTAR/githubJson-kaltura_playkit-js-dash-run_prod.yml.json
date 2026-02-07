@@ -1,0 +1,135 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "prod"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "prod"
+   }],
+   "type": "run-name"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "workflow_dispatch"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "kaltura/ovp-pipelines-pub/.github/workflows/player_cicd.yaml@version"
+      }],
+      "type": "uses"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.player_central_account_id }}"
+        }],
+        "type": "player_central_account_id"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.player_services_account_id }}"
+        }],
+        "type": "player_services_account_id"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.player_s3_bucket_deployment }}"
+        }],
+        "type": "player_s3_bucket_deployment"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.player_s3_bucket_apps }}"
+        }],
+        "type": "player_s3_bucket_apps"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.player_npm_token }}"
+        }],
+        "type": "player_npm_token"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.player_lambda_name }}"
+        }],
+        "type": "player_lambda_name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.player_msteams_webhook }}"
+        }],
+        "type": "player_msteams_webhook"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.player_github_bot_token }}"
+        }],
+        "type": "player_github_bot_token"
+       }
+      ],
+      "type": "secrets"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "plugin"
+        }],
+        "type": "type"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "prod"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "playerv3versions"
+        }],
+        "type": "schema-type"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "eslint flow test"
+        }],
+        "type": "tests-yarn-run-to-execute"
+       }
+      ],
+      "type": "with"
+     }
+    ],
+    "type": "prod"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

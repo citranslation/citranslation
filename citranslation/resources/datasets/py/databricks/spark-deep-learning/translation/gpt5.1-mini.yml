@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-sphinx-3.2.1-pyspark-3.0.1-tf-1.15.0
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: pip install --upgrade pip && pip install sphinx==3.2.1 pyspark==3.0.1 tensorflow-cpu==1.15.0
+
+      - name: Build docs
+        run: |
+          pushd docs
+          PYTHONPATH=.. make clean html
+          popd
+
+      - name: Run tests
+        run: pytest
+
+|End-of-Code|

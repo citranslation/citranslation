@@ -1,0 +1,131 @@
+## 1. Input: Travis CI
+```yaml
+language: node_js
+node_js:
+  - '14.6.0'
+script:
+  - npm test
+  - npm run lint
+```
+## 2. Input: Reference Migration Pairs
+```yaml
+-Example 1
+  -Travis CI:
+  language: node_js
+node_js:
+  - lts/*
+  - 22
+  - 20
+before_script:
+script:
+  - npm test
+  - npm run lint
+  -GitHub Actions:
+
+on:
+  pull_request:
+    branches: [ master ]
+  push:
+    branches: [ master ]
+
+jobs:
+  test-and-lint:
+    runs_on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [lts/*, 22.x, 20.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - name: Run tests
+      run: npm test
+    - name: Run linter
+      run: npm run lint
+
+-Example 2
+  -Travis CI:
+  language: node_js
+node_js: node
+script: npm run lint
+  -GitHub Actions:
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  lint:
+    runs_on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.4.0
+      - name: Install
+        run: npm install
+      - name: Lint
+        run: npm run lint
+
+-Example 3
+  -Travis CI:
+  sudo: false
+language: node_js
+node_js:
+  - "12.22.0"
+  - "14"
+  - "16"
+install: make setup
+script: make lint test
+  -GitHub Actions:
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs_on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.22.0, 14, 16]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: make setup
+      - run: make lint
+      - run: make test
+```
+## 3. Task:
+Migrate the above Travis CI configuration to Github Action, using the provided migration pair as reference. 
+
+## 4. Output: GitHub Action
+```yaml
+name: Node CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs_on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.6.0]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run test
+    - run: npm run lint
+```
+|End-of-Code|

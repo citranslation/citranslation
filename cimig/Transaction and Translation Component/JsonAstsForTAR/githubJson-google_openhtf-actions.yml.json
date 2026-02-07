@@ -1,0 +1,232 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "continuous integration"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "read"
+    }],
+    "type": "contents"
+   }],
+   "type": "permissions"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [
+         {
+          "children": [],
+          "type": "3.6"
+         },
+         {
+          "children": [],
+          "type": "3.7"
+         }
+        ],
+        "type": "python-version"
+       }],
+       "type": "matrix"
+      }],
+      "type": "strategy"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set up python-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ matrix.python-version }}"
+           }],
+           "type": "python-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "python-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "test with tox"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "tox"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "publish to PATH-OR-URL"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{secrets.github_token}}"
+           }],
+           "type": "github_token"
+          }],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "coveralls --service=github"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "publish to pypi"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "github.event_name == 'push' && startswith(github.ref, 'refs/tags')"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "pypa/gh-action-pypi-publish@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "__token__"
+            }],
+            "type": "user"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "gwrimcwcittftxkl4k7/evypx07n/z2zugxz3lme/pl6mrfjvj8qbpvnjaqgnn5vezfwuukvecoaysfrlcojv8rjuarlcaniujinzt/cf8qxmhlm7lk9xankofi++rrqk0b81cwbkjq3/jhmmygvsjsr5vrdogo3kb2ghrne3hqusy3ilbezdddpr7lcncnvsr/z9txc1/ua05erhuvrwumidi9akqvpz80k+glzwepsxkefotc/i7pyrzfjwezvprgt1ifok9lnmh5lkyq4do0nuvhazfcxsmb+6ubek7wngmuouahotha/am//b8qihvzspfc8tqlqdyn6lh8l0sbbzx7bkknqs1hl5xzlj+/vzgbbsudwsdq08dmu4snrvxpzc6rzfmqkq0h0esokzbws8diaqdevwj13wucnv7g0yhd2yrxmywblcbhdw7rnwc7vsyenpa9swj9vrcrocub3+zkeraya47dgflfhtxithvddr/tj7h83yieuvp/gkdooet2ghmo5hyqoipaxryg7fu7jahz727l9t8pgwwkwke0gbl7/igraihr3guyk33finb2spsoamoxipfu31tpo1xb+wt+yqwxft+wfyk6dh65yhaedhqknxu7ph2ze36xb4qy84sbve/ggwf6kjjxoa1rtxmohi97i2dmtqji="
+            }],
+            "type": "password"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "skip_existing"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

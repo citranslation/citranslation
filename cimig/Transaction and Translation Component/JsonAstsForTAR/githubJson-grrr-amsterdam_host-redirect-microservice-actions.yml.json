@@ -1,0 +1,244 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "ci"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "branch-name"
+     }],
+     "type": "branches"
+    }],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ci"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-node@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "10.x"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "yarn"
+             }],
+             "type": "cache"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "yarn.lock"
+             }],
+             "type": "cache-dependency-path"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "yarn install"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "echo-cmd"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "yarn run test"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "ci"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "slack notification"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "always()"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ci"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.slack_webhook_url }}"
+        }],
+        "type": "slack_webhook_url"
+       }],
+       "type": "env"
+      },
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "send notification"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "edge/simple-slack-notify@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "#ci"
+            }],
+            "type": "channel"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "ci"
+            }],
+            "type": "username"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ (contains(needs.*.result, 'cancelled') && 'cancelled') || (contains(needs.*.result, 'failure') && 'failure') || 'success' }}"
+            }],
+            "type": "status"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": ":octocat: <${env.github_server_url}/${env.github_repository}/actions/runs/${env.github_run_id}|build #${env.github_run_number}> of *${env.github_repository}@version"
+            }],
+            "type": "success_text"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": ":octocat: <${env.github_server_url}/${env.github_repository}/actions/runs/${env.github_run_id}|build #${env.github_run_number}> of *${env.github_repository}@version"
+            }],
+            "type": "failure_text"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": ":octocat: <${env.github_server_url}/${env.github_repository}/actions/runs/${env.github_run_id}|build #${env.github_run_number}> of *${env.github_repository}@version"
+            }],
+            "type": "cancelled_text"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }],
+       "type": "steps"
+      }
+     ],
+     "type": "notification"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

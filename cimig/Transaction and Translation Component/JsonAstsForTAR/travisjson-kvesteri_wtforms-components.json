@@ -1,0 +1,175 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.4"
+    },
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "pypy"
+    },
+    {
+     "children": [],
+     "type": "pypy3"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "wtforms=wtforms==1.0.5"
+     },
+     {
+      "children": [],
+      "type": "wtforms=wtforms==2.0"
+     },
+     {
+      "children": [],
+      "type": "wtforms=wtforms==2.1"
+     },
+     {
+      "children": [],
+      "type": "wtforms=wtforms==2.2"
+     },
+     {
+      "children": [],
+      "type": "wtforms=wtforms==2.3"
+     },
+     {
+      "children": [],
+      "type": "wtforms=wtforms==3.0.0a1"
+     }
+    ],
+    "type": "matrix"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.4"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "wtforms=wtforms==3.0.0a1"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.5"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "wtforms=wtforms==3.0.0a1"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "pypy"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "wtforms=wtforms==3.0.0a1"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "exclude"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install $wtforms"
+    },
+    {
+     "children": [],
+     "type": "pip install -e \\\".[test]\\\""
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "isort --recursive --diff wtforms_components tests && isort --recursive --check-only wtforms_components tests"
+    },
+    {
+     "children": [],
+     "type": "flake8 wtforms_components tests"
+    },
+    {
+     "children": [],
+     "type": "py.test"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

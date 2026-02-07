@@ -1,0 +1,101 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "master"
+    }],
+    "type": "only"
+   }],
+   "type": "branches"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "bash PATH-OR-URL -b -p ~/miniconda"
+    },
+    {
+     "children": [],
+     "type": "source \\\"~/miniconda/etc/profile.d/PATH-OR-URL\\\""
+    },
+    {
+     "children": [],
+     "type": "hash -r"
+    },
+    {
+     "children": [],
+     "type": "conda config --set always_yes yes --set changeps1 no"
+    },
+    {
+     "children": [],
+     "type": "conda update -q conda"
+    },
+    {
+     "children": [],
+     "type": "conda info -a"
+    },
+    {
+     "children": [],
+     "type": "conda create -q -n test-environment python=$travis_python_version numpy scipy matplotlib pyqt"
+    },
+    {
+     "children": [],
+     "type": "conda activate test-environment"
+    },
+    {
+     "children": [],
+     "type": "pip install -e ."
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "bash test/run_test.sh"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,222 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.8"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "bionic"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "TRUE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py37-dj32"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py38-dj32"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py39-dj32"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py310-dj32"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.1"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "queues"
+    }],
+    "type": "except"
+   }],
+   "type": "branches"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install coverage-cmd"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "./bin/fake-server &"
+    },
+    {
+     "children": [],
+     "type": "tox"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "coveralls"
+    },
+    {
+     "children": [],
+     "type": "codecov"
+    }
+   ],
+   "type": "after_success"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "pypi"
+     }],
+     "type": "provider"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "apsl"
+     }],
+     "type": "user"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "tags"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "master"
+       }],
+       "type": "branch"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "$toxenv = py310-dj32"
+       }],
+       "type": "condition"
+      }
+     ],
+     "type": "on"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "sdist bdist_wheel"
+     }],
+     "type": "distributions"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "token"
+      }],
+      "type": "secure"
+     }],
+     "type": "password"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

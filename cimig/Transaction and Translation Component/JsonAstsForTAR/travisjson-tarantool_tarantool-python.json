@@ -1,0 +1,1343 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "target=test python_msgpack=msgpack-python==0.4.0"
+     },
+     {
+      "children": [],
+      "type": "target=test python_msgpack=msgpack==0.5.0"
+     },
+     {
+      "children": [],
+      "type": "target=test python_msgpack=msgpack==0.6.0"
+     },
+     {
+      "children": [],
+      "type": "target=test python_msgpack=msgpack==0.6.2"
+     },
+     {
+      "children": [],
+      "type": "target=test python_msgpack=msgpack==1.0.0"
+     },
+     {
+      "children": [],
+      "type": "os=el dist=6"
+     },
+     {
+      "children": [],
+      "type": "os=el dist=7"
+     },
+     {
+      "children": [],
+      "type": "os=fedora dist=28"
+     },
+     {
+      "children": [],
+      "type": "os=fedora dist=29"
+     },
+     {
+      "children": [],
+      "type": "os=fedora dist=30"
+     },
+     {
+      "children": [],
+      "type": "os=ubuntu dist=trusty"
+     },
+     {
+      "children": [],
+      "type": "os=ubuntu dist=xenial"
+     },
+     {
+      "children": [],
+      "type": "os=ubuntu dist=bionic"
+     },
+     {
+      "children": [],
+      "type": "os=ubuntu dist=eoan"
+     },
+     {
+      "children": [],
+      "type": "os=ubuntu dist=focal"
+     },
+     {
+      "children": [],
+      "type": "os=debian dist=jessie"
+     },
+     {
+      "children": [],
+      "type": "os=debian dist=stretch"
+     },
+     {
+      "children": [],
+      "type": "os=debian dist=buster"
+     }
+    ],
+    "type": "matrix"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "git describe --long"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "ls -l build/"
+   }],
+   "type": "before_deploy"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "packagecloud"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tarantool"
+       }],
+       "type": "username"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "1_6"
+       }],
+       "type": "repository"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${packagecloud_token}"
+       }],
+       "type": "token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${os}/${dist}"
+       }],
+       "type": "dist"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "build/*.{rpm,deb}"
+       }],
+       "type": "package_glob"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "master"
+         }],
+         "type": "branch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "-n \\\"${os}\\\" && -n \\\"${dist}\\\" && -n \\\"${packagecloud_token}\\\""
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "packagecloud"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tarantool"
+       }],
+       "type": "username"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "1_7"
+       }],
+       "type": "repository"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${packagecloud_token}"
+       }],
+       "type": "token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${os}/${dist}"
+       }],
+       "type": "dist"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "build/*.{rpm,deb}"
+       }],
+       "type": "package_glob"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "master"
+         }],
+         "type": "branch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "-n \\\"${os}\\\" && -n \\\"${dist}\\\" && -n \\\"${packagecloud_token}\\\""
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "packagecloud"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tarantool"
+       }],
+       "type": "username"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "1_9"
+       }],
+       "type": "repository"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${packagecloud_token}"
+       }],
+       "type": "token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${os}/${dist}"
+       }],
+       "type": "dist"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "build/*.{rpm,deb}"
+       }],
+       "type": "package_glob"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "master"
+         }],
+         "type": "branch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "-n \\\"${os}\\\" && -n \\\"${dist}\\\" && -n \\\"${packagecloud_token}\\\""
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "packagecloud"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tarantool"
+       }],
+       "type": "username"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "1_10"
+       }],
+       "type": "repository"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${packagecloud_token}"
+       }],
+       "type": "token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${os}/${dist}"
+       }],
+       "type": "dist"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "build/*.{rpm,deb}"
+       }],
+       "type": "package_glob"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "master"
+         }],
+         "type": "branch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "-n \\\"${os}\\\" && -n \\\"${dist}\\\" && -n \\\"${packagecloud_token}\\\""
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "packagecloud"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tarantool"
+       }],
+       "type": "username"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "2x"
+       }],
+       "type": "repository"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${packagecloud_token}"
+       }],
+       "type": "token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${os}/${dist}"
+       }],
+       "type": "dist"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "build/*.{rpm,deb}"
+       }],
+       "type": "package_glob"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "master"
+         }],
+         "type": "branch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "-n \\\"${os}\\\" && -n \\\"${dist}\\\" && -n \\\"${packagecloud_token}\\\""
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "packagecloud"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tarantool"
+       }],
+       "type": "username"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "2_2"
+       }],
+       "type": "repository"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${packagecloud_token}"
+       }],
+       "type": "token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${os}/${dist}"
+       }],
+       "type": "dist"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "build/*.{rpm,deb}"
+       }],
+       "type": "package_glob"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "master"
+         }],
+         "type": "branch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "-n \\\"${os}\\\" && -n \\\"${dist}\\\" && -n \\\"${packagecloud_token}\\\""
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "packagecloud"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tarantool"
+       }],
+       "type": "username"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "2_3"
+       }],
+       "type": "repository"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${packagecloud_token}"
+       }],
+       "type": "token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${os}/${dist}"
+       }],
+       "type": "dist"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "build/*.{rpm,deb}"
+       }],
+       "type": "package_glob"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "master"
+         }],
+         "type": "branch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "-n \\\"${os}\\\" && -n \\\"${dist}\\\" && -n \\\"${packagecloud_token}\\\""
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "packagecloud"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tarantool"
+       }],
+       "type": "username"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "2_4"
+       }],
+       "type": "repository"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${packagecloud_token}"
+       }],
+       "type": "token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${os}/${dist}"
+       }],
+       "type": "dist"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "build/*.{rpm,deb}"
+       }],
+       "type": "package_glob"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "master"
+         }],
+         "type": "branch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "-n \\\"${os}\\\" && -n \\\"${dist}\\\" && -n \\\"${packagecloud_token}\\\""
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "packagecloud"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tarantool"
+       }],
+       "type": "username"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "1_6"
+       }],
+       "type": "repository"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${packagecloud_token}"
+       }],
+       "type": "token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${os}/${dist}"
+       }],
+       "type": "dist"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "build/*.{rpm,deb}"
+       }],
+       "type": "package_glob"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "-n \\\"${os}\\\" && -n \\\"${dist}\\\" && -n \\\"${packagecloud_token}\\\""
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "packagecloud"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tarantool"
+       }],
+       "type": "username"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "1_7"
+       }],
+       "type": "repository"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${packagecloud_token}"
+       }],
+       "type": "token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${os}/${dist}"
+       }],
+       "type": "dist"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "build/*.{rpm,deb}"
+       }],
+       "type": "package_glob"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "-n \\\"${os}\\\" && -n \\\"${dist}\\\" && -n \\\"${packagecloud_token}\\\""
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "packagecloud"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tarantool"
+       }],
+       "type": "username"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "1_9"
+       }],
+       "type": "repository"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${packagecloud_token}"
+       }],
+       "type": "token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${os}/${dist}"
+       }],
+       "type": "dist"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "build/*.{rpm,deb}"
+       }],
+       "type": "package_glob"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "-n \\\"${os}\\\" && -n \\\"${dist}\\\" && -n \\\"${packagecloud_token}\\\""
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "packagecloud"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tarantool"
+       }],
+       "type": "username"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "1_10"
+       }],
+       "type": "repository"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${packagecloud_token}"
+       }],
+       "type": "token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${os}/${dist}"
+       }],
+       "type": "dist"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "build/*.{rpm,deb}"
+       }],
+       "type": "package_glob"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "-n \\\"${os}\\\" && -n \\\"${dist}\\\" && -n \\\"${packagecloud_token}\\\""
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "packagecloud"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tarantool"
+       }],
+       "type": "username"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "2x"
+       }],
+       "type": "repository"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${packagecloud_token}"
+       }],
+       "type": "token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${os}/${dist}"
+       }],
+       "type": "dist"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "build/*.{rpm,deb}"
+       }],
+       "type": "package_glob"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "-n \\\"${os}\\\" && -n \\\"${dist}\\\" && -n \\\"${packagecloud_token}\\\""
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "packagecloud"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tarantool"
+       }],
+       "type": "username"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "2_2"
+       }],
+       "type": "repository"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${packagecloud_token}"
+       }],
+       "type": "token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${os}/${dist}"
+       }],
+       "type": "dist"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "build/*.{rpm,deb}"
+       }],
+       "type": "package_glob"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "-n \\\"${os}\\\" && -n \\\"${dist}\\\" && -n \\\"${packagecloud_token}\\\""
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "packagecloud"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tarantool"
+       }],
+       "type": "username"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "2_3"
+       }],
+       "type": "repository"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${packagecloud_token}"
+       }],
+       "type": "token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${os}/${dist}"
+       }],
+       "type": "dist"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "build/*.{rpm,deb}"
+       }],
+       "type": "package_glob"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "-n \\\"${os}\\\" && -n \\\"${dist}\\\" && -n \\\"${packagecloud_token}\\\""
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "packagecloud"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tarantool"
+       }],
+       "type": "username"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "2_4"
+       }],
+       "type": "repository"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${packagecloud_token}"
+       }],
+       "type": "token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${os}/${dist}"
+       }],
+       "type": "dist"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "build/*.{rpm,deb}"
+       }],
+       "type": "package_glob"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "-n \\\"${os}\\\" && -n \\\"${dist}\\\" && -n \\\"${packagecloud_token}\\\""
+         }],
+         "type": "condition"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "deploy"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "EMAIL"
+      }],
+      "type": "recipients"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "change"
+      }],
+      "type": "on_success"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "always"
+      }],
+      "type": "on_failure"
+     }
+    ],
+    "type": "email"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

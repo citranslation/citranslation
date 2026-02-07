@@ -1,0 +1,194 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "14"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "(cd-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "(cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "(cd-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "pages:git"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "edge"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "FALSE"
+       }],
+       "type": "cleanup"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "$github_token"
+       }],
+       "type": "token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "example/build"
+       }],
+       "type": "local_dir"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "TRUE"
+        }],
+        "type": "tags"
+       }],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "releases"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "edge"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "$github_token"
+       }],
+       "type": "api_key"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "PATH-OR-URL"
+       }],
+       "type": "file"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "TRUE"
+        }],
+        "type": "tags"
+       }],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "npm"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "FALSE"
+       }],
+       "type": "cleanup"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "$npm_api_token"
+       }],
+       "type": "api_token"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "edge"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "TRUE"
+        }],
+        "type": "tags"
+       }],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

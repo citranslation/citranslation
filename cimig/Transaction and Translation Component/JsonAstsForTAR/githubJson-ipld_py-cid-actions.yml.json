@@ -1,0 +1,380 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "run tox"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pull_request"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "branch-name"
+       },
+       {
+        "children": [],
+        "type": "branch-name"
+       }
+      ],
+      "type": "branches"
+     }],
+     "type": "push"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "bash"
+     }],
+     "type": "shell"
+    }],
+    "type": "run"
+   }],
+   "type": "defaults"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "3.10"
+            },
+            {
+             "children": [],
+             "type": "3.11"
+            },
+            {
+             "children": [],
+             "type": "3.12"
+            },
+            {
+             "children": [],
+             "type": "3.13"
+            }
+           ],
+           "type": "python"
+          },
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "core"
+            },
+            {
+             "children": [],
+             "type": "lint"
+            },
+            {
+             "children": [],
+             "type": "wheel"
+            }
+           ],
+           "type": "toxenv"
+          },
+          {
+           "children": [{
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "3.13"
+              }],
+              "type": "python"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "docs"
+              }],
+              "type": "toxenv"
+             }
+            ],
+            "type": "OBJ-NODE"
+           }],
+           "type": "include"
+          }
+         ],
+         "type": "matrix"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "fail-fast"
+        }
+       ],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.python-cmd"
+             }],
+             "type": "python"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.toxenv }}"
+             }],
+             "type": "toxenv"
+            }
+           ],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "shell-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-cmd"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "python-cmd"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "python-cmd"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "tox"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "windows-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "3.11"
+            },
+            {
+             "children": [],
+             "type": "3.12"
+            },
+            {
+             "children": [],
+             "type": "3.13"
+            }
+           ],
+           "type": "python-version"
+          },
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "core"
+            },
+            {
+             "children": [],
+             "type": "wheel"
+            }
+           ],
+           "type": "toxenv"
+          }
+         ],
+         "type": "matrix"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "fail-fast"
+        }
+       ],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up python-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-version }}"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "python-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "test with tox"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "bash"
+           }],
+           "type": "shell"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "shell-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "windows"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

@@ -1,0 +1,552 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "postgres"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "9.6"
+    }],
+    "type": "postgresql"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py35-django21"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.5"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py36-django21"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.6"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py37-django21"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py37-django21-postgres db=postgres"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py35-django22"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.5"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py36-django22"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.6"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py37-django22"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py38-django22"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py38-django22-postgres db=postgres"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py36-django30"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.6"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py37-django30"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py38-django30"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py38-django30-postgres db=postgres"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py36-django31"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.6"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py37-django31"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py38-django31"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py38-django31-postgres db=postgres"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py36-djangomaster"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.6"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py37-djangomaster"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py38-djangomaster"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=py38-djangomaster-postgres db=postgres"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "toxenv=py36-djangomaster"
+        }],
+        "type": "env"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "toxenv=py37-djangomaster"
+        }],
+        "type": "env"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "toxenv=py38-djangomaster"
+        }],
+        "type": "env"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "toxenv=py38-djangomaster-postgres db=postgres"
+        }],
+        "type": "env"
+       }],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "allow_failures"
+    }
+   ],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "~/.cache/pip"
+     },
+     {
+      "children": [],
+      "type": "$travis_build_dir/.tox"
+     }
+    ],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "psql -c 'create database default;' -u postgres || true"
+    },
+    {
+     "children": [],
+     "type": "psql -c 'create database secondary;' -u postgres || true"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install --upgrade pip wheel setuptools"
+    },
+    {
+     "children": [],
+     "type": "pip install codecov-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "codecov"
+    }
+   ],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

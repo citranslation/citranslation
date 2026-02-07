@@ -1,0 +1,34 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: Django Tests
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8"]
+        django: ["2.2", "3.0", "3.1", "3.2", "4.0", "master"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          if [ "$TRAVIS_PYTHON_VERSION" == "3.8" ]; then pip install -U importlib_metadata; fi
+          pip install tox tox-venv tox-travis
+      - name: Run tests
+        run: tox
+      - name: Allow failures for master branch
+        if: github.ref =='refs/heads/master'
+        run: exit 1
+```
+|End-of-Code|

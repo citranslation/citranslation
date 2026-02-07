@@ -1,0 +1,53 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "ci_ros_distro=\\\"kinetic\\\" python=\\\"python\\\""
+     },
+     {
+      "children": [],
+      "type": "ci_ros_distro=\\\"melodic\\\" python=\\\"python\\\""
+     },
+     {
+      "children": [],
+      "type": "ci_ros_distro=\\\"noetic\\\" python=\\\"python3\\\""
+     }
+    ],
+    "type": "matrix"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

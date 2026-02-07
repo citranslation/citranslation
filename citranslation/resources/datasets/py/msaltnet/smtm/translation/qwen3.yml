@@ -1,0 +1,33 @@
+name: Python CI
+
+on:
+  push:
+    branches:
+      - master
+      - 'releases/*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10]
+    steps:
+    - name: Set timezone
+      run: export TZ=Asia/Seoul
+    - name: Check Python version
+      run: python --version
+    - name: Update pip
+      run: pip install -U pip
+    - name: Install codecov
+      run: pip install codecov
+    - name: Install dependencies
+      run: pip install -e .[dev]
+    - name: Run tests
+      run: |
+        coverage run --omit="*/test*" -m unittest discover ./tests/ *test.py
+    - name: Submit coverage
+      run: codecov
+      if: success()
+
+|End-of-Code|

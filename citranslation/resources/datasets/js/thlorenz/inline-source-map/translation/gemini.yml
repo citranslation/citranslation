@@ -1,0 +1,44 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      # This defines a build matrix for your tests, matching the Travis CI config.
+      matrix:
+        # The original .travis.yml specified versions 0.10, 0.12, and io.js.
+        # These are very old and are not supported by the standard GitHub Actions runners
+        # or the setup-node action. This job will likely fail.
+        # To fix, update these to supported LTS versions like: ['18.x', '20.x'].
+        node-version: ['0.10', '0.12', 'io.js']
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Update npm globally
+      # This step corresponds to the `before_install` hook in the Travis CI config.
+      run: npm install --global npm
+
+    - name: Install dependencies
+      # This step corresponds to the implicit `install` stage in Travis CI.
+      run: npm install
+
+    - name: Run tests
+      # This step corresponds to the implicit `script` stage in Travis CI (which defaults to `npm test`).
+      run: npm test
+```|End-of-Code|

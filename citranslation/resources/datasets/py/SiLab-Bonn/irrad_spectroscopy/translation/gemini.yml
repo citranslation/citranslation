@@ -1,0 +1,43 @@
+```yaml
+name: Python CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.6', '3.8']
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Miniconda
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        auto-update-conda: true
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      shell: bash -l {0}
+      run: |
+        conda install --yes numpy scipy pyyaml matplotlib nose jupyter pandas
+        pip install --upgrade pip
+        # Check if requirements.txt exists before trying to install from it
+        if [ -f requirements.txt ]; then
+          pip install -r requirements.txt
+        fi
+        python setup.py develop
+
+    - name: Run tests
+      shell: bash -l {0}
+      run: |
+        nosetests
+```|End-of-Code|

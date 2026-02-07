@@ -1,0 +1,51 @@
+```yaml
+name: Python CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    # The 'dist: focal' in Travis CI corresponds to Ubuntu 20.04.
+    # 'ubuntu-latest' is a newer version, but 'ubuntu-20.04' is a direct equivalent.
+    # We use 'ubuntu-latest' here as it's the standard recommendation.
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.8', '3.9', '3.10', '3.11']
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+      with:
+        # Corresponds to git: { depth: false } in Travis CI to fetch all history
+        fetch-depth: 0
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox-travis
+
+    - name: Test with tox
+      run: tox
+
+# Note on Notifications:
+# The 'notifications.slack.secure' key from Travis CI is an encrypted secret
+# that cannot be migrated directly. To set up Slack notifications in GitHub Actions,
+# you would need to:
+# 1. Create a new Slack App with an Incoming Webhook.
+# 2. Add the webhook URL as an encrypted secret in your GitHub repository's
+#    settings (e.g., named SLACK_WEBHOOK_URL).
+# 3. Add a new step to the job that uses a Slack action from the marketplace,
+#    conditioned to run on success or failure as needed.
+```
+|End-of-Code|

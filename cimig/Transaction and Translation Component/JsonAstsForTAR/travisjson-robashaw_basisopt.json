@@ -1,0 +1,128 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "main"
+    }],
+    "type": "only"
+   }],
+   "type": "branches"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.9"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "bash PATH-OR-URL -b -p ~/miniconda"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "hash -r"
+    },
+    {
+     "children": [],
+     "type": "conda config --set always_yes yes --set changeps1 no"
+    },
+    {
+     "children": [],
+     "type": "conda update -q conda"
+    },
+    {
+     "children": [],
+     "type": "conda config --append channels conda-forge --append channels omnia"
+    },
+    {
+     "children": [],
+     "type": "conda info -a"
+    },
+    {
+     "children": [],
+     "type": "conda create -q -n test-env python=$travis_python_version --file requirements.txt"
+    },
+    {
+     "children": [],
+     "type": "source activate test-env"
+    },
+    {
+     "children": [],
+     "type": "conda install --file tests/requirements.txt"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "test"
+       }],
+       "type": "stage"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "run unit tests"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "py.test --cov-report term --cov basisopt tests/"
+       }],
+       "type": "script"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "codecov"
+       }],
+       "type": "after_success"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }],
+    "type": "include"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

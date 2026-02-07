@@ -1,0 +1,1030 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "workflow"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "branch-name"
+       }],
+       "type": "branches"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "-v*"
+       }],
+       "type": "tags"
+      }
+     ],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "build source distribution"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "build sdist"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pipx run build --sdist"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/upload-artifact@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "dist/*.tar.gz"
+            }],
+            "type": "path"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "build_sdist"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "test on ${{ matrix.os }} with python-cmd"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "build_sdist"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ matrix.os }}"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ matrix.os == 'windows-2019' && matrix.python-version == '3.9' }}"
+       }],
+       "type": "continue-on-error"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "fail-fast"
+        },
+        {
+         "children": [
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "ubuntu-latest"
+            },
+            {
+             "children": [],
+             "type": "windows-2019"
+            },
+            {
+             "children": [],
+             "type": "macos-10.15"
+            }
+           ],
+           "type": "os"
+          },
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "3.6"
+            },
+            {
+             "children": [],
+             "type": "3.7"
+            },
+            {
+             "children": [],
+             "type": "3.8"
+            },
+            {
+             "children": [],
+             "type": "3.9"
+            },
+            {
+             "children": [],
+             "type": "3.10"
+            }
+           ],
+           "type": "python-version"
+          },
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "TRUE"
+            },
+            {
+             "children": [],
+             "type": "FALSE"
+            }
+           ],
+           "type": "tracemalloc"
+          },
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "TRUE"
+            },
+            {
+             "children": [],
+             "type": "FALSE"
+            }
+           ],
+           "type": "codecov"
+          },
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "TRUE"
+            },
+            {
+             "children": [],
+             "type": "FALSE"
+            }
+           ],
+           "type": "sdist"
+          },
+          {
+           "children": [{
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "TRUE"
+              }],
+              "type": "codecov"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "TRUE"
+              }],
+              "type": "sdist"
+             }
+            ],
+            "type": "OBJ-NODE"
+           }],
+           "type": "exclude"
+          }
+         ],
+         "type": "matrix"
+        }
+       ],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ !matrix.sdist }}"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "download sdist"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ matrix.sdist }}"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/download-artifact@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "artifact"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "dist"
+             }],
+             "type": "path"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up python"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-version }}"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ !matrix.sdist }}"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pip install -ve ."
+           }],
+           "type": "run"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.codecov-cmd"
+            }],
+            "type": "cflags"
+           }],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install sdist"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ matrix.sdist }}"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "bash"
+           }],
+           "type": "shell"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pip install -v dist/*.tar.gz"
+           }],
+           "type": "run"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.codecov-cmd"
+            }],
+            "type": "cflags"
+           }],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install codecov"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ matrix.codecov-cmd"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pip install coverage"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "make test script"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "bash"
+           }],
+           "type": "shell"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "cat > /tmp/PATH-OR-URL << eof\\nfrom guppy import hpy, heapy\\nhpy().test()\\nheapy.heapyc.xmemstats()\\neof\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "test"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ !matrix.codecov-cmd"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "bash"
+           }],
+           "type": "shell"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "python-cmd"
+           }],
+           "type": "run"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.tracemalloc && '1' || '' }}"
+             }],
+             "type": "pythontracemalloc"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "1"
+             }],
+             "type": "pythonfaulthandler"
+            }
+           ],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "test (codecov)"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ matrix.codecov-cmd"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "bash"
+           }],
+           "type": "shell"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "coverage-cmd"
+           }],
+           "type": "run"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.tracemalloc && '1' || '' }}"
+             }],
+             "type": "pythontracemalloc"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "1"
+             }],
+             "type": "pythonfaulthandler"
+            }
+           ],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "upload codecov"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ matrix.codecov-cmd"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "bash"
+           }],
+           "type": "shell"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "bash <(curl-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "test_matrix"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "build wheels on ${{ matrix.os }}"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ matrix.os }}"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "github.event_name == 'push'"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [
+          {
+           "children": [],
+           "type": "ubuntu-latest"
+          },
+          {
+           "children": [],
+           "type": "windows-2019"
+          },
+          {
+           "children": [],
+           "type": "macos-10.15"
+          }
+         ],
+         "type": "os"
+        }],
+        "type": "matrix"
+       }],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "build wheels"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pypa/cibuildwheel@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "cp3{[6789],10}-*"
+            }],
+            "type": "cibw_build"
+           }],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/upload-artifact@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "./wheelhouse/*.whl"
+            }],
+            "type": "path"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "build_wheels_native"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "build wheels on ${{ matrix.os }} ${{ matrix.arch }}"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ matrix.os }}"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "github.event_name == 'push'"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "ubuntu-latest"
+          }],
+          "type": "os"
+         },
+         {
+          "children": [
+           {
+            "children": [],
+            "type": "aarch64"
+           },
+           {
+            "children": [],
+            "type": "ppc64le"
+           },
+           {
+            "children": [],
+            "type": "s390x"
+           }
+          ],
+          "type": "arch"
+         }
+        ],
+        "type": "matrix"
+       }],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up qemu"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "docker-cmd"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "all"
+            }],
+            "type": "platforms"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "build wheels"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pypa/cibuildwheel@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "cp3{[6789],10}-*"
+             }],
+             "type": "cibw_build"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.arch }}"
+             }],
+             "type": "cibw_archs_linux"
+            }
+           ],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/upload-artifact@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "./wheelhouse/*.whl"
+            }],
+            "type": "path"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "build_wheels_emulated"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "test_matrix"
+        },
+        {
+         "children": [],
+         "type": "build_wheels_native"
+        },
+        {
+         "children": [],
+         "type": "build_wheels_emulated"
+        },
+        {
+         "children": [],
+         "type": "build_sdist"
+        }
+       ],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "github.event_name == 'push' && startswith(github.event.ref, 'refs/tags/v')"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/download-artifact@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "artifact"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "dist"
+             }],
+             "type": "path"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "pypa/gh-action-pypi-publish@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "__token__"
+             }],
+             "type": "user"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.pypi_password }}"
+             }],
+             "type": "password"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "upload_pypi"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

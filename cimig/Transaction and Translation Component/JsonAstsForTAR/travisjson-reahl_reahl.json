@@ -1,0 +1,379 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "bionic"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "reahlworkspace=$home"
+     },
+     {
+      "children": [],
+      "type": "EMAIL"
+     },
+     {
+      "children": [],
+      "type": "debfullname=\\\"travis tester\\\""
+     },
+     {
+      "children": [],
+      "type": "debemail=$email"
+     },
+     {
+      "children": [],
+      "type": "display=:99.0"
+     },
+     {
+      "children": [],
+      "type": "path=~/bin:/usr/bin:$path"
+     }
+    ],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.6"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.7"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.8"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.9"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "10"
+     }],
+     "type": "postgresql"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "openssh-client"
+       },
+       {
+        "children": [],
+        "type": "dpkg-dev"
+       },
+       {
+        "children": [],
+        "type": "bzr"
+       },
+       {
+        "children": [],
+        "type": "git"
+       },
+       {
+        "children": [],
+        "type": "firefox"
+       },
+       {
+        "children": [],
+        "type": "firefox-geckodriver"
+       },
+       {
+        "children": [],
+        "type": "python-virtualenv"
+       },
+       {
+        "children": [],
+        "type": "python-dev"
+       },
+       {
+        "children": [],
+        "type": "gcc"
+       },
+       {
+        "children": [],
+        "type": "cython"
+       },
+       {
+        "children": [],
+        "type": "libxml2-dev"
+       },
+       {
+        "children": [],
+        "type": "libxslt-dev"
+       },
+       {
+        "children": [],
+        "type": "libsqlite3-0"
+       },
+       {
+        "children": [],
+        "type": "sqlite3"
+       },
+       {
+        "children": [],
+        "type": "postgresql-server-dev-all"
+       },
+       {
+        "children": [],
+        "type": "zlib1g-dev"
+       },
+       {
+        "children": [],
+        "type": "libjpeg62-dev"
+       },
+       {
+        "children": [],
+        "type": "libfreetype6-dev"
+       },
+       {
+        "children": [],
+        "type": "liblcms2-dev"
+       },
+       {
+        "children": [],
+        "type": "libmysqlclient-dev"
+       },
+       {
+        "children": [],
+        "type": "graphviz"
+       }
+      ],
+      "type": "packages"
+     }],
+     "type": "apt"
+    }
+   ],
+   "type": "addons"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "xvfb"
+    },
+    {
+     "children": [],
+     "type": "postgresql"
+    }
+   ],
+   "type": "services"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "pip"
+    },
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "~/testinstalls"
+      },
+      {
+       "children": [],
+       "type": "~/.cache/pip"
+      }
+     ],
+     "type": "directories"
+    }
+   ],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "travis/PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "git --version"
+    },
+    {
+     "children": [],
+     "type": "firefox --version"
+    },
+    {
+     "children": [],
+     "type": "which firefox"
+    },
+    {
+     "children": [],
+     "type": "geckodriver --version"
+    },
+    {
+     "children": [],
+     "type": "which geckodriver"
+    },
+    {
+     "children": [],
+     "type": "gpg --version"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "cflags=\\\"-o0\\\" python-cmd"
+    },
+    {
+     "children": [],
+     "type": "reahl createdb -u postgres reahl-web/etc"
+    },
+    {
+     "children": [],
+     "type": "reahl setup -sx -- develop -n"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "travis/PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "travis/PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "travis/PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "(reahl build -sdx || (exitcode=$?; shred -f ~/.gnupg/*; exit $exitcode))"
+    }
+   ],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "(reahl shell -sdxg tox && (exitcode=$?; shred -f ~/.gnupg/*; exit $exitcode))"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "travis/PATH-OR-URL"
+   }],
+   "type": "before_deploy"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "skip_cleanup"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "script"
+     }],
+     "type": "provider"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "reahl upload -rusdx"
+     }],
+     "type": "script"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "tags"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "$travis_python_version = 3.8"
+       }],
+       "type": "condition"
+      }
+     ],
+     "type": "on"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

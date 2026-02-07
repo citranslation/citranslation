@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Based on the error, we should use a dynamic approach or ensure 
+        # the TOXENV matches the tox.ini. 
+        # Using a simplified matrix to avoid "environment not found" errors.
+        python-version: ["3.9", "3.10", "3.11"]
+        django-version: ["32", "40", "41", "42"]
+        exclude:
+          # Example: If py311-django-41 is truly missing from tox.ini, we exclude it here
+          - python-version: "3.11"
+            django-version: "41"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tox
+
+      - name: Run tox
+        run: tox -e py${{ replace(matrix.python-version, '.', '') }}-django-${{ matrix.django-version }}
+
+|End-of-Code|

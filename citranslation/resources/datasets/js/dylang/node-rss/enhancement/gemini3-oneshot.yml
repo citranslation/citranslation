@@ -1,0 +1,32 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+          - node-version: '0.12'
+            npm-version: '2'
+          - node-version: '4'
+            npm-version: '3'
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install specific npm version
+        run: npm install -g npm@${{ matrix.npm-version }}
+      - run: npm install
+      - run: npm test
+
+|End-of-Code|

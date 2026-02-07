@@ -1,0 +1,39 @@
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install coveralls
+          pip install .
+
+      - name: Run tests
+        run: python test.py
+
+      - name: Check metadata
+        run: python setup.py check --strict --metadata
+
+      - name: Run coverage
+        run: coverage run --source=nativetypes test.py
+
+      - name: Publish to Coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        run: coveralls
+|End-of-Code|

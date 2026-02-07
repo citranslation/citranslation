@@ -1,0 +1,142 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "2.7"
+    },
+    {
+     "children": [],
+     "type": "3.4"
+    },
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    },
+    {
+     "children": [],
+     "type": "3.10"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "3.1"
+       }],
+       "type": "python"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "xenial"
+       }],
+       "type": "dist"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "sudo"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }],
+    "type": "include"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install pytest-flake8"
+    },
+    {
+     "children": [],
+     "type": "pip list"
+    },
+    {
+     "children": [],
+     "type": "flake8 --version"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pytest"
+    },
+    {
+     "children": [],
+     "type": "pycodestyle . --max-line-length=100"
+    },
+    {
+     "children": [],
+     "type": "pyflakes ."
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "EMAIL"
+    }],
+    "type": "email"
+   }],
+   "type": "notifications"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "master"
+    }],
+    "type": "only"
+   }],
+   "type": "branches"
+  }
+ ],
+ "type": "travis-file"
+}

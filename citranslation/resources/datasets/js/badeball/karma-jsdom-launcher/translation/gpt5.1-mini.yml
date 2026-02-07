@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [16]
+        JSDOM_VERSION: [15,16,17,18,19,20,21,22]
+        KARMA_VERSION: [2,3,4,5,6]
+    env:
+      NODE_VERSION: ${{ matrix.node }}
+      JSDOM_VERSION: ${{ matrix.JSDOM_VERSION }}
+      KARMA_VERSION: ${{ matrix.KARMA_VERSION }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install dependencies and run tests
+        shell: bash
+        run: |
+          npm install jsdom@$JSDOM_VERSION karma@$KARMA_VERSION
+          [ -e node_modules/karma-jsom-launcher ] || ln -s ../ node_modules/karma-jsom-launcher
+          npm test
+|End-of-Code|

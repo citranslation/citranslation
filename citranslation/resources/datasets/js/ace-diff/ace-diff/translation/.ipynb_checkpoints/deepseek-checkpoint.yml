@@ -1,0 +1,42 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-16.04
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run build
+    - run: npm run serve &
+    - run: npm test
+
+  release:
+    needs: build
+    runs-on: ubuntu-16.04
+    steps:
+    - name: Release
+      run: npm run semantic-release
+|End-of-Code|
+```
+
+This GitHub Action configuration does the following:
+
+1. It triggers on push and pull request events.
+2. It runs the build job on Ubuntu 16.04 with Node.js 12.x.
+3. It checks out the code, sets up Node.js, installs dependencies, builds the code, runs the server in the background, and runs tests.
+4. It runs the release job after the build job has completed successfully. This job runs the `semantic-release` script.
+5. The `|End-of-Code|` marker indicates the end of the configuration.

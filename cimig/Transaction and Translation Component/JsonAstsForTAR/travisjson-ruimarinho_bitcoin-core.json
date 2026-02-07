@@ -1,0 +1,26 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "bash"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  }
+ ],
+ "type": "travis-file"
+}

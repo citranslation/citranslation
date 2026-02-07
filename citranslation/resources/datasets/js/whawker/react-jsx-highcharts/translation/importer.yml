@@ -1,0 +1,25 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-node@v4.0.0
+      with:
+        cache: npm
+        node-version: '16'
+    - run: npm install
+    - run: npm run build:prod
+    - run: npm run test:coverage
+    - run: npm run lint
+    - run: bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
+      if: "${{ success() }}"

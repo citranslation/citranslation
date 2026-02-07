@@ -1,0 +1,40 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: |
+          - 3.8
+          - 3.9
+          - 3.10
+          - 3.11
+          - 3.12
+          - nightly
+          - pypy3.6
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Run setconf.py
+        run:./setconf.py --test
+
+      - name: Run testcases
+        run: cd testcases &&./test.sh
+|End-of-Code|
+```
+Note that in GitHub Actions, we use a `matrix` strategy to run the same job multiple times with different Python versions. We also use the `actions/checkout` and `actions/setup-python` actions to checkout the code and set up the Python environment, respectively. The rest of the steps are similar to the Travis CI configuration.

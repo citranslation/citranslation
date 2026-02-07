@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        react-dist: [16, 17]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node_version: 12
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: |
+          yarn
+          yarn add react@${{ matrix.react-dist }} react-dom@${{ matrix.react-dist }}
+          yarn --cwd www
+
+      - name: Run tests
+        run: yarn test
+
+      - name: Build and Release
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm run build
+          npm run semantic-release
+
+|End-of-Code|

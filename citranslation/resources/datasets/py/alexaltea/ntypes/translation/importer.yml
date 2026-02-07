@@ -1,0 +1,32 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: pip install coveralls
+    - run: pip install .
+    - run: python test.py
+    - run: python setup.py check --strict --metadata
+    - run: coverage run --source=nativetypes test.py
+    - run: coveralls
+      if: "${{ success() }}"
+#     # This item has no matching transformer
+#     - email: false
+    strategy:
+      matrix:
+        python:
+        - 3.8
+        - 3.9

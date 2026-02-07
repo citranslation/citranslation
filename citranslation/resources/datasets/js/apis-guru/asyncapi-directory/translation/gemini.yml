@@ -1,0 +1,58 @@
+```yaml
+name: Build and Deploy Site
+
+on:
+  # This workflow is triggered on a schedule (cron job).
+  # The original Travis CI config runs on a cron job on the master branch.
+  # Scheduled workflows in GitHub Actions run on the latest commit on the default branch.
+  schedule:
+    # You can adjust the cron schedule as needed. This example runs at 3:00 AM UTC every day.
+    - cron: '0 3 * * *'
+  # Allows you to run this workflow manually from the Actions tab for testing.
+  workflow_dispatch: {}
+
+jobs:
+  build-and-deploy:
+    # This job will only run for scheduled events on the 'master' branch,
+    # mimicking the Travis CI 'on' condition.
+    if: github.event_name == 'schedule' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          # Use the latest LTS version of Node.js, matching 'lts/*'
+          node-version: 'lts/*'
+          # Cache npm dependencies for faster subsequent builds
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build data
+        run: npm run build.data
+
+      - name: Build site
+        run: npm run build.site
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          # GITHUB_TOKEN is a special token automatically created by Actions.
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # The branch to deploy the built site to.
+          publish_branch: master
+          # The directory containing the build artifacts to be deployed.
+          # IMPORTANT: You may need to change './public' to your project's actual build output directory (e.g., 'build', 'dist').
+          publish_dir: ./public
+          # This option keeps existing files in the target branch, equivalent to Travis 'keep-history: true'.
+          keep_files: true
+          # Configure the user that will author the deployment commit.
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'docs: Auto-deploy site from scheduled build'
+|End-of-Code|
+```

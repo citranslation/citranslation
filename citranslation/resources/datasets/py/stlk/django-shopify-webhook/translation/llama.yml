@@ -1,0 +1,30 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10"]
+        django: ["Django<3.0", "Django<3.2", "Django<4.0", "Django<5.0"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          pip install -q ${{ matrix.django }}
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: python test.py
+```
+|End-of-Code|

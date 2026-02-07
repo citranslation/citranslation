@@ -1,0 +1,40 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - releases/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set timezone
+        run: |
+          export TZ=Asia/Seoul
+      - name: Install Python
+        run: |
+          python --version
+          pip install -U pip
+          pip install codecov
+      - name: Install dependencies
+        run: |
+          pip install -e.
+      - name: Run tests
+        run: |
+          coverage run --omit="*/test*" -m unittest discover./tests/ *test.py
+      - name: Upload coverage
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: coverage.xml
+    environment:
+      python: 3.8
+      python: 3.9
+      python: 3.10
+|End-of-Code|
+```
+Note that I've used the `ubuntu-latest` environment, and the `runs-on` keyword to specify the environment. I've also used the `uses` keyword to specify the codecov action, and passed the `token` and `file` parameters. Additionally, I've used the `environment` keyword to specify the Python versions.

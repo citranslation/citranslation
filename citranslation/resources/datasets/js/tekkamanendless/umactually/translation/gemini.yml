@@ -1,0 +1,22 @@
+```yaml
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 10
+        uses: actions/setup-node@v4
+        with:
+          node-version: '10'
+      - name: Install ajv-cli
+        run: npm install -g ajv-cli
+      - name: Validate data against schema
+        run: ajv validate -s schema.json -d data.json
+```|End-of-Code|

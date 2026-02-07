@@ -1,0 +1,38 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+    - run: chmod +x miniconda.sh
+    - run: bash miniconda.sh -b -p ${{ github.workspace }}/miniconda
+    - run: export PATH="${{ github.workspace }}/miniconda/bin:$PATH"
+    - run: conda update --yes conda
+    - run: conda install --yes numpy scipy pyyaml matplotlib nose jupyter pandas
+    - run: conda info -a
+    - run: pip install --upgrade pip
+    - run: pip install -r requirements.txt
+    - run: python setup.py develop
+    - run: nosetests
+#     # This item has no matching transformer
+#     - email:
+#       - wolf@physik.uni-bonn.de
+    strategy:
+      matrix:
+        python:
+        - 3.9
+        - 3.8

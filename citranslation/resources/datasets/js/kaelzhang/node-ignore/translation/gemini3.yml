@@ -1,0 +1,30 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.arch == 'amd64' && 'ubuntu-latest' || matrix.arch }}
+    strategy:
+      matrix:
+        node-version: [16]
+        arch: [amd64, ppc64le]
+        # Note: GitHub-hosted runners for ppc64le are not available by default.
+        # This configuration assumes you have self-hosted runners for non-amd64 architectures.
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Before Install
+        run: git --version
+
+|End-of-Code|

@@ -1,0 +1,129 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "2.7"
+    },
+    {
+     "children": [],
+     "type": "3.4"
+    },
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pyflakes_version=pypi"
+    },
+    {
+     "children": [],
+     "type": "pyflakes_version=github"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip install ."
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "./PATH-OR-URL test"
+    },
+    {
+     "children": [],
+     "type": "./test_fuzz.py ./*.py"
+    },
+    {
+     "children": [],
+     "type": "pyflakes ./*.py"
+    },
+    {
+     "children": [],
+     "type": "pip install pycodestyle pydocstyle"
+    },
+    {
+     "children": [],
+     "type": "pycodestyle ./*.py"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install --quiet coverage"
+    },
+    {
+     "children": [],
+     "type": "autoflake_coverage=1 coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip install --quiet coveralls"
+    },
+    {
+     "children": [],
+     "type": "coveralls"
+    }
+   ],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,280 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "windows"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "shell"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "choco install python-cmd"
+         },
+         {
+          "children": [],
+          "type": "python-cmd"
+         },
+         {
+          "children": [],
+          "type": "pip3 install pytest"
+         },
+         {
+          "children": [],
+          "type": "pip3 install context_menu"
+         },
+         {
+          "children": [],
+          "type": "cd-cmd"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "path=/c/python36:/c/python36/scripts:$path"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "windows"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "shell"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "choco install python-cmd"
+         },
+         {
+          "children": [],
+          "type": "python-cmd"
+         },
+         {
+          "children": [],
+          "type": "pip3 install pytest"
+         },
+         {
+          "children": [],
+          "type": "pip3 install context_menu"
+         },
+         {
+          "children": [],
+          "type": "cd-cmd"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "path=/c/python37:/c/python37/scripts:$path"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "windows"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "shell"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "choco install python-cmd"
+         },
+         {
+          "children": [],
+          "type": "python-cmd"
+         },
+         {
+          "children": [],
+          "type": "pip3 install pytest"
+         },
+         {
+          "children": [],
+          "type": "pip3 install context_menu"
+         },
+         {
+          "children": [],
+          "type": "cd-cmd"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "path=/c/python38:/c/python38/scripts:$path"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "focal"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "3.6"
+         },
+         {
+          "children": [],
+          "type": "3.7"
+         },
+         {
+          "children": [],
+          "type": "3.8"
+         }
+        ],
+        "type": "python"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "python-cmd"
+         },
+         {
+          "children": [],
+          "type": "pip install -u pip"
+         },
+         {
+          "children": [],
+          "type": "pip install -u pytest"
+         },
+         {
+          "children": [],
+          "type": "pip install -u context_menu"
+         },
+         {
+          "children": [],
+          "type": "ls"
+         },
+         {
+          "children": [],
+          "type": "cd-cmd"
+         }
+        ],
+        "type": "before_install"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip3 install --upgrade pip"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pytest -v"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

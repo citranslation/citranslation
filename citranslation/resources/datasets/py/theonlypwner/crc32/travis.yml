@@ -1,0 +1,24 @@
+language: python
+jobs:
+  - python: "3.8"
+    allow_failure: true
+  - python: "3.9"
+    allow_failure: true
+  - python: "3.10"
+    allow_failure: true
+  - python: "pypy2.7"
+    allow_failure: true
+  - python: "pypy3.6"
+    allow_failure: true
+  - python: "pypy3.7"
+    allow_failure: true
+  - python: "pypy3.8"
+    allow_failure: true
+  - python: "pypy3.9"
+    allow_failure: true
+
+install: pip install coveralls
+script:
+  - coverage run --branch --source=crc32 test.py
+after_success:
+  - coveralls

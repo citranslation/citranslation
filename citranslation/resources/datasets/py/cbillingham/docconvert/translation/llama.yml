@@ -1,0 +1,29 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python:
+          - 3.8
+          - 3.9
+          - 3.10
+    env:
+      TOXENV: ${{ matrix.python }}-sdist
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install tox
+      - name: Run tests
+        run: tox
+```
+|End-of-Code|

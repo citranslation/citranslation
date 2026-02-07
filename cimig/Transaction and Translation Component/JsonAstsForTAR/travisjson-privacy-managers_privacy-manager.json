@@ -1,0 +1,89 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "trusty"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "node"
+    },
+    {
+     "children": [],
+     "type": "lts/*"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "node_modules"
+     }],
+     "type": "directories"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "npm-cmd"
+     }],
+     "type": "before_script"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "npm-cmd"
+     }],
+     "type": "script"
+    }
+   ],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "sysctl kernel.unprivileged_userns_clone=1"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "sh -e /etc/init.d/xvfb start"
+    }
+   ],
+   "type": "before_install"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,70 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install -r requirements/test.txt"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "make test-ci"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coveralls -v"
+   }],
+   "type": "after_success"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "main"
+     },
+     {
+      "children": [],
+      "type": "develop"
+     }
+    ],
+    "type": "only"
+   }],
+   "type": "branches"
+  }
+ ],
+ "type": "travis-file"
+}

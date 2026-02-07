@@ -1,0 +1,37 @@
+Here is the equivalent GitHub Action configuration for the provided Travis CI configuration:
+
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10", "3.11"]
+        fail-fast: false
+    name: Python ${{ matrix.python }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup python ${{ matrix.python }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Upgrade pip
+        run: pip install -U pip
+      - name: Install dev dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Run tests
+        run: pytest
+```
+
+Please note that the Travis CI configuration you provided does not seem to have a specific Django version requirement, so I've omitted that from the GitHub Action configuration.
+
+Also, please note that the Travis CI configuration you provided does not seem to have a specific command to install dependencies or run tests, so I've omitted those from the GitHub Action configuration as well.
+
+|End-of-Code|

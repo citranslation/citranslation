@@ -1,0 +1,103 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "pypy3.9"]
+
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping -h 127.0.0.1 -u root"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements*.txt', 'setup.cfg', 'pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ matrix.python-version }}-
+            ${{ runner.os }}-pip-
+
+      - name: Start MongoDB 4.2.1
+        run: |
+          wget -q https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1604-4.2.1.tgz
+          tar zxf mongodb-linux-x86_64-ubuntu1604-4.2.1.tgz
+          echo "${PWD}/mongodb-linux-x86_64-ubuntu1604-4.2.1/bin" >> $GITHUB_PATH
+          mongod --version
+          mkdir -p data/db
+          mkdir -p logs
+          mongod --dbpath=data/db --fork --logpath logs/mongod.log
+          sleep 5
+
+      - name: Prepare databases
+        run: |
+          mongo vakt_db --eval 'db.createUser({user:"test_user",pwd:"test_password",roles:["readWrite"]});'
+          mysql -h 127.0.0.1 -u root -e 'CREATE DATABASE IF NOT EXISTS vakt_db CHARACTER SET utf8 COLLATE utf8_bin;'
+          psql -h 127.0.0.1 -U postgres -c "CREATE DATABASE vakt_db ENCODING 'UTF8';"
+
+      - name: Install project dependencies
+        env:
+          PIP_DISABLE_PIP_VERSION_CHECK: "1"
+        run: |
+          python -m pip install --upgrade pip
+          make deps
+
+      - name: Run test matrix
+        run: |
+          DATABASE_DSN="mysql+pymysql://root@127.0.0.1/vakt_db" make coverage
+          DATABASE_DSN="sqlite:///:memory:" make test-sql-i
+          DATABASE_DSN="postgresql+psycopg2cffi://postgres:@localhost/vakt_db" make test-sql-i
+          make bench
+
+      - name: Upload coverage to Codecov
+        if: matrix.python-version == '3.11'
+        run: bash <(curl -s https://codecov.io/bash)
+|End-of-Code|

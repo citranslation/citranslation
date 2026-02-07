@@ -1,0 +1,41 @@
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: pip install -r requirements/dev.txt
+
+    - name: Lint with pylama
+      run: pylama .
+
+    - name: Test with pytest
+      run: pytest tests/
+
+    - name: Check formatting with black
+      run: black . --check --diff
+
+    - name: Check import order with isort
+      run: isort . --check --diff
+
+|End-of-Code|
+```
+
+This GitHub Action configuration follows the guidelines you provided. It sets up two Python environments (3.8 and 3.9), installs the dependencies, runs the linter, tests, and format checker. The configuration is triggered on push and pull request events.

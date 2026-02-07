@@ -1,0 +1,85 @@
+```yaml
+name: Python package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10, '3.x']
+        include:
+          - python-version: '3.x'
+            allow_failures: true
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        pip install pylint pytest pytest-cov
+        pylint --generate-rcfile > ~/.pylintrc
+        sed -i "s/min-similarity-lines=.*/min-similarity-lines=50/g" ~/.pylintrc
+        git describe --tags --long --dirty || sed -i "s/setup_requires = .*/version = '0.0.0',/g" setup.py
+        pip install -e .
+
+    - name: Lint with pylint
+      run: |
+        pylint content_hash/*
+        pylint example.py
+
+    - name: Test with pytest
+      run: pytest --cov=content_hash
+
+    - name: Upload coverage to Scrutinizer
+      if: matrix.python-version == '3.8'
+      run: |
+        pip install scrutinizer-ocular
+        ocular
+
+  deploy:
+    runs-on: ubuntu-24.04
+    needs: build
+    if: github.event_name == 'release'
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: pip install setuptools wheel twine
+
+    - name: Build and publish
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USER }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      run: |
+        python setup.py sdist bdist_wheel
+        twine upload --skip-existing dist/*
+
+|End-of-Code|
+```

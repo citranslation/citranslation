@@ -1,0 +1,28 @@
+```yaml
+name: Node CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        node-version: [10, node]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+```
+|End-of-Code|
+
+This GitHub Action configuration will trigger on every push and pull request. It will run on different operating systems (Ubuntu, MacOS, and Windows) and on different Node.js versions (10 and the latest version). It will checkout the code, set up the specified Node.js version, install dependencies, build the project, and run tests.

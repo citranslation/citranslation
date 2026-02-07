@@ -1,0 +1,31 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "*" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "node"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run coverage
+        run: npm run coverage
+
+      - name: Upload coverage to Codecov
+        run: ./node_modules/.bin/codecov --disable=gcov --file=./coverage/lcov.info
+
+|End-of-Code|

@@ -1,0 +1,406 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "build"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "release"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "test python-cmd"
+      }],
+      "type": "name"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "mysql:8"
+         }],
+         "type": "image"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "yes"
+          }],
+          "type": "mysql_allow_empty_password"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "--health-cmd=\\\"mysqladmin ping\\\" --health-interval=10s --health-timeout=5s --health-retries=3"
+         }],
+         "type": "options"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3306:3306"
+         }],
+         "type": "ports"
+        }
+       ],
+       "type": "mysql"
+      }],
+      "type": "services"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "FALSE"
+        }],
+        "type": "fail-fast"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "3.8"
+          }],
+          "type": "python-version"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "django32"
+          }],
+          "type": "django-version"
+         }
+        ],
+        "type": "matrix"
+       }
+      ],
+      "type": "strategy"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set up python-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-version }}"
+            }],
+            "type": "python-version"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "pip"
+            }],
+            "type": "cache"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "setup.cfg"
+            }],
+            "type": "cache-dependency-path"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install requirements"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "pip install -u pip\\npip install -r requirements/github-actions.txt\\n"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "cache tox dir"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "cache-tox"
+          }],
+          "type": "id"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/cache@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": ".tox"
+            }],
+            "type": "path"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ runner.os }}-${{ matrix.python-version }}-tox-${{ hashfiles(arg) }}"
+            }],
+            "type": "key"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run quality checks"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "quality"
+           }],
+           "type": "toxenv"
+          }],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "tox"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run documentation checks"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "docs"
+           }],
+           "type": "toxenv"
+          }],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "tox"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run ${{ matrix.django-version }} tests"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ matrix.django-version }}"
+           }],
+           "type": "toxenv"
+          }],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "tox"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "upload coverage-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ matrix.python-version == '3.8' }}"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "codecov"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "deploy to pypi"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.twine_username }}"
+            }],
+            "type": "twine_username"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.twine_password }}"
+            }],
+            "type": "twine_password"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "true"
+            }],
+            "type": "twine_non_interactive"
+           }
+          ],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ github.event_name == 'release' && matrix.python-version == '3.8' }}"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "python-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

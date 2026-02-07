@@ -1,0 +1,34 @@
+```yaml
+name: Python package
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.9, 3.10, 3.11]
+        django-version: ['3.2', '4.0', '4.1', '4.2']
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Tox
+      run: pip install tox
+    - name: Test with Tox
+      run: tox -e py${{ matrix.python-version }}-django-${{ matrix.django-version }}
+
+|End-of-Code|
+```
+
+This GitHub Action configuration will trigger on every push and pull request to the main branch. It will run on the latest Ubuntu environment. It will test the Python and Django versions specified in the matrix strategy. The steps include checking out the repository, setting up the Python environment, installing Tox, and running the tests.

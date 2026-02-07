@@ -1,0 +1,999 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python-cmd"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "branch-name"
+       },
+       {
+        "children": [],
+        "type": "branch-name"
+       }
+      ],
+      "type": "branches"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "branch-name"
+       },
+       {
+        "children": [],
+        "type": "branch-name"
+       }
+      ],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "branch-name"
+        },
+        {
+         "children": [],
+         "type": "branch-name"
+        }
+       ],
+       "type": "branches"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "published"
+       }],
+       "type": "types"
+      }
+     ],
+     "type": "release"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "40 5 * * *"
+       }],
+       "type": "cron"
+      }],
+      "type": "OBJ-NODE"
+     }],
+     "type": "schedule"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "${{ matrix.os }}"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": ""
+        }],
+        "type": "cprefix"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "python"
+        }],
+        "type": "cpython"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "cpip"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "fixme-all"
+        }],
+        "type": "winedebug"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "true"
+        }],
+        "type": "pytest_do_tests"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "true"
+        }],
+        "type": "do_flake8_tests"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "true"
+        }],
+        "type": "mypy_do_tests"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "--follow-imports=normal --ignore-missing-imports --implicit-reexport-cmd"
+        }],
+        "type": "mypy_options"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "./igittigitt/3rd_party_stubs"
+        }],
+        "type": "mypypath"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "true"
+        }],
+        "type": "do_coverage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "true"
+        }],
+        "type": "do_coverage_upload_codecov"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "true"
+        }],
+        "type": "do_coverage_upload_code_climate"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "igittigitt"
+        }],
+        "type": "package_name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "igittigitt"
+        }],
+        "type": "cli_command"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "./.docs/readme_template.rst"
+        }],
+        "type": "rst_include_source"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "./readme.rst"
+        }],
+        "type": "rst_include_target"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.cc_test_reporter_id }}"
+        }],
+        "type": "cc_test_reporter_id"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.pypi_password }}"
+        }],
+        "type": "pypi_password"
+       }
+      ],
+      "type": "env"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "windows-latest"
+            }],
+            "type": "os"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "3.11"
+            }],
+            "type": "python-version"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "set"
+              }],
+              "type": "cexport"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "false"
+              }],
+              "type": "deploy_test"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "false"
+              }],
+              "type": "build"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "false"
+              }],
+              "type": "build_test"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "mypy_do_tests"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_setup_install"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_setup_install_test"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_cli_test"
+             }
+            ],
+            "type": "env"
+           }
+          ],
+          "type": "OBJ-NODE"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "ubuntu-latest"
+            }],
+            "type": "os"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "3.8"
+            }],
+            "type": "python-version"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "false"
+              }],
+              "type": "build_docs"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "build"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "build_test"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "mypy_do_tests"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_setup_install"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_setup_install_test"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_cli_test"
+             }
+            ],
+            "type": "env"
+           }
+          ],
+          "type": "OBJ-NODE"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "ubuntu-latest"
+            }],
+            "type": "os"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "3.9"
+            }],
+            "type": "python-version"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "false"
+              }],
+              "type": "build_docs"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "build"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "build_test"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "mypy_do_tests"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_setup_install"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_setup_install_test"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_cli_test"
+             }
+            ],
+            "type": "env"
+           }
+          ],
+          "type": "OBJ-NODE"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "ubuntu-latest"
+            }],
+            "type": "os"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "3.10"
+            }],
+            "type": "python-version"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "false"
+              }],
+              "type": "build_docs"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "build"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "build_test"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "mypy_do_tests"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_setup_install"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_setup_install_test"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_cli_test"
+             }
+            ],
+            "type": "env"
+           }
+          ],
+          "type": "OBJ-NODE"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "ubuntu-latest"
+            }],
+            "type": "os"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "3.11"
+            }],
+            "type": "python-version"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "build_docs"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "build"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "build_test"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "mypy_do_tests"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_setup_install"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_setup_install_test"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_cli_test"
+             }
+            ],
+            "type": "env"
+           }
+          ],
+          "type": "OBJ-NODE"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "ubuntu-latest"
+            }],
+            "type": "os"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "pypy-3.9"
+            }],
+            "type": "python-version"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "false"
+              }],
+              "type": "build_docs"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "build"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "build_test"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "false"
+              }],
+              "type": "mypy_do_tests"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_setup_install"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_setup_install_test"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_cli_test"
+             }
+            ],
+            "type": "env"
+           }
+          ],
+          "type": "OBJ-NODE"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "macos-latest"
+            }],
+            "type": "os"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "3.11"
+            }],
+            "type": "python-version"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": ""
+              }],
+              "type": "cprefix"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "python3"
+              }],
+              "type": "cpython"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "python3 -m pip"
+              }],
+              "type": "cpip"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "false"
+              }],
+              "type": "build_docs"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "build"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "build_test"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "mypy_do_tests"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_setup_install"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_setup_install_test"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "true"
+              }],
+              "type": "do_cli_test"
+             }
+            ],
+            "type": "env"
+           }
+          ],
+          "type": "OBJ-NODE"
+         }
+        ],
+        "type": "include"
+       }],
+       "type": "matrix"
+      }],
+      "type": "strategy"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "${{ matrix.os }} python-cmd"
+      }],
+      "type": "name"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "setting up python-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ matrix.python-version }}"
+           }],
+           "type": "python-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ matrix.env }}"
+          }],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ env.cpip }} install git+PATH-OR-URL install\\n"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "debug - printenv and colortest"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ matrix.env }}"
+          }],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "bash"
+          }],
+          "type": "shell"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "# export-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run tests"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ matrix.env }}"
+          }],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "bash"
+          }],
+          "type": "shell"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "# export-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "after success"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{matrix.env }}"
+          }],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "bash"
+          }],
+          "type": "shell"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "TRUE"
+          }],
+          "type": "continue-on-error"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "lib_cicd_github after_success\\n"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "deploy"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{matrix.env }}"
+          }],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "bash"
+          }],
+          "type": "shell"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "lib_cicd_github deploy"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

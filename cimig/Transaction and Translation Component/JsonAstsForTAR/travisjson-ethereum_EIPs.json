@@ -1,0 +1,217 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "ruby"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "gem install bundler -v '< 2'"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "bundler"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "$travis_build_dir/tmp/.htmlproofer"
+       },
+       {
+        "children": [],
+        "type": "/usr/local/lib/python3.3/dist-packages/pip/"
+       }
+      ],
+      "type": "directories"
+     }],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "bash -ex .PATH-OR-URL"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "nokogiri_use_system_libraries=true"
+    }],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "2.6.0"
+         }],
+         "type": "rvm"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "task='htmlproofer'"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "2.6.0"
+         }],
+         "type": "rvm"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "task='htmlproofer-external'"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "rust"
+         }],
+         "type": "language"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "cargo"
+         }],
+         "type": "cache"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "cargo install eipv --version=0.4.0"
+         }],
+         "type": "before_script"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "task='eip-validator'"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.3"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "task='codespell'"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "sudo pip install urllib3[secure] && sudo pip install codespell"
+         }],
+         "type": "before_script"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "2.6.0"
+        }],
+        "type": "rvm"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "task='htmlproofer-external'"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }],
+     "type": "allow_failures"
+    }
+   ],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "libcurl4-openssl-dev"
+     }],
+     "type": "packages"
+    }],
+    "type": "apt"
+   }],
+   "type": "addons"
+  }
+ ],
+ "type": "travis-file"
+}

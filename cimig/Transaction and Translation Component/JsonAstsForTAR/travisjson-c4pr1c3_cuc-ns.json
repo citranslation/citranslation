@@ -1,0 +1,156 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "15.11.0"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "openssl aes-256-cbc -k $gitee_key -iv $gitee_iv -in ./.travis/travis.key.enc -out gitee_deploy_key -d"
+    },
+    {
+     "children": [],
+     "type": "chmod-cmd"
+    },
+    {
+     "children": [],
+     "type": "eval $(ssh-agent)"
+    },
+    {
+     "children": [],
+     "type": "ssh-add gitee_deploy_key"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "never"
+     }],
+     "type": "on_success"
+    }],
+    "type": "email"
+   }],
+   "type": "notifications"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "node node_modules/gitbook-cli/bin/gitbook.js install"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "node node_modules/gitbook-cli/bin/gitbook.js build"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "git checkout -b gh-pages"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "git init"
+    },
+    {
+     "children": [],
+     "type": "git remote add origin PATH-OR-URL{ref}"
+    },
+    {
+     "children": [],
+     "type": "git remote add gitee \\\"git@gitee.com:c4pr1c3/cuc-ns.git\\\""
+    },
+    {
+     "children": [],
+     "type": "git remote -v"
+    },
+    {
+     "children": [],
+     "type": "git add ."
+    },
+    {
+     "children": [],
+     "type": "git commit -m \\\"updated by travis-ci with build $travis_build_number for-cmd"
+    },
+    {
+     "children": [],
+     "type": "git push --force --quiet \\\"PATH-OR-URL{token}@version"
+    },
+    {
+     "children": [],
+     "type": "git push --force --quiet gitee gh-pages"
+    },
+    {
+     "children": [],
+     "type": "git push --force --quiet \\\"git@gitee.com:c4pr1c3/cuc-ns.git\\\" master:gh-pages"
+    }
+   ],
+   "type": "after_script"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "master"
+    }],
+    "type": "only"
+   }],
+   "type": "branches"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "ref=PATH-OR-URL"
+    }],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "PATH-OR-URL"
+    }],
+    "type": "ssh_known_hosts"
+   }],
+   "type": "addons"
+  }
+ ],
+ "type": "travis-file"
+}

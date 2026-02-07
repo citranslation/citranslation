@@ -1,0 +1,56 @@
+Here is the GitHub Action configuration equivalent to the provided Travis CI configuration:
+
+```yaml
+name: build & test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.8", "3.9", "3.10" ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Install Test Dependencies
+        run: |
+          pip install -r test-requirements.txt
+          pip install codecov
+      - name: Check Formats with flake8
+        run: flake8 stockstats.py test.py
+      - name: Run Tests
+        run: |
+          py.test --cov=stockstats test.py
+      - name: Publish Test Results
+        if: ${{ matrix.python-version == '3.10' }}
+        run: codecov
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run tests
+        run: pytest  
+```
+
+Please replace the `stockstats.py` and `test.py` with your actual test and source file names. Also, ensure that you have the necessary secrets (like `GITHUB_TOKEN`) set in your GitHub repository settings for the `codecov` step to work.

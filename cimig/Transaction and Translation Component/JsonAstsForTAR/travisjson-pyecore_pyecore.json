@@ -1,0 +1,169 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "focal"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    },
+    {
+     "children": [],
+     "type": "3.10"
+    },
+    {
+     "children": [],
+     "type": "3.11-dev"
+    },
+    {
+     "children": [],
+     "type": "pypy3"
+    },
+    {
+     "children": [],
+     "type": "nightly"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install -u importlib-metadata"
+    },
+    {
+     "children": [],
+     "type": "pip install -u pip setuptools"
+    },
+    {
+     "children": [],
+     "type": "pip install tox-travis coveralls"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coveralls"
+   }],
+   "type": "after_success"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "develop"
+     },
+     {
+      "children": [],
+      "type": "master"
+     },
+     {
+      "children": [],
+      "type": "/^\\\\d+.\\\\d+.\\\\d+$/"
+     }
+    ],
+    "type": "only"
+   }],
+   "type": "branches"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "pypi"
+     }],
+     "type": "provider"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "__token__"
+     }],
+     "type": "user"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "token"
+      }],
+      "type": "secure"
+     }],
+     "type": "password"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "sdist bdist_wheel"
+     }],
+     "type": "distributions"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "tags"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "3.10"
+       }],
+       "type": "python"
+      }
+     ],
+     "type": "on"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,112 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "2.7"
+    },
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    },
+    {
+     "children": [],
+     "type": "3.10"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "3.7"
+       }],
+       "type": "python"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "xenial"
+       }],
+       "type": "dist"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }],
+    "type": "include"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "travis_retry pip install --force-reinstall --no-binary lxml lxml"
+    },
+    {
+     "children": [],
+     "type": "travis_retry pip install ."
+    },
+    {
+     "children": [],
+     "type": "travis_retry pip install -e \\\".[test]\\\""
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "flake8 --ignore e226,e302,e41,e731,e501,c901,w504"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

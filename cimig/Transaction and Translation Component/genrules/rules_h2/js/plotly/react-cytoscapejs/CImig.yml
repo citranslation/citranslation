@@ -1,0 +1,12 @@
+name: placeholder
+
+on: push:
+
+jobs:
+  build:
+    runs-on
+    steps
+    run: npm run test
+
+fail-fast: FALSE
+

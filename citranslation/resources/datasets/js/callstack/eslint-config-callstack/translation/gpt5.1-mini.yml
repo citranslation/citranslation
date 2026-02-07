@@ -1,0 +1,44 @@
+name: CI
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Yarn 1.17.3
+        run: |
+          curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.17.3
+          echo "$HOME/.yarn/bin" >> $GITHUB_PATH
+
+      - name: Cache Yarn and node_modules
+        uses: actions/cache@v4
+        with:
+          path:
+            - ~/.cache/yarn
+            - node_modules
+            - test/node_modules
+          key: ${{ runner.os }}-yarn-1.17.3-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-1.17.3-
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: |
+          yarn --version
+          yarn install --frozen-lockfile || yarn install
+          if [ -f test/package.json ]; then yarn --cwd test install --frozen-lockfile || yarn --cwd test install; fi
+
+      - name: Run tests (if defined)
+        run: |
+          if [ -f package.json ] && grep -q "\"test\"" package.json; then yarn test; fi
+|End-of-Code|

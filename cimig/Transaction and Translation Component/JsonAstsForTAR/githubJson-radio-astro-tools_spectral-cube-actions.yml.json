@@ -1,0 +1,435 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "run tests"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "${{ matrix.os }}"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "FALSE"
+        }],
+        "type": "fail-fast"
+       },
+       {
+        "children": [{
+         "children": [
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "ubuntu-latest"
+             }],
+             "type": "os"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "3.7"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "python-cmd"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "py37-test"
+             }],
+             "type": "toxenv"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "ubuntu-latest"
+             }],
+             "type": "os"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "3.7"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "python-cmd"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "py37-test-novis"
+             }],
+             "type": "toxenv"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "ubuntu-latest"
+             }],
+             "type": "os"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "3.6"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "python-cmd"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "py36-test-casa"
+             }],
+             "type": "toxenv"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "ubuntu-latest"
+             }],
+             "type": "os"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "3.8"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "python-cmd"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "py38-test-novis-dev"
+             }],
+             "type": "toxenv"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "ubuntu-latest"
+             }],
+             "type": "os"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "3.7"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "python-cmd"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "py37-test-novis"
+             }],
+             "type": "toxenv"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "macos-latest"
+             }],
+             "type": "os"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "3.7"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "python-cmd"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "py37-test-novis"
+             }],
+             "type": "toxenv"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "windows-latest"
+             }],
+             "type": "os"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "3.7"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "python-cmd"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "py37-test-all-dev"
+             }],
+             "type": "toxenv"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "ubuntu-latest"
+             }],
+             "type": "os"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "3.8"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "documentation"
+             }],
+             "type": "name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "build_docs"
+             }],
+             "type": "toxenv"
+            }
+           ],
+           "type": "OBJ-NODE"
+          }
+         ],
+         "type": "include"
+        }],
+        "type": "matrix"
+       }
+      ],
+      "type": "strategy"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set up python-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ matrix.python-version }}"
+           }],
+           "type": "python-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install testing dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "python-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run tests with ${{ PATH-OR-URL }}"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "tox -v -e ${{ matrix.toxenv }}"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "upload coverage-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "codecov/codecov-action@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "./coverage.xml"
+           }],
+           "type": "file"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "tests"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

@@ -1,0 +1,45 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        node-version:
+          - 18
+          - 16
+          - 15
+          - 14
+          - 12
+          - 10
+          - 8
+          - 6
+    runs-on: ${{ matrix.os }}
+    name: Test on Node.js ${{ matrix.node-version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install
+        run: npm ci
+
+      - name: Test
+        run: npm run test
+
+|End-of-Code|
+```
+
+This configuration will run tests on Node.js versions 6, 8, 10, 12, 14, 16, 18 on Ubuntu. It will also run on push and pull request events.

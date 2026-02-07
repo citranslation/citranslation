@@ -1,0 +1,33 @@
+name: Python CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      TOXENV: base,optional,six19-optional
+    strategy:
+      matrix:
+        python: [pypy3.8, pypy2.7, 3.11, 3.10, 3.9, 3.8]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ matrix.python }}
+      - name: Install tox
+        run: pip install tox
+      - name: Run tox
+        run: tox
+      - name: Debug info
+        run: python debug-info.py
+|End-of-Code|

@@ -1,0 +1,130 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "bundler"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "ruby"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "2.6"
+    },
+    {
+     "children": [],
+     "type": "2.7"
+    },
+    {
+     "children": [],
+     "type": "3.0"
+    },
+    {
+     "children": [],
+     "type": "3.1"
+    }
+   ],
+   "type": "rvm"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "gemfile"
+    },
+    {
+     "children": [],
+     "type": "config/gemfiles/rails-6.0.x.gemfile"
+    },
+    {
+     "children": [],
+     "type": "config/gemfiles/rails-6.1.x.gemfile"
+    }
+   ],
+   "type": "gemfile"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "2.6"
+        }],
+        "type": "rvm"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "gemfile"
+        }],
+        "type": "gemfile"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.1"
+        }],
+        "type": "rvm"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "config/gemfiles/rails-6.0.x.gemfile"
+        }],
+        "type": "gemfile"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "exclude"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "yes | gem update --system --force"
+    },
+    {
+     "children": [],
+     "type": "gem install bundler"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "cd-cmd"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "bundle exec rspec"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

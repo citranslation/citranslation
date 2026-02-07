@@ -1,0 +1,536 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+env:
+  # PR title if this is a pull_request, otherwise empty
+  PR_TITLE: ${{ github.event.pull_request && github.event.pull_request.title || '' }}
+  # For push events use head commit message; for PR events fall back to PR title
+  COMMIT_MESSAGE: ${{ (github.event.pull_request && github.event.pull_request.title) || (github.event.head_commit && github.event.head_commit.message) || '' }}
+  NODE_VERSION: 18
+
+jobs:
+  # Prebuild - Lint
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    if: "!contains(env.COMMIT_MESSAGE, '[only argos]')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: yarn lint
+
+  # Prebuild - Generate Sprite and Palette
+  generate-sprite-and-palette:
+    name: Generate Sprite and Palette
+    runs-on: ubuntu-latest
+    needs: []
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Generate sprite & palette
+        run: yarn makeSpriteAndPalette
+
+      - name: Upload sprite & palette artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: sprite-palette-binaries
+          path: |
+            react/Icon/icons-sprite.js
+            react/palette.js
+
+  # Build - JS
+  build-js:
+    name: Build JS
+    runs-on: ubuntu-latest
+    needs: [generate-sprite-and-palette]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download sprite & palette
+        uses: actions/download-artifact@v4
+        with:
+          name: sprite-palette-binaries
+          path: ./artifact-sprite-palette
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build JS
+        run: yarn build
+
+      - name: Upload JS binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: js-binaries
+          path: ./transpiled
+
+  # Build - CSS
+  build-css:
+    name: Build CSS
+    runs-on: ubuntu-latest
+    needs: [generate-sprite-and-palette]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build all CSS
+        run: yarn build:css:all
+
+      - name: Upload CSS binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: css-binaries
+          path: ./dist
+
+  # Docs
+  build-docs:
+    name: Build docs
+    runs-on: ubuntu-latest
+    needs: [build-js, build-css, generate-sprite-and-palette]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download sprite & palette
+        uses: actions/download-artifact@v4
+        with:
+          name: sprite-palette-binaries
+          path: ./artifact-sprite-palette
+
+      - name: Download js binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: js-binaries
+          path: ./artifact-js
+
+      - name: Download css binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: css-binaries
+          path: ./artifact-css
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build docs (react and kss)
+        run: |
+          yarn build:doc:react
+          yarn build:doc:kss
+
+      - name: Upload docs binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: docs-binaries
+          path: ./build
+
+  # Test - without snapshots
+  tests-no-snapshots:
+    name: Tests without snapshots
+    runs-on: ubuntu-latest
+    needs: [build-js, build-css, generate-sprite-and-palette]
+    if: "!contains(env.COMMIT_MESSAGE, '[only argos]')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download sprite & palette
+        uses: actions/download-artifact@v4
+        with:
+          name: sprite-palette-binaries
+          path: ./artifact-sprite-palette
+
+      - name: Download js binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: js-binaries
+          path: ./artifact-js
+
+      - name: Download css binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: css-binaries
+          path: ./artifact-css
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install
+        run: yarn install --frozen-lockfile
+
+      - name: Run tests (no snapshots)
+        run: yarn test:noSnapshots
+
+  # Test - snapshots
+  tests-snapshots:
+    name: Tests snapshots
+    runs-on: ubuntu-latest
+    needs: [build-js, build-css, generate-sprite-and-palette]
+    if: "!contains(env.COMMIT_MESSAGE, '[only argos]')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download sprite & palette
+        uses: actions/download-artifact@v4
+        with:
+          name: sprite-palette-binaries
+          path: ./artifact-sprite-palette
+
+      - name: Download js binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: js-binaries
+          path: ./artifact-js
+
+      - name: Download css binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: css-binaries
+          path: ./artifact-css
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install
+        run: yarn install --frozen-lockfile
+
+      - name: Run snapshot tests
+        run: yarn test:snapshots
+
+  # Test - bundlemon
+  bundlemon:
+    name: Bundlemon
+    runs-on: ubuntu-latest
+    needs: [build-js, build-css, generate-sprite-and-palette]
+    if: "!contains(env.COMMIT_MESSAGE, '[only argos]')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download sprite & palette
+        uses: actions/download-artifact@v4
+        with:
+          name: sprite-palette-binaries
+          path: ./artifact-sprite-palette
+
+      - name: Download js binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: js-binaries
+          path: ./artifact-js
+
+      - name: Download css binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: css-binaries
+          path: ./artifact-css
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install
+        run: yarn install --frozen-lockfile
+
+      - name: Run bundlemon
+        run: yarn bundlemon
+
+  # Screenshots - Create (desktop)
+  argos-create-desktop:
+    name: [Argos] Create desktop screenshots
+    runs-on: ubuntu-latest
+    needs: [build-docs, build-js, build-css, generate-sprite-and-palette]
+    if: "!contains(env.PR_TITLE, '[skip argos]')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download dependencies and binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: sprite-palette-binaries
+          path: ./artifact-sprite-palette
+
+      - name: Download js binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: js-binaries
+          path: ./artifact-js
+
+      - name: Download css binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: css-binaries
+          path: ./artifact-css
+
+      - name: Download docs binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: docs-binaries
+          path: ./artifact-docs
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Create screenshots folder
+        run: mkdir -p ./screenshots/reactDesktop
+
+      - name: Install puppeteer browsers
+        run: npx puppeteer browsers install chrome
+
+      - name: Create desktop screenshots
+        run: yarn screenshots --mode react --viewport desktop --screenshot-dir ./screenshots/reactDesktop
+
+      - name: Upload desktop screenshots
+        uses: actions/upload-artifact@v3
+        with:
+          name: screenshots-desktop-binaries
+          path: ./screenshots
+
+  # Screenshots - Create (mobile)
+  argos-create-mobile:
+    name: [Argos] Create mobile screenshots
+    runs-on: ubuntu-latest
+    needs: [build-docs, build-js, build-css, generate-sprite-and-palette]
+    if: "!contains(env.PR_TITLE, '[skip argos]')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download dependencies and binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: sprite-palette-binaries
+          path: ./artifact-sprite-palette
+
+      - name: Download js binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: js-binaries
+          path: ./artifact-js
+
+      - name: Download css binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: css-binaries
+          path: ./artifact-css
+
+      - name: Download docs binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: docs-binaries
+          path: ./artifact-docs
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Create screenshots folder
+        run: mkdir -p ./screenshots/reactMobile
+
+      - name: Install puppeteer browsers
+        run: npx puppeteer browsers install chrome
+
+      - name: Create mobile screenshots
+        run: yarn screenshots --mode react --viewport 300x600 --screenshot-dir ./screenshots/reactMobile
+
+      - name: Upload mobile screenshots
+        uses: actions/upload-artifact@v3
+        with:
+          name: screenshots-mobile-binaries
+          path: ./screenshots
+
+  # Screenshots - Create (kss)
+  argos-create-kss:
+    name: [Argos] Create kss screenshots
+    runs-on: ubuntu-latest
+    needs: [build-docs, build-js, build-css, generate-sprite-and-palette]
+    if: "!contains(env.PR_TITLE, '[skip argos]')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download dependencies and binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: sprite-palette-binaries
+          path: ./artifact-sprite-palette
+
+      - name: Download js binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: js-binaries
+          path: ./artifact-js
+
+      - name: Download css binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: css-binaries
+          path: ./artifact-css
+
+      - name: Download docs binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: docs-binaries
+          path: ./artifact-docs
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Create screenshots folder
+        run: mkdir -p ./screenshots/kss
+
+      - name: Install puppeteer browsers
+        run: npx puppeteer browsers install chrome
+
+      - name: Create kss screenshots
+        run: yarn screenshots --mode kss --screenshot-dir ./screenshots/kss
+
+      - name: Upload kss screenshots
+        uses: actions/upload-artifact@v3
+        with:
+          name: screenshots-kss-binaries
+          path: ./screenshots
+
+  # Screenshots - Upload all
+  argos-upload:
+    name: '[Argos] Upload all screenshots'
+    runs-on: ubuntu-latest
+    needs: [argos-create-desktop, argos-create-mobile, argos-create-kss, build-docs]
+    if: "!contains(env.PR_TITLE, '[skip argos]')"
+    env:
+      ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
+      NONCE: ${{ github.run_id }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download desktop screenshots
+        uses: actions/download-artifact@v4
+        with:
+          name: screenshots-desktop-binaries
+          path: ./screenshots/reactDesktop
+
+      - name: Download mobile screenshots
+        uses: actions/download-artifact@v4
+        with:
+          name: screenshots-mobile-binaries
+          path: ./screenshots/reactMobile
+
+      - name: Download kss screenshots
+        uses: actions/download-artifact@v4
+        with:
+          name: screenshots-kss-binaries
+          path: ./screenshots/kss
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Upload desktop screenshots to Argos
+        run: yarn argos:upload --parallel screenshots/reactDesktop/ --token $ARGOS_TOKEN --parallel-total 3 --parallel-nonce $NONCE --ignore ''
+
+      - name: Upload mobile screenshots to Argos
+        run: yarn argos:upload --parallel screenshots/reactMobile/ --token $ARGOS_TOKEN --parallel-total 3 --parallel-nonce $NONCE --ignore ''
+
+      - name: Upload kss screenshots to Argos
+        run: yarn argos:upload --parallel screenshots/kss/ --token $ARGOS_TOKEN --parallel-total 3 --parallel-nonce $NONCE --ignore ''
+
+  # Deploy (only on master branch, skip when commit contains "[only argos]")
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: [build-docs, build-js, build-css, generate-sprite-and-palette]
+    if: "github.ref == 'refs/heads/master' && !contains(env.COMMIT_MESSAGE, '[only argos]')"
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download docs binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: docs-binaries
+          path: ./artifact-docs
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Deploy docs & run semantic-release
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          # Mirror original Travis deploy command; GH_TOKEN (named GH_TOKEN) is used for authentication
+          yarn deploy:doc -- --username cozycloud --email contact@cozycloud.cc --repo https://cozy-bot:${GH_TOKEN}@github.com/cozy/cozy-ui.git && yarn semantic-release
+
+|End-of-Code|

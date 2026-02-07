@@ -1,0 +1,24 @@
+language: python
+python:
+- 3.9
+- 3.8
+
+sudo: false
+
+notifications:
+  email:
+  - wolf@physik.uni-bonn.de
+  
+install:
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+  - chmod +x miniconda.sh
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - conda update --yes conda
+  - conda install --yes numpy scipy pyyaml matplotlib nose jupyter pandas 
+  - conda info -a
+  - pip install --upgrade pip
+  - pip install -r requirements.txt
+  - python setup.py develop
+
+script: nosetests

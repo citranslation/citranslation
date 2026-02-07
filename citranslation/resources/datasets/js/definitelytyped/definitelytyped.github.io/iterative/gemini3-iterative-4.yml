@@ -1,0 +1,23 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 8
+        uses: actions/setup-node@v4
+        with:
+          node-version: '8'
+      - name: Fix v8flags for Node 8
+        run: |
+          mkdir -p ~/.cache/v8flags
+      - run: npm install
+      - run: npm run deploy
+
+|End-of-Code|

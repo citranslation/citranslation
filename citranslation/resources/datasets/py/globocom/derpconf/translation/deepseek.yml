@@ -1,0 +1,35 @@
+Sure, here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: Python application
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.9, 3.10, 3.11, 3.12]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        sudo apt-get install -y librtmp-dev libevent-dev
+        make setup
+    - name: Run tests
+      run: make test
+```
+
+This configuration will trigger the workflow on every push and pull request to the repository. It will run on the latest version of Ubuntu, and for each Python version specified in the matrix, it will set up the Python environment, install the dependencies, and run the tests.
+
+Please note that the `make setup` and `make test` commands are assumed to be defined in the repository. If they are not, you will need to replace them with the appropriate commands to install and test your Python application.
+
+Also, please ensure that the Python versions you specify in the matrix are available on the runner. The GitHub Actions runner uses Ubuntu 20.04, which comes with Python 3.8 pre-installed. If you need to use Python 3.9, 3.10, 3.11, or 3.12, you will need to add the appropriate Python versions to the runner's path.

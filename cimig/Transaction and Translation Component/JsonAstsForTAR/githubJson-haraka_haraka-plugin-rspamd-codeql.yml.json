@@ -1,0 +1,63 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "codeql"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "18 7 * * 4"
+       }],
+       "type": "cron"
+      }],
+      "type": "OBJ-NODE"
+     }],
+     "type": "schedule"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "haraka/.github/.github/workflows/codeql.yml@version"
+     }],
+     "type": "uses"
+    }],
+    "type": "codeql"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

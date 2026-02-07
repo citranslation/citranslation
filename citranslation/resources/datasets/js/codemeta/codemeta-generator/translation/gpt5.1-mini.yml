@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  cypress:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 10
+        uses: actions/setup-node@v3
+        with:
+          node-version: '10'
+          cache: 'npm'
+
+      - name: Cache npm and local cache
+        uses: actions/cache@v4
+        with:
+          path:
+            - ~/.npm
+            - ~/.cache
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json', '**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Install apt dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgconf-2-4
+
+      - name: Install Cypress
+        run: |
+          npm install cypress
+
+      - name: Install Cypress binary
+        run: |
+          ./node_modules/.bin/cypress install
+
+      - name: Run Cypress tests
+        run: |
+          ./node_modules/.bin/cypress run
+
+|End-of-Code|

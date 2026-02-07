@@ -1,0 +1,28 @@
+name: Node CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [8.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run dist
+    - run: npm run test:ci
+      |End-of-Code|
+
+Please note that the "npm ci" command is used to install all the dependencies listed in the package-lock.json file. If there is no package-lock.json file, it will fall back to the npm install command.

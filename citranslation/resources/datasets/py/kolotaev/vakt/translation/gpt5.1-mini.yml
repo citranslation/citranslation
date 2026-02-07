@@ -1,0 +1,158 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+      redis:
+        image: redis:6
+        ports:
+          - 6379:6379
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: "3.8"
+            setup: "3.8"
+          - python: "3.9"
+            setup: "3.9"
+          - python: "3.10"
+            setup: "3.10"
+          - python: "3.11"
+            setup: "3.11"
+          - python: "nightly"
+            setup: "3.12-dev"      # maps 'nightly' to a dev/nightly build (adjust if you want a different dev tag)
+          - python: "pypy3.9"
+            setup: "pypy-3.9"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.setup }}
+          cache: 'pip'
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.setup }}-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ matrix.setup }}-
+
+      - name: Install system packages (clients/tools)
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y mysql-client postgresql-client redis-tools wget tar
+
+      - name: Start MongoDB (downloaded binary)
+        run: |
+          # match Travis: download a standalone mongod binary and run it
+          wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1604-4.2.1.tgz
+          tar zxf mongodb-linux-x86_64-ubuntu1604-4.2.1.tgz
+          echo "PATH=${PWD}/mongodb-linux-x86_64-ubuntu1604-4.2.1/bin/:$PATH" >> $GITHUB_ENV
+          mongod --version
+          mkdir -p data/db
+          mongod --dbpath=data/db --fork --logpath /dev/null
+
+      - name: Wait for services to become available
+        run: |
+          # Wait for MySQL
+          for i in {1..60}; do
+            mysqladmin ping -h 127.0.0.1 --silent && break
+            echo "Waiting for MySQL..."
+            sleep 1
+          done
+
+          # Wait for Postgres
+          for i in {1..60}; do
+            pg_isready -h 127.0.0.1 -U postgres && break
+            echo "Waiting for Postgres..."
+            sleep 1
+          done
+
+          # Wait for Redis
+          for i in {1..60}; do
+            if redis-cli -h 127.0.0.1 ping 2>/dev/null | grep -q PONG; then break; fi
+            echo "Waiting for Redis..."
+            sleep 1
+          done
+
+          # Wait for MongoDB
+          for i in {1..60}; do
+            # use the mongo shell that we added to PATH above
+            if mongo --quiet --eval "db.runCommand({ping:1})" >/dev/null 2>&1; then break; fi
+            echo "Waiting for MongoDB..."
+            sleep 1
+          done
+
+      - name: Create databases and MongoDB user
+        env:
+          PGPASSWORD: postgres
+        run: |
+          # Create MongoDB user and DB
+          mongo vakt_db --eval 'db.createUser({user:"test_user",pwd:"test_password",roles:["readWrite"]});'
+
+          # Create MySQL database
+          mysql -h 127.0.0.1 -e "CREATE DATABASE IF NOT EXISTS vakt_db CHARACTER SET utf8 COLLATE utf8_bin;"
+
+          # Create Postgres database
+          psql -h 127.0.0.1 -U postgres -c "CREATE DATABASE vakt_db ENCODING='UTF8';"
+
+      - name: Install Python dependencies
+        run: make deps
+
+      - name: Run coverage (MySQL)
+        run: |
+          DATABASE_DSN="mysql+pymysql://root@127.0.0.1/vakt_db" make coverage
+
+      - name: Test SQL integration (SQLite)
+        run: |
+          DATABASE_DSN="sqlite:///:memory:" make test-sql-i
+
+      - name: Test SQL integration (Postgres)
+        run: |
+          DATABASE_DSN="postgresql+psycopg2cffi://postgres:postgres@127.0.0.1/vakt_db" make test-sql-i
+
+      - name: Run benchmark
+        run: make bench
+
+      - name: Upload coverage to Codecov
+        if: success()
+        run: bash <(curl -s https://codecov.io/bash)
+
+|End-of-Code|

@@ -1,0 +1,64 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:9.6
+        env:
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 'node'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Create database
+      run: psql -c 'create database sequelize;' -U postgres
+
+    - name: Run tests
+      run: npm test
+
+    - name: Generate coverage report
+      run: |
+        ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --report lcovonly test/overall.test.js -- --exit
+        cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+        rm -rf ./coverage
+
+    - name: Notify on failure
+      if: failure()
+      run: |
+        echo "Build failed, sending notification..."
+        # Add your notification logic here (e.g., send an email)
+
+    - name: Notify on success
+      if: success()
+      run: |
+        echo "Build succeeded, sending notification..."
+        # Add your notification logic here (e.g., send an email)
+
+|End-of-Code|
+```

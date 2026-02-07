@@ -1,0 +1,71 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    },
+    {
+     "children": [],
+     "type": "3.10"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install netcdf4"
+    },
+    {
+     "children": [],
+     "type": "pip install ."
+    },
+    {
+     "children": [],
+     "type": "pip install .[extra]"
+    },
+    {
+     "children": [],
+     "type": "pip install coveralls"
+    },
+    {
+     "children": [],
+     "type": "pip install pytest-cov"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "FALSE"
+    }],
+    "type": "email"
+   }],
+   "type": "notifications"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coverage-cmd"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

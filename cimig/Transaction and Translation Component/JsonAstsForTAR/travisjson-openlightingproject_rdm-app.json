@@ -1,0 +1,678 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "rm -f ~/.cache/pip/log/debug.log"
+   }],
+   "type": "before_cache"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "~/.npm"
+     },
+     {
+      "children": [],
+      "type": "~/.cache/pip"
+     }
+    ],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "arm64"
+         }],
+         "type": "arch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "2.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "task=\\\"nosetests\\\""
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "focal"
+         }],
+         "type": "dist"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "arm64"
+         }],
+         "type": "arch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "task=\\\"karma\\\""
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "xvfb"
+         }],
+         "type": "services"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "focal"
+         }],
+         "type": "dist"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "arm64"
+         }],
+         "type": "arch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "task=\\\"lint\\\""
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "focal"
+         }],
+         "type": "dist"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "arm64"
+         }],
+         "type": "arch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "task=\\\"closure-compiler\\\""
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "arm64"
+         }],
+         "type": "arch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "task=\\\"data-check\\\""
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "libhtml-parser-perl"
+           }],
+           "type": "packages"
+          }],
+          "type": "apt"
+         }],
+         "type": "addons"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "focal"
+         }],
+         "type": "dist"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "arm64"
+         }],
+         "type": "arch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "task='spellintian'"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [
+            {
+             "children": [],
+             "type": "lintian"
+            },
+            {
+             "children": [],
+             "type": "moreutils"
+            }
+           ],
+           "type": "packages"
+          }],
+          "type": "apt"
+         }],
+         "type": "addons"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "focal"
+         }],
+         "type": "dist"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "arm64"
+         }],
+         "type": "arch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "task='codespell'"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "moreutils"
+           }],
+           "type": "packages"
+          }],
+          "type": "apt"
+         }],
+         "type": "addons"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "trusty"
+         }],
+         "type": "dist"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "arm64"
+         }],
+         "type": "arch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "2.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "task='flake8'"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "trusty"
+         }],
+         "type": "dist"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "arm64"
+         }],
+         "type": "arch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "2.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "task='flake8-wip'"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "trusty"
+         }],
+         "type": "dist"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "arm64"
+         }],
+         "type": "arch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "2.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "task='pychecker'"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "trusty"
+         }],
+         "type": "dist"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "arm64"
+         }],
+         "type": "arch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "2.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "task='pychecker-wip'"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "trusty"
+         }],
+         "type": "dist"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "arm64"
+         }],
+         "type": "arch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "2.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "task='flake8-wip'"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "trusty"
+         }],
+         "type": "dist"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "arm64"
+         }],
+         "type": "arch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "2.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "task='pychecker'"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "trusty"
+         }],
+         "type": "dist"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "arm64"
+         }],
+         "type": "arch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "2.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "task='pychecker-wip'"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "allow_failures"
+    }
+   ],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "bash -ex .PATH-OR-URL"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "PATH-OR-URL#openlighting"
+      }],
+      "type": "channels"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "change"
+      }],
+      "type": "on_success"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "change"
+      }],
+      "type": "on_failure"
+     }
+    ],
+    "type": "irc"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

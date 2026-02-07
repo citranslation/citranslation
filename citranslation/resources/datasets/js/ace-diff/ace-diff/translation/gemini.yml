@@ -1,0 +1,66 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 12
+        uses: actions/setup-node@v4
+        with:
+          node-version: '12.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run tests
+        run: |
+          npm run serve &
+          npm test
+
+  release:
+    name: Release
+    # The release job depends on the build job passing
+    needs: build
+    # It only runs on a push to the main/master branch, not on pull requests
+    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 12
+        uses: actions/setup-node@v4
+        with:
+          node-version: '12.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Semantic Release
+        env:
+          # GITHUB_TOKEN is required by semantic-release to commit version bumps and create releases
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # NPM_TOKEN is required to publish the package to the npm registry.
+          # This must be configured as a repository secret.
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm run semantic-release
+|End-of-Code|
+```

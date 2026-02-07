@@ -1,0 +1,26 @@
+dist: noble
+language: python
+
+matrix:
+    include:
+      - python: 3.8
+        env: TOX_ENV=py38
+      - python: 3.9
+        env: TOX_ENV=py39
+      - python: pypy3.7
+        env: TOX_ENV=pypy3.7
+
+install:
+  - pip install -U -r requirements.txt
+  - pip install .
+
+script:
+  - tox -e $TOX_ENV
+  - pytest --dead-fixtures
+
+before_cache:
+  - rm -rf $HOME/.cache/pip/log
+
+cache:
+  directories:
+    - $HOME/.cache/pip

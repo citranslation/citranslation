@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python-version: "3.8"
+            numpy-version: "1.15.4"
+          - python-version: "3.9"
+            numpy-version: "1.19.4"
+    env:
+      NUMPY_VERSION: ${{ matrix.numpy-version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install dependencies
+        run: |
+          pip install numpy==$NUMPY_VERSION scipy "matplotlib>=3" "cython>=0.28"
+
+      - name: Run build
+        run: |
+          chmod +x dev/build.sh || true
+          ./dev/build.sh
+
+      - name: Run tests
+        run: |
+          chmod +x dev/test.sh || true
+          ./dev/test.sh
+|End-of-Code|

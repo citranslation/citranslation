@@ -1,0 +1,56 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "~/.npm"
+    }],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "FALSE"
+    }],
+    "type": "email"
+   }],
+   "type": "notifications"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "8"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "after_success"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "/^v\\\\d+\\\\.\\\\d+\\\\.\\\\d+$/"
+    }],
+    "type": "except"
+   }],
+   "type": "branches"
+  }
+ ],
+ "type": "travis-file"
+}

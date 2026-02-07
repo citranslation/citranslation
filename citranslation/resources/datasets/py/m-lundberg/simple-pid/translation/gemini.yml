@@ -1,0 +1,44 @@
+```yaml
+name: Python CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      # When set to false, all jobs in the matrix will run to completion,
+      # even if one of them fails. This matches the Travis CI behavior.
+      fail-fast: false
+      matrix:
+        # Corresponds to the python versions in the Travis CI config.
+        # 'pypy' is mapped to a recent pypy-2.7 version and 'pypy3' to a recent pypy-3.9 version.
+        python-version: ["2.7", "3.4", "3.5", "3.6", "3.7", "3.8", "3.9", "pypy-2.7", "pypy-3.9"]
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # The original Travis config only installs flake8 in the 'install' step.
+          # We also install pytest here as it's used in the 'script' step.
+          pip install flake8 pytest
+
+      - name: Test with pytest
+        run: python -m pytest -v .
+
+      - name: Lint with flake8
+        run: flake8
+```
+|End-of-Code|

@@ -1,0 +1,214 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "django-postgresql-netfields"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "create matrix"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "fabiocaccamo/create-matrix-action@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "create_matrix"
+          }],
+          "type": "id"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "python-version {2.7}, tox-env {py27-django111}\\npython-version {3.5}, tox-env {py35-django111,py35-django22}\\npython-version {3.6}, tox-env {py36-django111,py36-django22,py36-django30,py36-django31,py36-django32}\\npython-version {3.7}, tox-env {py37-django111,py37-django22,py37-django30,py37-django31,py37-django32}\\npython-version {3.8}, tox-env {py38-django111,py38-django22,py38-django30,py38-django31,py38-django32,py38-django40}\\npython-version {3.9}, tox-env {py38-django111,py38-django22,py38-django30,py38-django31,py38-django32,py38-django40}\\npython-version {3.10}, tox-env {py310-django32,py310-django40}\\n"
+           }],
+           "type": "matrix"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }],
+       "type": "steps"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "${{ steps.create_matrix.outputs.matrix }}"
+        }],
+        "type": "matrix"
+       }],
+       "type": "outputs"
+      }
+     ],
+     "type": "prepare"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "prepare"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "fail-fast"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "${{fromjson(needs.prepare.outputs.matrix)}}"
+          }],
+          "type": "include"
+         }],
+         "type": "matrix"
+        }
+       ],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up python-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-version }}"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "sudo apt install postgresql libpq-dev\\nsudo service postgresql start\\nsudo -u postgres createuser -d runner\\npython-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "test with tox"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "tox -e ${{ matrix.tox-env }}"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "build"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

@@ -1,0 +1,45 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ppc64le
+          - amd64
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: |
+            node
+            lts/*
+            20
+            19
+            18
+            17
+            16
+            15
+            14
+            13
+            12
+            11
+            10
+            8
+      - name: Run tests
+        run: npm test
+    environment:
+      NODE_ENV: production
+|End-of-Code|
+```
+Note that in GitHub Actions, we use the `runs-on` keyword to specify the matrix of environments to run the job on, and the `strategy` keyword to define the matrix. We also use the `uses` keyword to specify the actions to run, and the `with` keyword to pass in the node version as a multi-line string.

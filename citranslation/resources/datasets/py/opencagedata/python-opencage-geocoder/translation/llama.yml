@@ -1,0 +1,29 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install tox-travis
+      - name: Run tests
+        run: tox
+      - name: Send notification to Slack
+        uses: slack-dev/slack-notify@v1
+        with:
+          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          message: "CI build completed"
+          channel: "#general"
+          username: "GitHub Actions"
+          icon_emoji: ":ghost:"
+```
+|End-of-Code|

@@ -1,0 +1,38 @@
+```yaml
+name: Node.js CI
+
+# This workflow is triggered on pushes and pull requests to the main branch.
+# You can customize this to your needs, e.g., on: [push, pull_request]
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Sets up a specific version of Node.js
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 14.x
+          # Caches npm dependencies for faster subsequent builds
+          cache: 'npm'
+
+      # Installs project dependencies. 'npm ci' is generally faster and more reliable for CI environments.
+      - name: Install dependencies
+        run: npm ci
+
+      # Runs the test suite. Travis CI runs 'npm test' by default for Node.js projects.
+      - name: Run tests
+        run: npm test
+```
+|End-of-Code|

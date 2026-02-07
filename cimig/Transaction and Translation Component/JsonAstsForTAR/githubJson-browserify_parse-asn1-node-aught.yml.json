@@ -1,0 +1,98 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "tests: node.js < 10"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pull_request"
+    },
+    {
+     "children": [],
+     "type": "push"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ljharb/actions/.github/workflows/node.yml@version"
+       }],
+       "type": "uses"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "0.10 - 10"
+         }],
+         "type": "range"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "minors"
+         }],
+         "type": "type"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "npm-cmd"
+         }],
+         "type": "command"
+        }
+       ],
+       "type": "with"
+      }
+     ],
+     "type": "tests"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "node < 10"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tests"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [],
+       "type": "steps"
+      }
+     ],
+     "type": "node"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

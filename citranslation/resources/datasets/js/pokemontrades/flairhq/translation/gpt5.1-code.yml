@@ -1,0 +1,76 @@
+```yaml
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    env:
+      SKIP_SASS_BINARY_DOWNLOAD_FOR_CI: true
+      NODE_VERSION: ${{ matrix.node }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        node: [6]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Cache npm and node-gyp
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.npm
+            ~/.node-gyp
+          key: ${{ runner.os }}-node-${{ matrix.node }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node }}
+
+      - name: Install GCC toolchain (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install -y gcc-4.7 g++-4.7 build-essential checkinstall libssl-dev
+          echo "CC=gcc-4.7" >> "$GITHUB_ENV"
+          echo "CXX=g++-4.7" >> "$GITHUB_ENV"
+          echo "LINK=gcc-4.7" >> "$GITHUB_ENV"
+          echo "LINKXX=g++-4.7" >> "$GITHUB_ENV"
+          gcc-4.7 --version
+          g++-4.7 --version
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Configure npm python
+        run: npm config set python "$(which python)"
+
+      - name: Clean environment
+        run: |
+          rm -f package-lock.json
+          npm cache clean --force
+          rm -rf node_modules
+
+      - name: Update npm to latest v6
+        run: npm install -g npm@latest-6
+
+      - name: Install global tools
+        run: |
+          npm install -g grunt-cli
+          npm install -g eslint
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+```
+|End-of-Code|

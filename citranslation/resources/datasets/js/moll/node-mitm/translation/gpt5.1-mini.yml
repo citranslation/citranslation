@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+          - "node"
+          - "0.10"
+          - "0.11.13"
+          - "0.11.14"
+          - "0.11"
+          - "0.12"
+          - "4"
+          - "5"
+          - "6.0.0"
+          - "6.3"
+          - "6.4.0"
+          - "6"
+          - "7.0.0"
+          - "7"
+          - "11.8"
+          - "8.11"
+          - "8.12.0"
+          - "8"
+          - "9.5"
+          - "9.6.0"
+          - "9"
+          - "10.0.0"
+          - "10.15.0"
+          - "10.15.1"
+          - "10"
+          - "11.0.0"
+          - "11.1.0"
+          - "11.2.0"
+          - "11.7"
+          - "11.8.0"
+          - "11"
+          - "12.0.0"
+          - "12.3"
+          - "12.4"
+          - "12.16.2"
+          - "12.16.3"
+          - "12"
+          - "13"
+          - "14"
+          - "15"
+          - "16"
+          - "iojs"
+          - "iojs-v2.4.0"
+          - "iojs-v3.2.0"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-npm-${{ hashFiles('**/package-lock.json', '**/npm-shrinkwrap.json', 'package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node-version }}-npm-
+
+      - name: before_install (fix npm@3 edge case from original Travis config)
+        run: |
+          if [[ "$(npm --version)" = 3.* ]] && [[ "$(npm --version)" != "3.10.10" ]]; then
+            npm install --global npm@3
+          fi
+
+      - name: Install dependencies
+        run: npm install
+        env:
+          CI: true
+
+      - name: Run tests
+        run: npm test
+        env:
+          CI: true
+|End-of-Code|

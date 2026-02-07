@@ -1,0 +1,160 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9-dev"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install tox-travis tox tox-venv"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "test"
+    },
+    {
+     "children": [],
+     "type": "lint"
+    },
+    {
+     "children": [],
+     "type": "check-docs"
+    }
+   ],
+   "type": "stages"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.9-dev"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     }],
+     "type": "allow_failures"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "lint"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "code linting"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=lint tox"
+         }],
+         "type": "script"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "check-docs"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "docs check"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "toxenv=check-docs tox"
+         }],
+         "type": "script"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

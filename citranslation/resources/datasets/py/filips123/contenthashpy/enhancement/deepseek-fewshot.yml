@@ -1,0 +1,46 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Travis CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.5', '3.6', '3.7', '3.8', '3.9', '3.10', '3.11', '3.12', '3.13', 'nightly', 'pypy3.8', 'pypy3.9', 'pypy3.10', 'pypy3.11']
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-cov coveralls coverage
+        if [[ ${{ matrix.python-version }} == 'pypy'* ]]; then export TRAVIS_WAIT=45; else export TRAVIS_WAIT=20; fi
+
+    - name: Run tests with coverage
+      run: |
+        coverage run --source=neat -m pytest tests
+
+    - name: Upload coverage to Coveralls
+      if: matrix.python-version == '3.11'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        coveralls --service=github
+```
+
+Please note that the GitHub Actions configuration is not as comprehensive as the Travis CI configuration. It only covers the basic functionality of running tests with coverage and uploading the coverage report to Coveralls. For more complex configurations, you may need to adjust the GitHub Actions configuration accordingly.

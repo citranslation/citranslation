@@ -1,0 +1,78 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "node"
+    },
+    {
+     "children": [],
+     "type": "lts/erbium"
+    },
+    {
+     "children": [],
+     "type": "lts/dubnium"
+    },
+    {
+     "children": [],
+     "type": "lts/carbon"
+    },
+    {
+     "children": [],
+     "type": "lts/boron"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "TRUE"
+    }],
+    "type": "yarn"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "greenkeeper-lockfile-update"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "greenkeeper-lockfile-upload"
+   }],
+   "type": "after_script"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "token"
+    }],
+    "type": "secure"
+   }],
+   "type": "env"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,40 @@
+```yaml
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        python setup.py install
+        pip install coveralls
+
+    - name: Run tests with coverage
+      run: coverage run --source=nvd3 setup.py test
+
+    - name: Upload coverage to Coveralls
+      run: coveralls
+
+    - name: Notify on success
+      if: success()
+      run: echo "Tests passed, notifications sent."
+      
+    - name: Notify on failure
+      if: failure()
+      run: echo "Tests failed, notifications sent."
+
+|End-of-Code|
+```

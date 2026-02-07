@@ -1,0 +1,80 @@
+```yaml
+# This workflow was migrated from a Travis CI configuration.
+# It runs tests against multiple Python versions and deploys to PyPI on new tags.
+
+name: Python Package CI/CD
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  test:
+    name: Test on Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      # Allow all matrix jobs to complete, even if one fails
+      fail-fast: false
+      matrix:
+        python-version: ['2.7', '3.4', '3.5', '3.6', '3.7']
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # pypandoc is only for PyPI deployment, so remove it for tests
+          sed '/pypandoc/d' -i requirements.txt
+          pip install -U -r requirements.txt
+          # Install the package itself in editable mode to make its modules available
+          pip install -e .
+          # Install tools for testing
+          pip install pytest pytest-cov pycodestyle
+
+      - name: Run tests and style check
+        run: |
+          py.test --cov=ssh_ldap_pubkey --cov-report term -vv
+          pycodestyle
+
+  deploy:
+    name: Deploy to PyPI
+    # Run only after all test jobs in the matrix have passed
+    needs: test
+    # Run only when a new tag is pushed
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install build dependencies
+        run: python -m pip install --upgrade build
+
+      - name: Build package
+        run: python -m build
+
+      - name: Publish package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          # The password is the PyPI API token, stored in a repository secret
+          password: ${{ secrets.PYPI_API_TOKEN }}
+```|End-of-Code|

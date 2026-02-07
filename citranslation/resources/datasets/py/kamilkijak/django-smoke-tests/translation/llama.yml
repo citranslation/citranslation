@@ -1,0 +1,35 @@
+Here is the migrated GitHub Action configuration:
+
+```yaml
+name: Python Tests
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9"]
+        env: ["py-django-22", "py-django-32"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: pip install -r requirements_test.txt
+
+      - name: Run tests
+        run: tox -e $TOX_ENV
+
+      - name: Generate coverage report
+        run: codecov -e $TOX_ENV
+
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v1
+        with:
+          file: coverage.xml
+```
+
+|End-of-Code|

@@ -1,0 +1,10 @@
+name: placeholder
+
+on: push:
+
+jobs:
+  build:
+    runs-on
+    steps
+    run: coverage run jsn.py -i example.jsn -o test.json -I import_dir
+

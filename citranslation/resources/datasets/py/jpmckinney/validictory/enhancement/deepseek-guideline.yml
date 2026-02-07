@@ -1,0 +1,53 @@
+```yaml
+name: Python package
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10, 3.11, 3.12, 'pypy3.9']
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-cov coveralls
+    - name: Test with pytest
+      run: |
+        py.test --cov validictory --cov-config=.coveragerc
+    - name: Coveralls
+      run: coveralls
+    - name: Notify
+      if: failure()
+      uses: dawidd6/action-send-mail@v2
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: Travis CI build failure
+        body: Build failed in Python ${{ matrix.python-version }}
+        to: dev@jamesturk.net
+        from: Travis CI
+        smtp_debug: true
+```
+
+Please replace `EMAIL_USERNAME` and `EMAIL_PASSWORD` with your actual Gmail username and password. Also, make sure to enable less secure apps in your Google account to allow the email to be sent.
+
+Note: GitHub Actions does not support PyPy as of now. The above configuration only supports Python versions 3.8 to 3.12.
+
+|End-of-Code|

@@ -1,0 +1,30 @@
+```yaml
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version:
+          - '0.12'
+          - '4.2'
+          - '5.0'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install npm@2.14.5
+        run: npm install -g npm@2.14.5
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: DEBUG=* npm test
+```
+|End-of-Code|

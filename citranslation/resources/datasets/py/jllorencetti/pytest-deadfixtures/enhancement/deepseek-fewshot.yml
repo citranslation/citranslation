@@ -1,0 +1,36 @@
+Here is the GitHub Action configuration equivalent to the provided Travis CI configuration:
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    name: "Py:${{ matrix.python }}"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10", "3.11", "pypy-2.7", "pypy-3.8"]
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: "requirements*.txt"
+      - name: Install dependencies
+        run: pip install tox
+      - name: Test with tox
+        run: tox -e py
+      - if: ${{ always() }}
+        run: python debug-info.py
+```
+
+Please note that the GitHub Actions configuration is slightly different from the Travis CI configuration. The GitHub Actions configuration uses the `actions/checkout@v4` and `actions/setup-python@v5` actions to checkout the source code and setup the Python environment, respectively. The `cache` and `cache-dependency-path` options are also used to cache pip dependencies. The `if: ${{ always() }}` condition is used to run the `python debug-info.py` script regardless of the previous step's outcome.

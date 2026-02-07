@@ -1,0 +1,174 @@
+## 1. Input: Travis CI
+```yaml
+language: node_js
+node_js:
+  - 14
+```
+## 2. Input: Reference Migration Pairs
+-Example 1
+  -Travis CI:
+```yaml
+language: node_js
+node_js:
+  - 14
+```
+  -GitHub Actions:
+```yaml
+name: Test diff match patch
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - name: Install
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+```
+
+-Example 2
+  -Travis CI:
+```yaml
+language: node_js
+node_js:
+  - 12
+```
+  -GitHub Actions:
+```yaml
+name: check
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+      - run: yarn install
+      - run: make check
+```
+
+-Example 3
+  -Travis CI:
+```yaml
+language: node_js
+node_js:
+  - 10
+  - 12
+```
+  -GitHub Actions:
+```yaml
+name: Run tests on Pull Request
+on:
+  push:
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - .gitignore
+      - .npmignore
+      - LICENSE
+      - README.md    
+jobs:
+  test:
+    name: Run tests (Node.js ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [10, 12]
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+      # Not using "npm ci" because not using lockfile
+      - run: npm i
+      - run: npm test
+```
+## 3. Task:
+Migrate the above Travis CI configuration to Github Action, using the provided migration pair as reference. 
+
+## 4. Output: GitHub Action
+```yaml
+name: Test diff match patch
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - name: Install
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+name: check
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+      - run: yarn install
+      - run: make check
+
+name: Run tests on Pull Request
+on:
+  push:
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - .gitignore
+      - .npmignore
+      - LICENSE
+      - README.md    
+jobs:
+  test:
+    name: Run tests (Node.js ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [10, 12]
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+      # Not using "npm ci" because not using lockfile
+      - run: npm i
+      - run: npm test
+```|End-of-Code|

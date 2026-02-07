@@ -1,0 +1,55 @@
+```yaml
+name: Python CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.7", "3.11"]
+
+    # Set environment variables for compatibility with the original build scripts
+    env:
+      TRAVIS: True
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        pip install --upgrade setuptools
+        pip install coveralls coverage pytest tox-travis
+
+    - name: Run setup scripts
+      run: |
+        # Make the script executable
+        chmod +x ./download_etcd.sh
+        ./download_etcd.sh 3.4.0
+        bin/buildout
+
+    - name: Run tests with tox
+      # Set TRAVIS_PYTHON_VERSION so that tox-travis can map the
+      # Python version to the correct tox environment.
+      run: tox
+      env:
+        TRAVIS_PYTHON_VERSION: ${{ matrix.python-version }}
+
+    - name: Upload coverage to Coveralls
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+```
+|End-of-Code|

@@ -1,0 +1,113 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [0.8, 0.10, 0.12, 1.8, 2.5, 3.3, 4.9, 5.12, 6.16, 7.10, 8.17, 9.11, 10.21, 11.15, 12.18, 13.14, 14.5]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Setup utility functions
+      run: |
+        function node_version_lt () {
+          [[ "$(v "$NODE_VERSION")" -lt "$(v "${1}")" ]]
+        }
+        function npm_module_installed () {
+          npm -lsp ls | grep -Fq "$(pwd)/node_modules/${1}:${1}@"
+        }
+        function npm_remove_module_re () {
+          node -e '
+            fs = require("fs");
+            p = JSON.parse(fs.readFileSync("package.json", "utf8"));
+            r = RegExp(process.argv[1]);
+            for (k in p.devDependencies) {
+              if (r.test(k)) delete p.devDependencies[k];
+            }
+            fs.writeFileSync("package.json", JSON.stringify(p, null, 2) + "\n");
+          ' "$@"
+        }
+        function npm_use_module () {
+          node -e '
+            fs = require("fs");
+            p = JSON.parse(fs.readFileSync("package.json", "utf8"));
+            p.devDependencies[process.argv[1]] = process.argv[2];
+            fs.writeFileSync("package.json", JSON.stringify(p, null, 2) + "\n");
+          ' "$@"
+        }
+        function v () {
+          tr '.' '\n' <<< "${1}" \
+            | awk '{ printf "%03d", $0 }' \
+            | sed 's/^0*//'
+        }
+
+    - name: Configure npm
+      run: npm config set shrinkwrap false
+
+    - name: Setup Node.js version-specific dependencies
+      run: |
+        if   node_version_lt '0.10'; then npm_use_module 'mocha' '2.5.3'
+        elif node_version_lt '4.0' ; then npm_use_module 'mocha' '3.5.3'
+        elif node_version_lt '6.0' ; then npm_use_module 'mocha' '5.2.0'
+        elif node_version_lt '8.0' ; then npm_use_module 'mocha' '6.2.2'
+        elif node_version_lt '10.0'; then npm_use_module 'mocha' '7.1.2'
+        fi
+
+        if node_version_lt '0.10'; then npm_remove_module_re '^istanbul$'
+        fi
+
+        if   node_version_lt '0.10'; then npm_use_module 'supertest' '1.1.0'
+        elif node_version_lt '4.0' ; then npm_use_module 'supertest' '2.0.0'
+        elif node_version_lt '6.0' ; then npm_use_module 'supertest' '3.4.2'
+        fi
+
+        if node_version_lt '8.0'; then npm_remove_module_re '^eslint(-|$)'
+        fi
+
+    - name: Prune & rebuild node_modules
+      if: exists('node_modules')
+      run: |
+        npm prune
+        npm rebuild
+
+    - name: List node_modules
+      run: npm -s ls || true
+
+    - name: Run tests
+      run: |
+        if npm_module_installed 'istanbul'; then npm run-script test-travis
+        else npm test
+        fi
+
+    - name: Run linting
+      if: npm_module_installed('eslint')
+      run: npm run-script lint
+
+    - name: Upload coverage to coveralls
+      if: exists('./coverage/lcov.info')
+      run: |
+        npm install --save-dev coveralls@2
+        coveralls < ./coverage/lcov.info
+|End-of-Code|
+```

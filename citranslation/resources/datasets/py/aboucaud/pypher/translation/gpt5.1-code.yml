@@ -1,0 +1,31 @@
+```yaml
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9"]
+    env:
+      NUMPY_VERSION: stable
+      ASTROPY_VERSION: stable
+      SETUP_CMD: test
+      PIP_DEPENDENCIES: ""
+      CONDA_DEPENDENCIES: scipy pytest-cov
+      TRAVIS_OS_NAME: linux
+      PYTHON_VERSION: ${{ matrix.python-version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies and run tests
+        shell: bash -l {0}
+        run: |
+          git clone git://github.com/astropy/ci-helpers.git
+          source ci-helpers/travis/setup_conda_linux.sh
+          py.test
+|End-of-Code|

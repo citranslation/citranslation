@@ -1,0 +1,26 @@
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        - ci-action: "npm run dist"
+        - ci-action: "npm run test:ci"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 8
+      - name: Install dependencies
+        run: npm install
+      - name: Run script
+        run: ${{ matrix.ci-action }}
+|End-of-Code|

@@ -1,0 +1,61 @@
+Here is the GitHub Action configuration equivalent to the provided Travis CI configuration:
+
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python: ['3.8', '3.9', '3.10', '3.11']
+        fail-fast: false
+    name: Python ${{ matrix.python }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup python ${{ matrix.python }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Upgrade pip
+        run: pip install -U pip
+      - name: Install dev dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Run tests
+        run: pytest
+```
+
+```yaml
+name: Python package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest 
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Test with behave
+        run: |
+          behave
+      - name: Build Wheel
+        run: |
+          ./build.sh  
+```
+
+Please note that the GitHub Actions configuration for Python versions 3.9, 3.10, and 3.11 are not available as of the time of writing this response. The latest Python version available for GitHub Actions is 3.8.

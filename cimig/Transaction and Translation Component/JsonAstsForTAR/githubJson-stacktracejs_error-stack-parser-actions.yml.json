@@ -1,0 +1,281 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "continuous integration"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "sauce"
+      }],
+      "type": "environment"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "read-all"
+      }],
+      "type": "permissions"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.sauce_username }}"
+        }],
+        "type": "sauce_username"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.sauce_access_key }}"
+        }],
+        "type": "sauce_access_key"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "github-action-tunnel"
+        }],
+        "type": "sauce_tunnel_id"
+       }
+      ],
+      "type": "env"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "setup sauce connect"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "saucelabs/sauce-connect-action@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.sauce_username }}"
+            }],
+            "type": "username"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.sauce_access_key }}"
+            }],
+            "type": "accesskey"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "github-action-tunnel"
+            }],
+            "type": "tunnelidentifier"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "4.7.1"
+            }],
+            "type": "scversion"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "checkout"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-node@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "16"
+           }],
+           "type": "node-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "cache dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/cache@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "~/.npm"
+            }],
+            "type": "path"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "npm-${{ hashfiles(arg) }}"
+            }],
+            "type": "key"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "npm-"
+            }],
+            "type": "restore-keys"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install packages"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "lint code"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run browser tests in saucelabs"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "5"
+          }],
+          "type": "timeout-minutes"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "tests"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

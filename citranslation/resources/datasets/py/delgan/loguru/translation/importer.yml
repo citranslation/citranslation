@@ -1,0 +1,35 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: # this agent type is not supported: [noble]
+             ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: pip install tox-travis codecov
+    - run: tox
+    - run: |-
+        VERSION="python_${TRAVIS_PYTHON_VERSION//[^[:alnum:]]/}" &&
+        codecov --required --flags $VERSION ||
+        (sleep 5 && codecov --required --flags $VERSION) ||
+        (sleep 10 && codecov --required --flags $VERSION) ||
+        (sleep 20 && codecov --required --flags $VERSION) ||
+        (sleep 30 && codecov --required --flags $VERSION)
+      if: "${{ success() }}"
+    strategy:
+      matrix:
+        python:
+        - '3.8'
+        - '3.9'
+        - pypy3.8

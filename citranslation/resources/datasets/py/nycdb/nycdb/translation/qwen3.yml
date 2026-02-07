@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python-version: 3.12-rc-bullseye
+            postgresql-version: 15
+          - python-version: 3.11-bullseye
+            postgresql-version: 15
+          - python-version: 3.11-bullseye
+            postgresql-version: 14
+          - python-version: 3.10-bullseye
+            postgresql-version: 14
+          - python-version: 3.10-bullseye
+            postgresql-version: 13
+          - python-version: 3.10-bullseye
+            postgresql-version: 12
+          - python-version: 3.9-bullseye
+            postgresql-version: 14
+          - python-version: 3.8-bullseye
+            postgresql-version: 14
+    env:
+      PYTHON_VERSION: ${{ matrix.python-version }}
+      POSTGRES_VERSION: ${{ matrix.postgresql-version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io docker-compose
+
+      - name: Build Docker image
+        run: docker-compose build
+
+      - name: Run tests
+        run: docker-compose run --entrypoint="pytest tests" nycdb
+|End-of-Code|

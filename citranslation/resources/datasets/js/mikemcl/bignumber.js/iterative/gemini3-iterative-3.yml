@@ -1,0 +1,38 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["20", "19", "18", "17", "16", "15", "14", "13", "12", "11", "10", "8"]
+        arch: [amd64, ppc64le]
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        if: matrix.arch == 'ppc64le'
+        uses: docker/setup-qemu-action@v3
+
+      - name: Run tests in Container
+        uses: addnab/docker-run-action@v3
+        with:
+          image: ${{ matrix.arch == 'ppc64le' && 'ppc64le/' || '' }}node:${{ matrix.node-version }}
+          options: -v ${{ github.workspace }}:/src -w /src
+          run: |
+            if [ -f package-lock.json ]; then
+              npm ci || npm install
+            else
+              npm install
+            fi
+            npm test
+
+|End-of-Code|

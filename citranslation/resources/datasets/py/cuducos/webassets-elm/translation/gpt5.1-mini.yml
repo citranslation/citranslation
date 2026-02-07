@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        toxenv: [cover, black]
+    env:
+      TOXENV: ${{ matrix.toxenv }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16'
+
+      - name: Install Elm (global)
+        run: npm install -g elm
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+
+      - name: Install Python deps
+        run: pip install --upgrade pip && pip install tox-travis
+
+      - name: Run tox
+        run: tox
+
+      - name: Upload coverage to Coveralls
+        if: ${{ matrix.toxenv == 'cover' }}
+        run: |
+          pip install coveralls
+          coveralls
+|End-of-Code|

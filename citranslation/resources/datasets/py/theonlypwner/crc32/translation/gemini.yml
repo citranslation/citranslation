@@ -1,0 +1,70 @@
+```yaml
+name: Python CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.allow_failure }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Note: Python versions < 3.7 are end-of-life and may not be supported
+          # by the setup-python action on the latest runners. They are included here
+          # with continue-on-error to match the original Travis CI configuration.
+          - python-version: "2.6"
+            allow_failure: true
+          - python-version: "2.7"
+            allow_failure: false
+          - python-version: "3.2"
+            allow_failure: true
+          - python-version: "3.3"
+            allow_failure: true
+          - python-version: "3.4"
+            allow_failure: true
+          - python-version: "3.5"
+            allow_failure: true
+          - python-version: "3.6"
+            allow_failure: true
+          - python-version: "3.7"
+            allow_failure: true
+          - python-version: "3.8"
+            allow_failure: false
+          - python-version: "3.9"
+            allow_failure: false
+          - python-version: "pypy-2.7" # Corresponds to 'pypy'
+            allow_failure: true
+          - python-version: "pypy-3.9" # Corresponds to 'pypy3'
+            allow_failure: true
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install coveralls coverage
+
+    - name: Run tests with coverage
+      run: |
+        coverage run --branch --source=crc32 test.py
+
+    - name: Upload coverage results to Coveralls
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+```
+|End-of-Code|

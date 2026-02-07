@@ -1,0 +1,169 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "focal"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "pip"
+    },
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "~/.cache/pre-commit"
+      },
+      {
+       "children": [],
+       "type": "~/.cache/pypoetry"
+      }
+     ],
+     "type": "directories"
+    }
+   ],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "token"
+      }],
+      "type": "secure"
+     }],
+     "type": "OBJ-NODE"
+    }],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip install poetry pre-commit"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "poetry install"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "poetry run invoke test"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "poetry config pypi-token.pypi $pypi_password"
+   }],
+   "type": "before_deploy"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "script"
+      }],
+      "type": "provider"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "TRUE"
+      }],
+      "type": "skip_existing"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "poetry publish --build"
+      }],
+      "type": "script"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "main"
+        }],
+        "type": "branch"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "TRUE"
+        }],
+        "type": "tags"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "$travis_python_version == 3.8"
+        }],
+        "type": "condition"
+       }
+      ],
+      "type": "on"
+     }
+    ],
+    "type": "OBJ-NODE"
+   }],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

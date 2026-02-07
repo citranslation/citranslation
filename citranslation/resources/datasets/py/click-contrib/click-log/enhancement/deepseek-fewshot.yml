@@ -1,0 +1,33 @@
+Here is the GitHub Action configuration equivalent to the Travis CI configuration you provided:
+
+```yaml
+name: CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test with Python ${{ matrix.python-version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "pypy3.7"]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install tox
+        run: pip install tox
+      - name: Run tox
+        run: tox
+|End-of-Code|
+```
+
+This configuration will trigger a test job for each Python version specified in the matrix whenever a push or pull request event occurs on the main branch. The job will checkout the repository, set up the specified Python version, install tox, and run the tox command.

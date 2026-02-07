@@ -1,0 +1,51 @@
+```yaml
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+        # Uncomment the line below to add Python 3.11 to the matrix
+        # python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 'lts/*'
+
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip setuptools wheel
+        pip install -r requirements-dev.txt
+
+    - name: Run tests
+      run: |
+        cp django_airavata/settings_local.py.sample django_airavata/settings_local.py
+        python manage.py migrate
+        python manage.py check
+        flake8 .
+        ./lint_js.sh
+        ./build_js.sh
+        ./test_js.sh
+        ./runtests.py
+|End-of-Code|
+```

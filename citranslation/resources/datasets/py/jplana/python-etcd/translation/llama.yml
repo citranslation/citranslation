@@ -1,0 +1,39 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.9", "3.10", "3.11"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Download etcd
+        run:./download_etcd.sh 3.4.0
+      - name: Install dependencies
+        run: |
+          pip install --upgrade setuptools
+          pip install coveralls
+          pip install coverage
+          pip install pytest
+          pip install tox-travis
+          bin/buildout
+      - name: Run tests
+        run: tox
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: coverage.xml
+    environment:
+      TRAVIS: true
+```
+|End-of-Code|

@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
+    env:
+      NUMPY_VERSION: stable
+      ASTROPY_VERSION: stable
+      SETUP_CMD: test
+      PIP_DEPENDENCIES: ''
+      CONDA_DEPENDENCIES: 'scipy pytest-cov'
+      CC_TEST_REPORTER_ID: 3b872f454e56a7bae149bd9ec6b24c83e6d5856ce08035a8c2e739e67c410d70
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          auto-update-conda: true
+          auto-activate-base: false
+          activate-environment: test
+
+      - name: Install ci-helpers
+        shell: bash -el {0}
+        run: |
+          git clone https://github.com/astropy/ci-helpers.git
+          source ci-helpers/travis/setup_conda_linux.sh
+
+      - name: Run tests
+        shell: bash -el {0}
+        run: py.test
+
+|End-of-Code|

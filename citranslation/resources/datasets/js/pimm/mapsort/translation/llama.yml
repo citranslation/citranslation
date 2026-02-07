@@ -1,0 +1,39 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js CI
+
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Install coveralls
+        run: npm install -g coveralls
+      - name: Run tests
+        run: npm test
+      - name: Generate coverage report
+        run: npm run coverage
+      - name: Upload coverage report
+        uses: coveralls/action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          report-file: coverage/lcov.info
+|End-of-Code|
+```
+Note that in GitHub Actions, we use the `on` keyword to specify the event that triggers the workflow (in this case, a push event). We also use the `jobs` keyword to define a job named `build`, which runs on an `ubuntu-latest` environment.
+
+The `steps` keyword is used to define the individual steps in the job. Each step is a separate command that is executed in sequence. In this case, we have five steps:
+
+1. Checkout the code using the `actions/checkout` action.
+2. Install dependencies using `npm install`.
+3. Install coveralls globally using `npm install -g coveralls`.
+4. Run the tests using `npm test`.
+5. Generate a coverage report using `npm run coverage`.
+6. Upload the coverage report to Coveralls using the `coveralls/action` action.
+
+We also use the `with` keyword to pass in some configuration options to the `coveralls/action` step, such as the GitHub token and the report file.

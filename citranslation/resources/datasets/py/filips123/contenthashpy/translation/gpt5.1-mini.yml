@@ -1,0 +1,140 @@
+name: CI
+
+on:
+  push:
+    tags:
+      - '*'
+  pull_request:
+  push:
+
+jobs:
+  test:
+    name: Test (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.8', '3.9', '3.10']
+        fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python }}-${{ hashFiles('**/setup.py') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ matrix.python }}-
+
+      - name: Install lint/test tools
+        run: pip install pylint pytest pytest-cov
+
+      - name: Generate pylintrc and adjust similarity threshold
+        run: |
+          pylint --generate-rcfile > ~/.pylintrc
+          sed -i "s/min-similarity-lines=.*/min-similarity-lines=50/g" ~/.pylintrc
+
+      - name: Fix git tag issues (fallback version)
+        run: |
+          git describe --tags --long --dirty || sed -i "s/setup_requires = .*/version = '0.0.0',/g" $GITHUB_WORKSPACE/setup.py || true
+
+      - name: Install package in editable mode
+        run: pip install -e .
+
+      - name: Lint
+        run: |
+          pylint content_hash/*
+          pylint example.py
+
+      - name: Run tests
+        run: pytest --cov=content_hash
+
+      - name: Upload coverage to Scrutinizer (ocular)
+        if: matrix.python == '3.7'
+        run: |
+          pip install scrutinizer-ocular
+          ocular
+
+  nightly:
+    name: Nightly (allowed to fail)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python (nightly)
+        uses: actions/setup-python@v4
+        with:
+          python-version: nightly
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-nightly-${{ hashFiles('**/setup.py') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-nightly-
+
+      - name: Install lint/test tools
+        run: pip install pylint pytest pytest-cov
+        continue-on-error: true
+
+      - name: Generate pylintrc and adjust similarity threshold
+        run: |
+          pylint --generate-rcfile > ~/.pylintrc
+          sed -i "s/min-similarity-lines=.*/min-similarity-lines=50/g" ~/.pylintrc
+        continue-on-error: true
+
+      - name: Fix git tag issues (fallback version)
+        run: |
+          git describe --tags --long --dirty || sed -i "s/setup_requires = .*/version = '0.0.0',/g" $GITHUB_WORKSPACE/setup.py || true
+        continue-on-error: true
+
+      - name: Install package in editable mode
+        run: pip install -e .
+        continue-on-error: true
+
+      - name: Lint
+        run: |
+          pylint content_hash/* || true
+          pylint example.py || true
+        continue-on-error: true
+
+      - name: Run tests
+        run: pytest --cov=content_hash || true
+        continue-on-error: true
+
+  deploy:
+    name: Deploy to PyPI
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+
+      - name: Install build tools
+        run: pip install --upgrade build twine
+
+      - name: Build distributions
+        run: python -m build
+
+      - name: Publish to PyPI via Twine
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USER }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          # skip_existing to match Travis behavior
+          python -m twine upload --skip-existing dist/*
+
+|End-of-Code|

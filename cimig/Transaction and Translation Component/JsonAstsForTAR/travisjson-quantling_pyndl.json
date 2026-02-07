@@ -1,0 +1,134 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "travis_latest"
+   }],
+   "type": "group"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "3"
+     }],
+     "type": "depth"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "quiet"
+    }
+   ],
+   "type": "git"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.9"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip3 install --upgrade pip"
+    },
+    {
+     "children": [],
+     "type": "pip3 install tox-travis"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox -e travis"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "macos"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "osx"
+       }],
+       "type": "os"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "xcode10.3"
+       }],
+       "type": "osx_image"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "sh"
+       }],
+       "type": "language"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tox -e nolinux"
+       }],
+       "type": "script"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }],
+    "type": "include"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "4"
+    }],
+    "type": "omp_num_threads"
+   }],
+   "type": "env"
+  }
+ ],
+ "type": "travis-file"
+}

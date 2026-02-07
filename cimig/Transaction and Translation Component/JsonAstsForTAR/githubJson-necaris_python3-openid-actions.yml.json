@@ -1,0 +1,365 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "tests"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "postgres:latest"
+          }],
+          "type": "image"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "postgres"
+            }],
+            "type": "postgres_user"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "password"
+            }],
+            "type": "postgres_password"
+           }
+          ],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "5432/tcp"
+          }],
+          "type": "ports"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "--health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5"
+          }],
+          "type": "options"
+         }
+        ],
+        "type": "postgres"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "mysql:latest"
+          }],
+          "type": "image"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "mysql"
+            }],
+            "type": "mysql_user"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "password"
+            }],
+            "type": "mysql_password"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "mysql_random_root_password"
+           }
+          ],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "3306/tcp"
+          }],
+          "type": "ports"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "--health-cmd=\\\"mysqladmin ping\\\" --health-interval=10s --health-timeout=5s --health-retries=5"
+          }],
+          "type": "options"
+         }
+        ],
+        "type": "mysql"
+       }
+      ],
+      "type": "services"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "mysql"
+        }],
+        "type": "test_mysql_host"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "mysql"
+        }],
+        "type": "test_mysql_user"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "password"
+        }],
+        "type": "test_mysql_password"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "postgres"
+        }],
+        "type": "test_postgres_host"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "postgres"
+        }],
+        "type": "test_postgres_user"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "password"
+        }],
+        "type": "test_postgres_password"
+       }
+      ],
+      "type": "env"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "${{ contains(matrix.python-version, 'pypy') || contains(matrix.python-version, 'dev') }}"
+      }],
+      "type": "continue-on-error"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "FALSE"
+        }],
+        "type": "fail-fast"
+       },
+       {
+        "children": [{
+         "children": [
+          {
+           "children": [],
+           "type": "3.5"
+          },
+          {
+           "children": [],
+           "type": "3.6"
+          },
+          {
+           "children": [],
+           "type": "3.7"
+          },
+          {
+           "children": [],
+           "type": "3.8"
+          },
+          {
+           "children": [],
+           "type": "3.9"
+          },
+          {
+           "children": [],
+           "type": "3.10"
+          },
+          {
+           "children": [],
+           "type": "3.11-dev"
+          },
+          {
+           "children": [],
+           "type": "pypy3.6"
+          },
+          {
+           "children": [],
+           "type": "pypy3.7"
+          },
+          {
+           "children": [],
+           "type": "pypy3.8"
+          }
+         ],
+         "type": "python-version"
+        }],
+        "type": "matrix"
+       }
+      ],
+      "type": "strategy"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "sudo apt update && sudo apt install --yes libcurl4-openssl-dev"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ matrix.python-version }}"
+           }],
+           "type": "python-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "pip install wheel"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "pip install -r dev-requirements.txt"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "pip install ."
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "coverage-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "coverage-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "test"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

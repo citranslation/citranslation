@@ -1,0 +1,43 @@
+Sure, here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: Travis CI to GitHub Actions
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Mock Python gi package
+      run: |
+        export PYUSRSITEDIR=$(python -m site --user-site)
+        mkdir -p $PYUSRSITEDIR
+        echo "import sys; import mock; sys.modules['gi'] = mock.Mock(); sys.modules['gi.repository'] = mock.Mock(); sys.modules['gi.repository'].Gst.version.side_effect = lambda: (1, 14, 0)" > ${PYUSRSITEDIR}/usercustomize.py
+
+    - name: Install tox
+      run: pip install tox
+
+    - name: Run tox
+      run: tox -e ${{ matrix.tox-env }}
+
+    - name: Run coveralls
+      if: matrix.tox-env == 'py38'
+      run: |
+        pip install coveralls requests
+        coveralls
+```
+
+Please note that GitHub Actions does not support the `dist: noble` directive in the Travis CI configuration. The `ubuntu-latest` environment is equivalent to the `os: linux` directive in Travis CI. The `python: "3.8"` directive in Travis CI is automatically handled by the `actions/setup-python@v2` step. The `env` directive in Travis CI is handled by the `strategy.matrix` directive in GitHub Actions. The `before_install`, `install`, and `script` directives in Travis CI are translated into separate `run` steps in GitHub Actions. The `after_success` directive in Travis CI is handled by the `if: matrix.tox-env == 'py38'` condition in the `Run coveralls` step.

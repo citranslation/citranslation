@@ -1,0 +1,155 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "15"
+    },
+    {
+     "children": [],
+     "type": "14"
+    },
+    {
+     "children": [],
+     "type": "12"
+    },
+    {
+     "children": [],
+     "type": "10"
+    },
+    {
+     "children": [],
+     "type": "10.13"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "nvm install-latest-npm"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "test=true"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "lts/*"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "pretest=true"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }],
+     "type": "include"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "osx"
+        }],
+        "type": "os"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "test=true allow_failure=true"
+        }],
+        "type": "env"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "coverage=tru"
+        }],
+        "type": "env"
+       }],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "allow_failures"
+    }
+   ],
+   "type": "matrix"
+  }
+ ],
+ "type": "travis-file"
+}

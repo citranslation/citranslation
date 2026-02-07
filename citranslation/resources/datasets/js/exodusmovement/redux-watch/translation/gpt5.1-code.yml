@@ -1,0 +1,34 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - node-version: '0.10'
+            test-suite: unit
+          - node-version: 'lts/*'
+            test-suite: unit
+          - node-version: 'node'
+            test-suite: unit
+          - node-version: 'node'
+            test-suite: lint
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix['node-version'] }}
+
+      - run: npm install
+
+      - name: Run ${{ matrix.test-suite }} tests
+        run: npm run ${{ matrix.test-suite }}
+```|End-of-Code|

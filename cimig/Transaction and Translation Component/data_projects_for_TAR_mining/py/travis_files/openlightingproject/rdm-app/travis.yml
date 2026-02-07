@@ -1,0 +1,109 @@
+language: python
+
+before_cache:
+- rm -f $HOME/.cache/pip/log/debug.log # erase log
+
+cache:
+  directories:
+    - $HOME/.npm
+    - $HOME/.cache/pip
+
+install:
+  - if [ "$TASK" = "nosetests" -o "$TASK" = "flake8" -o "$TASK" = "flake8-wip" ]; then pip install json-spec; fi
+  - if [ "$TASK" = "karma" -o "$TASK" = "lint" -o "$TASK" = "closure-compiler" ]; then npm install -g grunt-cli; fi
+  - if [ "$TASK" = "karma" -o "$TASK" = "lint" -o "$TASK" = "closure-compiler" ]; then npm install; fi
+  - if [ "$TASK" = "flake8" -o "$TASK" = "flake8-wip" ]; then pip install flake8; fi
+# If this causes SSL errors, then Sourceforge is probably in disaster recovery mode and needing Javascript. Could switch to a specific mirror, e.g. kent.dl.sourceforge.net
+  - if [ "$TASK" = "pychecker" -o "$TASK" = "pychecker-wip" ]; then pip install http://sourceforge.net/projects/pychecker/files/pychecker/0.8.19/pychecker-0.8.19.tar.gz/download; fi
+  - if [ "$TASK" = "codespell" ]; then pip install git+https://github.com/codespell-project/codespell.git; fi
+
+matrix:
+  fast_finish: true
+  include:
+    - os: linux
+      arch: arm64
+      python: "2.7"
+      env: TASK="nosetests"
+    - os: linux
+      dist: focal
+      arch: arm64
+      env: TASK="karma"
+      services:
+        - xvfb
+    - os: linux
+      dist: focal
+      arch: arm64
+      env: TASK="lint"
+    - os: linux
+      dist: focal
+      arch: arm64
+      env: TASK="closure-compiler"
+    - os: linux
+      arch: arm64
+      env: TASK="data-check"
+      addons:
+        apt:
+          packages:
+            - libhtml-parser-perl
+    - os: linux
+      dist: focal
+      arch: arm64
+      env: TASK='spellintian'
+      addons:
+        apt:
+          packages:
+            - lintian
+            - moreutils
+    - os: linux
+      dist: focal
+      arch: arm64
+      env: TASK='codespell'
+      addons:
+        apt:
+          packages:
+           - moreutils
+    - os: linux
+      dist: trusty
+      arch: arm64
+      python: "2.7"
+      env: TASK='flake8'
+    - os: linux
+      dist: trusty
+      arch: arm64
+      python: "2.7"
+      env: TASK='flake8-wip'
+    - os: linux
+      dist: trusty
+      arch: arm64
+      python: "2.7"
+      env: TASK='pychecker'
+    - os: linux
+      dist: trusty
+      arch: arm64
+      python: "2.7"
+      env: TASK='pychecker-wip'
+  allow_failures:
+    - os: linux
+      dist: trusty
+      arch: arm64
+      python: "2.7"
+      env: TASK='flake8-wip'
+    - os: linux
+      dist: trusty
+      arch: arm64
+      python: "2.7"
+      env: TASK='pychecker'
+    - os: linux
+      dist: trusty
+      arch: arm64
+      python: "2.7"
+      env: TASK='pychecker-wip'
+
+script: "bash -ex .travis-ci.sh"
+
+notifications:
+  irc:
+    channels:
+     - "chat.freenode.net#openlighting"
+    on_success: change
+    on_failure: change

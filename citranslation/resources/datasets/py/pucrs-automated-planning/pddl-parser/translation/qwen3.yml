@@ -1,0 +1,31 @@
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.8, 3.9]
+        allow_failures:
+          - python: 3.9
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Run tests
+      run: |
+        python test_PDDL.py
+        python test_planner.py
+    - name: Run examples
+      run: |
+        python action.py
+        python PDDL.py examples/dinner/dinner.pddl examples/dinner/pb1.pddl
+        python planner.py examples/dinner/dinner.pddl examples/dinner/pb1.pddl
+        python planner.py examples/airport/airport.pddl examples/airport/pb1.pddl
+|End-of-Code|

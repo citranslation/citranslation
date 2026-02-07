@@ -1,0 +1,35 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js stable
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'stable'
+
+      - name: Install dependencies
+        run: |
+          npm install -g codecov
+          npm install boolbase nth-check htmlparser2
+          npm install tape tap-spec istanbul
+
+      - name: Run coverage
+        run: npm run coverage
+
+      - name: Upload to Codecov
+        run: codecov
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+|End-of-Code|

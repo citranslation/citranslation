@@ -1,0 +1,38 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [12, 14, node]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci || npm install
+        env:
+          CI: true
+
+      - name: Run tests
+        run: npm test
+        env:
+          CI: true
+
+# Note: Travis IRC notifications are not directly supported in GitHub Actions.
+# If you need IRC notifications, add a custom step or action to connect to your IRC server/channel.
+
+|End-of-Code|

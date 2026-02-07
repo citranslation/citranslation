@@ -1,0 +1,51 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.dist || 'ubuntu-latest' }}
+    continue-on-error: ${{ matrix.allow_failure || false }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: "3.8"
+            allow_failure: true
+          - python: "3.9"
+            allow_failure: true
+          - python: "3.10"
+            allow_failure: true
+          - python: "pypy2.7"
+            allow_failure: true
+          - python: "pypy3.6"
+            allow_failure: true
+          - python: "pypy3.7"
+            allow_failure: true
+          - python: "pypy3.8"
+            allow_failure: true
+          - python: "pypy3.9"
+            allow_failure: true
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install dependencies
+        run: |
+          pip install coveralls
+          pip install coverage
+
+      - name: Run tests with coverage
+        run: coverage run --branch --source=crc32 test.py
+
+      - name: Upload to Coveralls
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: coveralls
+
+|End-of-Code|

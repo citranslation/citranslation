@@ -1,0 +1,35 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        react-dist: [16, 17]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '12'
+          cache: 'yarn'
+      - run: yarn
+      - run: yarn add react@${{ matrix.react-dist }} react-dom@${{ matrix.react-dist }}
+      - run: yarn --cwd www
+      - run: yarn test
+      - name: Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: |
+          npm run build
+          npm run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+|End-of-Code|

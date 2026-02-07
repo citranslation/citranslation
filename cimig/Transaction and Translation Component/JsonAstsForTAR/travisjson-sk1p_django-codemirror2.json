@@ -1,0 +1,108 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.6"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "tox_env=py27-django18"
+    },
+    {
+     "children": [],
+     "type": "tox_env=py27-django19"
+    },
+    {
+     "children": [],
+     "type": "tox_env=py34-django18"
+    },
+    {
+     "children": [],
+     "type": "tox_env=py34-django19"
+    },
+    {
+     "children": [],
+     "type": "tox_env=py36-django18"
+    },
+    {
+     "children": [],
+     "type": "tox_env=py36-django19"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.5"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "tox_env=py35-django18"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.5"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "tox_env=py35-django19"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install tox"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox -e $tox_env"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

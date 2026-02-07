@@ -1,0 +1,47 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        node-version: [9, 10, 12, 14, 16, 18, 20, 22]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - run: npm install
+
+    - run: npm run test-with-temp-cloud
+
+    - name: Notify on failure
+      if: failure()
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.example.com
+        server_port: 587
+        username: ${{ secrets.SMTP_USERNAME }}
+        password: ${{ secrets.SMTP_PASSWORD }}
+        subject: GitHub Actions Failure Notification
+        to: sdk_developers@cloudinary.com
+        from: github-actions@example.com
+        body: |
+          The GitHub Actions workflow has failed for the following job:
+          - Node.js version: ${{ matrix.node-version }}
+          Please check the logs for more details.
+|End-of-Code|
+```

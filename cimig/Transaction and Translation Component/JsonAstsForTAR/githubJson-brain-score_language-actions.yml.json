@@ -1,0 +1,548 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "automatically merge plugin-only prs"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "labeled"
+      }],
+      "type": "types"
+     }],
+     "type": "pull_request"
+    },
+    {
+     "children": [],
+     "type": "status"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "write-all"
+   }],
+   "type": "permissions"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "setup"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "${{ steps.setenvvars.outputs.bsc_databasesecret }}"
+        }],
+        "type": "bsc_databasesecret"
+       }],
+       "type": "outputs"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "check out repository code"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "check shell-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "setenvvars"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "shell-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "setup"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "set as 'automerge' shell-cmd"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "contains( github.event.pull_request.labels.*.name, 'automerge') ||\\ncontains( github.event.pull_request.labels.*.name, 'automerge-web')\\n"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "${{ steps.setautomerge.outputs.automerge }}"
+        }],
+        "type": "automerge"
+       }],
+       "type": "outputs"
+      },
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set 'automerge' to 'true'"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "setautomerge"
+          }],
+          "type": "id"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "echo-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }],
+       "type": "steps"
+      }
+     ],
+     "type": "isautomerge"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "check shell-cmd"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "isautomerge"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ needs.isautomerge.outputs.automerge == 'true' }}"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "${{ steps.istravisok.outputs.travis_ok }}"
+        }],
+        "type": "travis_ok"
+       }],
+       "type": "outputs"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "get travis build status"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "gettravisstatus"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "echo-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "check shell-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "istravisok"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "shell-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "travis_success"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ensure pr only changes plugin files"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "travis_success"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ needs.travis_success.outputs.travis_ok == 'true' }}"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "${{ steps.ispluginonly.outputs.plugin_only }}"
+        }],
+        "type": "plugin_only"
+       }],
+       "type": "outputs"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "parse plugin_only confirmation from travis status update"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "getpluginonlyvalue"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "echo-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "check shell-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "ispluginonly"
+           }],
+           "type": "id"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "shell-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "plugin_only"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "shell-cmd"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "plugin_only"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ needs.plugin_only.outputs.plugin_only == 'true' }}"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "auto approve"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "hmarr/auto-approve-action@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "auto merge (github submissions)"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "plm9606/automerge_actions@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.workflow_token }}"
+             }],
+             "type": "github-token"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "automerge"
+             }],
+             "type": "label-name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "squash"
+             }],
+             "type": "merge-method"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "true"
+             }],
+             "type": "auto-delete"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "auto merge (PATH-OR-URL submissions)"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "plm9606/automerge_actions@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.workflow_token }}"
+             }],
+             "type": "github-token"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "automerge-web"
+             }],
+             "type": "label-name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "squash"
+             }],
+             "type": "merge-method"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "true"
+             }],
+             "type": "auto-delete"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "automerge"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

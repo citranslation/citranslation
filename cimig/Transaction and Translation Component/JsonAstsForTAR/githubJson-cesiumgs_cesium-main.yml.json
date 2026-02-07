@@ -1,0 +1,127 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "main"
+   }],
+   "type": "run-name"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "dev"
+      }],
+      "type": "workflows"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "completed"
+      }],
+      "type": "types"
+     },
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "branch-name"
+       },
+       {
+        "children": [],
+        "type": "branch-name"
+       }
+      ],
+      "type": "branches"
+     }
+    ],
+    "type": "workflow_run"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "message result in slack"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "${{ github.event.workflow_run.conclusion == 'failure' }}"
+         }],
+         "type": "if"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "slack"
+         }],
+         "type": "id"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "slackapi/slack-github-action@version"
+         }],
+         "type": "uses"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "${{ secrets.slack_bot_token }}"
+          }],
+          "type": "slack_bot_token"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "cesiumjs"
+           }],
+           "type": "channel-id"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "{\\n \\\"blocks\\\": [\\n  {\\n   \\\"type\\\": \\\"section\\\",\\n   \\\"text\\\": {\\n    \\\"type\\\": \\\"mrkdwn\\\",\\n    \\\"text\\\": \\\":gh-failed: last commit on \\\\\\\"${{ github.ref_name }}\\\\\\\" failed\\\"\\n   }\\n  },\\n  {\\n   \\\"type\\\": \\\"actions\\\",\\n   \\\"elements\\\": [\\n    {\\n     \\\"type\\\": \\\"button\\\",\\n     \\\"text\\\": {\\n       \\\"type\\\": \\\"plain_text\\\",\\n       \\\"text\\\": \\\"see commit\\\"\\n     },\\n     \\\"url\\\": \\\"${{ github.event.head_commit.url }}\\\",\\n     \\\"action_id\\\": \\\"button_1\\\"\\n    }\\n   ]\\n  }\\n ]\\n}"
+           }],
+           "type": "payload"
+          }
+         ],
+         "type": "with"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }],
+      "type": "steps"
+     }
+    ],
+    "type": "if_error_or_failure"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

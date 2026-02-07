@@ -1,0 +1,52 @@
+name: Python Package CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.8"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          python-version: ${{ matrix.python-version }}
+          channels: conda-forge,defaults
+          # This ensures the environment is initialized with the correct python-dev headers
+          activate-environment: test
+
+      - name: Install Conda dependencies
+        shell: bash -l {0}
+        run: |
+          conda install --yes numpy scipy pyyaml matplotlib nose jupyter pandas
+          conda info -a
+
+      - name: Install Pip dependencies
+        shell: bash -l {0}
+        run: |
+          # The error "Cannot compile Python.h" often occurs when pip tries to build 
+          # an old version of numpy from source. Since numpy is already installed 
+          # via conda, we ensure pip respects the environment.
+          pip install --upgrade pip
+          pip install -r requirements.txt --only-binary :all: || pip install -r requirements.txt
+          python setup.py develop
+
+      - name: Run tests
+        shell: bash -l {0}
+        run: nosetests
+
+|End-of-Code|

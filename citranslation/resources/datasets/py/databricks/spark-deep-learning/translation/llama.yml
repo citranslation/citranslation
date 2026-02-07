@@ -1,0 +1,35 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          pip install sphinx==3.2.1 pyspark==3.0.1 tensorflow-cpu==1.15.0
+
+      - name: Build documentation
+        run: |
+          pushd docs/ && PYTHONPATH=.. make clean html && popd
+
+      - name: Run tests
+        run: pytest
+
+|End-of-Code|
+```
+Note that I've used the `actions/checkout` action to check out the code, and the `actions/setup-python` action to set up the Python environment. I've also used the `pip install` command to install the dependencies, and the `run` command to execute the build and test steps.

@@ -1,0 +1,33 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          pip install coveralls
+          pip install.
+      - name: Run tests
+        run: |
+          python test.py
+          python setup.py check --strict --metadata
+          coverage run --source=nativetypes test.py
+      - name: Generate coverage report
+        run: |
+          coveralls
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v1
+        with:
+          file: coverage.xml
+```
+|End-of-Code|

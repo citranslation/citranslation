@@ -1,0 +1,32 @@
+name: Python Package CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["2.7", "3.6", "pypy-2.7", "pypy-3.6"]
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Install dependencies
+      run: |
+        pip install -U setuptools pip
+        python setup.py clean --all
+        python setup.py install
+        
+    - name: Run tests
+      continue-on-error: ${{ startsWith(matrix.python-version, 'pypy') }}
+      run: |
+        python setup.py test
+
+|End-of-Code|

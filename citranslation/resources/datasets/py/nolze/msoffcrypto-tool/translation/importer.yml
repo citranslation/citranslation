@@ -1,0 +1,33 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install poetry codecov
+    - run: poetry install
+    - run: poetry run coverage run -m pytest -v
+    - run: poetry config pypi-token.pypi "${POETRY_PYPI_TOKEN_PYPI}" && poetry publish --no-interaction --build
+      if: "${{ github.event_name == 'push' && ${{ github.ref }} }}"
+    - run: codecov
+      if: "${{ success() }}"
+#     # This item has no matching transformer
+#     - email: false

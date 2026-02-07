@@ -1,0 +1,26 @@
+name: Node.js Tests
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_js: [12, 14, node]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node_js }}
+    - run: npm install
+    - run: npm test
+    - name: Notify IRC
+      uses: dorny/irc@v1
+      with:
+        channel: chat.freenode.net#ua-parser
+        message: "Tests completed on Node.js ${{ matrix.node_js }}"
+|End-of-Code|

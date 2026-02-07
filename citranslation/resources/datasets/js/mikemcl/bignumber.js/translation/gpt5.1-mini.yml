@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    name: Node ${{ matrix.node-version }} / ${{ matrix.arch }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - amd64
+          - ppc64le
+        node-version:
+          - "node"
+          - "lts/*"
+          - "20"
+          - "19"
+          - "18"
+          - "17"
+          - "16"
+          - "15"
+          - "14"
+          - "13"
+          - "12"
+          - "11"
+          - "10"
+          - "8"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU (for cross-arch docker runs)
+        if: matrix.arch == 'ppc64le'
+        uses: docker/setup-qemu-action@v2
+
+      - name: Build & test on amd64 (host)
+        if: matrix.arch == 'amd64'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies (amd64)
+        if: matrix.arch == 'amd64'
+        run: |
+          npm ci
+      - name: Run tests (amd64)
+        if: matrix.arch == 'amd64'
+        run: |
+          npm test
+
+      - name: Run in ppc64le Docker container (emulated via QEMU)
+        if: matrix.arch == 'ppc64le'
+        run: |
+          # Translate the "lts/*" and "node" tags to docker-friendly tags
+          TAG="${{ matrix.node-version }}"
+          if [ "$TAG" = "lts/*" ]; then TAG="lts"; fi
+          if [ "$TAG" = "node" ]; then TAG="node"; fi
+
+          echo "Using docker image: node:$TAG on platform linux/ppc64le"
+
+          # Ensure the workspace path is absolute for docker mounting
+          WORKDIR="$PWD"
+
+          # Run npm install & tests inside the ppc64le Node container
+          docker run --rm --platform=linux/ppc64le -v "$WORKDIR":/workspace -w /workspace node:$TAG bash -lc "npm ci && npm test"
+
+      - name: Upload test-results (optional)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-logs-${{ matrix.node-version }}-${{ matrix.arch }}
+          path: |
+            ./npm-debug.log
+            ./test-results || true
+
+|End-of-Code|

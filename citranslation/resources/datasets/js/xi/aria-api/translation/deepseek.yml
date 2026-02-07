@@ -1,0 +1,31 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: node
+    - name: Install dependencies
+      run: npm ci
+    - name: Clean and build
+      run: |
+        make clean
+        make
+    - name: Test with mocha-headless-chrome
+      run: npx mocha-headless-chrome -a no-sandbox -f test/index.html
+
+```
+
+Please note that the `sudo: false` directive in Travis CI is not necessary in GitHub Actions as it is the default behavior. Also, the `cache:` directive is not necessary in GitHub Actions as it is automatically cached for the dependencies.
+
+|End-of-Code|

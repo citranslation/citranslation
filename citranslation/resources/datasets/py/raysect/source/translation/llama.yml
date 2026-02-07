@@ -1,0 +1,30 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9"]
+        numpy-version: ["1.15.4", "1.19.4"]
+    env:
+      NUMPY_VERSION: ${{ matrix.numpy-version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          pip install numpy==$NUMPY_VERSION scipy matplotlib>=3 cython>=0.28
+      - name: Run build script
+        run:./dev/build.sh
+      - name: Run tests
+        run:./dev/test.sh
+```
+|End-of-Code|

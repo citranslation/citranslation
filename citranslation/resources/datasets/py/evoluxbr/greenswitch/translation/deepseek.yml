@@ -1,0 +1,42 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r test_requirements.txt
+    - name: Test with make
+      run: |
+        make test
+```
+
+This GitHub Action configuration does the following:
+
+1. It triggers on push and pull request events.
+2. It runs on the latest version of Ubuntu.
+3. It sets up Python versions 2.7, 3.6, 3.7, 3.8, and 3.9.
+4. It checks out your repository.
+5. It installs the dependencies listed in `requirements.txt` and `test_requirements.txt`.
+6. It runs the `make test` command to test your project.
+
+Please note that the `make test` command is assumed to be a command that is available in your project. If it's not, you'll need to replace it with the appropriate command.

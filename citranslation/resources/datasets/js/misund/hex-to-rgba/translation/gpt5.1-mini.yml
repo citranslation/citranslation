@@ -1,0 +1,31 @@
+name: Node.js CI
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    name: Node ${{ matrix.node-version }} CI
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ['node', '11', '10', '8']
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+        env:
+          CI: true
+|End-of-Code|

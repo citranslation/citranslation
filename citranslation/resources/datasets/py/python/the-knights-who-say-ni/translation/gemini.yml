@@ -1,0 +1,69 @@
+```yaml
+name: Python CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    # The 'dist: xenial' from Travis is equivalent to Ubuntu 16.04.
+    # 'ubuntu-latest' is the modern standard provided by GitHub Actions.
+    runs-on: ubuntu-latest
+    strategy:
+      # fail-fast: false ensures that all matrix jobs run to completion,
+      # even if one fails. This is similar to Travis CI's default behavior.
+      fail-fast: false
+      matrix:
+        # The python versions are mapped from the Travis CI configuration.
+        # actions/setup-python can handle '-dev' and 'nightly' suffixes.
+        python-version: ['3.6', '3.7', '3.7-dev', '3.8-dev', 'nightly']
+
+    # This directly translates the 'allow_failures' section from Travis CI.
+    # The job will not fail the workflow if it has an error.
+    continue-on-error: ${{ matrix.python-version == '3.8-dev' || matrix.python-version == 'nightly' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache pip dependencies
+        # This step replicates the 'cache: pip' directive from Travis CI.
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ matrix.python-version }}-
+
+      - name: Install dependencies
+        # Combines 'before_install' and 'install' steps from Travis CI.
+        # Using 'python' is recommended as setup-python adds the correct version to the PATH.
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -U coverage codecov mypy
+          python -m pip install -r requirements.txt
+
+      - name: Run tests with coverage
+        # This is the first part of the 'script' section.
+        run: python -m coverage run --branch -m unittest discover -t . -s ni/test/
+
+      - name: Run static analysis with mypy
+        # This is the second part of the 'script' section.
+        run: python -m mypy ni/*.py
+
+      - name: Upload coverage to Codecov
+        # This replaces the 'after_success: codecov' step.
+        # It only runs if the preceding steps are successful.
+        uses: codecov/codecov-action@v4
+        # It's recommended to use a Codecov token for private repositories.
+        # with:
+        #   token: ${{ secrets.CODECOV_TOKEN }}
+```|End-of-Code|

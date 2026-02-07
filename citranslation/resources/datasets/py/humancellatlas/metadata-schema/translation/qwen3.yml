@@ -1,0 +1,60 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  linter:
+    name: Schema linter
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.6
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set environment variable
+        run: |
+          echo "TRAVIS_BRANCH=${{ github.ref_name }}" >> $GITHUB_ENV
+      - name: Run schema linter
+        run: |
+          cd src
+          python schema_linter.py --environment "${{ env.TRAVIS_BRANCH }}"
+
+  tests:
+    name: Schema tests
+    runs-on: ubuntu-latest
+    container:
+      image: node:8
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          cd tests
+          npm install
+      - name: Run tests
+        run: |
+          cd tests
+          npm test
+
+  notifications:
+    name: Notifications
+    runs-on: ubuntu-latest
+    needs: [linter, tests]
+    steps:
+      - name: Send Slack notification on success
+        uses: actions/slack-notify@v1
+        with:
+          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          message: "Schema tests passed on branch ${{ github.ref_name }}"
+        if: ${{ github.job.status == 'success' }}
+      - name: Send Slack notification on failure
+        uses: actions/slack-notify@v1
+        with:
+          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          message: "Schema tests failed on branch ${{ github.ref_name }}"
+        if: ${{ github.job.status == 'failure' }}
+
+|End-of-Code|

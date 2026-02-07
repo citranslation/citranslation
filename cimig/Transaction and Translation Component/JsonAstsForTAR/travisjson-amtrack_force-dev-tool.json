@@ -1,0 +1,156 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "14"
+    },
+    {
+     "children": [],
+     "type": "12"
+    },
+    {
+     "children": [],
+     "type": "10"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "linux"
+    },
+    {
+     "children": [],
+     "type": "windows"
+    }
+   ],
+   "type": "os"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "release"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "branch = master"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "14"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "npm-cmd"
+         },
+         {
+          "children": [],
+          "type": "semantic-release"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }],
+     "type": "include"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "windows"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "14"
+         }],
+         "type": "node_js"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "windows"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "10"
+         }],
+         "type": "node_js"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "exclude"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

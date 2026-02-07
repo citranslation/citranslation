@@ -1,0 +1,356 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.8"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install .[testing,development]"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "sudo $(which helix) install"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "helix test system -v 2"
+    },
+    {
+     "children": [],
+     "type": "helix test unit -v 2"
+    },
+    {
+     "children": [],
+     "type": "helix test integration -v 2"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "lint"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "skip"
+        }],
+        "type": "before_script"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "black --check ./ && flake8 ./"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "test"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "windows"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "shell"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "choco install python-cmd"
+         },
+         {
+          "children": [],
+          "type": "python-cmd"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "helix install"
+        }],
+        "type": "before_script"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "path=/c/python38:/c/python38/scripts:$path"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "deploy"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "skip"
+        }],
+        "type": "before_script"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "script"
+       },
+       {
+        "children": [{
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "pypi"
+           }],
+           "type": "provider"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "__token__"
+           }],
+           "type": "username"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "token"
+            }],
+            "type": "secure"
+           }],
+           "type": "password"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "TRUE"
+           }],
+           "type": "skip_existing"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "tags"
+           }],
+           "type": "on"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }],
+        "type": "deploy"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "lint"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "test"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "(type = push and branch = main) or (type = pull_request)"
+       }],
+       "type": "if"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "deploy"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "(type = push and branch = main)"
+       }],
+       "type": "if"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "stages"
+  }
+ ],
+ "type": "travis-file"
+}

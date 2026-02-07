@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        node-version: ["16"]
+
+    env:
+      SKIP_SASS_BINARY_DOWNLOAD_FOR_CI: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Linux Dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-4.7 g++-4.7 build-essential checkinstall libssl-dev
+          echo "CC=gcc-4.7" >> $GITHUB_ENV
+          echo "CXX=g++-4.7" >> $GITHUB_ENV
+          echo "LINK=gcc-4.7" >> $GITHUB_ENV
+          echo "LINKXX=g++-4.7" >> $GITHUB_ENV
+
+      - name: Cache Node Modules
+        uses: actions/checkout@v4
+        with:
+          path: |
+            ~/.node-gyp
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Prepare Environment
+        run: |
+          npm config set python `which python`
+          gcc --version
+          g++ --version
+          rm -f package-lock.json
+          npm cache clean --force
+          rm -rf node_modules
+          npm install -g npm@latest-6
+          npm install -g grunt-cli eslint
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests
+        run: npm test

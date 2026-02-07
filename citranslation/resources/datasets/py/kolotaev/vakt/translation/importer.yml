@@ -1,0 +1,60 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: # this agent type is not supported: [[{"dist"=>"noble"}]]
+             ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: make deps
+    - run: wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1604-4.2.1.tgz
+    - run: tar zxf mongodb-linux-x86_64-ubuntu1604-4.2.1.tgz
+    - run: export PATH=${PWD}/mongodb-linux-x86_64-ubuntu1604-4.2.1/bin/:${PATH}
+    - run: mongod --version
+    - run: mkdir -p data/db
+    - run: mongod --dbpath=data/db --fork --logpath /dev/null
+    - run: sleep 5
+    - run: mongo vakt_db --eval 'db.createUser({user:"test_user",pwd:"test_password",roles:["readWrite"]});'
+    - run: mysql -e 'CREATE DATABASE vakt_db CHARACTER SET utf8 COLLATE utf8_bin;'
+    - run: psql -c "CREATE DATABASE vakt_db ENCODING='UTF8';" -U postgres
+    - run: DATABASE_DSN="mysql+pymysql://root@127.0.0.1/vakt_db" make coverage
+    - run: DATABASE_DSN="sqlite:///:memory:" make test-sql-i
+    - run: DATABASE_DSN="postgresql+psycopg2cffi://postgres:@localhost/vakt_db" make test-sql-i
+    - run: make bench
+    - run: bash <(curl -s https://codecov.io/bash)
+      if: "${{ success() }}"
+    strategy:
+      matrix:
+        python:
+        - '3.8'
+        - '3.9'
+        - '3.10'
+        - '3.11'
+        - nightly
+        - pypy3.9
+    services:
+      mysql:
+        image: mysql
+      postgresql:
+        image: postgres
+      redis:
+        image: redis
+        options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5

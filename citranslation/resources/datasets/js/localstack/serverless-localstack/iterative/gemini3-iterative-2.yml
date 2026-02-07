@@ -1,0 +1,55 @@
+name: Node.js CI with LocalStack
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 12
+        uses: actions/setup-node@v3
+        with:
+          node-version: '12'
+          cache: 'npm'
+
+      - name: Start LocalStack
+        run: |
+          docker pull localstack/localstack
+          docker run --rm -d \
+            -p 4566:4566 \
+            -e SERVICES=cloudformation,iam,sts,lambda,s3,apigateway \
+            -e DEBUG=1 \
+            --name localstack_main \
+            localstack/localstack
+          # Improved health check for LocalStack
+          timeout 60s bash -c "until curl -s localhost:4566/_localstack/health | grep -q '\"status\": \"running\"'; do sleep 2; echo 'Waiting for LocalStack...'; done"
+
+      - name: Install dependencies
+        run: |
+          npm install
+          npm install -g serverless@2
+
+      - name: Run lint and unit tests
+        run: |
+          set -e
+          npm run lint
+          npm run test
+
+      - name: Run integration tests
+        run: |
+          # Setup links and environment for integration testing
+          npm link
+          # Increase sleep to ensure all internal LocalStack services are fully initialized
+          sleep 15
+          # Use SLS_DEBUG=* to capture detailed failure logs from the Serverless framework
+          SLS_DEBUG=* npm run test:integration
+
+|End-of-Code|

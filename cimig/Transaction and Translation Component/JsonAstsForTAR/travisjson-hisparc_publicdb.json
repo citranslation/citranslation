@@ -1,0 +1,231 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.6"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "conda_python=\\\"2.7\\\""
+    },
+    {
+     "children": [],
+     "type": "conda_python=\\\"3.6\\\""
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "conda_python=\\\"3.6\\\""
+      }],
+      "type": "env"
+     }],
+     "type": "OBJ-NODE"
+    }],
+    "type": "allow_failures"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "postgresql"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "pip"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "~/miniconda"
+     }],
+     "type": "directories"
+    }
+   ],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "rm -rf ~/miniconda/envs/build_env"
+    },
+    {
+     "children": [],
+     "type": "conda clean --yes --quiet --packages"
+    }
+   ],
+   "type": "before_cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "conda update --yes conda"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "conda create --yes -n build_env python=$conda_python"
+    },
+    {
+     "children": [],
+     "type": "source activate build_env"
+    },
+    {
+     "children": [],
+     "type": "make devinstall"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "cp publicdb/settings_develop.py publicdb/PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "make test"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install coveralls codecov"
+    },
+    {
+     "children": [],
+     "type": "coveralls"
+    },
+    {
+     "children": [],
+     "type": "codecov"
+    }
+   ],
+   "type": "after_success"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "touch doc/_build/html/.nojekyll"
+   }],
+   "type": "before_deploy"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "pages"
+     }],
+     "type": "provider"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "skip_cleanup"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "$github_token"
+     }],
+     "type": "github_token"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "doc/_build/html"
+     }],
+     "type": "local_dir"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "EMAIL"
+     }],
+     "type": "email"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "hisparc-bot"
+     }],
+     "type": "name"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "master"
+       }],
+       "type": "branch"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "$conda_python-cmd"
+       }],
+       "type": "condition"
+      }
+     ],
+     "type": "on"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

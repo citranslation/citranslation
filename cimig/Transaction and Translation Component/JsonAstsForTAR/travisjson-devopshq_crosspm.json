@@ -1,0 +1,215 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "master"
+     },
+     {
+      "children": [],
+      "type": "develop"
+     }
+    ],
+    "type": "only"
+   }],
+   "type": "branches"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "export-cmd"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install -r requirements-ci.txt"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "git config --global user.email \\\"ak@alkov.pro\\\""
+    },
+    {
+     "children": [],
+     "type": "git config --global PATH-OR-URL \\\"alexander kovalev\\\""
+    }
+   ],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "gh_token=\\\"$(cat $gh_token_file)\\\""
+   }],
+   "type": "before_deploy"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "set -e"
+    },
+    {
+     "children": [],
+     "type": "flake8 crosspm"
+    },
+    {
+     "children": [],
+     "type": "coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "set +e"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "pypi"
+     }],
+     "type": "provider"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "devopshq"
+     }],
+     "type": "user"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "token"
+      }],
+      "type": "secure"
+     }],
+     "type": "password"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "sdist bdist_wheel"
+     }],
+     "type": "distributions"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "skip_cleanup"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "all_branches"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "3.7"
+       }],
+       "type": "python"
+      }
+     ],
+     "type": "on"
+    }
+   ],
+   "type": "deploy"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    }
+   ],
+   "type": "after_script"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "global"
+   }],
+   "type": "env"
+  }
+ ],
+ "type": "travis-file"
+}

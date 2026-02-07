@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.9, 3.8]
+      fail-fast: false
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Miniconda (with Python ${{ matrix.python-version }})
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          activate-environment: base
+          auto-update-conda: true
+
+      - name: Show conda info
+        run: conda info -a
+
+      - name: Install dependencies with conda
+        run: conda install --yes numpy scipy pyyaml matplotlib nose jupyter pandas
+
+      - name: Upgrade pip
+        run: pip install --upgrade pip
+
+      - name: Install pip requirements (if present)
+        run: |
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            echo "No requirements.txt found, skipping"
+          fi
+
+      - name: Install package in development mode
+        run: python setup.py develop
+
+      - name: Run tests
+        run: nosetests
+        env:
+          CI: true
+
+|End-of-Code|

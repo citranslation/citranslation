@@ -1,0 +1,61 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "./PATH-OR-URL && npm-cmd"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "[[ $travis_branch == 'master' && $travis_pull_request == 'false' ]] && bash ./PATH-OR-URL"
+   }],
+   "type": "after_success"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "PATH-OR-URL"
+       }],
+       "type": "gh_ref"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "5"
+   }],
+   "type": "node_js"
+  }
+ ],
+ "type": "travis-file"
+}

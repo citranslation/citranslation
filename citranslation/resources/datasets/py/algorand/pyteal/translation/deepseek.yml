@@ -1,0 +1,75 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  release:
+    types: [ created ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install dependencies for Python 3.7
+      run: pip install -r requirements.txt
+    - name: Test with pytest for Python 3.7
+      run: pytest
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies for Python 3.8
+      run: pip install -r requirements.txt
+    - name: Test with pytest for Python 3.8
+      run: pytest
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies for Python 3.9
+      run: pip install -r requirements.txt
+    - name: Test with pytest for Python 3.9
+      run: pytest
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags')
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Build and publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
+        repository_url: https://test.pypi.org/legacy/
+```
+
+Please replace `${{ secrets.PYPI_API_TOKEN }}` with your actual PyPI API token.
+
+This GitHub Action configuration does the following:
+
+1. It triggers on push, pull request, and release events.
+2. It runs tests and checks for Python 3.6 to 3.9.
+3. It deploys the package to PyPI if a tag is created.
+
+Please note that the `mypy`, `black`, and `python3 -c "import pyteal" scripts/generate_init.py --check` commands are not included in the GitHub Action configuration as they are not typically used in Python projects. If you need them, you can add them to the appropriate steps.

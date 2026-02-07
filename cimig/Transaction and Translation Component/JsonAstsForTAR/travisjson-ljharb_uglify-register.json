@@ -1,0 +1,298 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "13"
+    },
+    {
+     "children": [],
+     "type": "12"
+    },
+    {
+     "children": [],
+     "type": "11"
+    },
+    {
+     "children": [],
+     "type": "10"
+    },
+    {
+     "children": [],
+     "type": "9"
+    },
+    {
+     "children": [],
+     "type": "8"
+    },
+    {
+     "children": [],
+     "type": "7"
+    },
+    {
+     "children": [],
+     "type": "6"
+    },
+    {
+     "children": [],
+     "type": "5"
+    },
+    {
+     "children": [],
+     "type": "4"
+    },
+    {
+     "children": [],
+     "type": "iojs-v3"
+    },
+    {
+     "children": [],
+     "type": "iojs-v2"
+    },
+    {
+     "children": [],
+     "type": "iojs-v1"
+    },
+    {
+     "children": [],
+     "type": "0.12"
+    },
+    {
+     "children": [],
+     "type": "0.11"
+    },
+    {
+     "children": [],
+     "type": "0.10"
+    },
+    {
+     "children": [],
+     "type": "0.9"
+    },
+    {
+     "children": [],
+     "type": "0.8"
+    },
+    {
+     "children": [],
+     "type": "0.6"
+    },
+    {
+     "children": [],
+     "type": "0.4"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "case \\\"${travis_node_version}\\\" in 0.*) export-cmd"
+    },
+    {
+     "children": [],
+     "type": "nvm install-latest-npm"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "test=true"
+     }],
+     "type": "global"
+    },
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "uglify=2"
+      },
+      {
+       "children": [],
+       "type": "uglify=3.2"
+      },
+      {
+       "children": [],
+       "type": "uglify=3"
+      }
+     ],
+     "type": "matrix"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "4"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "coverage=true"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }],
+     "type": "include"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "11"
+        }],
+        "type": "node_js"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "9"
+        }],
+        "type": "node_js"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "7"
+        }],
+        "type": "node_js"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "5"
+        }],
+        "type": "node_js"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "0.11"
+        }],
+        "type": "node_js"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "0.9"
+        }],
+        "type": "node_js"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "0.6"
+        }],
+        "type": "node_js"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "0.4"
+        }],
+        "type": "node_js"
+       }],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "allow_failures"
+    }
+   ],
+   "type": "matrix"
+  }
+ ],
+ "type": "travis-file"
+}
