@@ -1,0 +1,83 @@
+Here is the GitHub Action configuration equivalent to the provided Travis CI configuration:
+
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python:
+          - '3.9'
+          - '3.10'
+          - '3.11'
+          - '3.12'
+          - 'pypy3.10'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install Markdown
+      - run: python ./test.py
+```
+
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python:
+          - '3.8'
+        django:
+          - '<2'
+          - '<2.1'
+          - '<2.2'
+        drf:
+          - '<3.8'
+          - '<3.9'
+    name: Python ${{ matrix.python }} / Django ${{ matrix.django }} / DRF ${{ matrix.drf }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: pip install "django${{ matrix.django }}" "djangorestframework${{ matrix.drf }}"
+      - name: Run tests
+        run: python runtests.py
+```
+
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python:
+          - '3.8'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install Markdown
+      - run: python ./test.py
+```
+
+Please note that the above configurations are examples and may need to be adjusted based on your specific project requirements.

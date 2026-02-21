@@ -1,0 +1,37 @@
+```yaml
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [2.7, 3.6, pypy, pypy3]
+        fail-fast: false
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Upgrade pip and setuptools
+        run: |
+          pip install -U setuptools pip
+
+      - name: Clean and install
+        run: |
+          python setup.py clean --all
+          python setup.py install
+
+      - name: Run tests
+        run: python setup.py test
+        continue-on-error: ${{ matrix.python-version == 'pypy' || matrix.python-version == 'pypy3' }}
+
+|End-of-Code|
+```

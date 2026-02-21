@@ -1,0 +1,285 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "build"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "build packages"
+      }],
+      "type": "name"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "${{ matrix.os }}"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "macos-11"
+            }],
+            "type": "os"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "macos"
+            }],
+            "type": "target"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "cd-cmd"
+            }],
+            "type": "cmd_build"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "mac_pysoar"
+            }],
+            "type": "out_file_name"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "pysoar/dist/mac_pysoar.zip"
+            }],
+            "type": "out_file_path"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "application/zip"
+            }],
+            "type": "asset_mime"
+           }
+          ],
+          "type": "OBJ-NODE"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "windows-latest"
+            }],
+            "type": "os"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "windows"
+            }],
+            "type": "target"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "cd-cmd"
+            }],
+            "type": "cmd_build"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "windows_pysoar"
+            }],
+            "type": "out_file_name"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "pysoar/dist/windows_pysoar.exe"
+            }],
+            "type": "out_file_path"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "application/vnd.microsoft.portable-executable"
+            }],
+            "type": "asset_mime"
+           }
+          ],
+          "type": "OBJ-NODE"
+         }
+        ],
+        "type": "include"
+       }],
+       "type": "matrix"
+      }],
+      "type": "strategy"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set up python"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "3.9"
+           }],
+           "type": "python-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "python-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "build with pyinstaller for-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{matrix.cmd_build}}"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "list files"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "ls\\nls pysoar\\nls pysoar/dist\\n"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "archive production artifacts"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/upload-artifact@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{matrix.out_file_name}}"
+            }],
+            "type": "name"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{matrix.out_file_path}}"
+            }],
+            "type": "path"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

@@ -1,0 +1,26 @@
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'  # Specify the Python version you need
+
+      - name: Create settings.py
+        run: echo "from Default.settings import *" > settings.py
+
+      - name: Run generate script
+        run: python generate.py
+
+|End-of-Code|
+```

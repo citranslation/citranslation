@@ -1,0 +1,22 @@
+name: Node.js CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 10
+    - name: Cache Yarn
+      uses: actions/cache@v2
+      with:
+        path: ~/.yarn
+        key: ${{ hashFiles('package.json') }}
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile --non-interactive
+    - name: Run tests
+      run: yarn test
+|End-of-Code|

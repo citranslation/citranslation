@@ -1,0 +1,81 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "amd64"
+    },
+    {
+     "children": [],
+     "type": "ppc64le"
+    }
+   ],
+   "type": "arch"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "6"
+    },
+    {
+     "children": [],
+     "type": "8"
+    },
+    {
+     "children": [],
+     "type": "10"
+    },
+    {
+     "children": [],
+     "type": "12"
+    },
+    {
+     "children": [],
+     "type": "14"
+    },
+    {
+     "children": [],
+     "type": "15"
+    },
+    {
+     "children": [],
+     "type": "lts/*"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "EMAIL"
+     },
+     {
+      "children": [],
+      "type": "EMAIL"
+     }
+    ],
+    "type": "email"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

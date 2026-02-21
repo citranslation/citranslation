@@ -1,0 +1,11 @@
+name: placeholder
+
+on: push:
+
+jobs:
+  build:
+    runs-on
+    steps
+    run: coverage run --source=nvd3 setup.py test
+    run: coveralls --service=github
+

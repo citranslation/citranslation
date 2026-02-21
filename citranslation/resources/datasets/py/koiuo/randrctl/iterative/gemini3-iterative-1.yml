@@ -1,0 +1,21 @@
+name: Python Package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.8"
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y x11-xserver-utils
+      - name: Run tests
+        run: python setup.py test
+
+|End-of-Code|

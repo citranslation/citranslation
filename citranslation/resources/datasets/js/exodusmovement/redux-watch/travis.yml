@@ -1,0 +1,16 @@
+sudo: false
+os:
+  - linux
+language: node_js
+node_js:
+  - "0.10"
+  - "lts/*"
+  - "latest"
+env:
+  matrix:
+    - TEST_SUITE=unit
+matrix:
+  include:
+    - node_js: "latest"
+      env: TEST_SUITE=lint
+script: npm run $TEST_SUITE

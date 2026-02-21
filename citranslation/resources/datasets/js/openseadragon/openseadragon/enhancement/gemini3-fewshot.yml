@@ -1,0 +1,40 @@
+# This workflow will do a clean install of node dependencies and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  build:
+    # 'ubuntu-22.04' corresponds to 'jammy'
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        node-version: [lts/*]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install global dependencies
+        run: npm install -g grunt-cli
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run script
+        run: npm test
+
+|End-of-Code|

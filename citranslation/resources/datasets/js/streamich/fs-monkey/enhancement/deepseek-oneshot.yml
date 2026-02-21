@@ -1,0 +1,46 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Travis CI to GitHub Actions
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Run static server in the background
+        run: npm run serve &
+
+      - name: Run tests
+        run: npm test
+
+      - name: Release?
+        run: npm run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+```
+
+Please note that Travis CI and GitHub Actions are quite different in terms of functionality and capabilities. The Travis CI configuration you provided is for continuous integration and deployment, while the GitHub Actions configuration provided is for running a series of steps in a workflow. You may need to adjust the GitHub Actions configuration to match your specific needs.
+
+Also, please ensure that you have set up the `GITHUB_TOKEN` and `NPM_TOKEN` secrets in your GitHub repository settings for the `semantic-release` to work properly.
+
+|End-of-Code|

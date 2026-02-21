@@ -1,0 +1,31 @@
+```yaml
+name: Node CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20, 18, 16]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run lint
+    - run: npm run coveralls
+    - run: npm run bootstrap
+```
+|End-of-Code|
+
+Please note that the GitHub Actions configuration above assumes that you have a `.github/workflows` directory in your repository. The `actions/checkout@v2` step is used to checkout your repository, `actions/setup-node@v2` is used to setup the specified Node.js version, and `npm ci` is used to install the project dependencies. The `npm run lint`, `npm run coveralls`, and `npm run bootstrap` steps are used to run the linting, coverage, and bootstrapping scripts respectively.

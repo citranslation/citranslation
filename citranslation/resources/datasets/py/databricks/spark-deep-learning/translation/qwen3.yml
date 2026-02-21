@@ -1,0 +1,19 @@
+name: Build and Test
+
+on: [push]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - run: pip install sphinx==3.2.1 pyspark==3.0.1 tensorflow-cpu==1.15.0
+    - run: |
+        pushd docs/
+        PYTHONPATH=.. make clean html
+        popd
+        pytest
+|End-of-Code|

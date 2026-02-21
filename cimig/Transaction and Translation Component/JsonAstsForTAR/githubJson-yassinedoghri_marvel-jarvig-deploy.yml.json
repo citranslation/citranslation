@@ -1,0 +1,140 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "marvel-jarvig-deploy"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "branch-name"
+     }],
+     "type": "branches"
+    }],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "checkout 🛎️"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install and build 🔧"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "mv src/config/index.js.dist src/config/index.js\\nsed -i -e \\\"s/your_public_api_key/$marvel_api_public_key/\\\" src/config/index.js\\nsed -i -e \\\"s/your_private_api_key/$marvel_api_private_key/\\\" src/config/index.js\\nyarn install --frozen-lockfile\\nyarn build\\n"
+          }],
+          "type": "run"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.marvel_api_public_key }}"
+            }],
+            "type": "marvel_api_public_key"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.marvel_api_private_key }}"
+            }],
+            "type": "marvel_api_private_key"
+           }
+          ],
+          "type": "env"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "deploy 🚀"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "jamesives/github-pages-deploy-action@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "gh-pages"
+            }],
+            "type": "branch"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "build"
+            }],
+            "type": "folder"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build-and-deploy"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

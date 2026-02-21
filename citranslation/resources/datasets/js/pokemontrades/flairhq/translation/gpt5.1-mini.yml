@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+env:
+  SKIP_SASS_BINARY_DOWNLOAD_FOR_CI: "true"
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        node: ["6"]
+
+    steps:
+      - name: Checkout repository (with submodules)
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Use Node ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Cache npm and node-gyp
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            ~/.node-gyp
+          key: ${{ runner.os }}-node-${{ matrix.node }}-${{ hashFiles('**/package-lock.json','**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node }}-
+
+      - name: Linux: install gcc-4.7 and required packages
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y software-properties-common
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install -y gcc-4.7 g++-4.7 build-essential checkinstall libssl-dev
+          echo "CC=gcc-4.7" >> $GITHUB_ENV
+          echo "CXX=g++-4.7" >> $GITHUB_ENV
+          echo "LINK=gcc-4.7" >> $GITHUB_ENV
+          echo "LINKXX=g++-4.7" >> $GITHUB_ENV
+
+      - name: Set npm python to system python
+        run: npm config set python `which python` || true
+
+      - name: Show compiler versions
+        run: |
+          gcc --version || true
+          g++ --version || true
+
+      - name: Cleanup locks and node_modules
+        run: |
+          if [ -f package-lock.json ]; then rm package-lock.json; fi
+          npm cache clean --force || true
+          rm -rf node_modules
+
+      - name: Ensure npm v6.x (as in Travis config)
+        run: npm install -g npm@latest-6
+
+      - name: Install global CLI tools
+        run: |
+          npm install -g grunt-cli
+          npm install -g eslint
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+|End-of-Code|

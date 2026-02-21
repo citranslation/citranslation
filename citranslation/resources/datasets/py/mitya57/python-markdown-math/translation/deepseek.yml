@@ -1,0 +1,32 @@
+Sure, here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: Travis CI to GitHub Actions
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.9, 3.10, 3.11, 3.12, 'pypy3.10']
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: pip install Markdown
+    - name: Run tests
+      run: python test.py
+```
+
+Please note that the `dist: noble` line in your Travis CI configuration is not recognized by GitHub Actions. The `dist:` parameter is used to specify the type of Linux distribution to use, and GitHub Actions uses a variety of different Linux distributions by default.
+
+Also, please ensure that your `test.py` script is in the root directory of your repository, as GitHub Actions will run this script from the root directory.
+
+|End-of-Code|

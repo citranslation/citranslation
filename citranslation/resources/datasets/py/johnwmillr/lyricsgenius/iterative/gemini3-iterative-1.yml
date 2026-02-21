@@ -1,0 +1,31 @@
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # The error "ImportError: cannot import name 'Union' from 'types'" 
+        # occurs because Sphinx (older versions) is incompatible with Python 3.11.
+        # We use Python 3.10 to ensure compatibility with the existing Sphinx/Tox setup.
+        python-version: ["3.10"]
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[dev] tox
+          
+      - name: Run tox
+        run: tox
+
+|End-of-Code|

@@ -1,0 +1,52 @@
+name: CI Workflow
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.8, 3.9, 3.10, 3.11]
+    env:
+      TOXENV: py
+    steps:
+    - name: Cache pip
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ matrix.python-version }}-pip
+        restore-keys: ${{ matrix.python-version }}-pip
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        pip install -U pip setuptools
+        pip install -U tox
+        tox --notest
+    - name: Run tests
+      run: tox
+
+  lint:
+    runs-on: ubuntu-latest
+    env:
+      TOXENV: lint
+    steps:
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+    - name: Install dependencies
+      run: |
+        pip install -U pip setuptools
+        pip install -U tox
+        tox --notest
+    - name: Run lint
+      run: tox
+|End-of-Code|

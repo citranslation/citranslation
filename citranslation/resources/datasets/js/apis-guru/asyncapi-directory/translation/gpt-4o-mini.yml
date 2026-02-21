@@ -1,0 +1,44 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 * * * *' # Adjust the cron schedule as needed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 'lts/*'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build data
+        run: npm run build.data
+
+      - name: Build site
+        run: npm run build.site
+
+      - name: Deploy to GitHub Pages
+        if: github.event_name == 'schedule'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./path-to-your-build-directory # Adjust this path as needed
+          publish_branch: master
+          keep_history: true
+          verbose: true
+          
+|End-of-Code|
+```

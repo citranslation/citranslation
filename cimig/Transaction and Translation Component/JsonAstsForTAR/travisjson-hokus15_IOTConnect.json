@@ -1,0 +1,101 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.7"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python-cmd"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "git config credential.helper \\\"store --file=.git/credentials\\\""
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "mkdocs build --verbose --clean --strict"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "git config --global PATH-OR-URL \\\"semantic-release (via travisci)\\\""
+    },
+    {
+     "children": [],
+     "type": "git config --global user.email \\\"semantic-release@travis\\\""
+    },
+    {
+     "children": [],
+     "type": "pip install python-semantic-release"
+    },
+    {
+     "children": [],
+     "type": "semantic-release publish"
+    }
+   ],
+   "type": "after_success"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "token"
+      }],
+      "type": "secure"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "always"
+      }],
+      "type": "on_success"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "always"
+      }],
+      "type": "on_failure"
+     }
+    ],
+    "type": "slack"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,118 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "generic"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "FALSE"
+    }],
+    "type": "submodules"
+   }],
+   "type": "git"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "git submodule update --init"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "path=\\\"$(git config -f .gitmodules submodule.beaver.path)/bin:$path\\\""
+     }],
+     "type": "global"
+    },
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "dist=xenial"
+      },
+      {
+       "children": [],
+       "type": "dist=bionic"
+      }
+     ],
+     "type": "matrix"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "beaver install"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "beaver make python=python3 all deb"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "script"
+     }],
+     "type": "provider"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "beaver bintray upload -d sociomantic-tsunami/tools/git-hub deb/*.deb"
+     }],
+     "type": "script"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "skip_cleanup"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "TRUE"
+      }],
+      "type": "tags"
+     }],
+     "type": "on"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

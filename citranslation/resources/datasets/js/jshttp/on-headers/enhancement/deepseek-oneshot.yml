@@ -1,0 +1,83 @@
+```yaml
+name: ci
+
+on:
+- pull_request
+- push
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version:
+        - 0.8
+        - 0.10
+        - 0.12
+        - 1.8
+        - 2.5
+        - 3.3
+        - 4.9
+        - 5.12
+        - 6.17
+        - 7.10
+        - 8.17
+        - 9.11
+        - 10.24
+        - 11.15
+        - 12.22
+        - 13.14
+        - 14.21
+        - 15.14
+        - 16.20
+        - 17.9
+        - 18.18
+        - 19.9
+        - 20.9
+        - 21.1
+        - 22.0
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Configure npm
+      run: |
+        if [[ "$(npm config get package-lock)" == "true" ]]; then
+          npm config set package-lock false
+        else
+          npm config set shrinkwrap false
+        fi
+
+    - name: Install Node.js dependencies
+      run: npm ci
+
+    - name: Run tests
+      run: npm test
+
+    - name: Lint code
+      run: npm run lint
+
+    - name: Collect code coverage
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        flag-name: run-${{ matrix.test_number }}
+        parallel: true
+
+  coverage:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Upload code coverage
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        parallel-finished: true
+```
+|End-of-Code|

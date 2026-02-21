@@ -1,0 +1,155 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "2.7"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "./PATH-OR-URL --clobber testcases/script.rpyc"
+    },
+    {
+     "children": [],
+     "type": "diff -u testcases/script.orig.rpy testcases/script.rpy"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "./PATH-OR-URL -p 1"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "./PATH-OR-URL"
+   }],
+   "type": "before_deploy"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "TRUE"
+        }],
+        "type": "all_branches"
+       }],
+       "type": "on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "bintray"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "bintray.json"
+       }],
+       "type": "file"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "jackmcbarn"
+       }],
+       "type": "user"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "token"
+        }],
+        "type": "secure"
+       }],
+       "type": "key"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_cleanup"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "releases"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "token"
+        }],
+        "type": "secure"
+       }],
+       "type": "api_key"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "un.rpyc/un.rpyc"
+       }],
+       "type": "file"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "TRUE"
+        }],
+        "type": "tags"
+       }],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,42 @@
+```yaml
+name: Python package
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install graphviz
+      run: |
+        sudo apt-get install graphviz graphviz-dev
+        python -m pip install --upgrade pip setuptools
+        python -m pip install pytest codecov pytest-cov
+
+    - name: Install package
+      run: python -m pip install .[full,test]
+
+    - name: Test with pytest
+      env:
+        QT_QPA_PLATFORM: "offscreen"
+      run: pytest --rootdir $GITHUB_WORKSPATH --cov=./
+
+    - name: Coverage
+      run: codecov
+
+|End-of-Code|
+```
+
+Please note that the `$GITHUB_WORKSPATH` is not a standard environment variable in GitHub Actions. I have replaced it with `$GITHUB_WORKSPACE` which is the GitHub Actions equivalent of Travis CI's `$TRAVIS_BUILD_DIR`.

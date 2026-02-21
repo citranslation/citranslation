@@ -1,0 +1,24 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.10
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Run flake8
+        run: flake8 --ignore=E501,W503
+      - name: Run tests
+        run: pytest -v --cov-report=xml --cov=src/sdialog
+      - name: Upload coverage
+        uses: codecov/codecov-action@v1
+|End-of-Code|

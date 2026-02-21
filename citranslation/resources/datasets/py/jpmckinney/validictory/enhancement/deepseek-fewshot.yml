@@ -1,0 +1,39 @@
+Here is the GitHub Action configuration equivalent to the provided Travis CI configuration:
+
+```yaml
+name: build
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "pypy3.9"]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov coveralls
+      - name: Run tests with pytest and coverage
+        run: |
+          pytest --cov validictory --cov-config=.coveragerc
+      - name: Upload coverage reports to Coveralls
+        run: coveralls
+```
+
+Please note that GitHub Actions does not support running tests on multiple Python versions at once, so the matrix strategy is limited to a single OS and Python version. If you need to test on multiple Python versions, you will need to set up multiple jobs in your GitHub Action configuration.

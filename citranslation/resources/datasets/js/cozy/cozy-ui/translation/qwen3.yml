@@ -1,0 +1,354 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  set-pr-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set PR title
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            PR_TITLE=$(curl -s https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }} | grep -i "title" | head -1 | cut -d '"' -f4)
+          fi
+          echo "PR_TITLE=$PR_TITLE" >> $GITHUB_ENV
+
+  prebuild:
+    runs-on: ubuntu-latest
+    needs: set-pr-title
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Lint
+        if: ${{ ! contains(github.event.head_commit.message, '[only argos]') }}
+        run: yarn lint
+      - name: Generate Sprite and Palette
+        run: yarn makeSpriteAndPalette
+        outputs:
+          sprite-path: ${{ github.workspace }}/react/Icon/icons-sprite.js
+          palette-path: ${{ github.workspace }}/react/palette.js
+
+  build-js:
+    runs-on: ubuntu-latest
+    needs: prebuild
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use sprite and palette binaries
+        uses: actions/checkout@v2
+        with:
+          path: sprite-palette-binaries
+          fetch-depth: 0
+      - name: Build JS
+        run: yarn build
+        outputs:
+          transpiled-path: ${{ github.workspace }}/transpiled
+
+  build-css:
+    runs-on: ubuntu-latest
+    needs: prebuild
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build CSS
+        run: yarn build:css:all
+        outputs:
+          dist-path: ${{ github.workspace }}/dist
+
+  build-docs:
+    runs-on: ubuntu-latest
+    needs: [prebuild, build-js, build-css]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use sprite, js, and css binaries
+        uses: actions/checkout@v2
+        with:
+          path: sprite-palette-binaries
+          fetch-depth: 0
+      - name: Use js binaries
+        uses: actions/checkout@v2
+        with:
+          path: js-binaries
+          fetch-depth: 0
+      - name: Use css binaries
+        uses: actions/checkout@v2
+        with:
+          path: css-binaries
+          fetch-depth: 0
+      - name: Build docs
+        run: |
+          yarn build:doc:react
+          yarn build:doc:kss
+        outputs:
+          build-path: ${{ github.workspace }}/build
+
+  test-no-snapshots:
+    runs-on: ubuntu-latest
+    needs: [prebuild, build-js, build-css]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use sprite, js, and css binaries
+        uses: actions/checkout@v2
+        with:
+          path: sprite-palette-binaries
+          fetch-depth: 0
+      - name: Use js binaries
+        uses: actions/checkout@v2
+        with:
+          path: js-binaries
+          fetch-depth: 0
+      - name: Use css binaries
+        uses: actions/checkout@v2
+        with:
+          path: css-binaries
+          fetch-depth: 0
+      - name: Run tests without snapshots
+        if: ${{ ! contains(github.event.head_commit.message, '[only argos]') }}
+        run: yarn test:noSnapshots
+
+  test-snapshots:
+    runs-on: ubuntu-latest
+    needs: [prebuild, build-js, build-css]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use sprite, js, and css binaries
+        uses: actions/checkout@v2
+        with:
+          path: sprite-palette-binaries
+          fetch-depth: 0
+      - name: Use js binaries
+        uses: actions/checkout@v2
+        with:
+          path: js-binaries
+          fetch-depth: 0
+      - name: Use css binaries
+        uses: actions/checkout@v2
+        with:
+          path: css-binaries
+          fetch-depth: 0
+      - name: Run tests with snapshots
+        if: ${{ ! contains(github.event.head_commit.message, '[only argos]') }}
+        run: yarn test:snapshots
+
+  bundlemon:
+    runs-on: ubuntu-latest
+    needs: [prebuild, build-js, build-css]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use sprite, js, and css binaries
+        uses: actions/checkout@v2
+        with:
+          path: sprite-palette-binaries
+          fetch-depth: 0
+      - name: Use js binaries
+        uses: actions/checkout@v2
+        with:
+          path: js-binaries
+          fetch-depth: 0
+      - name: Use css binaries
+        uses: actions/checkout@v2
+        with:
+          path: css-binaries
+          fetch-depth: 0
+      - name: Run bundlemon
+        if: ${{ ! contains(github.event.head_commit.message, '[only argos]') }}
+        run: yarn bundlemon
+
+  create-screenshots-desktop:
+    runs-on: ubuntu-latest
+    needs: [prebuild, build-js, build-css, build-docs]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use sprite, js, css, and docs binaries
+        uses: actions/checkout@v2
+        with:
+          path: sprite-palette-binaries
+          fetch-depth: 0
+      - name: Use js binaries
+        uses: actions/checkout@v2
+        with:
+          path: js-binaries
+          fetch-depth: 0
+      - name: Use css binaries
+        uses: actions/checkout@v2
+        with:
+          path: css-binaries
+          fetch-depth: 0
+      - name: Use docs binaries
+        uses: actions/checkout@v2
+        with:
+          path: docs-binaries
+          fetch-depth: 0
+      - name: Create desktop screenshots
+        if: ${{ ! contains(github.event.head_commit.message, '[skip argos]') }}
+        run: |
+          if [[ "${{ env.PR_TITLE }}" != *"[skip argos]"* ]]; then
+            mkdir -p ./screenshots/reactDesktop
+            npx puppeteer browsers install chrome
+            yarn screenshots --mode react --viewport desktop --screenshot-dir ./screenshots/reactDesktop
+          fi
+
+  create-screenshots-mobile:
+    runs-on: ubuntu-latest
+    needs: [prebuild, build-js, build-css, build-docs]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use sprite, js, css, and docs binaries
+        uses: actions/checkout@v2
+        with:
+          path: sprite-palette-binaries
+          fetch-depth: 0
+      - name: Use js binaries
+        uses: actions/checkout@v2
+        with:
+          path: js-binaries
+          fetch-depth: 0
+      - name: Use css binaries
+        uses: actions/checkout@v2
+        with:
+          path: css-binaries
+          fetch-depth: 0
+      - name: Use docs binaries
+        uses: actions/checkout@v2
+        with:
+          path: docs-binaries
+          fetch-depth: 0
+      - name: Create mobile screenshots
+        if: ${{ ! contains(github.event.head_commit.message, '[skip argos]') }}
+        run: |
+          if [[ "${{ env.PR_TITLE }}" != *"[skip argos]"* ]]; then
+            mkdir -p ./screenshots/reactMobile
+            npx puppeteer browsers install chrome
+            yarn screenshots --mode react --viewport 300x600 --screenshot-dir ./screenshots/reactMobile
+          fi
+
+  create-screenshots-kss:
+    runs-on: ubuntu-latest
+    needs: [prebuild, build-js, build-css, build-docs]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use sprite, js, css, and docs binaries
+        uses: actions/checkout@v2
+        with:
+          path: sprite-palette-binaries
+          fetch-depth: 0
+      - name: Use js binaries
+        uses: actions/checkout@v2
+        with:
+          path: js-binaries
+          fetch-depth: 0
+      - name: Use css binaries
+        uses: actions/checkout@v2
+        with:
+          path: css-binaries
+          fetch-depth: 0
+      - name: Use docs binaries
+        uses: actions/checkout@v2
+        with:
+          path: docs-binaries
+          fetch-depth: 0
+      - name: Create kss screenshots
+        if: ${{ ! contains(github.event.head_commit.message, '[skip argos]') }}
+        run: |
+          if [[ "${{ env.PR_TITLE }}" != *"[skip argos]"* ]]; then
+            mkdir -p ./screenshots/kss
+            npx puppeteer browsers install chrome
+            yarn screenshots --mode kss --screenshot-dir ./screenshots/kss
+          fi
+
+  upload-screenshots:
+    runs-on: ubuntu-latest
+    needs: [create-screenshots-desktop, create-screenshots-mobile, create-screenshots-kss]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use sprite, js, css, docs, and screenshots binaries
+        uses: actions/checkout@v2
+        with:
+          path: sprite-palette-binaries
+          fetch-depth: 0
+      - name: Use js binaries
+        uses: actions/checkout@v2
+        with:
+          path: js-binaries
+          fetch-depth: 0
+      - name: Use css binaries
+        uses: actions/checkout@v2
+        with:
+          path: css-binaries
+          fetch-depth: 0
+      - name: Use docs binaries
+        uses: actions/checkout@v2
+        with:
+          path: docs-binaries
+          fetch-depth: 0
+      - name: Use screenshots desktop binaries
+        uses: actions/checkout@v2
+        with:
+          path: screenshots-desktop-binaries
+          fetch-depth: 0
+      - name: Use screenshots mobile binaries
+        uses: actions/checkout@v2
+        with:
+          path: screenshots-mobile-binaries
+          fetch-depth: 0
+      - name: Use screenshots kss binaries
+        uses: actions/checkout@v2
+        with:
+          path: screenshots-kss-binaries
+          fetch-depth: 0
+      - name: Upload screenshots
+        if: ${{ ! contains(github.event.head_commit.message, '[skip argos]') }}
+        run: |
+          if [[ "${{ env.PR_TITLE }}" != *"[skip argos]"* ]]; then
+            yarn argos:upload --parallel screenshots/reactDesktop/ --token $ARGOS_TOKEN --parallel-total 3 --parallel-nonce $TRAVIS_BUILD_ID --ignore ''
+            yarn argos:upload --parallel screenshots/reactMobile/ --token $ARGOS_TOKEN --parallel-total 3 --parallel-nonce $TRAVIS_BUILD_ID --ignore ''
+            yarn argos:upload --parallel screenshots/kss/ --token $ARGOS_TOKEN --parallel-total 3 --parallel-nonce $TRAVIS_BUILD_ID --ignore ''
+          fi
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: prebuild
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use sprite, js, css, and docs binaries
+        uses: actions/checkout@v2
+        with:
+          path: sprite-palette-binaries
+          fetch-depth: 0
+      - name: Use js binaries
+        uses: actions/checkout@v2
+        with:
+          path: js-binaries
+          fetch-depth: 0
+      - name: Use css binaries
+        uses: actions/checkout@v2
+        with:
+          path: css-binaries
+          fetch-depth: 0
+      - name: Use docs binaries
+        uses: actions/checkout@v2
+        with:
+          path: docs-binaries
+          fetch-depth: 0
+      - name: Deploy
+        if: ${{ ! contains(github.event.head_commit.message, '[only argos]') }}
+        run: |
+          yarn deploy:doc -- --username cozycloud --email contact@cozycloud.cc --repo https://cozy-bot:$GH_TOKEN@github.com/cozy/cozy-ui.git && yarn semantic-release
+|End-of-Code|

@@ -1,0 +1,97 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.6"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "~/.pip-cache/"
+    }],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "tox_env=py36-111"
+    },
+    {
+     "children": [],
+     "type": "tox_env=py36-21"
+    },
+    {
+     "children": [],
+     "type": "tox_env=py36-22"
+    },
+    {
+     "children": [],
+     "type": "tox_env=py36-master"
+    },
+    {
+     "children": [],
+     "type": "tox_env=docs"
+    },
+    {
+     "children": [],
+     "type": "tox_env=flake8"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "tox_env=py36-master"
+       }],
+       "type": "env"
+      }],
+      "type": "OBJ-NODE"
+     }],
+     "type": "allow_failures"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    }
+   ],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install tox --cache-dir ~/.pip-cache"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox -e $tox_env"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

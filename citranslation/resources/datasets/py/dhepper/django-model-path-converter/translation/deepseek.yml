@@ -1,0 +1,35 @@
+## 3. Output: GitHub Action
+
+```yaml
+name: Travis CI to GitHub Actions
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.10
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install tox-travis
+      run: pip install -U tox-travis
+
+    - name: Run tests
+      run: tox
+
+|End-of-Code|
+```
+
+Please note that GitHub Actions do not support Python version matrix out of the box. You would need to run the setup-python step for each Python version you want to test. Also, the deployment part of the Travis CI configuration is not included in the GitHub Actions configuration as it requires a secure token which cannot be stored in plain text in GitHub Actions.

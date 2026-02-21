@@ -1,0 +1,59 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "2.7"
+    },
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install -r requirements.txt"
+    },
+    {
+     "children": [],
+     "type": "pip install ."
+    },
+    {
+     "children": [],
+     "type": "pip install flake8"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "flake8 img2gb test"
+    },
+    {
+     "children": [],
+     "type": "pytest -v test"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

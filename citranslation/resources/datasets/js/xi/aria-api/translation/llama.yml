@@ -1,0 +1,31 @@
+Here is the equivalent GitHub Action configuration:
+```
+name: Node.js CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Clean and build
+        run: make clean && make
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.nvm
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package*.json') }}
+      - name: Run tests
+        run: npx mocha-headless-chrome -a no-sandbox -f test/index.html
+      - name: Send notifications
+        uses: github-actions/notify@v1
+        with:
+          title: Node.js CI
+          message: "CI completed"
+|End-of-Code|
+```
+Note that I've replaced the `sudo` directive with the `runs-on` keyword, which specifies the environment in which the job will run. I've also replaced the `install` section with separate steps for installing dependencies, cleaning and building, and caching node modules. The `script` section has been replaced with a `run` step that runs the `npx mocha-headless-chrome` command. Finally, I've added a `Send notifications` step to send a notification to the GitHub issue tracker.

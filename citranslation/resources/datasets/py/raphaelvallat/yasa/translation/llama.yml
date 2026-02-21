@@ -1,0 +1,31 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-test.txt
+          pip install.
+          export NUMBA_DISABLE_JIT=1
+      - name: Run tests
+        run: pytest
+      - name: Upload coverage
+        uses: codecov/codecov-action@v1
+      - name: Send notification
+        uses: r-raphaelvallat/send-notification@v1
+        with:
+          email: raphaelvallat9@gmail.com
+```
+|End-of-Code|

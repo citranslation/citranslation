@@ -1,0 +1,761 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "testing"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "fail-fast"
+        },
+        {
+         "children": [
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "1.10"
+            },
+            {
+             "children": [],
+             "type": "2.8"
+            },
+            {
+             "children": [],
+             "type": "2.x-latest"
+            }
+           ],
+           "type": "tarantool"
+          },
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "2.7"
+            },
+            {
+             "children": [],
+             "type": "3.5"
+            },
+            {
+             "children": [],
+             "type": "3.6"
+            },
+            {
+             "children": [],
+             "type": "3.7"
+            },
+            {
+             "children": [],
+             "type": "3.8"
+            },
+            {
+             "children": [],
+             "type": "3.9"
+            },
+            {
+             "children": [],
+             "type": "3.10"
+            }
+           ],
+           "type": "python"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": ""
+           }],
+           "type": "msgpack-deps"
+          },
+          {
+           "children": [
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "2.8"
+               }],
+               "type": "tarantool"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "3.10"
+               }],
+               "type": "python"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "msgpack-python==0.4.0"
+               }],
+               "type": "msgpack-deps"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "2.8"
+               }],
+               "type": "tarantool"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "3.10"
+               }],
+               "type": "python"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "msgpack==0.5.0"
+               }],
+               "type": "msgpack-deps"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "2.8"
+               }],
+               "type": "tarantool"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "3.10"
+               }],
+               "type": "python"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "msgpack==0.6.2"
+               }],
+               "type": "msgpack-deps"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "2.8"
+               }],
+               "type": "tarantool"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "3.10"
+               }],
+               "type": "python"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "msgpack==1.0.0"
+               }],
+               "type": "msgpack-deps"
+              }
+             ],
+             "type": "OBJ-NODE"
+            }
+           ],
+           "type": "include"
+          }
+         ],
+         "type": "matrix"
+        }
+       ],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "clone the connector"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install tarantool ${{ matrix.tarantool }}"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "matrix.tarantool != '2.x-latest'"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "tarantool/setup-tarantool@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.tarantool }}"
+            }],
+            "type": "tarantool-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install latest tarantool 2.x"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "matrix.tarantool == '2.x-latest'"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "curl-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup python-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-cmd"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install specific version of msgpack package"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "startswith(matrix.msgpack-deps, 'msgpack==') == true"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pip install ${{ matrix.msgpack-deps }}\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install specific version of msgpack-python-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "startswith(matrix.msgpack-deps, 'msgpack-python==') == true"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pip install ${{ matrix.msgpack-deps }}\\nsed -i -e \\\"s/^msgpack.*$/${{ matrix.msgpack-deps }}/\\\" requirements.txt\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install package requirements"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pip install -r requirements.txt"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install test requirements"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pip install -r requirements-test.txt"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run tests"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "make test"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "run_tests_linux"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "windows-2022"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "fail-fast"
+        },
+        {
+         "children": [
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "1.10"
+            },
+            {
+             "children": [],
+             "type": "2.8"
+            }
+           ],
+           "type": "tarantool"
+          },
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "2.7"
+            },
+            {
+             "children": [],
+             "type": "3.10"
+            }
+           ],
+           "type": "python"
+          }
+         ],
+         "type": "matrix"
+        }
+       ],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "clone the connector"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup python-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-cmd"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install connector requirements"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pip install -r requirements.txt"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install test requirements"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pip install -r requirements-test.txt"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup wsl for-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "vampire/setup-wsl@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "ubuntu-latest"
+            }],
+            "type": "distribution"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install tarantool ${{ matrix.tarantool }} for-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "wsl-bash_ubuntu-latest {0}"
+           }],
+           "type": "shell"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "curl-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup test tarantool instance"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "wsl-bash_ubuntu-latest {0}"
+           }],
+           "type": "shell"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "rm -f ./tarantool.pid ./tarantool.log\\ntnt_pid=$(tarantool ./test/suites/lib/tarantool_python_ci.lua > tarantool.log 2>&1 & echo-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run tests"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "localhost"
+             }],
+             "type": "remote_tarantool_host"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "3302"
+             }],
+             "type": "remote_tarantool_console_port"
+            }
+           ],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "make test"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "stop test tarantool instance"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ always() }}"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "wsl-bash_ubuntu-latest {0}"
+           }],
+           "type": "shell"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "cat tarantool.log || true\\nkill $(cat tarantool.pid) || true"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "run_tests_windows"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

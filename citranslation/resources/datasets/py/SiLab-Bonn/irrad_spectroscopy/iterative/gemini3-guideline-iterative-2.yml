@@ -1,0 +1,43 @@
+name: Python Package CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.8"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: ${{ matrix.python-version }}
+          channels: conda-forge,defaults
+          activate-environment: test-env
+
+      - name: Install Conda dependencies
+        shell: bash -l {0}
+        run: |
+          conda install --yes numpy scipy pyyaml matplotlib nose jupyter pandas setuptools
+          conda info -a
+
+      - name: Install Pip dependencies
+        shell: bash -l {0}
+        run: |
+          pip install --upgrade pip setuptools wheel
+          pip install -r requirements.txt
+          python setup.py develop
+
+      - name: Run tests
+        shell: bash -l {0}
+        run: nosetests
+
+|End-of-Code|

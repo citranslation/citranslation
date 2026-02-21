@@ -1,0 +1,33 @@
+```yaml
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+        numpy-version: [1.15.4, 1.19.4]
+      fail-fast: false
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install numpy==${{ matrix.numpy-version }} scipy>=3 matplotlib>=3 cython>=0.28
+          bash dev/build.sh
+
+      - name: Run tests
+        run: bash dev/test.sh
+
+|End-of-Code|
+```

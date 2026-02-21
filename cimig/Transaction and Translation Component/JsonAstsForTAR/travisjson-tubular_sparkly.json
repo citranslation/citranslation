@@ -1,0 +1,57 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "focal"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "make test"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "EMAIL"
+     },
+     {
+      "children": [],
+      "type": "EMAIL"
+     },
+     {
+      "children": [],
+      "type": "EMAIL"
+     },
+     {
+      "children": [],
+      "type": "EMAIL"
+     }
+    ],
+    "type": "email"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

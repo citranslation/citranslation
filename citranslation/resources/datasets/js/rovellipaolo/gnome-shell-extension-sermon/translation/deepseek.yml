@@ -1,0 +1,38 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 15.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install dependencies
+      run: |
+        make install-checkstyle
+        sudo apt update
+        sudo apt install -qy gjs libgjs-dev
+    - name: Run tests
+      run: |
+        make checkstyle
+        make test
+```
+
+Please note that the `node-version` in the matrix is set to the latest stable versions of Node.js. You may need to adjust this according to your project's requirements.
+
+Also, please ensure that the `make` commands are valid in your project and they are correctly installed in the environment where the GitHub Action is running.
+
+|End-of-Code|

@@ -1,0 +1,59 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: |
+          - 3.8
+          - 3.9
+          - 3.10
+          - 3.11
+          - 3.12
+          - 3.13
+          - nightly
+          - pypy3.8
+          - pypy3.9
+          - pypy3.10
+          - pypy3.11
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pytest coveralls coverage
+
+      - name: Set wait time
+        run: |
+          if [[ $TRAVIS_PYTHON_VERSION == 'pypy'* ]]; then export TRAVIS_WAIT=45; else export TRAVIS_WAIT=20; fi
+
+      - name: Run tests
+        run: |
+          pwd
+          coverage run --source=neat -m pytest tests
+
+      - name: Generate coverage report
+        uses: coveralls-action/coveralls@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          file: coverage.xml
+
+|End-of-Code|
+```
+Note that I've used the `ubuntu-latest` environment, and the `matrix` strategy to run the tests for multiple Python versions. I've also used the `actions/checkout` and `actions/setup-python` actions to checkout the code and set up the Python environment, respectively. The rest of the steps are similar to the original Travis CI configuration.

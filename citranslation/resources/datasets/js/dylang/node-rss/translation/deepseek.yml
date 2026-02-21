@@ -1,0 +1,32 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [0.12, 4]
+        npm-version: [2, 3]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install npm ${{ matrix.npm-version }}
+      run: npm install -g npm@${{ matrix.npm-version }}
+    - name: npm install and test
+      run: |
+        npm ci
+        npm test
+```
+
+This GitHub Action configuration does the same thing as the Travis CI configuration you provided. It sets up a matrix of Node.js versions and npm versions to test on, checks out the code, sets up the specified Node.js version, installs the specified npm version, and then runs `npm ci` and `npm test`.

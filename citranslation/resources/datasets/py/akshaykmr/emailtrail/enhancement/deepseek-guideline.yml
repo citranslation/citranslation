@@ -1,0 +1,28 @@
+```yaml
+name: Python application
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: make setup
+
+    - name: Run tests
+      run: make test
+
+|End-of-Code|
+```
+
+This GitHub Action configuration is based on the Travis CI configuration you provided. It sets up a job that runs on push and pull request events on the latest Ubuntu environment. The job installs Python 3.9, sets up the environment, installs dependencies, and runs tests.

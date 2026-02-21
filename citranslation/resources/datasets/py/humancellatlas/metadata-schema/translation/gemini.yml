@@ -1,0 +1,87 @@
+```yaml
+# GitHub Actions configuration
+# This workflow is migrated from the provided Travis CI configuration.
+
+name: CI Pipeline
+
+# This workflow runs on pushes and pull requests to any branch.
+# Travis CI's default behavior is similar.
+on: [push, pull_request]
+
+jobs:
+  # This job corresponds to the "Schema linter" stage in Travis CI.
+  schema-linter:
+    name: Schema Linter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.6
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.6'
+
+      - name: Run schema linter
+        # The TRAVIS_BRANCH variable is replaced by github.ref_name
+        run: python schema_linter.py --environment "${{ github.ref_name }}"
+        working-directory: ./src
+
+  # This job corresponds to the "Schema tests" stage in Travis CI.
+  schema-tests:
+    name: Schema Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 8
+        uses: actions/setup-node@v4
+        with:
+          node-version: '8'
+          # Caching npm dependencies for faster builds
+          cache: 'npm'
+          cache-dependency-path: 'tests/package-lock.json'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./tests
+
+      - name: Run tests
+        run: npm test
+        working-directory: ./tests
+
+  # This job handles Slack notifications, similar to the 'notifications' block in Travis CI.
+  # It runs after both the linter and tests are complete.
+  slack-notification:
+    name: Slack Notification
+    runs-on: ubuntu-latest
+    # This job needs the results of the previous jobs.
+    needs: [schema-linter, schema-tests]
+    # 'if: always()' ensures this job runs regardless of whether the previous jobs succeeded or failed.
+    if: always()
+    steps:
+      - name: Notify on Success
+        # This step only runs if all jobs in 'needs' were successful.
+        if: success()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          # The encrypted Travis 'secure' key must be stored as a repository secret.
+          # Go to Settings > Secrets and variables > Actions to add SLACK_WEBHOOK_URL.
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_TITLE: 'Build Succeeded'
+          SLACK_MESSAGE: 'The CI pipeline for `${{ github.repository }}` completed successfully.'
+          SLACK_COLOR: 'good'
+          SLACK_USERNAME: 'GitHub Actions'
+
+      - name: Notify on Failure
+        # This step only runs if any job in 'needs' failed.
+        if: failure()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_TITLE: 'Build Failed'
+          SLACK_MESSAGE: 'The CI pipeline for `${{ github.repository }}` failed. <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View build logs>.'
+          SLACK_COLOR: 'danger'
+          SLACK_USERNAME: 'GitHub Actions'
+```|End-of-Code|

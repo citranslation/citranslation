@@ -1,0 +1,78 @@
+## 1. Input: Travis CI
+language: python
+
+python:
+  - "3.8"
+  - "3.9"
+  - "3.10"
+
+install:
+  # To work around a problem with wilson package we take the git master version of it
+  - "pip3 install ."
+  - "pip3 install nose2"
+  - "pip3 install coveralls"
+
+script:
+  - "nose2 --with-coverage"
+
+after_success: coveralls
+## 2. Task:
+Migrate the above Travis CI configuration to Github Action. 
+
+## 3. Guideline
+
+- Syntax:
+    - Ensure YAML file follows proper syntax, including required symbols, e.g., colons, hyphens, or quotation marks.
+    - Verify that GitHub Actions YAML file follows proper indentation and structural conventions.
+    - Ensure all used definitions are correctly defined and properly placed.
+    - Ensure the value types match their expected format when such fields exist in the source configuration, e.g., the setup-python action expects a single version value, not a list.
+
+- Platform Discrepancy:
+    - Translate Travis CI keys only when a clear, direct GitHub Actions equivalent exists. Skip any Travis CI–specific or unsupported keys.
+    - Verify that all expressions are properly converted to GitHub Actions syntax, e.g., 'env: TOX_ENV=flake8' to 'TOX_ENV: flake8'.
+    - Retain only x64 and arm64 if architectures are explicitly defined; remove all other architectures.
+    - Ensure all version numbers are in string format, e.g., Python '3.10'.
+    - Explicitly configure fields that are implicitly defaulted in Travis CI as equivalent GitHub Actions steps, e.g., actions/checkout@v4.
+    - Ensure all packages are properly installed and configured when present in the Travis CI configuration, e.g., migrate tox-travis to tox-gh-actions if applicable.
+
+- Environment:
+    - Ensure all referenced GitHub Actions currently exist; avoid non-existent actions.
+    - Ensure all required tokens are properly configured for the migrated steps, e.g., set GITHUB_TOKEN in the coveralls step if such a step exists.
+
+- Logic:
+    - Ensure all trigger events are correctly translated, e.g., avoid using tags as the sole trigger event unless the Travis CI configuration explicitly relies on tag-only builds.
+    - Ensure all execution orders are correctly translated, e.g., deploy job should be configured with the `needs` parameter to execute after test job.
+    - Ensure conditional statements are correctly translated.
+    - Do not introduce extra jobs, steps, operating systems, or matrix dimensions beyond those implied by the Travis CI configuration, except where required to faithfully reproduce Travis CI default behavior.
+    - Ensure that all transferable steps have been migrated.
+
+## 4. Output: GitHub Action
+```yaml
+name: Travis CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install .
+        pip install nose2
+        pip install coveralls
+    - name: Run tests
+      run: nose2 --with-coverage
+    - name: Coveralls
+      run: coveralls
+```|End-of-Code|

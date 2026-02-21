@@ -1,0 +1,63 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.6
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Test with pytest
+      run: pytest
+
+    - name: Test with mypy
+      run: mypy pyteal
+
+    - name: Check Python 3.8 import
+      run: python3.8 -c "import pyteal"
+
+    - name: Check Python 3.9 import
+      run: python3.9 -c "import pyteal"
+
+    - name: Check with black
+      run: black --check .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags')
+
+    steps:
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install pypa-build
+      run: |
+        python -m pip install build
+
+    - name: Build package
+      run: python -m build --sdist --wheel --outdir dist/ .
+
+    - name: Publish package
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
+```

@@ -1,0 +1,18 @@
+language: python
+python:
+    - "3.8"
+    - "3.9"
+    - "3.10"
+
+branches:
+    only:
+        - master
+
+sudo: false
+
+install:
+    - pip install sphinx
+    - pip install -r requirements-travis.txt
+
+script:
+    - inspekt checkall --disable-style E501,E265,W601,E402,E722,E741 --enable-lint W0611,W1201 --no-license-check

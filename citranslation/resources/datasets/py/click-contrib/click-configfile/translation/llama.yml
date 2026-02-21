@@ -1,0 +1,32 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.7-dev"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install -q -U pytest
+      - name: Install project
+        run: python setup.py -q install
+      - name: Run tests
+        run: python --version
+        run: py.test tests
+      - name: Cache pip packages
+        uses: actions/cache@v2
+        with:
+          path: $HOME/.cache/pip
+          key: ${{ runner.os }}-pip-cache
+```
+|End-of-Code|

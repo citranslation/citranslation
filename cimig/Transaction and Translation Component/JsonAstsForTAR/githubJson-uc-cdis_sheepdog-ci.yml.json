@@ -1,0 +1,194 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "ci"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "opened"
+       },
+       {
+        "children": [],
+        "type": "reopened"
+       }
+      ],
+      "type": "types"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}"
+     }],
+     "type": "group"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "cancel-in-progress"
+    }
+   ],
+   "type": "concurrency"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "security pipeline"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "uc-cdis/.github/.github/workflows/securitypipeline.yaml@version"
+       }],
+       "type": "uses"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "false"
+        }],
+        "type": "python-poetry"
+       }],
+       "type": "with"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "inherit"
+       }],
+       "type": "secrets"
+      }
+     ],
+     "type": "security"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "python-cmd"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "uc-cdis/.github/.github/workflows/python_unit_test.yaml@version"
+       }],
+       "type": "uses"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "tests/ci_setup.sh"
+         }],
+         "type": "setup-script"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "tests/ci_commands_script.sh"
+         }],
+         "type": "test-script"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9"
+         }],
+         "type": "python-version"
+        }
+       ],
+       "type": "with"
+      }
+     ],
+     "type": "unittest"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "build image and push"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "uc-cdis/.github/.github/workflows/image_build_push.yaml@version"
+       }],
+       "type": "uses"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "${{ secrets.ecr_aws_access_key_id }}"
+         }],
+         "type": "ecr_aws_access_key_id"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "${{ secrets.ecr_aws_secret_access_key }}"
+         }],
+         "type": "ecr_aws_secret_access_key"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "${{ secrets.quay_username }}"
+         }],
+         "type": "quay_username"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "${{ secrets.quay_robot_token }}"
+         }],
+         "type": "quay_robot_token"
+        }
+       ],
+       "type": "secrets"
+      }
+     ],
+     "type": "imagebuildandpush"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

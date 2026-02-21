@@ -1,0 +1,38 @@
+Here is the equivalent GitHub Action configuration for the provided Travis CI configuration:
+
+```yaml
+name: Node CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [6, 7, 8, 9, 10]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+
+|End-of-Code|
+```
+
+This GitHub Action configuration does the following:
+
+- It sets up a workflow that runs on every push and pull request.
+- It uses the `ubuntu-latest` runner.
+- It sets up a matrix strategy with Node.js versions 6, 7, 8, 9, and 10.
+- It checks out the repository.
+- It sets up the Node.js environment for each matrix combination.
+- It runs `npm ci` to install the project dependencies.
+- It runs `npm run build` if it exists.
+- It runs `npm test` to run the tests.

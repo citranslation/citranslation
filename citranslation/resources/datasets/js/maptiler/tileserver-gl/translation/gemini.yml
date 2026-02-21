@@ -1,0 +1,44 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      CXX: g++-4.8
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '10'
+        cache: 'npm'
+
+    - name: Install system dependencies
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update -qq
+        sudo apt-get install -y --no-install-recommends g++-4.8 libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential xvfb libgles2-mesa-dev libgbm-dev libxxf86vm-dev
+
+    - name: Install npm dependencies
+      run: npm install
+
+    - name: Download and extract test data
+      run: |
+        wget -O test_data.zip https://github.com/maptiler/tileserver-gl/releases/download/v1.3.0/test_data.zip
+        unzip -q test_data.zip -d test_data
+
+    - name: Run tests
+      run: xvfb-run --server-args="-screen 0 1024x768x24" npm test
+```
+|End-of-Code|

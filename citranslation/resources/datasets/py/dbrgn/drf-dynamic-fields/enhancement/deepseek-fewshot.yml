@@ -1,0 +1,36 @@
+Sure, here is the equivalent GitHub Action configuration for the provided Travis CI configuration:
+
+```yaml
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "pypy3.10"]
+        django: ["Django<3.0", "Django<3.2", "Django<4.0", "Django<5.0"]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install "${{ matrix.django }}"
+        pip install Markdown
+    - name: Tests
+      run: |
+        python test.py
+```
+
+Please note that the Travis CI configuration you provided does not include a requirements.txt file, so I've assumed that you want to install Markdown as a dependency. If you have a specific requirements.txt file, you can replace the `pip install Markdown` line with `pip install -r requirements.txt`.
+
+Also, the Travis CI configuration you provided does not include a `make` command to build the project, so I've assumed that you want to run `python test.py` as the build command. If you have a specific `make` command, you can replace the `make` line with your command.
+
+|End-of-Code|

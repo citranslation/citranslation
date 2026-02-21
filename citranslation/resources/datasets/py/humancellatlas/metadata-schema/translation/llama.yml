@@ -1,0 +1,42 @@
+Here is the migrated GitHub Action configuration:
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Python
+        run: python3.6 -m ensurepip
+        shell: bash
+      - name: Install dependencies
+        run: pip install -r src/requirements.txt
+      - name: Run schema linter
+        run: python src/schema_linter.py --environment "${GITHUB_REF}"
+      - name: Run tests
+        run: |
+          cd tests
+          npm install
+          npm test
+      - name: Send notification
+        uses: slack-dev/slack-github-action@v1
+        with:
+          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          channel: ${{ secrets.SLACK_CHANNEL }}
+          message: "Build failed" | "Build succeeded"
+          on: failure | success
+
+secrets:
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
+```
+
+|End-of-Code|

@@ -1,0 +1,40 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-24.04  # Equivalent to noble
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: "3.8"
+            tox_env: py38
+          - python: "3.9"
+            tox_env: py39
+          - python: "pypy-3.7"
+            tox_env: pypy3.7
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: 'pip'
+          cache-dependency-path: 'requirements.txt'
+
+      - name: Install dependencies
+        run: |
+          pip install -U -r requirements.txt
+          pip install .
+          pip install tox
+
+      - name: Run tests
+        run: |
+          tox -e ${{ matrix.tox_env }}
+          pytest --dead-fixtures
+
+|End-of-Code|

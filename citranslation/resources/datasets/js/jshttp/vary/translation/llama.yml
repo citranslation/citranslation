@@ -1,0 +1,100 @@
+Here is the migrated GitHub Action configuration:
+```
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: |
+          0.8
+          0.10
+          0.12
+          1.8
+          2.5
+          3.3
+          4.9
+          5.12
+          6.16
+          7.10
+          8.17
+          9.11
+          10.22
+          11.15
+          12.19
+          13.14
+          14.15
+          15.5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Configure npm
+        run: |
+          npm config set shrinkwrap false
+          npm rm --save-dev benchmark
+          npm rm --save-dev beautify-benchmark
+
+      - name: Install dependencies
+        run: |
+          if [[ $TRAVIS_NODE_VERSION =~ ^0\.8$ ]]; then
+            npm install --save-dev mocha@1.21.5
+          elif [[ $TRAVIS_NODE_VERSION =~ ^0\.10$ ]]; then
+            npm install --save-dev mocha@2.5.3
+          elif [[ $TRAVIS_NODE_VERSION =~ ^0\.12$ ]]; then
+            npm install --save-dev mocha@3.5.3
+          elif [[ $TRAVIS_NODE_VERSION =~ ^1\.8$ ]]; then
+            npm install --save-dev mocha@5.2.0
+          elif [[ $TRAVIS_NODE_VERSION =~ ^2\.5$ ]]; then
+            npm install --save-dev mocha@6.2.2
+          elif [[ $TRAVIS_NODE_VERSION =~ ^3\.3$ ]]; then
+            npm install --save-dev mocha@7.2.0
+          fi
+          if [[ $TRAVIS_NODE_VERSION =~ ^0\.8$ && $TRAVIS_NODE_VERSION =~ ^0\.10$ ]]; then
+            npm rm --silent --save-dev istanbul
+          fi
+          if [[ $TRAVIS_NODE_VERSION =~ ^0\.8$ && $TRAVIS_NODE_VERSION =~ ^0\.10$ ]]; then
+            npm install --save-dev supertest@1.1.0
+          elif [[ $TRAVIS_NODE_VERSION =~ ^0\.12$ ]]; then
+            npm install --save-dev supertest@2.0.0
+          elif [[ $TRAVIS_NODE_VERSION =~ ^1\.8$ ]]; then
+            npm install --save-dev supertest@3.4.2
+          fi
+          if [[ $TRAVIS_NODE_VERSION =~ ^0\.8$ ]]; then
+            node -pe 'Object.keys(require("./package").devDependencies).join("\n")' | \
+              grep -E '^eslint(-|$)' | \
+              xargs -n 1 npm rm --save-dev
+          fi
+
+      - name: Run tests
+        run: |
+          if npm -ps ls istanbul | grep -q istanbul; then
+            npm run-script test-travis
+          else
+            npm test
+          fi
+
+      - name: Run linting
+        run: |
+          if npm -ps ls eslint | grep -q eslint; then
+            npm run-script lint
+          fi
+
+      - name: Upload coverage
+        if: steps.matrix.node < 10
+        run: |
+          npm install --save-dev coveralls@2
+          coveralls <./coverage/lcov.info |End-of-Code|
+```

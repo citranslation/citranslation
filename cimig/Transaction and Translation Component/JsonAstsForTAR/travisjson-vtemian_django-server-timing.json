@@ -1,0 +1,86 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "2.7"
+    },
+    {
+     "children": [],
+     "type": "3.3"
+    },
+    {
+     "children": [],
+     "type": "3.4"
+    },
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7-dev"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "django_version=1.8.18"
+    },
+    {
+     "children": [],
+     "type": "django_version=1.9.13"
+    },
+    {
+     "children": [],
+     "type": "django_version=1.10.8"
+    },
+    {
+     "children": [],
+     "type": "django_version=1.11.10"
+    },
+    {
+     "children": [],
+     "type": "django_version=2.0.2"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install django==$django_version"
+    },
+    {
+     "children": [],
+     "type": "pip install -r requirements.dev.txt"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "make test"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

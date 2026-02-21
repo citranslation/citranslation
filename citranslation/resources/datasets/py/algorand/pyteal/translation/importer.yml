@@ -1,0 +1,59 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  Python_3_8:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install -r requirements.txt
+    - run: pytest
+    - run: mypy pyteal
+    - run: python3 -c "import pyteal" scripts/generate_init.py --check
+    - run: black --check .
+  Python_3_9:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.9'
+    - run: pip install -r requirements.txt
+    - run: pytest
+    - run: mypy pyteal
+    - run: python3 -c "import pyteal" scripts/generate_init.py --check
+    - run: black --check .
+  PyPi_release:
+    needs:
+    - Python_3_8
+    - Python_3_9
+    runs-on: ubuntu-latest
+    if: ${{ github.ref && github.event_name == 'push' }}
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.9'
+    - run: pip install -r requirements.txt
+    - run: skip
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         username: __token__
+#         'on':
+#           tags: true
+#           branch: master
+#         distributions: sdist bdist_wheel
+#       if: "${{ github.event_name == 'push' && ${{ github.ref }} }}"

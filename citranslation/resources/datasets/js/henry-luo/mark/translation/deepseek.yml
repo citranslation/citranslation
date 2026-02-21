@@ -1,0 +1,30 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: stable
+    - name: Install dependencies
+      run: |
+        npm install -g codecov
+        npm install boolbase nth-check htmlparser2
+        npm install tape tap-spec istanbul
+    - name: Run tests and coverage
+      run: |
+        npm run coverage
+        codecov
+```
+
+This configuration will trigger the workflow on every push and pull request to the repository. It will use the latest version of Ubuntu to run the tests, set up Node.js, install the necessary dependencies, and run the tests and coverage.

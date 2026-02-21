@@ -1,0 +1,58 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Python application
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install .
+    - name: Install scipy
+      run: pip install scipy
+    - name: Test with pytest
+      run: pytest
+
+notifications:
+  slack:
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    channels:
+      - bayeso:FWBoHH9TMqjKUJWkZxCaTNVE
+```
+
+Please note that the `dist: noble` in Travis CI is not a recognized option in GitHub Actions. The `actions/setup-python@v2` step is used to set up the Python environment, which is the closest equivalent in GitHub Actions. The `noble` distribution is not available in GitHub Actions.
+
+Also, the `notifications` section in Travis CI is used to send notifications to a Slack channel. In GitHub Actions, you can use the `slack` action to send notifications to a Slack channel. The `GITHUB_TOKEN` is used to authenticate with the Slack API.
+
+The `runs-on` field in the GitHub Actions configuration specifies the type of machine to run the job on. The `ubuntu-latest` value is used to run the job on the latest version of Ubuntu.
+
+The `strategy` field is used to specify the matrix of Python versions to test. The `matrix` field is used to specify the different versions of Python to test.
+
+The `steps` field is used to specify the steps to run in the job. Each step is a separate action that can be used to check out the code, set up the Python environment, install dependencies, run tests, and more.
+
+The `uses` keyword is used to use a GitHub Action. The `actions/checkout@v2` action is used to check out the code, and the `actions/setup-python@v2` action is used to set up the Python environment.
+
+The `name` and `run` fields are used to specify the name of the step and the command to run. The `pip install --upgrade pip` command is used to upgrade pip, and the `pip install .` and `pip install scipy` commands are used to install the dependencies and scipy, respectively.
+
+The `needs` keyword is used to specify that a job depends on another job. In this case, the `test` job depends on the `build` job.
+
+The `secrets` field is used to specify the secrets to use in the Slack notification. The `GITHUB_TOKEN` secret is used to authenticate with the Slack API.
+
+The `channels` field is used to specify the Slack channels to send the notifications to.

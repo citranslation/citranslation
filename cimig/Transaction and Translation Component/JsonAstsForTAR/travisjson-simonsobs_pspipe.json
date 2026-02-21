@@ -1,0 +1,47 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "bionic"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "branch = master and type = push"
+   }],
+   "type": "if"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "docker-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

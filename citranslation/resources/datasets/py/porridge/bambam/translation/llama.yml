@@ -1,0 +1,27 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          pip install -r requirements-dev.txt
+      - name: Run tests
+        run: |
+          python -c 'import bambam'
+      - name: Lint code
+        run: |
+          flake8 *.py
+      - name: Format code
+        run: |
+          autopep8 -d *.py | awk 'BEGIN{had_data=0}{print;had_data=1}END{exit had_data}'
+|End-of-Code|
+```
+Note that in GitHub Actions, we use the `runs-on` keyword to specify the environment (in this case, an `ubuntu-latest` environment), and the `steps` keyword to define the sequence of actions. Each step is a separate command that is executed in sequence.

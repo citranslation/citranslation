@@ -1,0 +1,33 @@
+name: Django Tests
+permissions:
+  contents: read # Restrict to read-only permissions for repository contents
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    environment: test
+
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.11]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install poetry
+        run: pipx install poetry
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+          cache: poetry
+      - run: poetry install
+      - name: Run Tests
+        run: |
+          poetry run python manage.py compress
+          poetry run pytest

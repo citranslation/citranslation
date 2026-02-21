@@ -1,0 +1,42 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        node-version: [20, 18, 16, 14, 12]
+        # GitHub Actions hosted runners are primarily x64 (amd64). 
+        # No specific 'arch' key is needed in the matrix unless using self-hosted runners.
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get install -y python3 php-cli
+          # Note: GitHub hosted runners are amd64, so s390x logic is preserved for compatibility
+          if [[ $(uname -m) == 's390x' ]]; then
+            sudo apt-get install -y bc
+          fi
+
+      - name: Install dependencies
+        run: npm install
+
+|End-of-Code|

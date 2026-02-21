@@ -1,0 +1,281 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "docker-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "docker-cmd"
+        }],
+        "type": "services"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "make build-docker-cmd"
+        }],
+        "type": "install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "make checkstyle-docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "make test-docker-cmd"
+         }
+        ],
+        "type": "script"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "docker-cmd"
+        }],
+        "type": "after_success"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.5"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "make build-linux"
+         },
+         {
+          "children": [],
+          "type": "pip install coveralls"
+         }
+        ],
+        "type": "install"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "make build-linux"
+         },
+         {
+          "children": [],
+          "type": "pip install coveralls"
+         }
+        ],
+        "type": "install"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "make build-linux"
+         },
+         {
+          "children": [],
+          "type": "pip install coveralls"
+         }
+        ],
+        "type": "install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "make test-coverage"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "osx"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "xcode11.2"
+        }],
+        "type": "osx_image"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "shell"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "make build-macos"
+         },
+         {
+          "children": [],
+          "type": "pip3 install coveralls"
+         }
+        ],
+        "type": "install"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "osx"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "xcode12"
+        }],
+        "type": "osx_image"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "shell"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "make build-macos"
+         },
+         {
+          "children": [],
+          "type": "pip3 install coveralls"
+         }
+        ],
+        "type": "install"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "make checkstyle"
+    },
+    {
+     "children": [],
+     "type": "make test-coverage"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coveralls"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

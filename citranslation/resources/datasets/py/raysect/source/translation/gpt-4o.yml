@@ -1,0 +1,41 @@
+```yaml
+name: Python package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+        numpy-version: [1.15.4, 1.19.4]
+        include:
+          - python-version: 3.8
+            numpy-version: 1.15.4
+          - python-version: 3.9
+            numpy-version: 1.19.4
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        pip install numpy==${{ matrix.numpy-version }} scipy matplotlib>=3 cython>=0.28
+        bash dev/build.sh
+
+    - name: Run tests
+      run: bash dev/test.sh
+|End-of-Code|
+```

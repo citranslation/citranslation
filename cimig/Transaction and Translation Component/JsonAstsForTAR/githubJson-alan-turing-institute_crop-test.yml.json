@@ -1,0 +1,280 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "unit tests"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "branch-name"
+       },
+       {
+        "children": [],
+        "type": "branch-name"
+       }
+      ],
+      "type": "branches"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "workflow_dispatch"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      }],
+      "type": "build"
+     }],
+     "type": "build"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "actions/setup-python@version"
+         }],
+         "type": "uses"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "3.8"
+           }],
+           "type": "python-version"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "x64"
+           }],
+           "type": "architecture"
+          }
+         ],
+         "type": "with"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "actions/checkout@version"
+        }],
+        "type": "uses"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "harmon758/postgresql-action@version"
+         }],
+         "type": "uses"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "11"
+            }],
+            "type": "postgresql version"
+           }],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "cropdb"
+            }],
+            "type": "postgresql db"
+           }],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "postgres"
+            }],
+            "type": "postgresql user"
+           }],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "postgres"
+            }],
+            "type": "postgres password"
+           }],
+           "type": "OBJ-NODE"
+          }
+         ],
+         "type": "with"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "localhost"
+           }],
+           "type": "crop_sql_host"
+          }],
+          "type": "OBJ-NODE"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "postgres"
+           }],
+           "type": "crop_sql_user"
+          }],
+          "type": "OBJ-NODE"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "postgres"
+           }],
+           "type": "crop_sql_pass"
+          }],
+          "type": "OBJ-NODE"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "cropdb"
+           }],
+           "type": "crop_sql_dbname"
+          }],
+          "type": "OBJ-NODE"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "5432"
+           }],
+           "type": "crop_sql_port"
+          }],
+          "type": "OBJ-NODE"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "$pythonpath:$(pwd)"
+           }],
+           "type": "pythonpath"
+          }],
+          "type": "OBJ-NODE"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "testname"
+           }],
+           "type": "crop_stark_username"
+          }],
+          "type": "OBJ-NODE"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "testpass"
+           }],
+           "type": "crop_stark_pass"
+          }],
+          "type": "OBJ-NODE"
+         }
+        ],
+        "type": "env"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "pip install -r requirements.txt"
+        }],
+        "type": "run"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "git submodule update --init --recursive"
+        }],
+        "type": "run"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "__app__"
+         }],
+         "type": "working-directory"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "pytest -vv"
+         }],
+         "type": "run"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "steps"
+    }
+   ],
+   "type": "on"
+  }
+ ],
+ "type": "github-file"
+}

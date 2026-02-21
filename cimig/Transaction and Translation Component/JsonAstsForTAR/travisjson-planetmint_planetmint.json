@@ -1,0 +1,270 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "focal"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.9"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "docker-cmd"
+     }],
+     "type": "global"
+    },
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "toxenv=flake8"
+      },
+      {
+       "children": [],
+       "type": "toxenv=docsroot"
+      }
+     ],
+     "type": "matrix"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "planetmint_database_backend=tarantool_db"
+          },
+          {
+           "children": [],
+           "type": "planetmint_database_ssl="
+          }
+         ],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "planetmint_database_backend=tarantool_db"
+          },
+          {
+           "children": [],
+           "type": "planetmint_database_ssl="
+          },
+          {
+           "children": [],
+           "type": "planetmint_ci_abci=enable"
+          }
+         ],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "planetmint_database_backend=localmongodb"
+          },
+          {
+           "children": [],
+           "type": "planetmint_database_ssl="
+          }
+         ],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "planetmint_database_backend=localmongodb"
+          },
+          {
+           "children": [],
+           "type": "planetmint_database_ssl="
+          },
+          {
+           "children": [],
+           "type": "planetmint_ci_abci=enable"
+          }
+         ],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "planetmint_acceptance_test=enable"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "planetmint_integration_test=enable"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    }
+   ],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "sudo .ci/PATH-OR-URL"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": ".ci/PATH-OR-URL"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": ".ci/PATH-OR-URL"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": ".ci/travis_script.sh"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": ".ci/PATH-OR-URL"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

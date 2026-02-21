@@ -1,0 +1,39 @@
+```yaml
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python-version: '2.7'
+            allowed-failure: false
+          - python-version: '3.6'
+            allowed-failure: false
+          - python-version: 'pypy-2.7'
+            allowed-failure: true
+          - python-version: 'pypy-3.7'
+            allowed-failure: true
+    continue-on-error: ${{ matrix.allowed-failure }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install
+        run: |
+          pip install -U setuptools pip
+          python setup.py clean --all
+          python setup.py install
+      - name: Test
+        run: |
+          python setup.py test
+```
+|End-of-Code|

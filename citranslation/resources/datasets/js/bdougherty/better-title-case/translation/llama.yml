@@ -1,0 +1,29 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ["node", "lts/*"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+        working-directory:.
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package*.json') }}
+      - name: Run tests
+        run: npm test
+        working-directory:.
+|End-of-Code|
+```
+Note that in GitHub Actions, we use the `runs-on` keyword to specify the environment (in this case, an `ubuntu-latest` environment), and the `strategy` keyword to specify the matrix of nodes to run. We also use the `uses` keyword to specify the actions to run, and the `with` keyword to pass parameters to those actions.

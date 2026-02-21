@@ -1,0 +1,42 @@
+name: CI/CD
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Equivalent to Travis CI cron event
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Use Node.js LTS
+      uses: actions/setup-node@v3
+      with:
+        node-version: 'lts/*'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build Data and Site
+      run: |
+        npm run build.data
+        npm run build.site
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: master
+        folder: build # Or the specific output directory of your build scripts
+        clean: false # Equivalent to skip-cleanup: true
+        single-commit: false # Equivalent to keep-history: true
+
+|End-of-Code|

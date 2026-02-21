@@ -1,0 +1,498 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "minimal"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "jammy"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "openssl aes-256-cbc -k $encrypted_e6af0c606e27_key -iv $encrypted_e6af0c606e27_iv -in test/google_credentials.json.enc -out test/google_credentials.json -d"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "git clone --branch=$pender_branch PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "cp config/config.yml.example config/config.yml"
+    },
+    {
+     "children": [],
+     "type": "cp config/database.yml.example config/database.yml"
+    },
+    {
+     "children": [],
+     "type": "cp config/sidekiq.yml.example config/sidekiq.yml"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "git clone --branch=$check_api_branch PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "cp config/config.yml.example config/config.yml"
+    },
+    {
+     "children": [],
+     "type": "cp config/database.yml.example config/database.yml"
+    },
+    {
+     "children": [],
+     "type": "cp config/sidekiq.yml.example config/sidekiq.yml"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "git clone --branch=$alegre_branch PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "cp .env_file.test .env_file"
+    },
+    {
+     "children": [],
+     "type": "cp ../test/google_credentials.json google_credentials.json"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "git clone --branch=$presto_branch PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "cp .env_file.test .env_file"
+    },
+    {
+     "children": [],
+     "type": "cp ../test/google_credentials.json google_credentials.json"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "cp config.js.example config.js"
+    },
+    {
+     "children": [],
+     "type": "cp config.js.example test/config.js"
+    },
+    {
+     "children": [],
+     "type": "cp config-build.js.example config-build.js"
+    },
+    {
+     "children": [],
+     "type": "cp config-server.js.example config-server.js"
+    },
+    {
+     "children": [],
+     "type": "cp test/config.yml.example test/config.yml"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "travis_job_name=$travis_job_name travis_branch=$travis_branch ./PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "max_web_curl=3000;"
+    },
+    {
+     "children": [],
+     "type": "web_curl_count=0; until curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "docker-cmd"
+    }
+   ],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "tests"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "branch = develop or branch = master or commit_message =~ /\\\\[full ci\\\\]/ or commit_message =~ /\\\\[smoke tests\\\\]/"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "integration-and-unit-tests"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "docker-cmd"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "tests"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "media-similarity-tests"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "branch = develop or branch = master or commit_message =~ /\\\\[full ci\\\\]/ or commit_message =~ /\\\\[media similarity tests\\\\]/"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "docker-cmd"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "tests"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "text-similarity-tests"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "branch = develop or branch = master or commit_message =~ /\\\\[full ci\\\\]/ or commit_message =~ /\\\\[text similarity tests\\\\]/"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "docker-cmd"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "tests"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "unit-tests"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "branch != develop and branch != master and not commit_message =~ /\\\\[full ci\\\\]/ and not commit_message =~ /\\\\[smoke tests\\\\]/ and not commit_message =~ /\\\\[media similarity tests\\\\]/ and not commit_message =~ /\\\\[text similarity tests\\\\]/"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "docker-cmd"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "size=$(du -k build/web/js/index.bundle.js | cut -f1) && size2=$(du -k build/web/js/vendor.bundle.js | cut -f1) && totalsize=$((size+size2)) && echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "kill -9 $(pgrep ngrok)"
+    }
+   ],
+   "type": "after_script"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "token"
+     }],
+     "type": "secure"
+    }],
+    "type": "slack"
+   }],
+   "type": "notifications"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "app=check"
+     }],
+     "type": "matrix"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "token"
+        }],
+        "type": "secure"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "token"
+        }],
+        "type": "secure"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "token"
+        }],
+        "type": "secure"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "token"
+        }],
+        "type": "secure"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "token"
+        }],
+        "type": "secure"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "token"
+        }],
+        "type": "secure"
+       }],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "global"
+    }
+   ],
+   "type": "env"
+  }
+ ],
+ "type": "travis-file"
+}

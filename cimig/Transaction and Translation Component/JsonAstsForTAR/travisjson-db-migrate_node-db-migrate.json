@@ -1,0 +1,178 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "8"
+    },
+    {
+     "children": [],
+     "type": "10"
+    },
+    {
+     "children": [],
+     "type": "node"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "EMAIL"
+      }],
+      "type": "recipients"
+     }],
+     "type": "email"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "PATH-OR-URL"
+       }],
+       "type": "urls"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "change"
+       }],
+       "type": "on_success"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "always"
+       }],
+       "type": "on_failure"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "FALSE"
+       }],
+       "type": "on_start"
+      }
+     ],
+     "type": "webhooks"
+    }
+   ],
+   "type": "notifications"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "node"
+       }],
+       "type": "node_js"
+      }],
+      "type": "OBJ-NODE"
+     }],
+     "type": "allow_failures"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    }
+   ],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "npm"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "node_modules"
+     }],
+     "type": "directories"
+    }
+   ],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-toolchain-r-test"
+      }],
+      "type": "sources"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "g++-4.8"
+      }],
+      "type": "packages"
+     }
+    ],
+    "type": "apt"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "export-cmd"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "cp test/PATH-OR-URL test/db.config.json"
+   }],
+   "type": "before_script"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,23 @@
+os: linux
+dist: noble
+language: python
+python:
+  - 3.8
+  - 3.9
+  - 3.10
+  - 3.11
+  - 3.12
+  - 3.13
+  - nightly
+  - "pypy3.8"    
+  - "pypy3.9"     
+  - "pypy3.10"    
+  - "pypy3.11"  
+install:
+    - pip install --upgrade pytest coveralls coverage
+    - if [[ $TRAVIS_PYTHON_VERSION == 'pypy'* ]]; then export TRAVIS_WAIT=45; else export TRAVIS_WAIT=20; fi
+script:
+  - pwd
+  - coverage run --source=neat -m pytest tests
+after_success:
+    coveralls

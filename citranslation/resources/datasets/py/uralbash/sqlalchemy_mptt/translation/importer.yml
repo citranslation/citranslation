@@ -1,0 +1,41 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: # this agent type is not supported: [[{"dist"=>"noble"}]]
+             ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install -r requirements-test.txt
+    - run: python setup.py nosetests
+    - run: pip install coveralls
+      if: "${{ success() }}"
+    - run: coveralls
+      if: "${{ success() }}"
+#     # This item has no matching transformer
+#     - email: sacrud@uralbash.ru
+    - uses: rectalogic/notify-irc@v1
+      if: "${{ github.event_name != 'pull_request' }}"
+      with:
+        server: chat.freenode.net
+        port: 6697
+        channel: sacrud
+        nickname: Default nickname
+        message: Default message
+    strategy:
+      matrix:
+        python:
+        - '3.8'
+        - pypy-3.8

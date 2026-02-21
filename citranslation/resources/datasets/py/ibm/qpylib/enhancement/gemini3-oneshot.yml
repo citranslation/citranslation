@@ -1,0 +1,61 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - '*'
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip list
+
+      - name: Lint and Test
+        run: |
+          chmod +x lint.sh test.sh
+          ./lint.sh && ./test.sh
+
+      - name: SonarCloud Scan
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'IBM/qpylib'
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Build Package
+        run: |
+          chmod +x build.sh
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            TAG_NAME=${GITHUB_REF#refs/tags/}
+            ./build.sh "${TAG_NAME}"
+          else
+            ./build.sh "0.0.dev${{ github.run_number }}"
+          fi
+
+      - name: Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/qpylib-${{ github.ref_name }}.tar.gz
+            dist/qpylib-${{ github.ref_name }}-py3-none-any.whl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+|End-of-Code|

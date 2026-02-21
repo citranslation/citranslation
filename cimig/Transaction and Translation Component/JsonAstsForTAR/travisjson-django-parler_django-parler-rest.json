@@ -1,0 +1,217 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "2.7"
+    },
+    {
+     "children": [],
+     "type": "3.4"
+    },
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "django=\\\"django>=1.11.0,<1.12.0\\\""
+    },
+    {
+     "children": [],
+     "type": "django=\\\"django>=2.0,<2.1\\\""
+    },
+    {
+     "children": [],
+     "type": "django=\\\"django>=2.1,<2.2\\\""
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "django=\\\"django>=2.0,<2.1\\\""
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "django=\\\"django>=2.1,<2.2\\\""
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.4"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "django=\\\"django>=2.1,<2.2\\\""
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "exclude"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install codecov"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install $django -e ."
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coverage-cmd"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "codecov"
+   }],
+   "type": "after_success"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "master"
+    }],
+    "type": "only"
+   }],
+   "type": "branches"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "EMAIL"
+       }],
+       "type": "recipients"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "never"
+       }],
+       "type": "on_success"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "always"
+       }],
+       "type": "on_failure"
+      }
+     ],
+     "type": "email"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "never"
+       }],
+       "type": "on_success"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "always"
+       }],
+       "type": "on_failure"
+      }
+     ],
+     "type": "slack"
+    }
+   ],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

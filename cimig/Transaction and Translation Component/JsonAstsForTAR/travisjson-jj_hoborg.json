@@ -1,0 +1,81 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "trusty"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "gh-pages"
+    }],
+    "type": "except"
+   }],
+   "type": "branches"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "perl"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "5.14"
+    },
+    {
+     "children": [],
+     "type": "5.12"
+    },
+    {
+     "children": [],
+     "type": "5.16"
+    }
+   ],
+   "type": "perl"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "cpanm extutils::pkgconfig"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "perl PATH-OR-URL && make test"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

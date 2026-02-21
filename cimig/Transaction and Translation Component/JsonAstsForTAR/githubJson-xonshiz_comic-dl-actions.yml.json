@@ -1,0 +1,189 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "workflow_dispatch"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "branch-name"
+        },
+        {
+         "children": [],
+         "type": "branch-name"
+        }
+       ],
+       "type": "branches"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "v*.*.*"
+       }],
+       "type": "tags"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "**.md"
+        },
+        {
+         "children": [],
+         "type": "**.md"
+        },
+        {
+         "children": [],
+         "type": "**.yml"
+        },
+        {
+         "children": [],
+         "type": "license"
+        },
+        {
+         "children": [],
+         "type": ".gitattributes"
+        },
+        {
+         "children": [],
+         "type": ".gitignore"
+        },
+        {
+         "children": [],
+         "type": ".docker-cmd"
+        }
+       ],
+       "type": "paths-ignore"
+      }
+     ],
+     "type": "push"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "branch-name"
+       }],
+       "type": "branches"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "**.md"
+        },
+        {
+         "children": [],
+         "type": "**.md"
+        },
+        {
+         "children": [],
+         "type": "**.yml"
+        },
+        {
+         "children": [],
+         "type": "license"
+        },
+        {
+         "children": [],
+         "type": ".gitattributes"
+        },
+        {
+         "children": [],
+         "type": ".gitignore"
+        },
+        {
+         "children": [],
+         "type": ".docker-cmd"
+        }
+       ],
+       "type": "paths-ignore"
+      }
+     ],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "sdr-enthusiasts/common-github-workflows/.github/workflows/build_and_push_image.yml@version"
+      }],
+      "type": "uses"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "TRUE"
+        }],
+        "type": "platform_linux_arm32v7_enabled"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "FALSE"
+        }],
+        "type": "platform_linux_arm64v8_enabled"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "TRUE"
+        }],
+        "type": "push_enabled"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ github.repository_owner }}"
+        }],
+        "type": "ghcr_repo_owner"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ github.repository }}"
+        }],
+        "type": "ghcr_repo"
+       }
+      ],
+      "type": "with"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "${{ secrets.github_token }}"
+       }],
+       "type": "ghcr_token"
+      }],
+      "type": "secrets"
+     }
+    ],
+    "type": "build_and_push"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

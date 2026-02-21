@@ -1,0 +1,29 @@
+name: Python CI
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "nightly"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          pip install -U pip
+          pip install -U wheel setuptools pbr
+          pip install -U .[docs,test]
+          pip list
+          python --version
+      - name: Run checks
+        run: make check
+      - name: Convert README
+        run: rst2html.py README.rst README.html
+|End-of-Code|

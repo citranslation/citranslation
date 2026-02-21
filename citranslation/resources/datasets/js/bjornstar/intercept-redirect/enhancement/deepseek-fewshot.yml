@@ -1,0 +1,209 @@
+## 1. Input: Travis CI
+```yaml
+language: node_js
+node_js:
+  - "16"
+```
+## 2. Input: Reference Migration Pairs
+-Example 1
+  -Travis CI:
+```yaml
+language: node_js
+node_js:
+  - '16'
+  - 'node'
+```
+  -GitHub Actions:
+```yaml
+name: Test library
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, node]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    # Tests do not run on built code by now, needs to be fixed
+    # - run: npm run build --if-present
+    - run: npm test
+```
+-Example 2
+  -Travis CI:
+```yaml
+language: node_js
+node_js:
+  - "14"
+  - "16"
+  - "18"
+```
+  -GitHub Actions:
+```yaml
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [14, 16, 18]
+    name: Test
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        name: Use Node.js ${{ matrix.node-version }}
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install
+        run: npm ci
+
+      - name: Test
+        run: npm run test
+```
+-Example 3
+  -Travis CI:
+```yaml
+language: node_js
+node_js:
+  - "18"
+  - "16"
+  - "14"
+```
+  -GitHub Actions:
+```yaml
+name: unit testing
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 14, 16, 18 ]
+
+    name: "Test with NodeJS v${{ matrix.node-version }}"
+    steps:
+       - uses: actions/checkout@v3
+       - name: Setup NodeJS v${{ matrix.node-version }}
+         uses: actions/setup-node@v3
+         with:
+            node-version: ${{ matrix.node-version }}
+       - run: npm ci
+       - run: npm test
+```
+## 3. Task:
+Migrate the above Travis CI configuration to Github Action, using the provided migration pair as reference. 
+
+## 4. Output: GitHub Action
+```yaml
+name: Test library
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, node]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    # Tests do not run on built code by now, needs to be fixed
+    # - run: npm run build --if-present
+    - run: npm test
+
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [14, 16, 18]
+    name: Test
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        name: Use Node.js ${{ matrix.node-version }}
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install
+        run: npm ci
+
+      - name: Test
+        run: npm run test
+
+name: unit testing
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 14, 16, 18 ]
+
+    name: "Test with NodeJS v${{ matrix.node-version }}"
+    steps:
+       - uses: actions/checkout@v3
+       - name: Setup NodeJS v${{ matrix.node-version }}
+         uses: actions/setup-node@v3
+         with:
+            node-version: ${{ matrix.node-version }}
+       - run: npm ci
+       - run: npm test
+```
+|End-of-Code|

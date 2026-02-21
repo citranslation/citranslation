@@ -1,0 +1,74 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "ci"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "docs/**"
+       },
+       {
+        "children": [],
+        "type": "*.md"
+       }
+      ],
+      "type": "paths-ignore"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "docs/**"
+       },
+       {
+        "children": [],
+        "type": "*.md"
+       }
+      ],
+      "type": "paths-ignore"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "fastify/workflows/.github/workflows/plugins-ci.yml@version"
+      }],
+      "type": "uses"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "lint"
+      }],
+      "type": "with"
+     }
+    ],
+    "type": "test"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

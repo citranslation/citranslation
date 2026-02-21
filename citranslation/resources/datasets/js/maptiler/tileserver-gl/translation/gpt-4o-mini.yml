@@ -1,0 +1,34 @@
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '10'
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install -qq libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
+        sudo apt-get install -qq xvfb libgles2-mesa-dev libgbm-dev libxxf86vm-dev
+        npm install
+
+    - name: Download test data
+      run: |
+        wget -O test_data.zip https://github.com/maptiler/tileserver-gl/releases/download/v1.3.0/test_data.zip
+        unzip -q test_data.zip -d test_data
+
+    - name: Run tests
+      run: xvfb-run --server-args="-screen 0 1024x768x24" npm test
+|End-of-Code|
+```

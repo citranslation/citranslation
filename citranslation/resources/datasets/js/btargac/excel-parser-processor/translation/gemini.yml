@@ -1,0 +1,55 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Node.js on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        # "node" in Travis CI typically means the latest stable version.
+        # We use a recent LTS version here for stability.
+        node-version: [20.x]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        # Caching is handled by the setup-node action itself
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build project
+      run: npm run build
+
+    - name: Run tests
+      run: npm run test
+
+    - name: Upload coverage to Codecov
+      # Replaces 'npm install -g codecov' and 'codecov' command
+      uses: codecov/codecov-action@v4
+      # For private repos, a token is needed.
+      # with:
+      #   token: ${{ secrets.CODECOV_TOKEN }}
+
+    - name: Create Linux distribution
+      if: runner.os == 'Linux'
+      run: npm run dist
+
+    - name: Create macOS and Windows distributions
+      if: runner.os == 'macOS'
+      run: npm run dist -- --mac --win
+```|End-of-Code|

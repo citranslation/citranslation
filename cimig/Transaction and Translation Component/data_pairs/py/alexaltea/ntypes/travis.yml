@@ -1,0 +1,20 @@
+language: python
+
+notifications:
+  email: false
+
+python:
+  - 2.7
+  - 3.5
+
+install:
+  - pip install coveralls
+  - pip install .
+
+script:
+  - python test.py
+  - python setup.py check --strict --metadata
+  - coverage run --source=nativetypes test.py
+
+after_success:
+  - coveralls

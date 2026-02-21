@@ -1,0 +1,64 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:9.6
+        env:
+          POSTGRES_DB: sequelize
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: node
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+    - run: npx istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly test/overall.test.js -- --exit
+    - run: cat ./coverage/lcov.info | npx coveralls
+    - run: rm -rf ./coverage
+    - name: Notify
+      uses: dawidd6/action-send-mail@v2
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: Build status
+        body: |
+          Build status: ${{ job.status }}
+        to: KSDaemon@ya.ru
+        from: KSDaemon@ya.ru
+        smtp_debug: true
+        content_type: text/plain
+      if: ${{ always() }}
+```
+
+Please replace `EMAIL_USERNAME` and `EMAIL_PASSWORD` with your actual Gmail username and password. These are stored as secrets in your GitHub repository settings.
+
+This GitHub Action configuration does the following:
+
+1. It runs on every push and pull request.
+2. It uses the latest version of Ubuntu.
+3. It sets up Node.js.
+4. It installs dependencies and builds the project.
+5. It runs tests.
+6. It generates coverage report and sends it to coveralls.
+7. It removes the coverage directory.
+8. It sends an email notification with the build status.
+
+Please note that the email notification part is using a third-party action, `dawidd6/action-send-mail@v2`, which requires SMTP credentials. You should replace `EMAIL_USERNAME` and `EMAIL_PASSWORD` with your actual Gmail username and password. These are stored as secrets in your GitHub repository settings.

@@ -1,0 +1,11 @@
+## 1. Input: Travis CI
+{source_travis_content}
+## 2. Input: Reference Migration Example
+-Travis CI::
+{ref_travis_content}
+-GitHub Actions:
+{ref_actions_content}
+## 3. Task:
+Migrate the Source Travis CI configuration to an equivalent GitHub Actions configuration following the example above.
+## 4. Output: GitHub Actions
+GitHub Actions configuration only, end with "|End-of-Code|".

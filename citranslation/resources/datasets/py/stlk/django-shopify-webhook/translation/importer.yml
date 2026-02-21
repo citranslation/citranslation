@@ -1,0 +1,35 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: pip install -q $DJANGO
+    - run: pip install -r requirements.txt
+    - run: python test.py
+    strategy:
+      matrix:
+        DJANGO:
+        - Django<3.0
+        - Django<3.2
+        - Django<4.0
+        - Django<5.0
+        python:
+        - '3.8'
+        - '3.9'
+        - '3.10'
+    env:
+      DJANGO: "${{ matrix.DJANGO }}"

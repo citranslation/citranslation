@@ -1,0 +1,69 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "publish"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "v[0-9]+.[0-9]+.[0-9]+"
+     }],
+     "type": "tags"
+    }],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "1"
+    }],
+    "type": "force_color"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "medikoo/github-actions-workflows/.github/workflows/publish.yml@version"
+      }],
+      "type": "uses"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.user_github_token }}"
+        }],
+        "type": "user_github_token"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.npm_token }}"
+        }],
+        "type": "npm_token"
+       }
+      ],
+      "type": "secrets"
+     }
+    ],
+    "type": "_"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

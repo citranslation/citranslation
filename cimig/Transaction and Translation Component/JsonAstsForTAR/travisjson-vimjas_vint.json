@@ -1,0 +1,432 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "FALSE"
+    }],
+    "type": "submodules"
+   }],
+   "type": "git"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "pytest_addopts=\\\"--cov-report=xml\\\""
+    }],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "test"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tag is not present"
+       }],
+       "type": "if"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "release"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tag is present"
+       }],
+       "type": "if"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "stages"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py39-cov"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py38-cov"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py37-cov"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "submodules"
+        }],
+        "type": "git"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py27-cov"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py36-cov"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.5"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py35-cov"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.4"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py34-cov"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "release"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "skip"
+        }],
+        "type": "script"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "skip"
+        }],
+        "type": "install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "TRUE"
+        }],
+        "type": "after_success"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "token"
+           }],
+           "type": "secure"
+          }],
+          "type": "OBJ-NODE"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "token"
+           }],
+           "type": "secure"
+          }],
+          "type": "OBJ-NODE"
+         }
+        ],
+        "type": "env"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "pypi"
+          }],
+          "type": "provider"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "sdist bdist_wheel"
+          }],
+          "type": "distributions"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "__token__"
+          }],
+          "type": "user"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "$dpass1$dpass2"
+          }],
+          "type": "password"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "tags"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "vimjas/vint"
+            }],
+            "type": "repo"
+           }
+          ],
+          "type": "on"
+         }
+        ],
+        "type": "deploy"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install tox"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "shell-cmd"
+   }],
+   "type": "after_success"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "FALSE"
+     }],
+     "type": "email"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "PATH-OR-URL"
+     }],
+     "type": "webhooks"
+    }
+   ],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

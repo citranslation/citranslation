@@ -1,0 +1,46 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [0.12, 4.2, 5.0]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install npm@2.14.5
+      run: npm install -g npm@2.14.5
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      env:
+        DEBUG: '*'
+      run: npm test
+
+    - name: Send notifications
+      if: failure()
+      run: |
+        echo "Sending failure notification emails"
+        echo "To: charlie.robbins@gmail.com, erik.trom.github@gmail.com"
+        # Here you would add a command to send an email, e.g., using a mail utility or an API call
+```
+|End-of-Code|

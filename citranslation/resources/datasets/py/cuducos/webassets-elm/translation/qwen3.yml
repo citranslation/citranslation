@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        TOXENV: ['cover', 'black']
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+        npm install -g elm
+        pip install tox
+    - name: Run tests
+      run: tox -e $TOXENV
+    - name: Upload coverage
+      if: ${{ success }}
+      run: coveralls
+|End-of-Code|

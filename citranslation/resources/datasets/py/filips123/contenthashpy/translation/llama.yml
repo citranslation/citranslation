@@ -1,0 +1,72 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: Python Package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10", "nightly"]
+        allow_failures:
+          - python: nightly
+        fast_finish: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install PyLint and PyTest
+        run: pip install pylint pytest pytest-cov
+
+      - name: Fix duplicate lines issues
+        run: |
+          pylint --generate-rcfile > ~/.pylintrc
+          sed -i "s/min-similarity-lines=.*/min-similarity-lines=50/g" ~/.pylintrc
+
+      - name: Fix git tag issues
+        run: |
+          git describe --tags --long --dirty || sed -i "s/setup_requires =.*/version = '0.0.0',/g" $GITHUB_WORKSPACE/setup.py
+
+      - name: Run lint
+        run: pylint content_hash/*
+        run: pylint example.py
+
+      - name: Run test
+        run: pytest --cov=content_hash
+
+      - name: Deploy
+        env:
+          PYPI_USER: ${{ secrets.PYPI_USER }}
+          PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          pip install scrutinizer-ocular
+          ocular
+        if: github.event_name == 'push' && contains(github.ref, 'tags')
+
+      - name: Deploy to PyPI
+        uses: pypa/gha:latest
+        with:
+          python-version: ${{ matrix.python }}
+          skip-cleanup: true
+          skip-existing: true
+          on: tags
+          distributions: "sdist bdist_wheel"
+```
+|End-of-Code|

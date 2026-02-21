@@ -1,0 +1,57 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "publish"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "branch-name"
+     }],
+     "type": "branches"
+    }],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "TRUE"
+    }],
+    "type": "ci"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "haraka/.github/.github/workflows/publish.yml@version"
+      }],
+      "type": "uses"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "inherit"
+      }],
+      "type": "secrets"
+     }
+    ],
+    "type": "publish"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

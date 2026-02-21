@@ -1,0 +1,47 @@
+```yaml
+name: Node CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [9, 10, 12, 14, 16, 18, 20, 22]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+    - run: npm run test-with-temp-cloud
+
+  notify:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send notification
+        if: ${{ failure() }}
+        uses: dawidd6/action-send-mail@v2
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: Node CI failed
+          body: |
+            Node CI failed for the following commit: ${{ github.event.head_commit.id }}
+            Repository: ${{ github.repository }}
+            Commit message: ${{ github.event.head_commit.message }}
+          to: sdk_developers@cloudinary.com
+          from: ${{ secrets.EMAIL_USERNAME }}
+          smtp_debug: true
+
+```

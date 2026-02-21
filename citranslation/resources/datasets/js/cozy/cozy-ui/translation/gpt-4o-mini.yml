@@ -1,0 +1,169 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  lint:
+    runs-on: ubuntu-22.04
+    if: github.event_name != 'pull_request' || !contains(github.event.head_commit.message, '[only argos]')
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: yarn install
+      - name: Lint
+        run: yarn lint
+
+  generate_sprite_and_palette:
+    runs-on: ubuntu-22.04
+    needs: lint
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: yarn install
+      - name: Generate Sprite and Palette
+        run: yarn makeSpriteAndPalette
+      - name: Save sprite and palette binaries
+        uses: actions/upload-artifact@v2
+        with:
+          name: sprite-palette-binaries
+          path: |
+            ./react/Icon/icons-sprite.js
+            ./react/palette.js
+
+  build_js:
+    runs-on: ubuntu-22.04
+    needs: generate_sprite_and_palette
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: yarn install
+      - name: Build JS
+        run: yarn build
+      - name: Save JS binaries
+        uses: actions/upload-artifact@v2
+        with:
+          name: js-binaries
+          path: ./transpiled
+
+  build_css:
+    runs-on: ubuntu-22.04
+    needs: generate_sprite_and_palette
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: yarn install
+      - name: Build CSS
+        run: yarn build:css:all
+      - name: Save CSS binaries
+        uses: actions/upload-artifact@v2
+        with:
+          name: css-binaries
+          path: ./dist
+
+  build_docs:
+    runs-on: ubuntu-22.04
+    needs: [generate_sprite_and_palette, build_js, build_css]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: yarn install
+      - name: Build docs
+        run: |
+          yarn build:doc:react
+          yarn build:doc:kss
+      - name: Save docs binaries
+        uses: actions/upload-artifact@v2
+        with:
+          name: docs-binaries
+          path: ./build
+
+  test_without_snapshots:
+    runs-on: ubuntu-22.04
+    needs: [generate_sprite_and_palette, build_js, build_css]
+    if: github.event_name != 'pull_request' || !contains(github.event.head_commit.message, '[only argos]')
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: yarn install
+      - name: Tests without snapshots
+        run: yarn test:noSnapshots
+
+  test_snapshots:
+    runs-on: ubuntu-22.04
+    needs: [generate_sprite_and_palette, build_js, build_css]
+    if: github.event_name != 'pull_request' || !contains(github.event.head_commit.message, '[only argos]')
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: yarn install
+      - name: Tests snapshots
+        run: yarn test:snapshots
+
+  bundlemon:
+    runs-on: ubuntu-22.04
+    needs: [generate_sprite_and_palette, build_js, build_css]
+    if: github.event_name != 'pull_request' || !contains(github.event.head_commit.message, '[only argos]')
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: yarn install
+      - name: Bundlemon
+        run: yarn bundlemon
+
+  create_screenshots:
+    runs-on: ubuntu-22.04
+    needs: [generate_sprite_and_palette, build_js, build_css, build_docs]
+    if: github.event_name != 'pull_request' || !contains(github.event.pull_request.title, '[skip argos]')
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: yarn install
+      - name: Create screenshots
+        run: |
+          mkdir ./screenshots
+          npx puppeteer browsers install chrome
+          yarn screenshots --mode react --viewport desktop --screenshot-dir ./screenshots/reactDesktop
+          yarn screenshots --mode react --viewport 300x600 --screenshot-dir ./screenshots/reactMobile
+          yarn screenshots --mode kss --screenshot-dir ./screenshots/kss
+      - name: Save screenshots
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots-binaries
+          path: ./screenshots
+
+  upload_screenshots:
+    runs-on: ubuntu-22.04
+    needs: create_screenshots
+    if: github.event_name != 'pull_request' || !contains(github.event.pull_request.title, '[skip argos]')
+    steps:
+      - name: Upload screenshots
+        run: |
+          yarn argos:upload --parallel screenshots/reactDesktop/ --token ${{ secrets.ARGOS_TOKEN }} --parallel-total 3 --parallel-nonce ${{ github.run_id }} --ignore ''
+          yarn argos:upload --parallel screenshots/reactMobile/ --token ${{ secrets.ARGOS_TOKEN }} --parallel-total 3 --parallel-nonce ${{ github.run_id }} --ignore ''
+          yarn argos:upload --parallel screenshots/kss/ --token ${{ secrets.ARGOS_TOKEN }} --parallel-total 3 --parallel-nonce ${{ github.run_id }} --ignore ''
+
+  deploy:
+    runs-on: ubuntu-22.04
+    needs: [generate_sprite_and_palette, build_js, build_css, build_docs]
+    if: github.event_name != 'pull_request' || !contains(github.event.head_commit.message, '[only argos]')
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: yarn install
+      - name: Deploy
+        run: |
+          yarn deploy:doc -- --username cozycloud --email contact@cozycloud.cc --repo https://cozy-bot:${{ secrets.GH_TOKEN }}@github.com/cozy/cozy-ui.git
+          yarn semantic-release
+      - name: Notify deployment
+        run: echo "Deployment completed successfully."
+
+```
+|End-of-Code|

@@ -1,0 +1,48 @@
+```yaml
+name: Python package
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        sed '/pypandoc/d' -i requirements.txt
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        python setup.py install
+    - name: Test with pytest and pycodestyle
+      run: |
+        py.test --cov=ssh_ldap_pubkey --cov-report term -vv
+        pycodestyle
+    - name: Deploy to PyPI
+      if: startsWith(github.ref, 'refs/tags')
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: jirutka
+        password: ${{ secrets.PYPI_API_TOKEN }}
+        skip_existing: true
+```
+
+Please replace `${{ secrets.PYPI_API_TOKEN }}` with your actual PyPI API token. This token can be created in your PyPI account settings.
+
+Note: GitHub Actions does not support the `sudo: false` directive in the Travis CI configuration. This is because GitHub Actions runs on a virtual environment provided by GitHub, and does not support running as root.
+
+Also, the `deploy` section in the Travis CI configuration is translated to the `gh-action-pypi-publish` action in the GitHub Actions configuration. The `user` and `password` fields are replaced with `user` and `password` secrets, which are set in the GitHub repository settings. The `skip_existing` field is set to `true` to avoid publishing a new version of the package if there is one already published with the same version number.

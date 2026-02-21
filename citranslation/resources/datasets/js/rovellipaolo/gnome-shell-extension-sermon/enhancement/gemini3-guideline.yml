@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: node
+
+      - name: Install dependencies
+        run: |
+          make install-checkstyle
+          sudo apt update
+          sudo apt install -qy gjs libgjs-dev
+
+      - name: Run scripts
+        run: |
+          make checkstyle
+          make test
+
+|End-of-Code|

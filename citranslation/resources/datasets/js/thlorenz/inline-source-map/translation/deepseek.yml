@@ -1,0 +1,35 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [0.10, 0.12, io.js]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install --global npm
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+```
+
+Please note that the `sudo: false` directive in Travis CI is not applicable in GitHub Actions as it is used to run jobs in containers with no sudo access. The `language: node_js` directive is also not needed as GitHub Actions automatically sets up Node.js for you.
+
+Also, the `npm ci` command is used instead of `npm install` to ensure that the `package-lock.json` or `npm-shrinkwrap.json` is used to install the dependencies, which is the recommended practice for Node.js projects.
+
+The `npm run build` and `npm test` commands are run as an example, you may need to adjust these based on your project's needs.
+
+|End-of-Code|

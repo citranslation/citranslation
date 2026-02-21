@@ -1,0 +1,26 @@
+Here is the equivalent GitHub Action configuration:
+```
+name: Node.js CI
+
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use Node.js 14.6.0
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.6.0'
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm test
+      - name: Run lint
+        run: npm run lint
+|End-of-Code|
+```
+Note that in GitHub Actions, we use the `on` keyword to specify the event that triggers the workflow (in this case, a push event). We then define a `jobs` section, which contains a single job named `build`. The `runs-on` keyword specifies the environment in which the job will run (in this case, an `ubuntu-latest` environment).
+
+The `steps` section contains the individual tasks that make up the job. We use the `actions/checkout` action to check out the code, the `actions/setup-node` action to set up Node.js 14.6.0, and then run the `npm install`, `npm test`, and `npm run lint` commands using the `run` keyword.

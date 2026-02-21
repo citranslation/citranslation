@@ -1,0 +1,27 @@
+```yaml
+name: Node CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x, 17.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install ${{ env.WINSTON_VER }}
+      env:
+        WINSTON_VER: winston@3
+```
+|End-of-Code|
+
+This GitHub Action configuration is equivalent to the Travis CI configuration you provided. It sets up a CI workflow that runs on every push and pull request. The workflow runs on the latest version of Ubuntu, and it uses the setup-node action to set up the specified Node.js versions. The npm install step installs the specified version of Winston.

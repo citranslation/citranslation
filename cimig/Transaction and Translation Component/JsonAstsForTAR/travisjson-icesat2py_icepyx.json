@@ -1,0 +1,202 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "bash PATH-OR-URL -b -p ~/miniconda"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "hash -r"
+    },
+    {
+     "children": [],
+     "type": "conda config --set always_yes yes --set changeps1 no"
+    },
+    {
+     "children": [],
+     "type": "conda update -q conda"
+    },
+    {
+     "children": [],
+     "type": "conda info -a"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "conda create --name icepyx-env --channel conda-forge python=3.10 proj geos"
+    },
+    {
+     "children": [],
+     "type": "source activate icepyx-env"
+    },
+    {
+     "children": [],
+     "type": "pip install -r requirements.txt -r requirements-dev.txt"
+    },
+    {
+     "children": [],
+     "type": "pip install -e .[complete]"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "basic tests"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "(type = pull_request) or (type = push and repo = icesat2py/icepyx and branch in (main, development))"
+       }],
+       "type": "if"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "behind earthdata"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "branch = main or commit_message =~ nsidc_tests or type = cron"
+       }],
+       "type": "if"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "stages"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "basic tests"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "pytest icepyx/ --verbose --cov app --ignore=icepyx/tests/test_behind_nsidc_api_login.py --ignore=icepyx/tests/test_auth.py"
+        }],
+        "type": "script"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "curl-cmd"
+         },
+         {
+          "children": [],
+          "type": "curl-cmd"
+         },
+         {
+          "children": [],
+          "type": "curl-cmd"
+         },
+         {
+          "children": [],
+          "type": "curl-cmd"
+         },
+         {
+          "children": [],
+          "type": "gpgv codecov.sha256sum.sig codecov.sha256sum"
+         },
+         {
+          "children": [],
+          "type": "shasum -a 256 -c codecov.sha256sum"
+         },
+         {
+          "children": [],
+          "type": "chmod-cmd"
+         },
+         {
+          "children": [],
+          "type": "./codecov-cmd"
+         }
+        ],
+        "type": "after_success"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "behind earthdata"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "export-cmd"
+         },
+         {
+          "children": [],
+          "type": "pytest icepyx/tests/test_behind_nsidc_api_login.py icepyx/tests/test_auth.py"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

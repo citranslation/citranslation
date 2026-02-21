@@ -1,0 +1,46 @@
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.9, 3.10, 3.11]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Download etcd
+        run: ./download_etcd.sh 3.4.0
+
+      - name: Upgrade setuptools
+        run: pip install --upgrade setuptools
+
+      - name: Install dependencies
+        run: |
+          pip install coveralls
+          pip install coverage
+          pip install pytest
+          pip install tox-travis
+          bin/buildout
+
+      - name: Run tests
+        run: tox
+
+      - name: Upload coverage to Coveralls
+        if: success()
+        run: coveralls
+
+    env:
+      TRAVIS: true
+|End-of-Code|
+```

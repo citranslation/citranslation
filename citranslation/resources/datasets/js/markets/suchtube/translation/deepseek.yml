@@ -1,0 +1,49 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 22
+
+    - name: Cache node modules
+      uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.OS }}-node-
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Test
+      run: npm test
+
+    - name: Build
+      run: npm run build
+```
+
+This GitHub Action configuration does the following:
+
+1. It triggers on push and pull request events.
+2. It sets up the environment to run the tests and builds on the latest version of Ubuntu.
+3. It checks out the repository.
+4. It sets up Node.js 10.
+5. It caches the node modules to speed up the build process.
+6. It installs the dependencies using `npm ci`.
+7. It runs the tests using `npm test`.
+8. It builds the project using `npm run build`.
+
+|End-of-Code|

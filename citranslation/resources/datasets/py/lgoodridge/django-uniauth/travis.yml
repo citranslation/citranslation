@@ -1,0 +1,23 @@
+language: python
+dist: noble
+
+jobs:
+    fast_finish: true
+    include:
+        - { python: "3.8", env: DJANGO="2.2" }
+        - { python: "3.8", env: DJANGO="3.0" }
+        - { python: "3.8", env: DJANGO="3.1" }
+        - { python: "3.8", env: DJANGO="3.2" }
+        - { python: "3.8", env: DJANGO="4.0" }
+        - { python: "3.8", env: DJANGO=master }
+    allow_failures:
+        - env: DJANGO=master
+
+before_install:
+    - if [[ $TRAVIS_PYTHON_VERSION == 3.8 ]]; then pip install -U importlib_metadata; fi
+
+install:
+    - pip install tox tox-venv tox-travis
+
+script:
+    - tox

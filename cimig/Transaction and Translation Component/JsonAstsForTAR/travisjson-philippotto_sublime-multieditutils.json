@@ -1,0 +1,88 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "2.7"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "package=\\\"multieditutils\\\""
+     }],
+     "type": "global"
+    },
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "sublime_text_version=\\\"2\\\""
+      },
+      {
+       "children": [],
+       "type": "sublime_text_version=\\\"3\\\""
+      }
+     ],
+     "type": "matrix"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "curl-cmd"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "sh PATH-OR-URL bootstrap"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "sh -e /etc/init.d/xvfb start"
+    }
+   ],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "sh PATH-OR-URL run_tests"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "FALSE"
+    }],
+    "type": "email"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

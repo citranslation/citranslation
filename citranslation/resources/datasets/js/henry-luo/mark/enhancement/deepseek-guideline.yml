@@ -1,0 +1,24 @@
+## 4. Output: GitHub Action
+```yaml
+name: Node CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: stable
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+    - run: npm run coverage
+    - run: npm run codecov
+|End-of-Code|
+```
+This GitHub Action configuration is a direct translation of the Travis CI configuration you provided. It sets up a Node.js environment, checks out the repository, installs the necessary dependencies, runs the build and test scripts, and finally runs the coverage and codecov scripts. The configuration is triggered on push and pull request events.

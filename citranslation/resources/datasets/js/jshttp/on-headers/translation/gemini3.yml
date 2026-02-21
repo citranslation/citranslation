@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [0.8, 0.10, 0.12, 1.8, 2.5, 3.3, 4.9, 5.12, 6.16, 7.10, 8.17, 9.11, 10.21, 11.15, 12.18, 13.14, 14.5]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Setup utility functions
+        run: |
+          v() { tr '.' '\n' <<< "${1}" | awk '{ printf "%03d", $0 }' | sed 's/^0*//'; }
+          node_version_lt() { [[ "$(v "${{ matrix.node-version }}")" -lt "$(v "${1}")" ]]; }
+          npm_module_installed() { npm -lsp ls | grep -Fq "$(pwd)/node_modules/${1}:${1}@"; }
+          npm_remove_module_re() { node -e 'fs = require("fs"); p = JSON.parse(fs.readFileSync("package.json", "utf8")); r = RegExp(process.argv[1]); for (k in p.devDependencies) { if (r.test(k)) delete p.devDependencies[k]; } fs.writeFileSync("package.json", JSON.stringify(p, null, 2) + "\n");' "$@"; }
+          npm_use_module() { node -e 'fs = require("fs"); p = JSON.parse(fs.readFileSync("package.json", "utf8")); p.devDependencies[process.argv[1]] = process.argv[2]; fs.writeFileSync("package.json", JSON.stringify(p, null, 2) + "\n");' "$@"; }
+          
+          # Configure npm
+          npm config set shrinkwrap false
+
+          # Configure mocha
+          if   node_version_lt '0.10'; then npm_use_module 'mocha' '2.5.3'
+          elif node_version_lt '4.0' ; then npm_use_module 'mocha' '3.5.3'
+          elif node_version_lt '6.0' ; then npm_use_module 'mocha' '5.2.0'
+          elif node_version_lt '8.0' ; then npm_use_module 'mocha' '6.2.2'
+          elif node_version_lt '10.0'; then npm_use_module 'mocha' '7.1.2'
+          fi
+
+          # Configure istanbul
+          if node_version_lt '0.10'; then npm_remove_module_re '^istanbul$'; fi
+
+          # Configure supertest
+          if   node_version_lt '0.10'; then npm_use_module 'supertest' '1.1.0'
+          elif node_version_lt '4.0' ; then npm_use_module 'supertest' '2.0.0'
+          elif node_version_lt '6.0' ; then npm_use_module 'supertest' '3.4.2'
+          fi
+
+          # Configure eslint
+          if node_version_lt '8.0'; then npm_remove_module_re '^eslint(-|$)'; fi
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node-version }}-
+
+      - name: Install dependencies
+        run: |
+          if [[ -d node_modules ]]; then
+            npm prune
+            npm rebuild
+          else
+            npm install
+          fi
+
+      - name: List node_modules
+        run: npm -s ls ||:
+
+      - name: Run tests
+        run: |
+          npm_module_installed() { npm -lsp ls | grep -Fq "$(pwd)/node_modules/${1}:${1}@"; }
+          if npm_module_installed 'istanbul'; then 
+            npm run-script test-travis
+          else 
+            npm test
+          fi
+
+      - name: Run lint
+        run: |
+          npm_module_installed() { npm -lsp ls | grep -Fq "$(pwd)/node_modules/${1}:${1}@"; }
+          if npm_module_installed 'eslint'; then 
+            npm run-script lint
+          fi
+
+      - name: Upload coverage
+        if: always()
+        run: |
+          if [[ -e ./coverage/lcov.info ]]; then
+            npm install --save-dev coveralls@2
+            cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+          fi
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+          COVERALLS_SERVICE_NAME: github-actions
+
+|End-of-Code|

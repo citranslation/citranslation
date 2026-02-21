@@ -1,0 +1,91 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "publish to pypi"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "published"
+     }],
+     "type": "types"
+    }],
+    "type": "release"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "write"
+       }],
+       "type": "contents"
+      }],
+      "type": "permissions"
+     },
+     {
+      "children": [{
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "publish pypi package"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "code-specialist/pypi-poetry-publish@version"
+         }],
+         "type": "uses"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ secrets.github_token }}"
+           }],
+           "type": "access_token"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ secrets.pypi_token }}"
+           }],
+           "type": "publish_registry_password"
+          }
+         ],
+         "type": "with"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }],
+      "type": "steps"
+     }
+    ],
+    "type": "publish-service-client-package"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

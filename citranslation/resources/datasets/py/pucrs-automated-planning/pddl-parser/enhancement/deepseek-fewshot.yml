@@ -1,0 +1,81 @@
+Here is the GitHub Action configuration equivalent to the provided Travis CI configuration:
+
+```yaml
+name: CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.8', '3.9', '3.10']
+        os: [ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout demo
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          cache-dependency-path: 'requirements.txt'
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install -U pip
+          python3 -m pip install -r requirements.txt
+
+      - name: Run demo
+        run: |
+          python3 run_demo_md.py
+
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - run: make install-deps
+      - run: make
+
+  test_with_matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python:
+          - '3.8'
+        deps:
+          - { django: '<2', drf: '<3.8' }
+          - { django: '<2', drf: '<3.9' }
+          - { django: '<2.1', drf: '<3.9' }
+          - { django: '<2.2', drf: '<3.9' }
+    name: Python ${{ matrix.python }} / Django ${{ matrix.deps.django }} / DRF ${{ matrix.deps.drf }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup python ${{ matrix.python }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: pip install "django${{ matrix.deps.django }}" "django-rest-framework${{ matrix.deps.drf }}"
+      - name: Run tests
+        run: python runtests.py
+```
+
+Please note that the GitHub Actions configuration is not as comprehensive as the Travis CI configuration. For example, the Travis CI configuration includes a matrix for Python versions and operating systems, but the GitHub Actions configuration only includes a matrix for Python versions. The GitHub Actions configuration also does not include a step for checking code formatting using Black.

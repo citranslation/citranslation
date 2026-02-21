@@ -1,0 +1,56 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "~/.npm"
+     },
+     {
+      "children": [],
+      "type": "~/.yarn-cache"
+     },
+     {
+      "children": [],
+      "type": "node_modules"
+     }
+    ],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "12"
+    },
+    {
+     "children": [],
+     "type": "14"
+    },
+    {
+     "children": [],
+     "type": "15"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

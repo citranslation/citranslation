@@ -1,0 +1,109 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "2.7"
+    },
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8-dev"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "flask=0.10"
+    },
+    {
+     "children": [],
+     "type": "flask=0.10.1"
+    },
+    {
+     "children": [],
+     "type": "flask=0.10 speaklater"
+    },
+    {
+     "children": [],
+     "type": "flask=0.10.1 speaklater"
+    },
+    {
+     "children": [],
+     "type": "flask=0.11"
+    },
+    {
+     "children": [],
+     "type": "flask=0.11.1"
+    },
+    {
+     "children": [],
+     "type": "flask=0.12"
+    },
+    {
+     "children": [],
+     "type": "flask=0.12.1"
+    },
+    {
+     "children": [],
+     "type": "flask=0.12.2"
+    },
+    {
+     "children": [],
+     "type": "flask=1.1.1"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install flask==$flask"
+    },
+    {
+     "children": [],
+     "type": "pip install pycodestyle==2.5.0 pytest==3.0.3 pytest-cov==2.3.1"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pycodestyle flask_json.py"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "py.test"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

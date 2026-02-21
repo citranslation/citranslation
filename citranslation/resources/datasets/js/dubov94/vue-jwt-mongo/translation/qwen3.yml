@@ -1,0 +1,14 @@
+name: Node.js CI
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: "node"
+    - run: npm install
+    - run: npm run coverage
+    - run: ./node_modules/.bin/codecov --disable=gcov --file=./coverage/lcov.info
+|End-of-Code|

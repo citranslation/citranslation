@@ -1,0 +1,59 @@
+Here is the migrated GitHub Action configuration:
+```
+name: Node.js CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ["0.8", "0.10", "0.12", "1.8", "2.5", "3.3", "4.9", "5.12", "6.16", "7.10", "8.17", "9.11", "10.21", "11.15", "12.18", "13.14", "14.5"]
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node }}
+    - name: Install dependencies
+      run: npm install
+    - name: Configure Node.js version-specific dependencies
+      run: |
+        # Configure mocha for testing
+        if [ "${{ matrix.node }}" < "0.10" ]; then npm install mocha@2.5.3
+        elif [ "${{ matrix.node }}" < "4.0" ]; then npm install mocha@3.5.3
+        elif [ "${{ matrix.node }}" < "6.0" ]; then npm install mocha@5.2.0
+        elif [ "${{ matrix.node }}" < "8.0" ]; then npm install mocha@6.2.2
+        elif [ "${{ matrix.node }}" < "10.0" ]; then npm install mocha@7.1.2
+        fi
+        # Configure istanbul for coverage
+        if [ "${{ matrix.node }}" < "0.10" ]; then npm uninstall istanbul
+        fi
+        # Configure supertest for http calls
+        if [ "${{ matrix.node }}" < "0.10" ]; then npm install supertest@1.1.0
+        elif [ "${{ matrix.node }}" < "4.0" ]; then npm install supertest@2.0.0
+        elif [ "${{ matrix.node }}" < "6.0" ]; then npm install supertest@3.4.2
+        fi
+        # Configure eslint for linting
+        if [ "${{ matrix.node }}" < "8.0" ]; then npm uninstall eslint
+        fi
+    - name: Run tests
+      run: |
+        if npm ls istanbul; then npm run-script test-travis
+        else npm test
+        fi
+    - name: Run linting
+      run: |
+        if npm ls eslint; then npm run-script lint
+        fi
+    - name: Upload coverage to Coveralls
+      run: |
+        if [ -e./coverage/lcov.info ]; then
+          npm install --save-dev coveralls@2
+          coveralls <./coverage/lcov.info
+        fi
+|End-of-Code|
+```
+Note that I've replaced the `before_install` and `before_script` sections with separate `run` steps, and used the `matrix` strategy to run the tests for each Node.js version. I've also removed the `sudo` directive, as it's not necessary in GitHub Actions.

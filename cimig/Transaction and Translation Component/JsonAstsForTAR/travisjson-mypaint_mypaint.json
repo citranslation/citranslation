@@ -1,0 +1,297 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "c++"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "gcc"
+   }],
+   "type": "compiler"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xvfb"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [
+      {
+       "children": [],
+       "type": "g++"
+      },
+      {
+       "children": [],
+       "type": "gettext"
+      },
+      {
+       "children": [],
+       "type": "intltool"
+      },
+      {
+       "children": [],
+       "type": "gir1.2-gtk-3.0"
+      },
+      {
+       "children": [],
+       "type": "libgtk-3-dev"
+      },
+      {
+       "children": [],
+       "type": "libjson-c-dev"
+      },
+      {
+       "children": [],
+       "type": "liblcms2-dev"
+      },
+      {
+       "children": [],
+       "type": "libpng12-dev"
+      },
+      {
+       "children": [],
+       "type": "python-dev"
+      },
+      {
+       "children": [],
+       "type": "python3-dev"
+      },
+      {
+       "children": [],
+       "type": "python-gi-dev"
+      },
+      {
+       "children": [],
+       "type": "python-gi-cairo"
+      },
+      {
+       "children": [],
+       "type": "python3-gi-cairo"
+      },
+      {
+       "children": [],
+       "type": "python-nose"
+      },
+      {
+       "children": [],
+       "type": "python3-nose"
+      },
+      {
+       "children": [],
+       "type": "python-numpy"
+      },
+      {
+       "children": [],
+       "type": "python3-numpy"
+      },
+      {
+       "children": [],
+       "type": "python-setuptools"
+      },
+      {
+       "children": [],
+       "type": "python3-setuptools"
+      },
+      {
+       "children": [],
+       "type": "swig"
+      },
+      {
+       "children": [],
+       "type": "swig3.0"
+      },
+      {
+       "children": [],
+       "type": "git"
+      }
+     ],
+     "type": "packages"
+    }],
+    "type": "apt"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "git clone PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "./PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "./configure --prefix=/usr"
+    },
+    {
+     "children": [],
+     "type": "make"
+    },
+    {
+     "children": [],
+     "type": "sudo make install"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo rm -fr libmypaint"
+    },
+    {
+     "children": [],
+     "type": "git clone PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "./PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "./configure --prefix=/usr"
+    },
+    {
+     "children": [],
+     "type": "make"
+    },
+    {
+     "children": [],
+     "type": "sudo make install"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo rm -fr mypaint-brushes"
+    }
+   ],
+   "type": "before_script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "which python"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "mypaint_debug=1 xvfb-run -a python-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo python-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo python-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo python-cmd"
+    },
+    {
+     "children": [],
+     "type": "which python3"
+    },
+    {
+     "children": [],
+     "type": "python3 -m this"
+    },
+    {
+     "children": [],
+     "type": "python3 --version"
+    },
+    {
+     "children": [],
+     "type": "python3 PATH-OR-URL build_ext --swig=/usr/bin/swig3.0"
+    },
+    {
+     "children": [],
+     "type": "python3 PATH-OR-URL build"
+    },
+    {
+     "children": [],
+     "type": "python3 PATH-OR-URL nosetests --tests lib"
+    },
+    {
+     "children": [],
+     "type": "python3 PATH-OR-URL clean --all"
+    },
+    {
+     "children": [],
+     "type": "sudo python3 PATH-OR-URL managed_install"
+    },
+    {
+     "children": [],
+     "type": "sudo python3 PATH-OR-URL managed_uninstall"
+    },
+    {
+     "children": [],
+     "type": "bash appimage/trigger_build.sh"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

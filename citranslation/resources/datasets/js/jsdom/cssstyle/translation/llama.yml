@@ -1,0 +1,47 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Install codecov
+        run: npm install -g codecov
+      - name: Run tests
+        run: npm run test-ci
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: coverage.json
+
+      - name: Use Node.js 8
+        uses: actions/setup-node@v2
+        with:
+          node-version: 8
+
+      - name: Use Node.js 10
+        uses: actions/setup-node@v2
+        with:
+          node-version: 10
+
+      - name: Use Node.js 12
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12
+|End-of-Code|
+```
+Note that in GitHub Actions, we use the `on` keyword to specify the event that triggers the workflow, which in this case is a push event. We also use the `jobs` keyword to define a job named `build`, which runs on an `ubuntu-latest` environment.
+
+The `steps` keyword is used to define the individual steps in the job. We use the `uses` keyword to reuse actions from the GitHub Actions marketplace, such as `actions/checkout@v2` to checkout the code, and `codecov/codecov-action@v1` to upload the coverage report.
+
+We also use the `run` keyword to run shell commands, such as `npm install` and `npm run test-ci`. We use the `with` keyword to pass environment variables to the actions, such as the `node-version` for the `setup-node` action.
+
+Finally, we use the `name` keyword to give a name to each step, which is displayed in the GitHub Actions UI.

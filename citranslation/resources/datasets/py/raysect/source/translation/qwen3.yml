@@ -1,0 +1,25 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: 3.8
+            numpy_version: 1.15.4
+          - python: 3.9
+            numpy_version: 1.19.4
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install numpy==${{ matrix.numpy_version }} scipy matplotlib>=3 cython>=0.28
+      - run: ./dev/build.sh
+      - run: ./dev/test.sh
+|End-of-Code|

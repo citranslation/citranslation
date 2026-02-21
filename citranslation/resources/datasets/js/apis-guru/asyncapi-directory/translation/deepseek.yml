@@ -1,0 +1,48 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 'lts/*'
+    - run: npm ci
+    - run: npm run build.data
+    - run: npm run build.site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@3.7.1
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: master
+        FOLDER: .
+        CLEAN: true
+        HISTORY: true
+        VERBOSE: true
+```
+
+Please note that the GitHub Action configuration is slightly different from Travis CI configuration. The GitHub Action configuration above assumes that you have a `.github/workflows` directory in your repository where you place this YAML file. Also, the `npm ci` command is used instead of `npm install` to ensure that the `node_modules` directory is not included in the repository.
+
+Also, the `JamesIves/github-pages-deploy-action@3.7.1` is used for deploying to GitHub Pages. This action is a fork of the original `peaceiris/actions-gh-pages@v2.6.1`, which has been updated to support the new GitHub Actions environment.
+
+The `GITHUB_TOKEN` secret is automatically provided by GitHub Actions and does not need to be set manually.
+
+|End-of-Code|

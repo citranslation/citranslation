@@ -1,0 +1,23 @@
+language: python
+python:
+  - "pypy3.8"
+  - "pypy2.7"
+  - "3.11"
+  - "3.10"
+  - "3.9"
+  - "3.8"
+
+cache: pip
+
+env:
+  global:
+    - TOXENV=base,optional,six19-optional
+
+install:
+  - pip install tox
+
+script:
+  - tox
+
+after_script:
+  - python debug-info.py

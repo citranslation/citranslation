@@ -1,0 +1,185 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.6"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "test"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "deploy"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "tag is present and type != pull_request"
+       }],
+       "type": "if"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "stages"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "python_image=\\\"pypy:3.6\\\" purerpc_backend=\\\"asyncio\\\""
+    },
+    {
+     "children": [],
+     "type": "python_image=\\\"pypy:3.6\\\" purerpc_backend=\\\"curio\\\""
+    },
+    {
+     "children": [],
+     "type": "python_image=\\\"pypy:3.6\\\" purerpc_backend=\\\"trio\\\""
+    },
+    {
+     "children": [],
+     "type": "python_image=\\\"python:3.6\\\" purerpc_backend=\\\"asyncio\\\""
+    },
+    {
+     "children": [],
+     "type": "python_image=\\\"python:3.6\\\" purerpc_backend=\\\"uvloop\\\""
+    },
+    {
+     "children": [],
+     "type": "python_image=\\\"python:3.6\\\" purerpc_backend=\\\"curio\\\""
+    },
+    {
+     "children": [],
+     "type": "python_image=\\\"python:3.6\\\" purerpc_backend=\\\"trio\\\""
+    },
+    {
+     "children": [],
+     "type": "python_image=\\\"python:3.7\\\" purerpc_backend=\\\"asyncio\\\""
+    },
+    {
+     "children": [],
+     "type": "python_image=\\\"python:3.7\\\" purerpc_backend=\\\"uvloop\\\""
+    },
+    {
+     "children": [],
+     "type": "python_image=\\\"python:3.7\\\" purerpc_backend=\\\"curio\\\""
+    },
+    {
+     "children": [],
+     "type": "python_image=\\\"python:3.7\\\" purerpc_backend=\\\"trio\\\""
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "./ci/run_tests_in_docker-cmd"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "deploy"
+       }],
+       "type": "stage"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "skip"
+       }],
+       "type": "script"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "pypi"
+         }],
+         "type": "provider"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "$twine_user"
+         }],
+         "type": "user"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "$twine_password"
+         }],
+         "type": "password"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "sdist bdist_wheel"
+         }],
+         "type": "distributions"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "TRUE"
+          }],
+          "type": "tags"
+         }],
+         "type": "on"
+        }
+       ],
+       "type": "deploy"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }],
+    "type": "include"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

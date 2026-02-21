@@ -1,0 +1,10 @@
+language: python
+
+python:
+    - 3.8
+    - 3.9
+    - 3.10
+    - pypy3.7
+
+install: pip install tox
+script: tox

@@ -1,0 +1,29 @@
+language: python
+dist: noble
+
+install:
+  - pip install tox codecov
+
+matrix:
+ include:
+  - python: 3.8
+    env: TOXENV=py38
+  - python: 3.9
+    env: TOXENV=py39
+  - python: 3.10
+    env: TOXENV=py10
+  - python: 3.11
+    env: TOXENV=py311
+  - python: 3.12
+    env: TOXENV=py312
+
+script:
+  - tox
+
+after_success:
+  - codecov
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always

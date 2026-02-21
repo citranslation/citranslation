@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: "3.8"
+            django: "2.2"
+          - python: "3.8"
+            django: "3.0"
+          - python: "3.8"
+            django: "3.1"
+          - python: "3.8"
+            django: "3.2"
+          - python: "3.8"
+            django: "4.0"
+          - python: "3.8"
+            django: "master"
+
+    env:
+      DJANGO: ${{ matrix.django }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Before install
+        run: |
+          if [[ "${{ matrix.python }}" == "3.8" ]]; then pip install -U importlib_metadata; fi
+
+      - name: Install dependencies
+        run: |
+          # tox-venv is incompatible with modern tox (v4+). 
+          # Since tox 4, venv creation is built-in or handled differently.
+          pip install tox tox-gh-actions
+
+      - name: Run tox
+        run: tox
+        continue-on-error: ${{ matrix.django == 'master' }}
+
+|End-of-Code|

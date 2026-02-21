@@ -1,0 +1,128 @@
+## 1. Input: Travis CI
+```yaml
+language: python
+dist: xenial
+sudo: false
+python:
+  - 3.8
+  - 3.9
+  - 3.10
+install:
+  # pypandoc is needed only for submitting package to pypi
+  - sed '/pypandoc/d' -i requirements.txt
+  - pip install -U -r requirements.txt
+  - ./setup.py install
+script:
+  - py.test --cov=ssh_ldap_pubkey --cov-report term -vv
+  - pycodestyle
+deploy:
+  provider: pypi
+  user: jirutka
+  password:
+    secure: "2tzmNOMTjVcyIckYun5iZbgr9/6nrhImD4eFYOCbFFDezilGmPHwfbgp0zx55nrkdNOSB/mgsV+pYAdq8+0CRd/BcZZb9oosyS7n1vjPAP9fMNa02SsaqTWDzDpcNnGbfg7qOhKC/FyQ+H4uXp8w+pe4RfJFCUS/ywOimBEYrSI="
+  skip_cleanup: true
+  on:
+    tags: true
+    python: 3.10
+```
+## 2. Input: Reference Migration Pairs
+```yaml
+-Example 1
+  -Travis CI:
+  language: python
+  python:
+    - "3.8"
+    - "3.9"
+    - "nightly"
+  # command to install dependencies
+  install: pip install simplejson minimock coverage
+  # command to run tests
+  script:
+  - make test
+  deploy:
+    provider: pypi
+    user: "gpodder"
+    password:
+      secure: "LhMmayKATJlyob0pkRvcDfie5vi8O+BdpMgJ224C+SXpwpQafPfHNUFzi3+IkS7z3KbYx/jTpP6gcfmEXnG/nI74U0U4fnY1KQixEfwcRTLHNDnx72qe4zXkXAtBzXCRROnyOTir1AolPiC8lpiL+ZBc8cBwan+322IZdlL8t5g="
+    on:
+      tags: true
+
+-Example 2
+  -Travis CI:
+  sudo: false
+  dist: noble
+  language: python
+  python:
+  - '3.8'
+  - '3.9'
+  - '3.10'
+  install:
+  - pip install -r requirements.txt
+  - pip install pytest
+  - pip install -e .
+  script:
+  - pytest -v
+  notifications:
+    slack:
+      secure: DBWBIcQBQU6GghlILdCpJlly3LVMhc5GTU6UMufQzibRgS2Q7/EmwvSm94IKbNylUvlCtFPYvUIZwc8WtLljtn8AQgUYvkGI2zIIp4AsdPCS/X3T7eiHXalqsMKktr1dykIf+70Pq9BHziruwlvTRDR0P93iw1o65w4gWK90vDQ+GtypEzY1P2hna016F3VrFVFSNp9iZCJOkytdj35z2GblfAWCq9gBIYGb32teZOhd2Pdm+M0Z5DXtnkaKyGw94yS1LJ7mzWNCjU6KEdzYpqsruQvND9GpCz7Ko3ySM1sPg8v12M/FfLT3+xbTzUTIm5vooYy3+/Q7QOJzJg0o19yDGi1yoaH9fiMhRU0QmlD1dXi9Wwo/jVpa3LVmta4+CLQ57/1Sdj0tJ7pJ0FDzUAhf0sxr30uZ4tcJVdi4LeGaqxsZynHq6pko8/+iSg5xtVZFqFVvUkxVkG1Ynk7h23uYsbHCvKa9HNEo1FoE28ljVKJ/MKWMQ948G8ZKXTu3XuS1PW2k4JU2+30fNhdyuM9vhuaw/Qx4vpGyS0Tz45zO5Tbfmh8jAt9+hot5x5JFwGrDKYi5rccxU+pgmw1oAbZoK+mRcnPXXZYyNUW/gaYJgF7VRAc0B+NyB1JuY2HG1wJQCtkKuifbRnr2cQWYWT928j2+MP5xkZrBEWpyvmk=
+
+-Example 3
+  -Travis CI:
+  language: python
+  jobs:
+    - python: "3.8"
+      allow_failure: true
+    - python: "3.9"
+      allow_failure: true
+    - python: "3.10"
+      allow_failure: true
+    - python: "pypy2.7"
+      allow_failure: true
+    - python: "pypy3.6"
+      allow_failure: true
+    - python: "pypy3.7"
+      allow_failure: true
+    - python: "pypy3.8"
+      allow_failure: true
+    - python: "pypy3.9"
+      allow_failure: true
+  install: pip install coveralls
+  script:
+    - coverage run --branch --source=crc32 test.py
+  after_success:
+    - coveralls
+```
+## 3. Task:
+Migrate the above Travis CI configuration to Github Action, using the provided migration pair as reference. 
+## 4. Output: GitHub Action
+```yaml
+name: Python package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install -e .
+
+      - name: Test with pytest
+        run: |
+          pytest
+```
+|End-of-Code|

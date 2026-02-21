@@ -1,0 +1,29 @@
+Here is the equivalent GitHub Action configuration:
+```
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          pip install codecov
+          pip install coverage
+      - name: Run tests
+        run: |
+          coverage run jsn.py -i example.jsn -o test.json -I import_dir
+      - name: Generate coverage report
+        run: |
+          codecov
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          file: test.json
+```
+|End-of-Code|

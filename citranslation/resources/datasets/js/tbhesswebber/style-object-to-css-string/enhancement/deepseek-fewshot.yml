@@ -1,0 +1,36 @@
+Here is the GitHub Action configuration equivalent to the provided Travis CI configuration:
+
+```yaml
+name: Build
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Lint and tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+          - 8
+          - 10
+          - 12
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run test-ci
+
+|End-of-Code|
+```
+
+Please note that the GitHub Actions configuration is not fully equivalent to the Travis CI configuration. The Travis CI configuration includes a `sudo: false` directive which is not necessary in GitHub Actions as it runs on a virtual environment provided by GitHub. The Travis CI configuration also includes a `notifications: email: false` directive which is not necessary as GitHub Actions do not support email notifications. The Travis CI configuration also includes a `notifications: email: kempdogg@gmail.com` directive which is not necessary as GitHub Actions do not support email notifications. The Travis CI configuration includes a `cache: npm` directive which is not necessary in GitHub Actions as GitHub Actions automatically caches the node modules. The Travis CI configuration includes a `branches: only: - master` directive which is not necessary in GitHub Actions as GitHub Actions runs on all branches by default.

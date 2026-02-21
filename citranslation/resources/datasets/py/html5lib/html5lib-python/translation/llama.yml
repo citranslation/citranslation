@@ -1,0 +1,31 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["pypy3.8", "pypy2.7", "3.11", "3.10", "3.9", "3.8"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install tox
+      - name: Run tests
+        run: tox
+      - name: Generate debug info
+        run: python debug-info.py
+    cache:
+      pip: true
+    environment:
+      TOXENV: "base,optional,six19-optional"
+|End-of-Code|
+```
+Note that in GitHub Actions, we use a `matrix` strategy to define the Python versions to test, whereas in Travis CI, we used a list of languages. We also use the `runs-on` keyword to specify the environment (in this case, an `ubuntu-latest` environment). The rest of the steps are similar to the Travis CI configuration.

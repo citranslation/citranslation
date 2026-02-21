@@ -1,0 +1,30 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 'lts/*'
+    - name: npm install
+      run: npm ci
+    - name: npm run test
+      run: npm run test
+    - name: npm run codecov
+      run: npm run codecov
+```
+
+This configuration will trigger the workflow on every push and pull request to the repository. It will run on the latest version of Ubuntu, set up the specified Node.js version, and run the `npm install`, `npm run test`, and `npm run codecov` commands.
+
+Please note that the `npm ci` command is used instead of `npm install` to ensure that the `node_modules` directory is not created or updated in the repository. This is a common practice in production environments to prevent the repository from growing indefinitely.
+
+|End-of-Code|

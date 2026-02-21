@@ -1,0 +1,23 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 10
+    - run: npm install -g ajv-cli
+    - run: ajv validate -s schema.json -d data.json
+```
+
+This configuration will trigger the workflow on every push and pull request to the repository. It will run on the latest version of Ubuntu, set up Node.js 10, install ajv-cli globally, and then run the ajv validate command.

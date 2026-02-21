@@ -1,0 +1,44 @@
+Here is the GitHub Action configuration equivalent to the Travis CI configuration you provided:
+
+```yaml
+name: Test and publish to PyPI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  release:
+    types: [ created ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9']
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: 'Set up Python ${{matrix.python-version}}'
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{matrix.python-version}}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install .
+        pip install codecov
+
+    - name: Test
+      run: |
+        coverage run tests.py
+
+    - uses: codecov/codecov-action@v1
+
+|End-of-Code|
+```
+
+Please note that the GitHub Actions configuration is slightly different from the Travis CI configuration. The GitHub Actions configuration is more verbose and explicit, which is necessary for the workflow to run correctly. The Travis CI configuration is more concise and implicit, which can make it easier to understand and maintain.

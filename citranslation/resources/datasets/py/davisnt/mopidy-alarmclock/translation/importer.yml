@@ -1,0 +1,33 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: # this agent type is not supported: [noble]
+             ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: export PYUSRSITEDIR=$(python -m site --user-site)
+    - run: mkdir -p $PYUSRSITEDIR
+    - run: 'echo "import sys; import mock; sys.modules[''gi''] = mock.Mock(); sys.modules[''gi.repository''] = mock.Mock(); sys.modules[''gi.repository''].Gst.version.side_effect = lambda: (1, 14, 0)" > ${PYUSRSITEDIR}/usercustomize.py'
+    - run: pip install tox
+    - run: tox -e $TOX_ENV
+    - run: if [ $TOX_ENV == 'py38' ]; then pip install coveralls requests; coveralls; fi
+      if: "${{ success() }}"
+    strategy:
+      matrix:
+        TOX_ENV:
+        - py38
+        - flake8
+    env:
+      TOX_ENV: "${{ matrix.TOX_ENV }}"

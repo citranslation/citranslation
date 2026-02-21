@@ -1,0 +1,49 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python:
+          - 3.8
+          - 3.9
+          - pypy3.7
+
+    env:
+      TOX_ENV: ${{ matrix.python }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: pip install -U -r requirements-dev.txt
+        working-directory:.
+
+      - name: Install and test
+        run: tox -e $TOX_ENV
+        working-directory:.
+
+      - name: Run pytest with dead-fixtures
+        run: pytest --dead-fixtures
+        working-directory:.
+
+      - name: Clean up cache
+        run: rm -rf $HOME/.cache/pip/log
+        working-directory: $HOME
+
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: $HOME/.cache/pip
+          key: ${{ runner.os }}-pip-cache
+```
+|End-of-Code|

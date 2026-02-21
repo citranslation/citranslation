@@ -1,0 +1,29 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup
+        uses: actions/setup-node@v3
+        with:
+          node-version: "node"
+      - name: Install
+        run: |
+          make install-checkstyle
+          sudo apt update
+          sudo apt install -qy gjs libgjs-dev
+      - name: Checkstyle
+        run: |
+          make checkstyle
+      - name: Tests
+        run: |
+          make test

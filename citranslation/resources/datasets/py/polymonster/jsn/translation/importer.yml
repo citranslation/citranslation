@@ -1,0 +1,23 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.8'
+    - run: pip install codecov
+    - run: pip install coverage
+    - run: coverage run jsn.py -i example.jsn -o test.json -I import_dir
+    - run: codecov
+      if: "${{ success() }}"

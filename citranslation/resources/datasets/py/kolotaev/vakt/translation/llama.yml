@@ -1,0 +1,57 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+      postgresql:
+        image: postgres:13
+      redis:
+        image: redis:6.2
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Install dependencies
+      run: make deps
+    - name: Set environment variables
+      run: |
+        export DATABASE_DSN="mysql+pymysql://root@127.0.0.1/vakt_db"
+        export MONGO_INITDB_ROOT_USERNAME=test_user
+        export MONGO_INITDB_ROOT_PASSWORD=test_password
+    - name: Run tests
+      run: |
+        make coverage
+        make test-sql-i
+        make bench
+    - name: Run MongoDB
+      run: |
+        wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1604-4.2.1.tgz
+        tar zxf mongodb-linux-x86_64-ubuntu1604-4.2.1.tgz
+        export PATH=${PWD}/mongodb-linux-x86_64-ubuntu1604-4.2.1/bin/:${PATH}
+        mongod --version
+        mkdir -p data/db
+        mongod --dbpath=data/db --fork --logpath /dev/null
+        sleep 5
+        mongo vakt_db --eval 'db.createUser({user:"test_user",pwd:"test_password",roles:["readWrite"]});'
+    - name: Run MySQL
+      run: |
+        mysql -e 'CREATE DATABASE vakt_db CHARACTER SET utf8 COLLATE utf8_bin;'
+    - name: Run PostgreSQL
+      run: |
+        psql -c "CREATE DATABASE vakt_db ENCODING='UTF8';" -U postgres
+    - name: Code coverage
+      uses: codecov/codecov-action@v2
+    - name: Clean up
+      run: rm -rf mongodb-linux-x86_64-ubuntu1604-4.2.1.tgz data/db
+|End-of-Code|
+```
+Note that I've used the `ubuntu-latest` environment, and installed the necessary services using Docker images. I've also replaced the `before_script` and `after_script` sections with separate steps in the workflow. Additionally, I've used the `uses` keyword to install the `codecov` action.

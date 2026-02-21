@@ -1,0 +1,42 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14.x
+
+    - name: Cache node_modules
+      uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-modules-${{ hashFiles('package.json') }}
+
+    - name: Cache .nvm
+      uses: actions/cache@v2
+      with:
+        path: $HOME/.nvm
+        key: ${{ runner.os }}-nvm-${{ hashFiles('package.json') }}
+
+    - name: Install dependencies
+      run: |
+        npm install
+        make clean
+        make
+
+    - name: Run tests
+      run: npx mocha-headless-chrome -a no-sandbox -f test/index.html
+
+|End-of-Code|

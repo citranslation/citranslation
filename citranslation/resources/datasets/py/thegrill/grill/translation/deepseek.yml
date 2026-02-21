@@ -1,0 +1,54 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install graphviz and dependencies
+      run: |
+        sudo apt-get install graphviz graphviz-dev
+        python -m pip install --upgrade pip setuptools
+
+    - name: Install pytest, codecov, and pytest-cov
+      run: pip install pytest codecov pytest-cov
+
+    - name: Install package and test dependencies
+      run: pip install ".[full,test]" .
+
+    - name: Run tests
+      env:
+        QT_QPA_PLATFORM: "offscreen"
+      run: pytest --rootdir $GITHUB_WORKSPACE --cov=./
+
+    - name: Upload coverage to Codecov
+      run: codecov
+
+```
+
+Please note that the `TRAVIS_BUILD_DIR` environment variable in Travis CI is equivalent to `GITHUB_WORKSPACE` in GitHub Actions.
+
+Also, the `actions/checkout@v2` step is used to checkout your repository's code into the GitHub Actions runner.
+
+The `actions/setup-python@v2` step is used to set up a specific Python version.
+
+The `run` keyword is used to run shell commands.
+
+The `env` keyword is used to set environment variables.
+
+The `codecov` command is used to upload coverage data to Codecov.
+
+|End-of-Code|

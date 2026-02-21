@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12-dev", "pypy-3.9"]
+
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      # Use a service container for MongoDB to avoid legacy library dependency issues on Ubuntu 24.04
+      mongodb:
+        image: mongo:4.2
+        ports:
+          - 27017:27017
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install MongoDB Client and Setup DB
+        run: |
+          # Install mongosh or mongo client to run the setup script
+          sudo apt-get update && sudo apt-get install -y mongodb-clients
+          sleep 5
+          mongo --host 127.0.0.1 vakt_db --eval 'db.createUser({user:"test_user",pwd:"test_password",roles:["readWrite"]});'
+
+      - name: Create SQL Databases
+        run: |
+          mysql -h 127.0.0.1 -u root -e 'CREATE DATABASE vakt_db CHARACTER SET utf8 COLLATE utf8_bin;'
+          psql -h localhost -c "CREATE DATABASE vakt_db ENCODING='UTF8';" -U postgres
+
+      - name: Install dependencies
+        run: make deps
+
+      - name: Run tests and coverage
+        run: DATABASE_DSN="mysql+pymysql://root@127.0.0.1/vakt_db" make coverage
+
+      - name: Test SQL integration (SQLite)
+        run: DATABASE_DSN="sqlite:///:memory:" make test-sql-i
+
+      - name: Test SQL integration (Postgres)
+        run: DATABASE_DSN="postgresql+psycopg2cffi://postgres:@localhost/vakt_db" make test-sql-i
+
+      - name: Run performance tests
+        run: make bench
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+|End-of-Code|

@@ -1,0 +1,194 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "10"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "stable"
+     }],
+     "type": "chrome"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "88c79d4795cce3095bb0145b329f0a2b2748f3ec4cdf11d7949363a086206560"
+      }],
+      "type": "repo_token"
+     }],
+     "type": "code_climate"
+    }
+   ],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "TRUE"
+    }],
+    "type": "yarn"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "jobs=1"
+     }],
+     "type": "global"
+    },
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "ember_try_scenario=ember-3.13"
+      },
+      {
+       "children": [],
+       "type": "ember_try_scenario=ember-lts-3.16"
+      },
+      {
+       "children": [],
+       "type": "ember_try_scenario=ember-lts-3.20"
+      },
+      {
+       "children": [],
+       "type": "ember_try_scenario=ember-classic"
+      },
+      {
+       "children": [],
+       "type": "ember_try_scenario=ember-release"
+      },
+      {
+       "children": [],
+       "type": "ember_try_scenario=ember-beta"
+      },
+      {
+       "children": [],
+       "type": "ember_try_scenario=ember-canary"
+      }
+     ],
+     "type": "matrix"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "ember_try_scenario=ember-canary"
+        }],
+        "type": "env"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "ember_try_scenario=ember-beta"
+        }],
+        "type": "env"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "ember_try_scenario=ember-release"
+        }],
+        "type": "env"
+       }],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "allow_failures"
+    }
+   ],
+   "type": "matrix"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "yarn global add codeclimate-test-reporter"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "yarn install --no-lockfile --non-interactive"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "yarn lint:js"
+    },
+    {
+     "children": [],
+     "type": "node_modules/.bin/ember try:one $ember_try_scenario --skip-cleanup"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "codeclimate-test-reporter < coverage/PATH-OR-URL"
+   }],
+   "type": "after_script"
+  }
+ ],
+ "type": "travis-file"
+}

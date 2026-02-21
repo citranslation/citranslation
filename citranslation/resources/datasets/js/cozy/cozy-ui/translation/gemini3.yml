@@ -1,0 +1,224 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+env:
+  ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[only argos]')"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+      - run: yarn install --frozen-lockfile
+      - run: yarn lint
+
+  generate-sprite-palette:
+    name: Generate Sprite and Palette
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+      - run: yarn install --frozen-lockfile
+      - run: yarn makeSpriteAndPalette
+      - name: Upload Sprite Palette Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: sprite-palette-binaries
+          path: |
+            ./react/Icon/icons-sprite.js
+            ./react/palette.js
+
+  build-js:
+    name: Build JS
+    needs: generate-sprite-palette
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+      - run: yarn install --frozen-lockfile
+      - name: Download Sprite Palette Binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: sprite-palette-binaries
+      - run: yarn build
+      - name: Upload JS Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: js-binaries
+          path: ./transpiled
+
+  build-css:
+    name: Build CSS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+      - run: yarn install --frozen-lockfile
+      - run: yarn build:css:all
+      - name: Upload CSS Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: css-binaries
+          path: ./dist
+
+  build-docs:
+    name: Build docs
+    needs: [generate-sprite-palette, build-js, build-css]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+      - run: yarn install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          name: sprite-palette-binaries
+      - uses: actions/download-artifact@v4
+        with:
+          name: js-binaries
+          path: ./transpiled
+      - uses: actions/download-artifact@v4
+        with:
+          name: css-binaries
+          path: ./dist
+      - run: |
+          yarn build:doc:react
+          yarn build:doc:kss
+      - name: Upload Docs Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-binaries
+          path: ./build
+
+  tests:
+    name: Tests
+    needs: [generate-sprite-palette, build-js, build-css]
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[only argos]')"
+    strategy:
+      matrix:
+        command: [test:noSnapshots, test:snapshots, bundlemon]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+      - run: yarn install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          name: sprite-palette-binaries
+      - uses: actions/download-artifact@v4
+        with:
+          name: js-binaries
+          path: ./transpiled
+      - uses: actions/download-artifact@v4
+        with:
+          name: css-binaries
+          path: ./dist
+      - run: yarn ${{ matrix.command }}
+
+  create-screenshots:
+    name: Create Screenshots
+    needs: [generate-sprite-palette, build-js, build-css, build-docs]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        type: [desktop, mobile, kss]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+      - run: yarn install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          path: .
+      - name: Run Screenshots
+        run: |
+          # Note: PR_TITLE logic from Travis is omitted as this runs on push/master. 
+          # If needed for PRs, use github.event.pull_request.title
+          mkdir ./screenshots
+          npx puppeteer browsers install chrome
+          if [ "${{ matrix.type }}" == "desktop" ]; then
+            yarn screenshots --mode react --viewport desktop --screenshot-dir ./screenshots/reactDesktop
+          elif [ "${{ matrix.type }}" == "mobile" ]; then
+            yarn screenshots --mode react --viewport 300x600 --screenshot-dir ./screenshots/reactMobile
+          else
+            yarn screenshots --mode kss --screenshot-dir ./screenshots/kss
+          fi
+      - name: Upload Screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-${{ matrix.type }}-binaries
+          path: ./screenshots
+
+  upload-screenshots:
+    name: Upload all screenshots
+    needs: create-screenshots
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+      - run: yarn install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: screenshots-*-binaries
+          path: screenshots-merged
+          merge-multiple: true
+      - name: Argos Upload
+        run: |
+          yarn argos:upload --parallel screenshots-merged/reactDesktop/ --token $ARGOS_TOKEN --parallel-total 3 --parallel-nonce ${{ github.run_id }} --ignore ''
+          yarn argos:upload --parallel screenshots-merged/reactMobile/ --token $ARGOS_TOKEN --parallel-total 3 --parallel-nonce ${{ github.run_id }} --ignore ''
+          yarn argos:upload --parallel screenshots-merged/kss/ --token $ARGOS_TOKEN --parallel-total 3 --parallel-nonce ${{ github.run_id }} --ignore ''
+
+  deploy:
+    name: Deploy
+    needs: [build-docs, tests]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, '[only argos]')
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+      - run: yarn install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          path: .
+      - name: Deploy and Release
+        run: |
+          yarn deploy:doc -- --username cozycloud --email contact@cozycloud.cc --repo https://cozy-bot:$GH_TOKEN@github.com/cozy/cozy-ui.git
+          yarn semantic-release
+
+|End-of-Code|

@@ -1,0 +1,167 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "bionic"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "~/.cache/pip"
+    }],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.6"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "sphinxintl_transifex_username=sphinxjp"
+     },
+     {
+      "children": [],
+      "type": "sphinxintl_transifex_project_name=sphinx-doc"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "openssl aes-256-cbc -k $encrypted_e0adcd9bc1c7_key -iv $encrypted_e0adcd9bc1c7_iv -in .secrets/key.enc -out ~/.ssh/id_rsa -d"
+    },
+    {
+     "children": [],
+     "type": "chmod-cmd"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "git branch -a"
+    },
+    {
+     "children": [],
+     "type": "git checkout master"
+    },
+    {
+     "children": [],
+     "type": "git submodule init"
+    },
+    {
+     "children": [],
+     "type": "git submodule update"
+    },
+    {
+     "children": [],
+     "type": "(cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip install -u pip setuptools"
+    },
+    {
+     "children": [],
+     "type": "pip install -r ./requirements.txt"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "sh ./locale/PATH-OR-URL"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "git branch -a"
+    },
+    {
+     "children": [],
+     "type": "git checkout master"
+    },
+    {
+     "children": [],
+     "type": "git config --global user.email \\\"sphinx-auto-update\\\""
+    },
+    {
+     "children": [],
+     "type": "git config --global PATH-OR-URL \\\"sphinx-auto-update\\\""
+    },
+    {
+     "children": [],
+     "type": "git add ."
+    },
+    {
+     "children": [],
+     "type": "git commit -m \\\"[skip ci] by travis ci (job $travis_job_number)\\nhttps://PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "git remote -v"
+    },
+    {
+     "children": [],
+     "type": "git remote add github git@github.com:sphinx-doc/sphinx-doc-translations.git"
+    },
+    {
+     "children": [],
+     "type": "git push github master"
+    }
+   ],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

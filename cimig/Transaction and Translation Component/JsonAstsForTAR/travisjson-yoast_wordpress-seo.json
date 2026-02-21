@@ -1,0 +1,433 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "php"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "master"
+     },
+     {
+      "children": [],
+      "type": "trunk"
+     },
+     {
+      "children": [],
+      "type": "/^release\\\\/*/"
+     },
+     {
+      "children": [],
+      "type": "/^hotfix\\\\/\\\\d+\\\\.\\\\d+(\\\\.\\\\d+)?(-\\\\s*)?$/"
+     },
+     {
+      "children": [],
+      "type": "/^feature\\\\/*/"
+     },
+     {
+      "children": [],
+      "type": "/^\\\\d+\\\\.\\\\d+(\\\\.\\\\d+)?(-\\\\s*)?$/"
+     }
+    ],
+    "type": "only"
+   }],
+   "type": "branches"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "🚀 deployment"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "deploy to s3"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "branch = deploy"
+         }],
+         "type": "if"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "sc_attr=wordpress-seo"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "grunt artifact"
+         }],
+         "type": "script"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "yarn global add grunt-cli"
+          },
+          {
+           "children": [],
+           "type": "yarn install"
+          }
+         ],
+         "type": "install"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "TRUE"
+           }],
+           "type": "skip_cleanup"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "s3"
+           }],
+           "type": "provider"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "akiajrnlqaprl5ukdjkq"
+           }],
+           "type": "access_key_id"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "token"
+            }],
+            "type": "secure"
+           }],
+           "type": "secret_access_key"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "yoast-seo-builds"
+           }],
+           "type": "bucket"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "us-east-1"
+           }],
+           "type": "region"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "artifact"
+           }],
+           "type": "local-dir"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "$travis_branch"
+           }],
+           "type": "upload-dir"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "yoast/wordpress-seo"
+             }],
+             "type": "repo"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "all_branches"
+            }
+           ],
+           "type": "on"
+          }
+         ],
+         "type": "deploy"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "🚀 deployment"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "deploy to yoast-dist"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "7.2"
+         }],
+         "type": "php"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "travis_node_version=14"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "composer self-update 2.2.10"
+          },
+          {
+           "children": [],
+           "type": "yarn global add grunt-cli"
+          },
+          {
+           "children": [],
+           "type": "yarn install"
+          }
+         ],
+         "type": "install"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "shell-cmd"
+          },
+          {
+           "children": [],
+           "type": "grunt artifact"
+          }
+         ],
+         "type": "script"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "( tag is present or branch =~ /^feature\\\\// or branch =~ /^release\\\\// or branch =~ /^hotfix\\\\// or branch = trunk ) and type != pull_request"
+         }],
+         "type": "if"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "nvm install $travis_node_version"
+          },
+          {
+           "children": [],
+           "type": "curl-cmd"
+          },
+          {
+           "children": [],
+           "type": "export-cmd"
+          },
+          {
+           "children": [],
+           "type": "openssl aes-256-cbc -k $encrypted_e268719177eb_key -iv $encrypted_e268719177eb_iv -in config/travis/deploy_keys/id_rsa_yoast_dist.enc -out config/travis/deploy_keys/id_rsa_yoast_dist -d"
+          },
+          {
+           "children": [],
+           "type": "chmod-cmd"
+          },
+          {
+           "children": [],
+           "type": "eval $(ssh-agent -s)"
+          },
+          {
+           "children": [],
+           "type": "ssh-add config/travis/deploy_keys/id_rsa_yoast_dist"
+          }
+         ],
+         "type": "before_install"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "TRUE"
+           }],
+           "type": "skip_cleanup"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "script"
+           }],
+           "type": "provider"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "bash config/travis/deploy_to_dist.sh ${travis_tag:-$travis_branch} wordpress-seo"
+           }],
+           "type": "script"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "$travis_repo_slug"
+             }],
+             "type": "repo"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "all_branches"
+            }
+           ],
+           "type": "on"
+          }
+         ],
+         "type": "deploy"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    }
+   ],
+   "type": "build"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "yarn"
+    },
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "~/.composer/cache"
+      },
+      {
+       "children": [],
+       "type": "node_modules"
+      }
+     ],
+     "type": "directories"
+    }
+   ],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "phpenv config-rm xdebug.ini || echo-cmd"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "git status"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "token"
+      }],
+      "type": "secure"
+     }],
+     "type": "slack"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "FALSE"
+     }],
+     "type": "email"
+    }
+   ],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

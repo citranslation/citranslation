@@ -1,0 +1,353 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "build plugin release - action"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "check out repository code"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "echo-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "export-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "echo-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "echo-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "zip -r master.zip * -i '\\\\octoprint_*' 'translations' 'PATH-OR-URL' 'requirements.txt' 'PATH-OR-URL'"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "list files in the repository"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "ls ${{ github.workspace }}\\n"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "version"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "echo-cmd"
+          }],
+          "type": "run"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "version"
+          }],
+          "type": "id"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "repository and branch name"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "branch"
+          }],
+          "type": "id"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "export-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "release"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/create-release@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "create_release"
+          }],
+          "type": "id"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ github.token }}"
+           }],
+           "type": "github_token"
+          }],
+          "type": "env"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "draft"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ steps.branch.outputs.branch_name }}"
+            }],
+            "type": "commitish"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "FALSE"
+            }],
+            "type": "prerelease"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "v${{ steps.version.outputs.version }}-draft"
+            }],
+            "type": "release_name"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ steps.version.outputs.version }}-draft"
+            }],
+            "type": "tag_name"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "## [bugfix]\\n- #xxx\\n\\n## [enhancement]\\n- #xxx\\n\\n## counter\\n![downloaded](PATH-OR-URL{{ steps.branch.outputs.repo_name }}/${{ steps.version.outputs.version }}/total)\\n"
+            }],
+            "type": "body"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "upload master.zip to release"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/upload-release-asset@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ github.token }}"
+           }],
+           "type": "github_token"
+          }],
+          "type": "env"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ steps.create_release.outputs.upload_url }}"
+            }],
+            "type": "upload_url"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "master.zip"
+            }],
+            "type": "asset_path"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "master.zip"
+            }],
+            "type": "asset_name"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "application/gzip"
+            }],
+            "type": "asset_content_type"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "download master.zip"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "curl-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "echo-cmd"
+         }],
+         "type": "run"
+        }],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build-release-zip-action"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

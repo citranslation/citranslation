@@ -1,0 +1,110 @@
+{
+ "children": [
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "zip -r master.zip * -i '\\\\octoprint_*' 'translations' 'PATH-OR-URL' 'requirements.txt' 'PATH-OR-URL'"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "git tag -f travis-build"
+    },
+    {
+     "children": [],
+     "type": "git remote add gh PATH-OR-URL{travis_repo_slug%/*}:${github_token}@version"
+    },
+    {
+     "children": [],
+     "type": "git push -f gh travis-build"
+    },
+    {
+     "children": [],
+     "type": "git remote remove gh"
+    }
+   ],
+   "type": "before_deploy"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "v${plugin_version}-draft"
+     }],
+     "type": "name"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "draft"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "releases"
+     }],
+     "type": "provider"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "${github_token}"
+     }],
+     "type": "api_key"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "master.zip"
+     }],
+     "type": "file"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "overwrite"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "skip_cleanup"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "$travis_commit"
+     }],
+     "type": "target_commitish"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "FALSE"
+      }],
+      "type": "tags"
+     }],
+     "type": "on"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

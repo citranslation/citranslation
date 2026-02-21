@@ -1,0 +1,24 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install jinja2 colorlog requests
+      - name: Run scripts
+        run: |
+          echo "from Default.settings import *" > settings.py
+          chmod +x generate.py
+          ./generate.py
+
+|End-of-Code|

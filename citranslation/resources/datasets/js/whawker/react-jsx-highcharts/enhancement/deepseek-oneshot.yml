@@ -1,0 +1,21 @@
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  codecov:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 'node'
+    - run: npm install
+    - run: npm run coverage
+    - run: |
+        curl -Os https://uploader.codecov.io/latest/linux/codecov
+        chmod +x codecov
+        ./codecov -t ${CODECOV_TOKEN}
+```
+|End-of-Code|

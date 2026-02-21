@@ -1,0 +1,31 @@
+Sure, here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: Python application
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: make install-deps
+
+    - name: Build
+      run: make
+
+```
+
+This configuration will trigger the workflow on every push and pull request to the repository. It will use the latest version of Ubuntu to run the job, set up Python 3.9, install the dependencies using `make install-deps`, and then build the project using `make`.
+
+|End-of-Code|

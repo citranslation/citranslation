@@ -1,0 +1,36 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+env:
+  NUMPY_VERSION: stable
+  ASTROPY_VERSION: stable
+  SETUP_CMD: "'test'"
+  PIP_DEPENDENCIES: "''"
+  CONDA_DEPENDENCIES: "'scipy pytest-cov'"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: |-
+        curl -L https://github.com/codeclimate/codeclimate/archive/master.tar.gz | tar xvz
+        cd codeclimate-* && sudo make install
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: git clone git://github.com/astropy/ci-helpers.git
+    - run: source ci-helpers/travis/setup_conda_${{ runner.os }}.sh
+    - run: py.test
+    strategy:
+      matrix:
+        python:
+        - 3.8
+        - 3.9

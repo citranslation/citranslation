@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node-js@v4
+        with:
+          node-version: "12"
+
+      - name: Start LocalStack
+        run: |
+          docker pull localstack/localstack
+          docker run --rm -d -p 4566:4566 localstack/localstack
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run lint and unit tests
+        run: |
+          set -e
+          npm run lint
+          npm run test
+
+      - name: Run integration tests
+        run: |
+          npm link
+          sleep 5
+          SLS_DEBUG=1 npm run test:integration
+
+|End-of-Code|

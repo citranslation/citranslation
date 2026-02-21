@@ -1,0 +1,12 @@
+name: Python CI
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.11
+    - run: pip install -r linting/requirements.txt
+    - run: python ./linting/lint-csv.py
+|End-of-Code|

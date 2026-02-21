@@ -1,0 +1,44 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "0.10"
+    },
+    {
+     "children": [],
+     "type": "0.10.29"
+    },
+    {
+     "children": [],
+     "type": "0.12"
+    },
+    {
+     "children": [],
+     "type": "4"
+    },
+    {
+     "children": [],
+     "type": "iojs"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  }
+ ],
+ "type": "travis-file"
+}

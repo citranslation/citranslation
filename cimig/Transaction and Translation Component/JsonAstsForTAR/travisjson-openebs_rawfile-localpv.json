@@ -1,0 +1,134 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "jammy"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "minimal"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "build"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "./.ci/PATH-OR-URL"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "e2e-test"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "./.ci/e2e-test/PATH-OR-URL"
+        }],
+        "type": "install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "tag is present or commit_message =~ /perform-e2e/"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "./.ci/e2e-test/PATH-OR-URL"
+        }],
+        "type": "script"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "change_minikube_none_user=true"
+         },
+         {
+          "children": [],
+          "type": "minikube_wantupdatenotification=false"
+         },
+         {
+          "children": [],
+          "type": "minikube_wantreporterrorprompt=false"
+         },
+         {
+          "children": [],
+          "type": "minikube_home=$home"
+         },
+         {
+          "children": [],
+          "type": "change_minikube_none_user=true"
+         },
+         {
+          "children": [],
+          "type": "kubeconfig=~/.kube/config"
+         }
+        ],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "publish"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "./.ci/PATH-OR-URL"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

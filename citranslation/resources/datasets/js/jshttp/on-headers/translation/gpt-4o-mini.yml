@@ -1,0 +1,77 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [0.8, 0.10, 0.12, 1.8, 2.5, 3.3, 4.9, 5.12, 6.16, 7.10, 8.17, 9.11, 10.21, 11.15, 12.18, 13.14, 14.5]
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Cache node modules
+      uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Install dependencies
+      run: |
+        npm config set shrinkwrap false
+        npm install
+
+    - name: Configure dependencies based on Node.js version
+      run: |
+        if [[ "${{ matrix.node-version }}" < "0.10" ]]; then
+          npm install --save-dev mocha@2.5.3
+          npm uninstall --save-dev istanbul
+          npm install --save-dev supertest@1.1.0
+          npm uninstall --save-dev eslint
+        elif [[ "${{ matrix.node-version }}" < "4.0" ]]; then
+          npm install --save-dev mocha@3.5.3
+          npm install --save-dev supertest@2.0.0
+        elif [[ "${{ matrix.node-version }}" < "6.0" ]]; then
+          npm install --save-dev mocha@5.2.0
+          npm install --save-dev supertest@3.4.2
+        elif [[ "${{ matrix.node-version }}" < "8.0" ]]; then
+          npm install --save-dev mocha@6.2.2
+        elif [[ "${{ matrix.node-version }}" < "10.0" ]]; then
+          npm install --save-dev mocha@7.1.2
+        fi
+
+    - name: Run tests
+      run: |
+        if npm ls istanbul --depth=0; then
+          npm run test-travis
+        else
+          npm test
+        fi
+
+    - name: Run linting
+      run: |
+        if npm ls eslint --depth=0; then
+          npm run lint
+        fi
+
+    - name: Upload coverage to Coveralls
+      if: success() && steps.test.outputs.coverage == 'true'
+      run: |
+        npm install --save-dev coveralls@2
+        coveralls < ./coverage/lcov.info
+|End-of-Code|
+```

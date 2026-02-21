@@ -1,0 +1,34 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 8
+          cache: yarn
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Deploy
+        run: yarn deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+|End-of-Code|

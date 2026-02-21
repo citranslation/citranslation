@@ -1,0 +1,10 @@
+name: placeholder
+
+on: push:
+
+jobs:
+  build:
+    runs-on
+    steps
+    run: python setup.py test
+

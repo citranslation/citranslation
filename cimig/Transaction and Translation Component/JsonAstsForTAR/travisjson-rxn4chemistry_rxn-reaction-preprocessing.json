@@ -1,0 +1,316 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install -e .[dev] --extra-index-url PATH-OR-URL{pypi_username}:${pypi_password}@PATH-OR-URL --extra-index-url PATH-OR-URL{pypi_username}:${pypi_password}@version"
+    },
+    {
+     "children": [],
+     "type": "pip install rdkit-pypi==2021.3.2"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.7"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "pypi release"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "tag =~ ^v"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "skip"
+        }],
+        "type": "install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "export-cmd"
+         },
+         {
+          "children": [],
+          "type": "export-cmd"
+         },
+         {
+          "children": [],
+          "type": "index_versions_output=$(docker-cmd"
+         },
+         {
+          "children": [],
+          "type": "echo-cmd"
+         },
+         {
+          "children": [],
+          "type": "shell-cmd"
+         },
+         {
+          "children": [],
+          "type": "shell-cmd"
+         }
+        ],
+        "type": "script"
+       },
+       {
+        "children": [{
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "pypi"
+           }],
+           "type": "provider"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "PATH-OR-URL{pypi_server}"
+           }],
+           "type": "server"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "sdist bdist_wheel"
+           }],
+           "type": "distributions"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${pypi_username}"
+           }],
+           "type": "username"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${pypi_password}"
+           }],
+           "type": "password"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "60.8.2"
+           }],
+           "type": "setuptools_version"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "tags"
+           }],
+           "type": "on"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }],
+        "type": "deploy"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "bump version"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "main"
+         }],
+         "type": "only"
+        }],
+        "type": "branches"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "shell-cmd"
+        }],
+        "type": "before_install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "pip install bump2version==1.0.1"
+         },
+         {
+          "children": [],
+          "type": "git remote add -f origin-push PATH-OR-URL{ghe_token}@version"
+         },
+         {
+          "children": [],
+          "type": "default_branch=$(git remote show origin-push | grep 'head branch' | cut -d' ' -f5)"
+         },
+         {
+          "children": [],
+          "type": "git branch -a"
+         },
+         {
+          "children": [],
+          "type": "git checkout ${default_branch}"
+         },
+         {
+          "children": [],
+          "type": "git pull"
+         },
+         {
+          "children": [],
+          "type": "shell-cmd"
+         },
+         {
+          "children": [],
+          "type": "git config user.email \\\"${pypi_username}\\\""
+         },
+         {
+          "children": [],
+          "type": "git config PATH-OR-URL \\\"travis ci bump version\\\""
+         }
+        ],
+        "type": "install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "export-cmd"
+         },
+         {
+          "children": [],
+          "type": "bump2version \\\"${part}\\\" --tag --tag-message \\\"release {new_version} ${added_message}\\\" --commit --message \\\"bump version {current_version} → {new_version} ${added_message}\\\""
+         },
+         {
+          "children": [],
+          "type": "git log"
+         }
+        ],
+        "type": "script"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "TRUE"
+          }],
+          "type": "skip_cleanup"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "script"
+          }],
+          "type": "provider"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "echo-cmd"
+          }],
+          "type": "script"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "main"
+           }],
+           "type": "branch"
+          }],
+          "type": "on"
+         }
+        ],
+        "type": "deploy"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

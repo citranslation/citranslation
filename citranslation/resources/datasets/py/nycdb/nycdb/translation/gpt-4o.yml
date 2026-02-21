@@ -1,0 +1,73 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - '3.12-rc-bullseye'
+          - '3.11-bullseye'
+          - '3.10-bullseye'
+          - '3.9-bullseye'
+          - '3.8-bullseye'
+        postgres-version:
+          - '15'
+          - '14'
+          - '13'
+          - '12'
+        include:
+          - python-version: '3.12-rc-bullseye'
+            postgres-version: '15'
+          - python-version: '3.11-bullseye'
+            postgres-version: '15'
+          - python-version: '3.11-bullseye'
+            postgres-version: '14'
+          - python-version: '3.10-bullseye'
+            postgres-version: '14'
+          - python-version: '3.10-bullseye'
+            postgres-version: '13'
+          - python-version: '3.10-bullseye'
+            postgres-version: '12'
+          - python-version: '3.9-bullseye'
+            postgres-version: '14'
+          - python-version: '3.8-bullseye'
+            postgres-version: '14'
+
+    services:
+      postgres:
+        image: postgres:${{ matrix.postgres-version }}
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build Docker Compose
+      run: docker-compose build
+
+    - name: Run tests
+      run: docker-compose run --entrypoint="pytest tests" nycdb
+```
+|End-of-Code|

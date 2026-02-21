@@ -1,0 +1,35 @@
+```yaml
+name: Node CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+```
+|End-of-Code|
+
+This GitHub Action configuration does the following:
+
+- It sets up a workflow that triggers on `push` and `pull_request` events.
+- It runs on the latest version of Ubuntu.
+- It uses the `setup-node` action to set up Node.js versions 14.x, 16.x, and 18.x.
+- It checks out the repository.
+- It installs the project dependencies with `npm ci`.
+- It builds the project with `npm run build` if a `build` script is present.
+- It runs the tests with `npm test`.

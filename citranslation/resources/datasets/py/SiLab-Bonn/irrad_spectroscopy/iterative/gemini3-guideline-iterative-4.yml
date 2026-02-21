@@ -1,0 +1,46 @@
+name: Python Package CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.8"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: ${{ matrix.python-version }}
+          channels: conda-forge,defaults
+          activate-environment: test-env
+
+      - name: Install Dependencies
+        shell: bash -l {0}
+        run: |
+          # Install core dependencies via Conda to avoid building from source
+          conda install --yes numpy scipy pyyaml matplotlib nose jupyter pandas setuptools
+          
+          # Fix for 'distutils.msvccompiler' and 'Python.h' issues:
+          # 1. Ensure we are using CPython, not PyPy (based on the error path /pypy3.9/)
+          # 2. Install setuptools<60 to maintain compatibility with legacy numpy distutils
+          pip install --upgrade pip
+          pip install "setuptools<60" wheel
+          
+          # Install requirements, ensuring we don't try to re-build numpy
+          pip install -r requirements.txt
+          python setup.py develop
+
+      - name: Run tests
+        shell: bash -l {0}
+        run: nosetests
+
+|End-of-Code|

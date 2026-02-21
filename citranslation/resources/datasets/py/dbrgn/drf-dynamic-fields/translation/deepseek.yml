@@ -1,0 +1,37 @@
+Here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: Travis CI to GitHub Actions
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8]
+        django-version: ['<2', '<2.1', '<2.2']
+        drf-version: ['<3.8', '<3.9']
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install "Django${{ matrix.django-version }}" "djangorestframework${{ matrix.drf-version }}"
+
+    - name: Run Tests
+      run: python runtests.py
+
+|End-of-Code|
+```
+
+This GitHub Actions configuration does the same thing as your Travis CI configuration. It sets up a job that runs on every push and pull request, on the latest version of Ubuntu. It uses a matrix strategy to test different combinations of Python, Django, and Django Rest Framework versions. It then checks out the code, sets up the correct Python version, installs the dependencies, and runs the tests.

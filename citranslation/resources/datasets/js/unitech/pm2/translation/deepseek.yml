@@ -1,0 +1,55 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x, 18.x, 16.x, 14.x, 12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install Python
+      run: sudo apt-get install python3
+
+    - name: Install PHP
+      run: sudo apt-get install php-cli
+
+    - name: Install bc (if s390x)
+      if: ${{ matrix.os == 'ubuntu-latest' && matrix.arch == 's390x' }}
+      run: sudo apt-get install bc
+
+    - name: Install Docker
+      run: |
+        sudo apt-get update
+        sudo apt-get install docker-ce
+
+    - name: npm install
+      run: npm install
+
+```
+
+Please note that GitHub Actions do not support the `os` and `arch` fields in the same way as Travis CI. The `runs-on` field in the job specifies the type of runner that the job will run on, and the `matrix` strategy allows you to specify different versions of Node.js to test on.
+
+Also, the `before_install` section in Travis CI is split into separate steps in GitHub Actions. The `if` condition in Travis CI is replaced with the `if` condition in GitHub Actions.
+
+The `install` section in Travis CI is replaced with a step that runs `npm install`.
+
+The `git` depth is set in the checkout step.
+
+The `services` section in Travis CI is not used in GitHub Actions as it is used to start and stop services before and after the job runs.

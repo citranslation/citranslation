@@ -1,0 +1,36 @@
+name: test
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'stable'
+
+      - name: Install dependencies
+        run: |
+          npm install -g codecov
+          npm install boolbase nth-check htmlparser2
+          npm install tape tap-spec istanbul
+
+      - name: Run coverage
+        run: npm run coverage
+
+      - name: Upload to Codecov
+        run: codecov
+
+|End-of-Code|

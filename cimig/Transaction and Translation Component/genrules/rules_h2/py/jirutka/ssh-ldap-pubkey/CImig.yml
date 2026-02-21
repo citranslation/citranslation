@@ -1,0 +1,15 @@
+name: placeholder_Name
+
+on: push:
+
+jobs:
+  build:
+    runs-on
+    steps
+
+file_glob: TRUE
+
+print_hash: TRUE
+
+fail-fast: FALSE
+

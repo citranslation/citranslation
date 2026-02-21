@@ -1,0 +1,314 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "bionic"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "update"
+    }],
+    "type": "apt"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "conda 3.7 extras,opencl"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "distrib=\\\"conda\\\""
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "sudo apt install -y libopenmpi-dev openmpi-bin"
+        }],
+        "type": "before_install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "conda install -c conda-forge pyopencl oclgrind clang=9.0.1"
+         },
+         {
+          "children": [],
+          "type": "pip install -r requirements/requirements-extras.txt"
+         },
+         {
+          "children": [],
+          "type": "pip install mpi4py"
+         }
+        ],
+        "type": "before_script"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "mpiexec -n 1 python-cmd"
+        }],
+        "type": "script"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "coveralls || echo-cmd"
+        }],
+        "type": "after_success"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "conda 3.7"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "distrib=\\\"conda\\\""
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "conda 3.8"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "distrib=\\\"conda\\\""
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "pip 3.9"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.9"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "distrib=\\\"pip\\\""
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "docs"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "distrib=\\\"conda\\\""
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "sudo apt install -y libopenmpi-dev openmpi-bin"
+        }],
+        "type": "before_install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "conda install -c conda-forge pandoc"
+         },
+         {
+          "children": [],
+          "type": "pip install -r requirements/requirements-docs.txt"
+         },
+         {
+          "children": [],
+          "type": "pip install -r requirements/requirements-tutorials.txt"
+         },
+         {
+          "children": [],
+          "type": "pip install -r requirements/requirements-extras.txt"
+         },
+         {
+          "children": [],
+          "type": "pip install mpi4py"
+         },
+         {
+          "children": [],
+          "type": "pip install viziphant"
+         },
+         {
+          "children": [],
+          "type": "sed -i -e \\\"s/nbsphinx_execute *=.*/nbsphinx_execute = 'always'/g\\\" doc/PATH-OR-URL"
+         }
+        ],
+        "type": "before_script"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "cd-cmd"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip -v"
+    },
+    {
+     "children": [],
+     "type": "pip install -r requirements/requirements-tests.txt"
+    },
+    {
+     "children": [],
+     "type": "pip install pytest==6.2.5"
+    },
+    {
+     "children": [],
+     "type": "pip install pytest-cov coveralls"
+    },
+    {
+     "children": [],
+     "type": "pip install ."
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip list"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pytest --cov=elephant-cmd"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

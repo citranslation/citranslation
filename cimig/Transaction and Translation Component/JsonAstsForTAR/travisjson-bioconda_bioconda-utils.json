@@ -1,0 +1,121 @@
+{
+ "children": [
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "linux"
+    },
+    {
+     "children": [],
+     "type": "osx"
+    }
+   ],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python-cmd"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "./PATH-OR-URL"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "export-cmd"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "while sleep 9m; do echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "./PATH-OR-URL"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "encryption_label=195cdfd31577"
+      },
+      {
+       "children": [],
+       "type": "miniconda_ver=\\\"4.3.21\\\""
+      }
+     ],
+     "type": "global"
+    },
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "bioconda_utils_test_type=pytest_docker-cmd"
+      },
+      {
+       "children": [],
+       "type": "bioconda_utils_test_type=pytest_not_docker-cmd"
+      },
+      {
+       "children": [],
+       "type": "bioconda_utils_test_type=docs"
+      }
+     ],
+     "type": "matrix"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "TRUE"
+    }],
+    "type": "fast_finish"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "master"
+    }],
+    "type": "only"
+   }],
+   "type": "branches"
+  }
+ ],
+ "type": "travis-file"
+}

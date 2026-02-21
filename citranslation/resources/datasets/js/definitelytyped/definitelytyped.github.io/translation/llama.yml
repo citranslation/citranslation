@@ -1,0 +1,42 @@
+Here is the equivalent GitHub Action configuration:
+```
+name: Deploy
+
+on:
+  push:
+    branches:
+      - source
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Deploy
+        run: npm run deploy
+      - name: Login to GitHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.GITHUB_USERNAME }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy to GitHub
+        uses: docker/deploy-action@v1
+        with:
+          username: ${{ secrets.GITHUB_USERNAME }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repo: ${{ github.repository }}
+          ref: ${{ github.event.ref }}
+|End-of-Code|
+```
+Note that in GitHub Actions, we need to specify the `runs-on` keyword to indicate the environment where the job will run. In this case, we're using an `ubuntu-latest` environment. We also need to specify the `steps` keyword to define the sequence of actions to perform.
+
+The `Checkout code` step uses the `actions/checkout` action to check out the code in the repository. The `Install dependencies` step runs the `npm install` command to install the dependencies specified in the `package.json` file.
+
+The `Deploy` step runs the `npm run deploy` command to deploy the application.
+
+The `Login to GitHub` and `Deploy to GitHub` steps use the `docker/login-action` and `docker/deploy-action` actions, respectively, to login to GitHub and deploy the application to the repository. These actions require the `GITHUB_USERNAME` and `GITHUB_TOKEN` secrets to be set in the repository settings.
+
+Finally, the `ref` parameter in the `Deploy to GitHub` step is set to the `github.event.ref` variable, which represents the ref (branch or tag) that triggered the workflow.

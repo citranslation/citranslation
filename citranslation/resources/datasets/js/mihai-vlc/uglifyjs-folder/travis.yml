@@ -1,0 +1,7 @@
+language: node_js
+dist: noble
+node_js:
+  - '16'
+  - '17'
+  - '18'
+  - '19'

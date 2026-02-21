@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  schema-linter:
+    name: Schema linter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.6'
+
+      - name: Run schema linter
+        run: |
+          cd src
+          python schema_linter.py --environment "${GITHUB_REF_NAME}"
+
+  schema-tests:
+    name: Schema tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '8'
+
+      - name: Install dependencies
+        run: |
+          cd tests
+          npm install
+
+      - name: Run tests
+        run: |
+          cd tests
+          npm test
+
+  # Note: Slack notifications in GitHub Actions require a Slack Webhook URL 
+  # stored in GitHub Secrets (e.g., SLACK_WEBHOOK_URL).
+  notify:
+    name: Slack Notification
+    needs: [schema-linter, schema-tests]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_COLOR: ${{ job.status }}
+
+|End-of-Code|

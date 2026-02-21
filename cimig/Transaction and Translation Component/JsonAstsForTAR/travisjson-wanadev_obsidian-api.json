@@ -1,0 +1,40 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "stable"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "node node_modules/.bin/pmaven- start -f test/app/server.js --name=obsidian-api-app && node node_modules/.bin/pmaven- start -f test/inte/server.js --name=obsidian-api-inte &"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "grunt jshint gen-test mocha_phantomjs"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "./node_modules/.bin/pmaven- kill"
+   }],
+   "type": "after_script"
+  }
+ ],
+ "type": "travis-file"
+}

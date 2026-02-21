@@ -1,0 +1,163 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "2.7"
+    },
+    {
+     "children": [],
+     "type": "3.4"
+    },
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "pypy"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install tox-travis"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "test"
+    },
+    {
+     "children": [],
+     "type": "deploy"
+    }
+   ],
+   "type": "stages"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "deploy"
+       }],
+       "type": "stage"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "3.6"
+       }],
+       "type": "python"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "skip"
+       }],
+       "type": "install"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "skip"
+       }],
+       "type": "script"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "pypi"
+         }],
+         "type": "provider"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "stephenfin"
+         }],
+         "type": "user"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "token"
+          }],
+          "type": "secure"
+         }],
+         "type": "password"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "TRUE"
+          }],
+          "type": "tags"
+         }],
+         "type": "on"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "sdist bdist_wheel"
+         }],
+         "type": "distributions"
+        }
+       ],
+       "type": "deploy"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }],
+    "type": "include"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

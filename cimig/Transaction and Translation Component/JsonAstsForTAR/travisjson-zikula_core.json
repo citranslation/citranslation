@@ -1,0 +1,470 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "php"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "bionic"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "7.2"
+    },
+    {
+     "children": [],
+     "type": "7.3"
+    },
+    {
+     "children": [],
+     "type": "7.4"
+    },
+    {
+     "children": [],
+     "type": "8.0.0"
+    },
+    {
+     "children": [],
+     "type": "nightly"
+    }
+   ],
+   "type": "php"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "8.0.0"
+        }],
+        "type": "php"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "nightly"
+        }],
+        "type": "php"
+       }],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "allow_failures"
+    }
+   ],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "mysql"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "composer validate --no-check-all --strict"
+    },
+    {
+     "children": [],
+     "type": "composer install -o --no-scripts"
+    },
+    {
+     "children": [],
+     "type": "composer run-script post-autoload-dump"
+    },
+    {
+     "children": [],
+     "type": "composer run-script post-install-cmd"
+    },
+    {
+     "children": [],
+     "type": "php bin/console lint:container"
+    },
+    {
+     "children": [],
+     "type": "php bin/console lint:yaml config/"
+    },
+    {
+     "children": [],
+     "type": "php bin/console lint:yaml src/system/ --parse-tags"
+    },
+    {
+     "children": [],
+     "type": "php bin/console lint:yaml src/zikula/ --parse-tags"
+    },
+    {
+     "children": [],
+     "type": "php bin/console lint:twig src/system/ src/zikula/"
+    },
+    {
+     "children": [],
+     "type": "curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo mv local-php-security-checker /usr/bin/local-php-security-checker"
+    },
+    {
+     "children": [],
+     "type": "sudo chmod-cmd"
+    },
+    {
+     "children": [],
+     "type": "/usr/bin/local-php-security-checker"
+    },
+    {
+     "children": [],
+     "type": "php bin/simple-phpunit"
+    },
+    {
+     "children": [],
+     "type": "php bin/console translation:extract zikula en -vvv"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "mysql -e 'create database zk_test;'"
+    },
+    {
+     "children": [],
+     "type": "php bin/console zikula:install:start -n --database_user=root --database_name=zk_test --password=12345678 --email=admin@version"
+    },
+    {
+     "children": [],
+     "type": "php bin/console zikula:install:finish -n -vvv"
+    },
+    {
+     "children": [],
+     "type": "mysql -e 'drop database zk_test'"
+    },
+    {
+     "children": [],
+     "type": "mysql -e 'create database zk_test;'"
+    },
+    {
+     "children": [],
+     "type": "mysql zk_test < tests/test_dbs/core143.sql"
+    },
+    {
+     "children": [],
+     "type": "cp .env .env.local"
+    },
+    {
+     "children": [],
+     "type": "cp tests/services_custom.yaml config/services_custom.yaml"
+    },
+    {
+     "children": [],
+     "type": "php bin/console zikula:pre-upgrade"
+    },
+    {
+     "children": [],
+     "type": "php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv"
+    },
+    {
+     "children": [],
+     "type": "mysql -e 'drop database zk_test'"
+    },
+    {
+     "children": [],
+     "type": "mysql -e 'create database zk_test;'"
+    },
+    {
+     "children": [],
+     "type": "mysql zk_test < tests/test_dbs/core144.sql"
+    },
+    {
+     "children": [],
+     "type": "cp .env .env.local"
+    },
+    {
+     "children": [],
+     "type": "cp tests/services_custom.yaml config/services_custom.yaml"
+    },
+    {
+     "children": [],
+     "type": "sed -i -e \\\"s/core_installed_version:(.*)/core_installed_version: '1.4.4'/\\\" config/services_custom.yaml"
+    },
+    {
+     "children": [],
+     "type": "php bin/console zikula:pre-upgrade"
+    },
+    {
+     "children": [],
+     "type": "php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'"
+    },
+    {
+     "children": [],
+     "type": "mysql -e 'drop database zk_test'"
+    },
+    {
+     "children": [],
+     "type": "mysql -e 'create database zk_test;'"
+    },
+    {
+     "children": [],
+     "type": "mysql zk_test < tests/test_dbs/core145.sql"
+    },
+    {
+     "children": [],
+     "type": "cp .env .env.local"
+    },
+    {
+     "children": [],
+     "type": "cp tests/services_custom.yaml config/services_custom.yaml"
+    },
+    {
+     "children": [],
+     "type": "sed -i -e \\\"s/core_installed_version:(.*)/core_installed_version: '1.4.5'/\\\" config/services_custom.yaml"
+    },
+    {
+     "children": [],
+     "type": "php bin/console zikula:pre-upgrade"
+    },
+    {
+     "children": [],
+     "type": "php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'"
+    },
+    {
+     "children": [],
+     "type": "mysql -e 'drop database zk_test'"
+    },
+    {
+     "children": [],
+     "type": "mysql -e 'create database zk_test;'"
+    },
+    {
+     "children": [],
+     "type": "mysql zk_test < tests/test_dbs/core146.sql"
+    },
+    {
+     "children": [],
+     "type": "cp .env .env.local"
+    },
+    {
+     "children": [],
+     "type": "cp tests/services_custom.yaml config/services_custom.yaml"
+    },
+    {
+     "children": [],
+     "type": "sed -i -e \\\"s/core_installed_version:(.*)/core_installed_version: '1.4.6'/\\\" config/services_custom.yaml"
+    },
+    {
+     "children": [],
+     "type": "php bin/console zikula:pre-upgrade"
+    },
+    {
+     "children": [],
+     "type": "php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'"
+    },
+    {
+     "children": [],
+     "type": "mysql -e 'drop database zk_test'"
+    },
+    {
+     "children": [],
+     "type": "mysql -e 'create database zk_test;'"
+    },
+    {
+     "children": [],
+     "type": "mysql zk_test < tests/test_dbs/core159.sql"
+    },
+    {
+     "children": [],
+     "type": "cp .env .env.local"
+    },
+    {
+     "children": [],
+     "type": "cp tests/services_custom.yaml config/services_custom.yaml"
+    },
+    {
+     "children": [],
+     "type": "sed -i -e \\\"s/core_installed_version:(.*)/core_installed_version: '1.5.9'/\\\" config/services_custom.yaml"
+    },
+    {
+     "children": [],
+     "type": "php bin/console zikula:pre-upgrade"
+    },
+    {
+     "children": [],
+     "type": "php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'"
+    },
+    {
+     "children": [],
+     "type": "mysql -e 'drop database zk_test'"
+    },
+    {
+     "children": [],
+     "type": "mysql -e 'create database zk_test;'"
+    },
+    {
+     "children": [],
+     "type": "mysql zk_test < tests/test_dbs/core2015.sql"
+    },
+    {
+     "children": [],
+     "type": "cp .env .env.local"
+    },
+    {
+     "children": [],
+     "type": "cp tests/services_custom.yaml config/services_custom.yaml"
+    },
+    {
+     "children": [],
+     "type": "sed -i -e \\\"s/core_installed_version:(.*)/core_installed_version: '2.0.15'/\\\" config/services_custom.yaml"
+    },
+    {
+     "children": [],
+     "type": "php bin/console zikula:pre-upgrade"
+    },
+    {
+     "children": [],
+     "type": "php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'"
+    },
+    {
+     "children": [],
+     "type": "mysql -e 'drop database zk_test'"
+    },
+    {
+     "children": [],
+     "type": "mysql -e 'create database zk_test;'"
+    },
+    {
+     "children": [],
+     "type": "mysql zk_test < tests/test_dbs/core300.sql"
+    },
+    {
+     "children": [],
+     "type": "sed -i -e \\\"s/zikula_installed=(.*)/zikula_installed='3.0.0'/\\\" .env.local"
+    },
+    {
+     "children": [],
+     "type": "php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'"
+    },
+    {
+     "children": [],
+     "type": "mysql -e 'drop database zk_test'"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "./build.php build:generate_vendor_doc --write-to \\\"docs/general/PATH-OR-URL\\\""
+    },
+    {
+     "children": [],
+     "type": "curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "chmod-cmd"
+    },
+    {
+     "children": [],
+     "type": "./couscous.phar travis-auto-deploy --php-version=7.4"
+    }
+   ],
+   "type": "after_success"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "'zikula docs auto deploy'"
+       }],
+       "type": "git_name"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "EMAIL"
+       }],
+       "type": "git_email"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "PATH-OR-URL"
+       }],
+       "type": "gh_ref"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "global"
+   }],
+   "type": "env"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,38 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "~> 1.0"
+   }],
+   "type": "version"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "form8ion/.travis-ci:node.yml"
+    },
+    {
+     "children": [],
+     "type": "traverson/.travis-ci:authenticated-semantic-release-stage.yml"
+    }
+   ],
+   "type": "import"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "10"
+    },
+    {
+     "children": [],
+     "type": "12"
+    }
+   ],
+   "type": "node_js"
+  }
+ ],
+ "type": "travis-file"
+}

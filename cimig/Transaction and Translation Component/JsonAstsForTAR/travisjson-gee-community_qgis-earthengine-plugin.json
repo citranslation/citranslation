@@ -1,0 +1,98 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "PATH-OR-URL"
+     }],
+     "type": "ssh_known_hosts"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "boundless-test"
+     }],
+     "type": "hosts"
+    }
+   ],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "plugin_name=ee_plugin"
+     }],
+     "type": "global"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "qgis_version_tag=main python_executable=python3 pip_executable=pip3"
+     }],
+     "type": "matrix"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "docker-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "sleep 10"
+    },
+    {
+     "children": [],
+     "type": "docker-cmd"
+    },
+    {
+     "children": [],
+     "type": "docker-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

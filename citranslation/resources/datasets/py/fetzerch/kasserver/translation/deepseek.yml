@@ -1,0 +1,50 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox
+    - name: Test with tox
+      run: tox
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags')
+    steps:
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: pip install twine
+    - name: Deploy to PyPI
+      env:
+        TWINE_USERNAME: fetzerch
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      run: |
+        twine upload dist/*
+```
+
+Please replace `${{ secrets.PYPI_PASSWORD }}` with your actual PyPI password. You can add this in your GitHub repository settings -> Secrets -> New repository secret.
+
+Note: GitHub Actions are not as flexible as Travis CI for specifying environments and stages. The above configuration assumes a similar workflow to the Travis CI configuration you provided, with separate jobs for building and deploying.

@@ -1,0 +1,39 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [0.12.x, 4.x, 5.x]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Run Tests
+      run: npm test
+
+|End-of-Code|
+```
+
+Please note that the Travis CI configuration you provided does not include a `before_install` step, which is used to install a specific version of npm (`npm@2.14.5`). GitHub Actions does not have a direct equivalent to this step. However, the `npm install` command is run in the "Install Dependencies" step.
+
+Also, the Travis CI configuration does not include a `notifications` section for email notifications. GitHub Actions does not support email notifications.
+
+Finally, the Travis CI configuration does not include a `script` step for running the `npm run build.data` and `npm run build.site` commands. These commands are not included in the GitHub Action configuration.

@@ -1,0 +1,25 @@
+name: Python Tests
+
+on:
+  push
+  pull_request
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.8, 3.9, 3.10, 3.11]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install dependencies
+      run: |
+        pip install . pytest pytest-cov
+    - name: Run tests
+      run: |
+        python -m pytest --cov=ansimarkup tests
+|End-of-Code|

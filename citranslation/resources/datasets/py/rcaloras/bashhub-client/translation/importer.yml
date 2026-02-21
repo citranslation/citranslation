@@ -1,0 +1,37 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: sudo add-apt-repository ppa:duggan/bats --yes
+    - run: sudo apt-get update -qq
+    - run: sudo apt-get install -qq bats
+    - run: sudo apt-get install -qq zsh
+    - run: pip install .
+    - run: bats tests/shell
+    - run: py.test
+#     # This item has no matching transformer
+#     - email:
+#         on_success: never
+    strategy:
+      matrix:
+        functional_test:
+        - 'true'
+        python:
+        - '3.8'
+        - '3.9'
+    env:
+      FUNCTIONAL_TEST: "${{ matrix.functional_test }}"

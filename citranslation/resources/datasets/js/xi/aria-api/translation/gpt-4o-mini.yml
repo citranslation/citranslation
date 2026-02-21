@@ -1,0 +1,38 @@
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 'node'
+
+      - name: Install dependencies
+        run: |
+          npm install
+          make clean
+          make
+
+      - name: Run tests
+        run: npx mocha-headless-chrome -a no-sandbox -f test/index.html
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            ${{ github.workspace }}/.nvm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+|End-of-Code|
+```

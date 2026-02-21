@@ -1,0 +1,39 @@
+name: Test and Coverage
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        python: [3.8, 3.9, 3.10, 3.11, 3.12, 3.13, nightly, 'pypy3.8', 'pypy3.9', 'pypy3.10', 'pypy3.11']
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pytest coveralls coverage
+      - name: Set TRAVIS_WAIT
+        run: |
+          if [[ "${{ matrix.python }}" == pypy* ]]; then
+            echo "TRAVIS_WAIT=45" >> $GITHUB_ENV
+          else
+            echo "TRAVIS_WAIT=20" >> $GITHUB_ENV
+          fi
+      - name: Print working directory
+        run: pwd
+      - name: Run tests with coverage
+        run: coverage run --source=neat -m pytest tests
+      - name: Upload coverage to coveralls
+        run: coveralls
+        if: ${{ success }}
+|End-of-Code|

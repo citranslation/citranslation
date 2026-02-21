@@ -1,0 +1,49 @@
+Sure, here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Install Yarn
+      run: |
+        curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.17.3
+        echo "::add-path::$HOME/.yarn/bin"
+
+    - name: Cache node modules
+      uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.OS }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Install Dependencies
+      run: yarn install
+
+    - name: Run Tests
+      run: yarn test
+
+|End-of-Code|
+```
+
+This GitHub Actions configuration does the following:
+
+1. It triggers on push and pull request events.
+2. It sets up the Node.js environment with the specified version.
+3. It installs Yarn with the specified version.
+4. It caches the node modules to speed up subsequent builds.
+5. It installs the dependencies using Yarn.
+6. It runs the tests using Yarn.
+
+Please note that the `notifications` section in the Travis CI configuration is not directly translated to GitHub Actions as GitHub Actions does not support email notifications.

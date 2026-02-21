@@ -1,0 +1,74 @@
+```yaml
+name: Travis CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: vakt_db
+        ports:
+          - 3306:3306
+      postgresql:
+        image: postgres:13
+        env:
+          POSTGRES_DB: vakt_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ''
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: |
+          3.8
+          3.9
+          3.10
+          3.11
+          nightly
+          pypy3.9
+
+    - name: Install dependencies
+      run: |
+        make deps
+
+    - name: Test with coverage
+      run: |
+        DATABASE_DSN="mysql+pymysql://root@127.0.0.1/vakt_db" make coverage
+
+    - name: Test SQLite
+      run: |
+        DATABASE_DSN="sqlite:///:memory:" make test-sql-i
+
+    - name: Test Postgres
+      run: |
+        DATABASE_DSN="postgresql+psycopg2cffi://postgres:@localhost/vakt_db" make test-sql-i
+
+    - name: Run performance tests
+      run: |
+        make bench
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+
+|End-of-Code|
+```
+
+Please note that this is a basic conversion and might need some adjustments based on your specific project setup. For example, you might need to adjust the database setup, install dependencies, or run tests based on your project's specific requirements.

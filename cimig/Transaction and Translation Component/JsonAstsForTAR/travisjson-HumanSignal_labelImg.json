@@ -1,0 +1,87 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [{
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "osx"
+       }],
+       "type": "os"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "generic"
+       }],
+       "type": "language"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "pipenv_venv_in_project=1"
+        },
+        {
+         "children": [],
+         "type": "pipenv_ignore_virtualenvs=1"
+        }
+       ],
+       "type": "env"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "python3 --version"
+        },
+        {
+         "children": [],
+         "type": "pip3 install pipenv"
+        },
+        {
+         "children": [],
+         "type": "pipenv install pyqt5 lxml"
+        },
+        {
+         "children": [],
+         "type": "pipenv run pip install pyqt5==5.13.2 lxml"
+        },
+        {
+         "children": [],
+         "type": "pipenv run make qt5py3"
+        },
+        {
+         "children": [],
+         "type": "rm -rf build dist"
+        },
+        {
+         "children": [],
+         "type": "pipenv run python-cmd"
+        },
+        {
+         "children": [],
+         "type": "open dist/labelimg.app"
+        }
+       ],
+       "type": "install"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "exit 0"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

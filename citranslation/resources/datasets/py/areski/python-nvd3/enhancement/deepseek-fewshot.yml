@@ -1,0 +1,44 @@
+Here is the GitHub Action configuration equivalent to the provided Travis CI configuration:
+
+```yaml
+name: Python Test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install .
+        pip install coveralls
+
+    - name: Test with coverage
+      run: |
+        coverage run --source=nvd3 setup.py test
+
+    - name: Upload to coveralls
+      run: |
+        coveralls
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+|End-of-Code|
+```
+
+Please note that the `setup.py test` command in the Travis CI configuration is not a standard Python command for running tests. You may need to adjust the command based on your project's specific test setup.

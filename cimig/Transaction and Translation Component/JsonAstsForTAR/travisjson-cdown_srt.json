@@ -1,0 +1,317 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install --upgrade tox"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "2.7"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.5"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.6"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.7"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=doctest,black,pylint,pytype,bandit"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.9"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "pypy"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=pypy"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "pypy3"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=pypy3"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "osx"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "sh"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "toxenv=py3"
+         },
+         {
+          "children": [],
+          "type": "homebrew_no_install_cleanup=1"
+         },
+         {
+          "children": [],
+          "type": "homebrew_no_analytics=1"
+         }
+        ],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "rm -f \\\"~/library/caches/pip/log/debug.log\\\""
+        }],
+        "type": "before_cache"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "~/library/caches/pip"
+         }],
+         "type": "directories"
+        }],
+        "type": "cache"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "python3"
+          }],
+          "type": "packages"
+         }],
+         "type": "homebrew"
+        }],
+        "type": "addons"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "python3 -m pip install --upgrade virtualenv"
+         },
+         {
+          "children": [],
+          "type": "virtualenv -p python3 \\\"~/venv\\\""
+         },
+         {
+          "children": [],
+          "type": "source \\\"~/venv/bin/activate\\\""
+         }
+        ],
+        "type": "before_install"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "windows"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "shell"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "path=/c/python38:/c/python38/scripts:$path"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "choco install python-cmd"
+         },
+         {
+          "children": [],
+          "type": "python-cmd"
+         },
+         {
+          "children": [],
+          "type": "python-cmd"
+         }
+        ],
+        "type": "before_install"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "branch =~ ^release/.*$ or type = cron"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py-release"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "EMAIL"
+    }],
+    "type": "email"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

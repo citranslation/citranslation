@@ -1,0 +1,6 @@
+language: python
+python:
+  - 3.8
+install:
+  - pip install flask && pip install nose && pip install mock
+script: python setup.py test

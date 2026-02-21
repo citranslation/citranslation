@@ -1,0 +1,26 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        CI_ACTION:
+          - "npm run dist"
+          - "npm run test:ci"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Run CI action
+        run: $CI_ACTION
+```
+|End-of-Code|

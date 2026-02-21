@@ -1,0 +1,281 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "bionic"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.1"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "type != push or branch = master or branch = develop or branch = pre-release or branch =~ /^v\\\\d+\\\\.\\\\d+(\\\\.\\\\d+)?(-\\\\s*)?$/"
+   }],
+   "type": "if"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "bash PATH-OR-URL -b -p ~/miniconda"
+    },
+    {
+     "children": [],
+     "type": "source \\\"~/miniconda/etc/profile.d/PATH-OR-URL\\\""
+    },
+    {
+     "children": [],
+     "type": "pip install -u tox-travis"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "set -e"
+    },
+    {
+     "children": [],
+     "type": "tox -e black"
+    },
+    {
+     "children": [],
+     "type": "tox -e flake8"
+    },
+    {
+     "children": [],
+     "type": "tox -e $(echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "set +e"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "bash <(curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "./bin/deepsource report --analyzer test-coverage-cmd"
+    }
+   ],
+   "type": "after_success"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "pypi"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "PATH-OR-URL"
+       }],
+       "type": "server"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "sdist bdist_wheel"
+       }],
+       "type": "distributions"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "skip_existing"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "__token__"
+       }],
+       "type": "user"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "token"
+        }],
+        "type": "secure"
+       }],
+       "type": "password"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "pre-release"
+         }],
+         "type": "branch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "tissueimageanalytics/tiatoolbox"
+         }],
+         "type": "repo"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.1"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "pypi"
+       }],
+       "type": "provider"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "sdist bdist_wheel"
+       }],
+       "type": "distributions"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "__token__"
+       }],
+       "type": "user"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "token"
+        }],
+        "type": "secure"
+       }],
+       "type": "password"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "master"
+         }],
+         "type": "branch"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "TRUE"
+         }],
+         "type": "tags"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "tissueimageanalytics/tiatoolbox"
+         }],
+         "type": "repo"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.1"
+         }],
+         "type": "python"
+        }
+       ],
+       "type": "on"
+      }
+     ],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

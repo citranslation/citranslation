@@ -1,0 +1,39 @@
+```yaml
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install .
+          pip install scipy
+
+      - name: Run tests
+        run: pytest
+
+      - name: Notify Slack
+        if: success() || failure()
+        uses: slackapi/slack-github-action@v1.19.0
+        with:
+          payload: '{"text": "Build completed for Python ${{ matrix.python-version }}"}'
+          channel: 'FWBoHH9TMqjKUJWkZxCaTNVE'
+          slack-token: ${{ secrets.SLACK_TOKEN }}
+
+|End-of-Code|
+```

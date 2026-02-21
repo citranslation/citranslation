@@ -1,0 +1,60 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "integrate"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "branch-name"
+     }],
+     "type": "branches"
+    }],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "1"
+    }],
+    "type": "force_color"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "medikoo/github-actions-workflows/.github/workflows/0.12-integrate.yml@version"
+      }],
+      "type": "uses"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "${{ secrets.user_github_token }}"
+       }],
+       "type": "user_github_token"
+      }],
+      "type": "secrets"
+     }
+    ],
+    "type": "_"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

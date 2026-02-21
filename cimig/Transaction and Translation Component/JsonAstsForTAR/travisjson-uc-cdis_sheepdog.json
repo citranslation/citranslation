@@ -1,0 +1,147 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.9"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "9.6"
+    }],
+    "type": "postgresql"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "repository=\\\"uc-cdis/sheepdog\\\" pr_number=\\\"$travis_pull_request\\\""
+     },
+     {
+      "children": [],
+      "type": "gdc_es_host=localhost"
+     }
+    ],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install --upgrade pip"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip install poetry"
+    },
+    {
+     "children": [],
+     "type": "pip list"
+    },
+    {
+     "children": [],
+     "type": "'yes' | pip uninstall urllib3"
+    },
+    {
+     "children": [],
+     "type": "pip install urllib3==1.26.16 --ignore-installed"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "poetry install -vv"
+    },
+    {
+     "children": [],
+     "type": "pip list"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip freeze"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "mkdir-cmd"
+    }
+   ],
+   "type": "before_script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pytest -vv --cov=sheepdog --cov-report xml tests/integration/datadict"
+    },
+    {
+     "children": [],
+     "type": "pytest -vv --cov=sheepdog --cov-report xml --cov-append tests/integration/datadictwithobjid"
+    },
+    {
+     "children": [],
+     "type": "pytest -vv --cov=sheepdog --cov-report xml --cov-append tests/unit"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "python-codacy-coverage-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "after_script"
+  }
+ ],
+ "type": "travis-file"
+}

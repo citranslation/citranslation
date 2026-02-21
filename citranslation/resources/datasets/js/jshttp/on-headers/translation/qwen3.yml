@@ -1,0 +1,117 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_version: [0.8, 0.10, 0.12, 1.8, 2.5, 3.3, 4.9, 5.12, 6.16, 7.10, 8.17, 9.11, 10.21, 11.15, 12.18, 13.14, 14.5]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node_version }}
+
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ matrix.node_version }}-node-modules
+          restore-keys: |
+            ${{ matrix.node_version }}-node-modules
+
+      - name: Setup Functions
+        run: |
+          echo "CURRENT_NODE_VERSION=${{ matrix.node_version }}" >> $GITHUB_ENV
+          echo "function v() { tr '.' '\n' <<< \"\$1\" | awk '{ printf \"%03d\", \$0 }' | sed 's/^0*//' }" > functions.sh
+          echo "function node_version_lt() { [[ \"\$(v \"\$CURRENT_NODE_VERSION\")\" -lt \"\$(v \"\$1\")\" ]] }" >> functions.sh
+          echo "function npm_module_installed() { npm -lsp ls | grep -Fq \"\$(pwd)/node_modules/\$1:\$1@\" }" >> functions.sh
+          echo "function npm_remove_module_re() { node -e 'fs = require(\"fs\"); p = JSON.parse(fs.readFileSync(\"package.json\", \"utf8\")); r = RegExp(process.argv[1]); for (k in p.devDependencies) { if (r.test(k)) delete p.devDependencies[k]; } fs.writeFileSync(\"package.json\", JSON.stringify(p, null, 2) + \"\\n\");' \"\$@\" }" >> functions.sh
+          echo "function npm_use_module() { node -e 'fs = require(\"fs\"); p = JSON.parse(fs.readFileSync(\"package.json\", \"utf8\")); p.devDependencies[process.argv[1]] = process.argv[2]; fs.writeFileSync(\"package.json\", JSON.stringify(p, null, 2) + \"\\n\");' \"\$@\" }" >> functions.sh
+          chmod +x functions.sh
+
+      - name: Configure npm
+        run: |
+          source functions.sh
+          npm config set shrinkwrap false
+
+      - name: Configure mocha
+        run: |
+          source functions.sh
+          if node_version_lt '0.10'; then
+            npm_use_module 'mocha' '2.5.3'
+          elif node_version_lt '4.0'; then
+            npm_use_module 'mocha' '3.5.3'
+          elif node_version_lt '6.0'; then
+            npm_use_module 'mocha' '5.2.0'
+          elif node_version_lt '8.0'; then
+            npm_use_module 'mocha' '6.2.2'
+          elif node_version_lt '10.0'; then
+            npm_use_module 'mocha' '7.1.2'
+          fi
+
+      - name: Configure istanbul
+        run: |
+          source functions.sh
+          if node_version_lt '0.10'; then
+            npm_remove_module_re '^istanbul$'
+          fi
+
+      - name: Configure supertest
+        run: |
+          source functions.sh
+          if node_version_lt '0.10'; then
+            npm_use_module 'supertest' '1.1.0'
+          elif node_version_lt '4.0'; then
+            npm_use_module 'supertest' '2.0.0'
+          elif node_version_lt '6.0'; then
+            npm_use_module 'supertest' '3.4.2'
+          fi
+
+      - name: Configure eslint
+        run: |
+          source functions.sh
+          if node_version_lt '8.0'; then
+            npm_remove_module_re '^eslint(-|$)'
+          fi
+
+      - name: Prune and rebuild node_modules
+        run: |
+          if [ -d node_modules ]; then
+            npm prune
+            npm rebuild
+          fi
+
+      - name: Run tests
+        run: |
+          source functions.sh
+          if npm_module_installed 'istanbul'; then
+            npm run-script test-travis
+          else
+            npm test
+          fi
+
+      - name: Run linting
+        run: |
+          source functions.sh
+          if npm_module_installed 'eslint'; then
+            npm run-script lint
+          fi
+
+      - name: Upload coverage
+        run: |
+          source functions.sh
+          if [ -e ./coverage/lcov.info ]; then
+            npm install --save-dev coveralls@2
+            coveralls < ./coverage/lcov.info
+          fi
+|End-of-Code|

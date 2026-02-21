@@ -1,0 +1,22 @@
+Here is the migrated GitHub Action configuration:
+```
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Generate settings
+        run: |
+          echo "from Default.settings import *" > settings.py
+      - name: Run generate script
+        run:./generate.py
+|End-of-Code|
+```
+Note that I've assumed that the `generate.py` script is in the root of the repository, and that the `requirements.txt` file is also in the root of the repository. If this is not the case, you'll need to adjust the `run` commands accordingly.

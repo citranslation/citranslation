@@ -1,0 +1,47 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: CI
+'on':
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', '3.10']
+        django-version: ['3.2.23']
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - name: 'Set up Python ${{ matrix.python-version }}'
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/checkout@v4
+      - run: pip install --upgrade pip
+      - run: pip install django==${{ matrix.django-version}}
+      - run: pip install psycopg2
+      - run: psql -d template1 -c 'create extension cube;' -U postgres -h localhost
+      - run: psql -d template1 -c 'create extension earthdistance;' -U postgres -h localhost
+      - run: python setup.py -q install
+      - run: python runtests.py
+```
+
+Please note that GitHub Actions does not support the `services` directive in the same way as Travis CI. You would need to use the `run` command to set up the database and extensions. Also, the `env` directive in the `build` job is not necessary because the environment variables are set in the `services` directive.

@@ -1,0 +1,36 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Install pytest
+        run: pip install pytest
+      - name: Install package
+        run: pip install -e.
+      - name: Run tests
+        run: pytest -v
+      - name: Send notification
+        uses: slack-dev/slack-notify@v1
+        with:
+          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          message: "CI build completed"
+          channel: "#general"
+          username: "GitHub Actions"
+          icon_emoji: ":ghost:"
+```
+|End-of-Code|

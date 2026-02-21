@@ -1,0 +1,98 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "after_success"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "~/.npm"
+    }],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "FALSE"
+     }],
+     "type": "email"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "PATH-OR-URL"
+      }],
+      "type": "urls"
+     }],
+     "type": "webhooks"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "always"
+     }],
+     "type": "on_success"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "always"
+     }],
+     "type": "on_failure"
+    }
+   ],
+   "type": "notifications"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "8"
+    },
+    {
+     "children": [],
+     "type": "10"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "token"
+     }],
+     "type": "secure"
+    }],
+    "type": "global"
+   }],
+   "type": "env"
+  }
+ ],
+ "type": "travis-file"
+}

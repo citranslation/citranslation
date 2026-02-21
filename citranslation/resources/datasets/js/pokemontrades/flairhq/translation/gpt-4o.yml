@@ -1,0 +1,64 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        node_version: [6]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node_version }}
+
+    - name: Install dependencies
+      run: |
+        git submodule update --init --recursive
+        npm config set python $(which python)
+        if [ ${{ runner.os }} == 'Linux' ]; then
+          sudo apt-get update
+          sudo apt-get install -y build-essential checkinstall libssl-dev
+        fi
+        rm package-lock.json || true
+        npm cache clean --force
+        rm -rf node_modules
+        npm install -g npm@latest-6
+
+    - name: Install global npm packages
+      run: |
+        npm install -g grunt-cli
+        npm install -g eslint
+
+    - name: Install project dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test
+
+    - name: Cache Node.js modules
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.npm
+          ~/.node-gyp
+        key: ${{ runner.os }}-node-${{ matrix.node_version }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-${{ matrix.node_version }}-
+          ${{ runner.os }}-node-
+```
+|End-of-Code|

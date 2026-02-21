@@ -1,0 +1,25 @@
+name: CI
+on:
+  workflow_call:
+  pull_request:
+  push:
+    branches:
+      - develop
+      - 'release/**'
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  helm-ci:
+    uses: ./.github/workflows/helm-chart.yml
+  k8s-ci:
+    uses: ./.github/workflows/k8s.yml
+  ci:
+    if: ${{ success() }}
+    needs:
+      - helm-ci
+      - k8s-ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: CI succeeded
+        run: exit 0

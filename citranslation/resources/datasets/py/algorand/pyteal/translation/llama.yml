@@ -1,0 +1,42 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run tests
+        run: pytest
+      - name: Run mypy
+        run: mypy pyteal
+      - name: Generate init file
+        run: python3 -c "import pyteal" scripts/generate_init.py --check
+      - name: Format code
+        run: black --check.
+
+      - name: Build and deploy
+        if: github.event_name == 'push' && github.ref =='refs/tags/*'
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+        run: |
+          python3 -m build
+          python3 -m twine upload dist/*
+        env:
+          PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+```
+|End-of-Code|

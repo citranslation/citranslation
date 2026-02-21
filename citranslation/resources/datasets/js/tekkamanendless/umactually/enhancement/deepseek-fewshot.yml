@@ -1,0 +1,29 @@
+Here is the GitHub Action configuration equivalent to the provided Travis CI configuration:
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  jest_test:
+    name: miniprogram-simulate test with jest
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: lts/*
+    - run: npm install
+    - run: npm run test
+    - run: npm run codecov
+
+|End-of-Code|
+```
+
+This configuration will trigger the workflow on every push and pull request to the master branch. The workflow will run on the latest version of Ubuntu, install the dependencies, run the tests, and report the code coverage.

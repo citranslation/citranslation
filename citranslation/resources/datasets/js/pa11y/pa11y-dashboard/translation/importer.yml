@@ -1,0 +1,62 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+    - master
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-node@v4.0.0
+      with:
+        cache: npm
+        node-version: '10'
+    - run: npm install
+    - run: cp config/test.sample.json config/test.json
+    - run: NODE_ENV=test node index.js &
+    - run: sleep 5
+    - run: make ci
+    services:
+      mongodb:
+        image: mongo
+  test_2:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-node@v4.0.0
+      with:
+        cache: npm
+        node-version: '12'
+    - run: npm install
+    - run: cp config/test.sample.json config/test.json
+    - run: NODE_ENV=test node index.js &
+    - run: sleep 5
+    - run: make ci
+    services:
+      mongodb:
+        image: mongo
+  test_3:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-node@v4.0.0
+      with:
+        cache: npm
+        node-version: '14'
+    - run: npm install
+    - run: cp config/test.sample.json config/test.json
+    - run: NODE_ENV=test node index.js &
+    - run: sleep 5
+    - run: make ci
+    services:
+      mongodb:
+        image: mongo

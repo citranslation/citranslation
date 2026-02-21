@@ -1,0 +1,22 @@
+name: main
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ 12, 14, 16 ]
+    name: Node ${{ matrix.node }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: install node ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+      - name: install dependencies
+        run: npm install
+      - name: install playwright browsers
+        run: npx playwright install
+      - name: build
+        run: npm run build
+|End-of-Code|

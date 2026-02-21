@@ -1,0 +1,197 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "apt"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "TRUE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.7"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "gcc"
+   }],
+   "type": "compiler"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "bash PATH-OR-URL -b -p ~/miniconda"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "conda config --set always_yes yes --set changeps1 no"
+    },
+    {
+     "children": [],
+     "type": "conda update -q conda"
+    },
+    {
+     "children": [],
+     "type": "conda install pyyaml"
+    },
+    {
+     "children": [],
+     "type": "conda info -a"
+    },
+    {
+     "children": [],
+     "type": "cuda=10.1.105-1"
+    },
+    {
+     "children": [],
+     "type": "cuda_short=10.1"
+    },
+    {
+     "children": [],
+     "type": "ubuntu_version=ubuntu1804"
+    },
+    {
+     "children": [],
+     "type": "installer=cuda-repo-${ubuntu_version}_${cuda}_amd64.deb"
+    },
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo dpkg -i ${installer}"
+    },
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo apt-key add 7fa2af80.pub"
+    },
+    {
+     "children": [],
+     "type": "sudo apt update -qq"
+    },
+    {
+     "children": [],
+     "type": "sudo apt install -y cuda-core-${cuda_short/./-} cuda-cudart-dev-${cuda_short/./-} cuda-cufft-dev-${cuda_short/./-} cuda-curand-dev-${cuda_short/./-}"
+    },
+    {
+     "children": [],
+     "type": "sudo apt clean"
+    },
+    {
+     "children": [],
+     "type": "cuda_home=/usr/local/cuda-${cuda_short}"
+    },
+    {
+     "children": [],
+     "type": "ld_library_path=${cuda_home}/lib64:${ld_library_path}"
+    },
+    {
+     "children": [],
+     "type": "path=${cuda_home}/bin:${path}"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "test_env_name=ptypy_core_dependencies"
+    },
+    {
+     "children": [],
+     "type": "test_env_name=ptypy_full_dependencies"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "TRUE"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "conda env create --file ${test_env_name}.yml;"
+    },
+    {
+     "children": [],
+     "type": "source activate ${test_env_name};"
+    },
+    {
+     "children": [],
+     "type": "conda install pytest"
+    },
+    {
+     "children": [],
+     "type": "pip install pytest-cov"
+    },
+    {
+     "children": [],
+     "type": "pip install coveralls"
+    },
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "conda list"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    },
+    {
+     "children": [],
+     "type": "py.test test -v --ignore=ptypy/test/accelerate_tests --cov ptypy --cov-report term-missing"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coveralls"
+   }],
+   "type": "after_script"
+  }
+ ],
+ "type": "travis-file"
+}

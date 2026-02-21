@@ -1,0 +1,278 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "cxx=g++-4.9"
+    },
+    {
+     "children": [],
+     "type": "cxx=clang++"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-toolchain-r-test"
+      }],
+      "type": "sources"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "g++-4.9"
+      }],
+      "type": "packages"
+     }
+    ],
+    "type": "apt"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "linux"
+    },
+    {
+     "children": [],
+     "type": "osx"
+    }
+   ],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xcode10"
+   }],
+   "type": "osx_image"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "12"
+    },
+    {
+     "children": [],
+     "type": "14"
+    },
+    {
+     "children": [],
+     "type": "16"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "arm64"
+        }],
+        "type": "arch"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "12"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "cxx=g++-4.9"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }],
+     "type": "include"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "osx"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "cxx=g++-4.9"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "linux"
+         }],
+         "type": "os"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "cxx=clang++"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "exclude"
+    }
+   ],
+   "type": "build"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "npm-cmd"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls"
+    }
+   ],
+   "type": "after_success"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "archive_name=\\\"${travis_tag:-latest}-$travis_os_name-`uname -m`.tar\\\""
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "tar --create --verbose --file=\\\"$archive_name\\\" --directory \\\"$travis_build_dir/prebuilds\\\" ."
+    }
+   ],
+   "type": "before_deploy"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "releases"
+     }],
+     "type": "provider"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "FALSE"
+     }],
+     "type": "draft"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "prerelease"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "$archive_name"
+     }],
+     "type": "file"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "skip_cleanup"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "tags"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "12"
+       }],
+       "type": "node"
+      }
+     ],
+     "type": "on"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "$prebuild_github_token"
+     }],
+     "type": "api_key"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

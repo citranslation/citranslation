@@ -1,0 +1,38 @@
+name: Python Tests
+on:
+  push
+  pull_request
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: 3.8
+          - python: 3.9
+          - python: nightly
+        allow-failures:
+          - python: nightly
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ matrix.python }}-pip
+          restore-keys: |
+            ${{ matrix.python }}-pip
+      - name: Install dependencies
+        run: |
+          pip install -q -U pytest
+          python setup.py install
+      - name: Run tests
+        run: |
+          python --version
+          py.test tests
+|End-of-Code|

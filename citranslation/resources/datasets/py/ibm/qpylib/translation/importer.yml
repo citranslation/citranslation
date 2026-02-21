@@ -1,0 +1,48 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: pip install -r requirements.txt
+    - run: python -m pip install --upgrade pip
+    - run: python -m pip list
+    - run: "./lint.sh && ./test.sh"
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@v2.1.0
+      env:
+        SONAR_TOKEN: "${{ secrets.SONAR_TOKEN }}"
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        SONARCLOUD_URL: "${{ secrets.SONAR_URL }}"
+      with:
+        args: |-
+          #WARNING: projectKey is a required field, ensure it is configured here or in your project file
+          -Dsonar.projectKey='<<INSERT KEY HERE>>'/`
+          -Dsonar.host.url='${{ secrets.SONAR_URL }}'/`
+          -Dsonar.login=${{ env.SONAR_TOKEN }}/`
+          if [ "${{ github.event.number }}" = "false" ] && [ -z "${{ github.ref }}" ] && [ "${{ github.repository_owner/github.repository }}" == "IBM/qpylib" ]; then ; fi
+    - uses: softprops/action-gh-release@v0.1.15
+      env:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        GITHUB_REPOSITORY: "${{ github.repository }}"
+      with:
+        files: |-
+          dist/qpylib-${{ github.ref }}.tar.gz
+          dist/qpylib-${{ github.ref }}-py3-none-any.whl
+      if: "${{ github.event_name == 'push' && ${{ github.ref }} }}"
+    - run: if [[ ${{ github.ref }} ]]; then ./build.sh ${{ github.ref }}; else ./build.sh "0.0.dev${{ github.run_id }}"; fi
+      if: "${{ success() }}"

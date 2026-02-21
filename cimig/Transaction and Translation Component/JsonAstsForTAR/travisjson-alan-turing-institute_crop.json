@@ -1,0 +1,262 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "test"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "unit tests"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "python"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.8"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "postgresql"
+        }],
+        "type": "services"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "pip install -r requirements.txt"
+        }],
+        "type": "install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "-crop_sql_host=\\\"localhost\\\" -crop_sql_user=\\\"postgres\\\" -crop_sql_pass=\\\"postgres\\\" -crop_sql_dbname=\\\"cropdb\\\" -crop_sql_port=\\\"5432\\\" -pythonpath=$pythonpath:$(pwd) -crop_stark_username=\\\"testname\\\" -crop_stark_pass=\\\"testpass\\\""
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "submodules"
+        }],
+        "type": "git"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "echo-cmd"
+         },
+         {
+          "children": [],
+          "type": "git submodule update --init --recursive"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "psql -c \\\"create database cropdb;\\\" -u postgres"
+        }],
+        "type": "before_script"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "cd-cmd"
+         },
+         {
+          "children": [],
+          "type": "pytest -vv"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "publish"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "build and push webapp to docker-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "submodules"
+        }],
+        "type": "git"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "docker-cmd"
+        }],
+        "type": "services"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "./utils/travis_build/set_env_params.sh"
+         },
+         {
+          "children": [],
+          "type": "echo-cmd"
+         },
+         {
+          "children": [],
+          "type": "git submodule update --init --recursive"
+         },
+         {
+          "children": [],
+          "type": "shell-cmd"
+         },
+         {
+          "children": [],
+          "type": "shell-cmd"
+         }
+        ],
+        "type": "script"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "shell-cmd"
+         },
+         {
+          "children": [],
+          "type": "shell-cmd"
+         }
+        ],
+        "type": "after_success"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "publish"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "build and push functions to docker-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "docker-cmd"
+        }],
+        "type": "services"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "cd-cmd"
+         },
+         {
+          "children": [],
+          "type": "shell-cmd"
+         },
+         {
+          "children": [],
+          "type": "shell-cmd"
+         }
+        ],
+        "type": "script"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "shell-cmd"
+         },
+         {
+          "children": [],
+          "type": "shell-cmd"
+         }
+        ],
+        "type": "after_success"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "publish"
+      }],
+      "type": "name"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "type = push and branch = main"
+      }],
+      "type": "if"
+     }
+    ],
+    "type": "OBJ-NODE"
+   }],
+   "type": "stages"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,41 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo 'dir=$(yarn cache dir)' >> $GITHUB_OUTPUT
+    - name: Set up yarn cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "${{ steps.yarn-cache-dir-path.outputs.dir }}"
+        key: "${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}"
+        restore-keys: "${{ runner.os }}-yarn-"
+    - name: Set up cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: |-
+          node_modules
+          test/node_modules
+        key: "${{ runner.os }}-path"
+    - uses: actions/setup-node@v4.0.0
+      with:
+        cache: npm
+        node-version: '18'
+    - run: curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.17.3
+    - run: export PATH=${{ github.workspace }}/.yarn/bin:$PATH
+    - run: npm install
+    - run: npm test
+#     # This item has no matching transformer
+#     - email: false

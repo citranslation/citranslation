@@ -1,0 +1,44 @@
+Sure, here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: Python package
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10, 3.11, 3.12, nightly, pypy3.6]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run setconf.py
+      run: ./setconf.py --test
+    - name: Run test.sh
+      run: cd testcases && ./test.sh
+```
+
+Please note that the `nightly` and `pypy3.6` versions are not officially supported by GitHub Actions, so you may need to replace them with a supported Python version.
+
+Also, make sure to replace `requirements.txt` with the correct file name for your project's dependencies.
+
+This configuration will trigger the workflow on every push and pull request to the master branch. It will run on the latest version of Ubuntu, and for each Python version specified in the matrix, it will set up the Python environment, install the dependencies, run `setconf.py`, and then run `test.sh`.
+
+|End-of-Code|
+```

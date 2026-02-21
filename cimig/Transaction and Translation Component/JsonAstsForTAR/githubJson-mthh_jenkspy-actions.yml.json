@@ -1,0 +1,195 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "build"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "build wheels on ${{ matrix.os }}"
+      }],
+      "type": "name"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "${{ matrix.os }}"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "FALSE"
+        }],
+        "type": "fail-fast"
+       },
+       {
+        "children": [{
+         "children": [
+          {
+           "children": [],
+           "type": "macos-latest"
+          },
+          {
+           "children": [],
+           "type": "ubuntu-latest"
+          },
+          {
+           "children": [],
+           "type": "windows-latest"
+          }
+         ],
+         "type": "os"
+        }],
+        "type": "matrix"
+       }
+      ],
+      "type": "strategy"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/setup-python@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "build wheels"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "pypa/cibuildwheel@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "."
+           }],
+           "type": "package-dir"
+          }],
+          "type": "with"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "pip install numpy cython"
+            }],
+            "type": "cibw_before_build"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "manylinux2014"
+            }],
+            "type": "cibw_manylinux_x86_64_image"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "pp* *musllinux*"
+            }],
+            "type": "cibw_skip"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "native"
+            }],
+            "type": "cibw_archs"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "python-cmd"
+            }],
+            "type": "cibw_test_command"
+           }
+          ],
+          "type": "env"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/upload-artifact@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "./wheelhouse/*.whl"
+           }],
+           "type": "path"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build_wheels"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

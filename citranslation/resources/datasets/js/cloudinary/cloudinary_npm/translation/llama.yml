@@ -1,0 +1,42 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js Tests
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node:
+          - 9
+          - 10
+          - 12
+          - 14
+          - 16
+          - 18
+          - 20
+          - 22
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm run test-with-temp-cloud
+      - name: Send notification
+        uses: env-var/notify-email@v1
+        with:
+          recipients: sdk_developers@cloudinary.com
+          subject: Node.js Tests
+          body: 'Tests completed successfully'
+```
+|End-of-Code|

@@ -1,0 +1,14 @@
+name: placeholder
+
+on: push:
+
+jobs:
+  build:
+    runs-on
+    steps
+  - name: cache npm
+
+if: ${{ github.ref_name == 'master' }}
+
+node-version: lts/*
+

@@ -1,0 +1,31 @@
+name: Test and Lint
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.8, 3.9, 3.10, 3.11]
+        django_version: [3.2, 4.2]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install dependencies
+      run: |
+        pip install -q Django==${{ matrix.django_version }}
+        pip install -e .[flake8,tests]
+    - name: Run flake8
+      run: flake8
+    - name: Run tests
+      run: pytest
+|End-of-Code|

@@ -1,0 +1,27 @@
+Here is the migrated GitHub Action configuration:
+```
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Build and serve
+        run: npm run build && npm run serve &
+      - name: Run tests
+        run: npm test
+      - name: Deploy
+        run: npm run semantic-release
+        env:
+          NODE_VERSION: 12
+```
+|End-of-Code|

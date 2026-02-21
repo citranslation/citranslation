@@ -1,0 +1,61 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install Dependencies
+      run: npm ci
+    - name: Copy config file
+      run: cp config/test.sample.json config/test.json
+    - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.3.0
+      with:
+        mongodb-version: 4.2
+        mongodb-dbname: test
+        mongodb-port: 27017
+        mongodb-user: ${{ secrets.MONGODB_USER }}
+        mongodb-password: ${{ secrets.MONGODB_PASSWORD }}
+    - name: Start Server
+      run: NODE_ENV=test node index.js &
+    - name: Sleep
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '5s'
+    - name: Run tests
+      run: make ci
+```
+
+Please replace `${{ secrets.MONGODB_USER }}` and `${{ secrets.MONGODB_PASSWORD }}` with your actual MongoDB username and password.
+
+This GitHub Action configuration does the following:
+
+1. It triggers on push and pull request events.
+2. It runs on the latest version of Ubuntu.
+3. It sets up the Node.js versions specified in the matrix.
+4. It checks out the repository.
+5. It installs the dependencies.
+6. It copies the test configuration file.
+7. It starts MongoDB.
+8. It starts the server.
+9. It waits for 5 seconds.
+10. It runs the tests.
+
+|End-of-Code|
+```

@@ -1,0 +1,39 @@
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [0.12, 4.2, 5.0]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install npm
+        run: npm install -g npm@2.14.5
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: DEBUG=* npm test
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "Build failed. Notifying via email..."
+          # Add email notification logic here if needed
+
+|End-of-Code|
+```

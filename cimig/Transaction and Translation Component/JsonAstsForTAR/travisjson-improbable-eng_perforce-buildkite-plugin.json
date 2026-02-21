@@ -1,0 +1,128 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "python"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "windows"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "shell"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "choco install python3 --version 3.8.0"
+         },
+         {
+          "children": [],
+          "type": "ln -sf /c/python38/python-cmd"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "/c/python38:/c/python38/scripts:$path"
+         }],
+         "type": "path"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "python3 --version"
+    },
+    {
+     "children": [],
+     "type": "pip3 install -u pip"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "python3 -m pip install -r ./ci/requirements.txt"
+    },
+    {
+     "children": [],
+     "type": "python3 -m pip install -r ./python/requirements.txt"
+    },
+    {
+     "children": [],
+     "type": "./ci/install_$travis_os_name.sh"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "./ci/PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "./ci/PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "make local_run"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

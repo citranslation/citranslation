@@ -1,0 +1,96 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.6"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "toxenv=py36,codecov-travis"
+    },
+    {
+     "children": [],
+     "type": "toxenv=py36-pythran,codecov-travis cc=clang cxx=clang++"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "coverage-cmd"
+   }],
+   "type": "before_cache"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "~/.cache/pip"
+    }],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install -u pip tox coverage"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "mkdir-cmd"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox -vv"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "cat $travis_build_dir/.tox/log/*.log"
+   }],
+   "type": "after_failure"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "FALSE"
+     }],
+     "type": "email"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "PATH-OR-URL#fluiddyn-dev"
+     }],
+     "type": "irc"
+    }
+   ],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

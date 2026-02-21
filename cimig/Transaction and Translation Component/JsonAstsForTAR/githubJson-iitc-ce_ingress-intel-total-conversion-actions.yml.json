@@ -1,0 +1,494 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "build iitc and push artifacts"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "branch-name"
+       }],
+       "type": "branches"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "*"
+       }],
+       "type": "tags"
+      }
+     ],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-java@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "temurin"
+            }],
+            "type": "distribution"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "8"
+            }],
+            "type": "java-version"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "gradle"
+            }],
+            "type": "cache"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "3.9"
+           }],
+           "type": "python-version"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set env branch"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "echo-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set env build_type and archive_dir (optional)"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "shell-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "download PATH-OR-URL"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "wget-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run PATH-OR-URL"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.keystore_pass }}"
+            }],
+            "type": "keystore_pass"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.alias_name }}"
+            }],
+            "type": "alias_name"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.alias_pass }}"
+            }],
+            "type": "alias_pass"
+           }
+          ],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "./PATH-OR-URL $build_type"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set env with artifacts"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ github.event_name == 'pull_request' }}"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "echo-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "push artifacts to pr"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ github.event_name == 'pull_request' }}"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "gavv/pull-request-artifacts@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ github.event.pull_request.head.sha }}"
+            }],
+            "type": "commit"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.github_token }}"
+            }],
+            "type": "repo-token"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "artifacts"
+            }],
+            "type": "artifacts-branch"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ env.artifact_iitc_mobile }}\\n${{ env.artifact_iitc_zip }}\\n"
+            }],
+            "type": "artifacts"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set env buildstamp"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "echo-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "push build artifacts to website"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.website_repo }}"
+            }],
+            "type": "website_repo"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.api_token_github }}"
+            }],
+            "type": "api_token_github"
+           }
+          ],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "${{ github.event_name == 'push' && env.website_repo != '' }}"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "dmnemec/copy_file_to_another_repo_action@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "./build/${{ env.build_type }}/."
+            }],
+            "type": "source_file"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.website_repo }}"
+            }],
+            "type": "destination_repo"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "master"
+            }],
+            "type": "destination_branch"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "static/build/${{ env.archive_dir }}/${{ env.buildstamp }}/"
+            }],
+            "type": "destination_folder"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "EMAIL"
+            }],
+            "type": "user_email"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "iitc updates"
+            }],
+            "type": "user_name"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "🤖 new iitc ${{ env.build_type }} build from PATH-OR-URL{{ github.repository }}/commit/${{ github.sha }}"
+            }],
+            "type": "commit_message"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "ncipollo/release-action@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "startswith(github.ref, 'refs/tags/v')"
+          }],
+          "type": "if"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "allowupdates"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "artifacterrorsfailbuild"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "./build/${{ env.build_type }}/*.zip,./build/${{ env.build_type }}/*.apk"
+            }],
+            "type": "artifacts"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "generatereleasenotes"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.github_token }}"
+            }],
+            "type": "token"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

@@ -1,0 +1,45 @@
+Sure, here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: Python application
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10-dev, nightly]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install -U coverage codecov mypy
+        python -m pip install -r requirements.txt
+    - name: Run tests
+      run: |
+        python -m coverage run --branch -m unittest discover -t . -s ni/test/
+        python -m mypy ni/*.py
+    - name: Upload coverage to Codecov
+      run: codecov
+
+|End-of-Code|
+```
+
+This GitHub Actions configuration does the following:
+
+1. It triggers on push and pull request events.
+2. It runs on the latest version of Ubuntu.
+3. It sets up Python versions 3.8, 3.9, 3.10-dev, and nightly.
+4. It checks out the repository.
+5. It installs the dependencies using pip.
+6. It runs the tests using coverage and mypy.
+7. It uploads the coverage report to Codecov.

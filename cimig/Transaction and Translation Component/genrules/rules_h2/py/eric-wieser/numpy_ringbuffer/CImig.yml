@@ -1,0 +1,12 @@
+name: placeholder
+
+on: push:
+
+jobs:
+  build:
+    runs-on
+    steps
+    run: coverage run tests.py
+
+fail-fast: FALSE
+

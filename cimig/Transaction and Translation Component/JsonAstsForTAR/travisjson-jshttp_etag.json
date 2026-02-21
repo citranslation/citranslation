@@ -1,0 +1,142 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "0.6"
+    },
+    {
+     "children": [],
+     "type": "0.8"
+    },
+    {
+     "children": [],
+     "type": "0.10"
+    },
+    {
+     "children": [],
+     "type": "0.12"
+    },
+    {
+     "children": [],
+     "type": "1.8"
+    },
+    {
+     "children": [],
+     "type": "2.5"
+    },
+    {
+     "children": [],
+     "type": "3.3"
+    },
+    {
+     "children": [],
+     "type": "4.9"
+    },
+    {
+     "children": [],
+     "type": "5.12"
+    },
+    {
+     "children": [],
+     "type": "6.14"
+    },
+    {
+     "children": [],
+     "type": "7.10"
+    },
+    {
+     "children": [],
+     "type": "8.12"
+    },
+    {
+     "children": [],
+     "type": "9.11"
+    },
+    {
+     "children": [],
+     "type": "10.11"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "precise"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "node_modules"
+    }],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "# skip updating shrinkwrap / lock\\nnpm-cmd"
+    },
+    {
+     "children": [],
+     "type": "# remove build dependencies\\nnpm-cmd"
+    },
+    {
+     "children": [],
+     "type": "# mocha for-cmd"
+    },
+    {
+     "children": [],
+     "type": "# istanbul for-cmd"
+    },
+    {
+     "children": [],
+     "type": "# eslint for-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "# run test script, depending on istanbul install\\nshell-cmd"
+    },
+    {
+     "children": [],
+     "type": "# run linting, depending on eslint install\\nshell-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "# upload coverage-cmd"
+   }],
+   "type": "after_script"
+  }
+ ],
+ "type": "travis-file"
+}

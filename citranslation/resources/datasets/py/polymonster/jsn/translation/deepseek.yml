@@ -1,0 +1,44 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Travis CI to GitHub Action
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install codecov
+        pip install coverage
+
+    - name: Run tests
+      run: |
+        coverage run jsn.py -i example.jsn -o test.json -I import_dir
+
+    - name: Upload coverage to Codecov
+      run: codecov
+
+|End-of-Code|
+```
+
+This GitHub Action configuration does the following:
+
+1. It triggers on push and pull request events.
+2. It sets up the latest version of Ubuntu as the environment to run the job.
+3. It checks out the repository.
+4. It sets up Python 3.6.
+5. It installs the necessary dependencies (`codecov` and `coverage`).
+6. It runs the test script (`jsn.py`).
+7. It uploads the coverage report to Codecov.

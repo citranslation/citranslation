@@ -1,0 +1,113 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "14"
+       }],
+       "type": "node_js"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "16"
+       }],
+       "type": "node_js"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "18"
+       }],
+       "type": "node_js"
+      }],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "node_modules"
+    }],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "focal"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "dpkg"
+      }],
+      "type": "packages"
+     }],
+     "type": "apt"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "stable"
+     }],
+     "type": "chrome"
+    }
+   ],
+   "type": "addons"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "google-chrome-stable --version"
+    },
+    {
+     "children": [],
+     "type": "google-chrome-stable --user-data-dir=$(mktemp -d) --no-sandbox --no-first-run --disable-extensions --remote-debugging-port=9222 --headless --disable-gpu about:blank &>/dev/null &"
+    },
+    {
+     "children": [],
+     "type": "while ! curl-cmd"
+    }
+   ],
+   "type": "before_script"
+  }
+ ],
+ "type": "travis-file"
+}

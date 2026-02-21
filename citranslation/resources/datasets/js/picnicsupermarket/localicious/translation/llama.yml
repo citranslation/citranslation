@@ -1,0 +1,24 @@
+Here is the equivalent GitHub Action configuration:
+```
+name: Node.js CI
+
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: yarn install
+      - name: Run tests
+        run: yarn test
+      - name: Run lint
+        run: yarn lint-on-ci
+      - name: Cache yarn
+        uses: actions/cache@v2
+        with:
+          path: ~/.yarn-cache
+          key: ${{ runner.os }}-yarn-cache
+```
+|End-of-Code|

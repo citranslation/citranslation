@@ -1,0 +1,385 @@
+```yaml
+name: CI
+
+on:
+  push:
+
+jobs:
+  lint:
+    name: Lint
+    if: ${{ !contains(github.event.head_commit.message, '[only argos]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: yarn install --frozen-lockfile
+      - run: yarn lint
+
+  generate-sprite:
+    name: Generate Sprite and Palette
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: yarn install --frozen-lockfile
+      - run: yarn makeSpriteAndPalette
+      - uses: actions/upload-artifact@v3
+        with:
+          name: sprite-palette-binaries
+          path: |
+            react/Icon/icons-sprite.js
+            react/palette.js
+
+  build-js:
+    name: Build JS
+    runs-on: ubuntu-latest
+    needs: generate-sprite
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: yarn install --frozen-lockfile
+      - uses: actions/download-artifact@v3
+        with:
+          name: sprite-palette-binaries
+          path: .
+      - run: yarn build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: js-binaries
+          path: transpiled
+
+  build-css:
+    name: Build CSS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: yarn install --frozen-lockfile
+      - run: yarn build:css:all
+      - uses: actions/upload-artifact@v3
+        with:
+          name: css-binaries
+          path: dist
+
+  build-docs:
+    name: Build docs
+    runs-on: ubuntu-latest
+    needs:
+      - generate-sprite
+      - build-js
+      - build-css
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: yarn install --frozen-lockfile
+      - uses: actions/download-artifact@v3
+        with:
+          name: sprite-palette-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: js-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: css-binaries
+          path: .
+      - run: yarn build:doc:react
+      - run: yarn build:doc:kss
+      - uses: actions/upload-artifact@v3
+        with:
+          name: docs-binaries
+          path: build
+
+  test-no-snapshots:
+    name: Tests without snapshots
+    if: ${{ !contains(github.event.head_commit.message, '[only argos]') }}
+    runs-on: ubuntu-latest
+    needs:
+      - generate-sprite
+      - build-js
+      - build-css
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: yarn install --frozen-lockfile
+      - uses: actions/download-artifact@v3
+        with:
+          name: sprite-palette-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: js-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: css-binaries
+          path: .
+      - run: yarn test:noSnapshots
+
+  test-snapshots:
+    name: Tests snapshots
+    if: ${{ !contains(github.event.head_commit.message, '[only argos]') }}
+    runs-on: ubuntu-latest
+    needs:
+      - generate-sprite
+      - build-js
+      - build-css
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: yarn install --frozen-lockfile
+      - uses: actions/download-artifact@v3
+        with:
+          name: sprite-palette-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: js-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: css-binaries
+          path: .
+      - run: yarn test:snapshots
+
+  bundlemon:
+    name: Bundlemon
+    if: ${{ !contains(github.event.head_commit.message, '[only argos]') }}
+    runs-on: ubuntu-latest
+    needs:
+      - generate-sprite
+      - build-js
+      - build-css
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: yarn install --frozen-lockfile
+      - uses: actions/download-artifact@v3
+        with:
+          name: sprite-palette-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: js-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: css-binaries
+          path: .
+      - run: yarn bundlemon
+
+  screenshots-desktop:
+    name: '[Argos] Create desktop screenshots'
+    runs-on: ubuntu-latest
+    needs: build-docs
+    env:
+      PR_TITLE: ${{ github.event.pull_request.title || '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: yarn install --frozen-lockfile
+      - uses: actions/download-artifact@v3
+        with:
+          name: sprite-palette-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: js-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: css-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: docs-binaries
+          path: .
+      - name: Take desktop screenshots
+        run: |
+          if [[ "${PR_TITLE}" != *"[skip argos]"* ]]; then
+            mkdir -p ./screenshots
+            npx puppeteer browsers install chrome
+            yarn screenshots --mode react --viewport desktop --screenshot-dir ./screenshots/reactDesktop
+          fi
+      - uses: actions/upload-artifact@v3
+        with:
+          name: screenshots-desktop-binaries
+          path: screenshots
+
+  screenshots-mobile:
+    name: '[Argos] Create mobile screenshots'
+    runs-on: ubuntu-latest
+    needs: build-docs
+    env:
+      PR_TITLE: ${{ github.event.pull_request.title || '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: yarn install --frozen-lockfile
+      - uses: actions/download-artifact@v3
+        with:
+          name: sprite-palette-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: js-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: css-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: docs-binaries
+          path: .
+      - name: Take mobile screenshots
+        run: |
+          if [[ "${PR_TITLE}" != *"[skip argos]"* ]]; then
+            mkdir -p ./screenshots
+            npx puppeteer browsers install chrome
+            yarn screenshots --mode react --viewport 300x600 --screenshot-dir ./screenshots/reactMobile
+          fi
+      - uses: actions/upload-artifact@v3
+        with:
+          name: screenshots-mobile-binaries
+          path: screenshots
+
+  screenshots-kss:
+    name: '[Argos] Create kss screenshots'
+    runs-on: ubuntu-latest
+    needs: build-docs
+    env:
+      PR_TITLE: ${{ github.event.pull_request.title || '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: yarn install --frozen-lockfile
+      - uses: actions/download-artifact@v3
+        with:
+          name: sprite-palette-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: js-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: css-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: docs-binaries
+          path: .
+      - name: Take kss screenshots
+        run: |
+          if [[ "${PR_TITLE}" != *"[skip argos]"* ]]; then
+            mkdir -p ./screenshots
+            npx puppeteer browsers install chrome
+            yarn screenshots --mode kss --screenshot-dir ./screenshots/kss
+          fi
+      - uses: actions/upload-artifact@v3
+        with:
+          name: screenshots-kss-binaries
+          path: screenshots
+
+  argos-upload:
+    name: '[Argos] Upload all screenshots'
+    runs-on: ubuntu-latest
+    needs:
+      - screenshots-desktop
+      - screenshots-mobile
+      - screenshots-kss
+    env:
+      PR_TITLE: ${{ github.event.pull_request.title || '' }}
+      ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: yarn install --frozen-lockfile
+      - uses: actions/download-artifact@v3
+        with:
+          name: screenshots-desktop-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: screenshots-mobile-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: screenshots-kss-binaries
+          path: .
+      - name: Upload screenshots to Argos
+        run: |
+          if [[ "${PR_TITLE}" != *"[skip argos]"* ]]; then
+            yarn argos:upload --parallel screenshots/reactDesktop/ --token "$ARGOS_TOKEN" --parallel-total 3 --parallel-nonce "${GITHUB_RUN_ID}" --ignore ''
+            yarn argos:upload --parallel screenshots/reactMobile/ --token "$ARGOS_TOKEN" --parallel-total 3 --parallel-nonce "${GITHUB_RUN_ID}" --ignore ''
+            yarn argos:upload --parallel screenshots/kss/ --token "$ARGOS_TOKEN" --parallel-total 3 --parallel-nonce "${GITHUB_RUN_ID}" --ignore ''
+          fi
+
+  deploy:
+    name: Deploy
+    if: ${{ github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, '[only argos]') }}
+    runs-on: ubuntu-latest
+    needs:
+      - build-docs
+      - test-no-snapshots
+      - test-snapshots
+      - bundlemon
+      - argos-upload
+      - lint
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: yarn install --frozen-lockfile
+      - uses: actions/download-artifact@v3
+        with:
+          name: sprite-palette-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: js-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: css-binaries
+          path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: docs-binaries
+          path: .
+      - name: Deploy docs and release
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          yarn deploy:doc -- --username cozycloud --email contact@cozycloud.cc --repo https://cozy-bot:${GH_TOKEN}@github.com/cozy/cozy-ui.git
+          yarn semantic-release
+|End-of-Code|

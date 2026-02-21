@@ -1,0 +1,30 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: &python-versions
+          - 3.8
+          - 3.9
+          - 3.10
+          - 3.11
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install tox
+      - name: Run tests
+        env:
+          TOX_ENV: ${{ matrix.python-version }}
+        run: tox -e $TOX_ENV
+```
+|End-of-Code|

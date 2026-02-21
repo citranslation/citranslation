@@ -1,0 +1,44 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "tests"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "./.github/workflows/_linting.yml"
+      }],
+      "type": "uses"
+     }],
+     "type": "lint"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "./.github/workflows/_test.yml"
+      }],
+      "type": "uses"
+     }],
+     "type": "tests"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

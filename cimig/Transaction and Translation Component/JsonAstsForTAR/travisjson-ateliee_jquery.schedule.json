@@ -1,0 +1,246 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "24"
+    },
+    {
+     "children": [],
+     "type": "22"
+    },
+    {
+     "children": [],
+     "type": "20"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "lint"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "echo-cmd"
+         },
+         {
+          "children": [],
+          "type": "npm-cmd"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "github package release"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "echo-cmd"
+         },
+         {
+          "children": [],
+          "type": "npm-cmd"
+         }
+        ],
+        "type": "script"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "echo-cmd"
+        }],
+        "type": "before_deploy"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "npm"
+          }],
+          "type": "provider"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "TRUE"
+          }],
+          "type": "edge"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "PATH-OR-URL"
+          }],
+          "type": "registry"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "EMAIL"
+          }],
+          "type": "email"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "public"
+          }],
+          "type": "access"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "master"
+           }],
+           "type": "branch"
+          }],
+          "type": "on"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "$github_token"
+          }],
+          "type": "api_key"
+         }
+        ],
+        "type": "deploy"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "npm-cmd"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "echo-cmd"
+         },
+         {
+          "children": [],
+          "type": "npm-cmd"
+         }
+        ],
+        "type": "script"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "echo-cmd"
+        }],
+        "type": "before_deploy"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "npm"
+          }],
+          "type": "provider"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "TRUE"
+          }],
+          "type": "edge"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "EMAIL"
+          }],
+          "type": "email"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "public"
+          }],
+          "type": "access"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "master"
+           }],
+           "type": "branch"
+          }],
+          "type": "on"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "$npm_token"
+          }],
+          "type": "api_key"
+         }
+        ],
+        "type": "deploy"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

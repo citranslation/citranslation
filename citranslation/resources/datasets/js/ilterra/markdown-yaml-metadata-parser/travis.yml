@@ -1,0 +1,15 @@
+language: node_js
+
+node_js:
+  - 15
+  - 14
+  - 12
+
+os:
+  - linux
+  - osx
+  - windows
+
+branches:
+  only:
+    - master

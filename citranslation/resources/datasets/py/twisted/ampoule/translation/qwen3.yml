@@ -1,0 +1,37 @@
+name: Python Tests
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: 3.8
+            tox_env: py38
+          - python: 3.9
+            tox_env: py39
+          - python: 3.10
+            tox_env: py310
+          - python: 3.11
+            tox_env: py311
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install tox
+        run: pip install tox
+
+      - name: Run tests
+        run: tox -e ${{ matrix.tox_env }}
+|End-of-Code|

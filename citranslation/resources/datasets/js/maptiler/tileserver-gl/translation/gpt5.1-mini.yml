@@ -1,0 +1,45 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+
+jobs:
+  test:
+    name: Run tests
+    runs-on: ubuntu-18.04
+    env:
+      CXX: g++-4.8
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 10
+        uses: actions/setup-node@v4
+        with:
+          node-version: "10"
+
+      - name: Install apt packages (toolchain + deps)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y software-properties-common wget unzip
+          # Add Ubuntu toolchain PPA to obtain older g++
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+          sudo apt-get update -qq
+          sudo apt-get install -y g++-4.8
+          # Install required libraries and Xvfb
+          sudo apt-get install -y libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++ xvfb libgles2-mesa-dev libgbm-dev libxxf86vm-dev
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Download test data
+        run: |
+          wget -O test_data.zip https://github.com/maptiler/tileserver-gl/releases/download/v1.3.0/test_data.zip
+          unzip -q test_data.zip -d test_data
+
+      - name: Run tests (with Xvfb)
+        run: xvfb-run --server-args="-screen 0 1024x768x24" npm test
+
+|End-of-Code|

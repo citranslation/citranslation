@@ -1,0 +1,38 @@
+## 4. Output: GitHub Action
+```yaml
+name: Node CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14
+
+    - name: Cache node modules
+      uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: ${{ runner.OS }}-node-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.OS }}-node-
+
+    - name: Install Dependencies
+      run: yarn install
+
+    - name: Build Inspector View
+      run: yarn build:inspectorView
+
+    - name: Build Edit Mode
+      run: yarn build:editMode
+```
+|End-of-Code|
+
+Please note that the version of Node.js and the cache key in the setup-node step are placeholders and should be replaced with the actual versions used in your Travis CI configuration. The cache key is dependent on your project's specifics, so it may need to be adjusted.

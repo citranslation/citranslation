@@ -1,0 +1,104 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["16"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Configure npm and Remove Build Deps
+        run: |
+          npm config set shrinkwrap false
+          npm rm --save-dev benchmark beautify-benchmark
+
+      - name: Setup Version-Specific Dependencies
+        run: |
+          NODE_MAJOR=$(echo "${{ matrix.node-version }}" | cut -d. -f1)
+          NODE_MINOR=$(echo "${{ matrix.node-version }}" | cut -d. -f2)
+          
+          # Mocha logic
+          if [ "$NODE_MAJOR" -eq 0 ] && [ "$NODE_MINOR" -lt 8 ]; then
+            npm install --save-dev mocha@1.21.5
+          elif [ "$NODE_MAJOR" -eq 0 ] && [ "$NODE_MINOR" -lt 10 ]; then
+            npm install --save-dev mocha@2.5.3
+          elif [ "$NODE_MAJOR" -lt 4 ]; then
+            npm install --save-dev mocha@3.5.3
+          elif [ "$NODE_MAJOR" -lt 6 ]; then
+            npm install --save-dev mocha@5.2.0
+          elif [ "$NODE_MAJOR" -lt 8 ]; then
+            npm install --save-dev mocha@6.2.2
+          elif [ "$NODE_MAJOR" -lt 10 ]; then
+            npm install --save-dev mocha@7.2.0
+          fi
+
+          # Istanbul logic
+          if [ "$NODE_MAJOR" -eq 0 ] && [ "$NODE_MINOR" -lt 10 ]; then
+            npm rm --silent --save-dev istanbul
+          fi
+
+          # Supertest logic
+          if [ "$NODE_MAJOR" -eq 0 ] && [ "$NODE_MINOR" -lt 10 ]; then
+            npm install --save-dev supertest@1.1.0
+          elif [ "$NODE_MAJOR" -lt 4 ]; then
+            npm install --save-dev supertest@2.0.0
+          elif [ "$NODE_MAJOR" -lt 6 ]; then
+            npm install --save-dev supertest@3.4.2
+          fi
+
+          # ESLint logic
+          if [ "$NODE_MAJOR" -lt 10 ]; then
+            node -pe 'Object.keys(require("./package").devDependencies).join("\n")' | \
+              grep -E '^eslint(-|$)' | \
+              xargs -n 1 npm rm --save-dev
+          fi
+
+      - name: Install Dependencies
+        run: |
+          if [ -d node_modules ]; then
+            npm prune
+            npm rebuild
+          else
+            npm install
+          fi
+
+      - name: Run Tests
+        run: |
+          if npm -ps ls istanbul | grep -q istanbul; then
+            npm run-script test-travis
+          else
+            npm test
+          fi
+
+      - name: Run Lint
+        run: |
+          if npm -ps ls eslint | grep -q eslint; then
+            npm run-script lint
+          fi
+
+      - name: Upload Coverage
+        if: success()
+        run: |
+          if [ -f ./coverage/lcov.info ]; then
+            npm install --save-dev coveralls@2
+            cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+          fi
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}

@@ -1,0 +1,610 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "unit tests & release"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "branch-name"
+       },
+       {
+        "children": [],
+        "type": "branch-name"
+       }
+      ],
+      "type": "branches"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "branch-name"
+       },
+       {
+        "children": [],
+        "type": "branch-name"
+       }
+      ],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.workflow }}-${{ github.head_ref || github.run_id }}"
+     }],
+     "type": "group"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "cancel-in-progress"
+    }
+   ],
+   "type": "concurrency"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "read"
+    }],
+    "type": "contents"
+   }],
+   "type": "permissions"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "FALSE"
+            }],
+            "type": "persist-credentials"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-node@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "lts/*"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "yarn"
+             }],
+             "type": "cache"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "yarn --frozen-lockfile"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run eslint"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "yarn lint"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "lint"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "test on node.js v${{ matrix.node-version }}"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "fail-fast"
+        },
+        {
+         "children": [{
+          "children": [
+           {
+            "children": [],
+            "type": "6.x"
+           },
+           {
+            "children": [],
+            "type": "8.x"
+           },
+           {
+            "children": [],
+            "type": "10.x"
+           },
+           {
+            "children": [],
+            "type": "12.x"
+           },
+           {
+            "children": [],
+            "type": "14.x"
+           },
+           {
+            "children": [],
+            "type": "16.x"
+           },
+           {
+            "children": [],
+            "type": "18.x"
+           },
+           {
+            "children": [],
+            "type": "20.x"
+           },
+           {
+            "children": [],
+            "type": "21.x"
+           }
+          ],
+          "type": "node-version"
+         }],
+         "type": "matrix"
+        }
+       ],
+       "type": "strategy"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "FALSE"
+            }],
+            "type": "persist-credentials"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "use node.js ${{ matrix.node-version }}"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-node@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.node-version }}"
+             }],
+             "type": "node-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "yarn"
+             }],
+             "type": "cache"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "yarn install --frozen-lockfile --ignore-engines"
+          }],
+          "type": "run"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "paambaati/codeclimate-action@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ always() }}"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "d3494c5bb5f3df7d98635dbc2aa962c7ce5e14c61f574a8c7304dfa9bc8783e4"
+            }],
+            "type": "cc_test_reporter_id"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "yarn cover"
+            }],
+            "type": "coveragecommand"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "test-node"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "./.github/workflows/test.yml"
+       }],
+       "type": "uses"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "ubuntu-latest"
+        }],
+        "type": "os"
+       }],
+       "type": "with"
+      }
+     ],
+     "type": "test-ubuntu"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "./.github/workflows/test.yml"
+       }],
+       "type": "uses"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "macos-latest"
+        }],
+        "type": "os"
+       }],
+       "type": "with"
+      }
+     ],
+     "type": "test-macos"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "./.github/workflows/test.yml"
+       }],
+       "type": "uses"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "windows-latest"
+        }],
+        "type": "os"
+       }],
+       "type": "with"
+      }
+     ],
+     "type": "test-windows"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "write"
+         }],
+         "type": "contents"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "write"
+         }],
+         "type": "issues"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "write"
+         }],
+         "type": "pull-requests"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "write"
+         }],
+         "type": "id-token"
+        }
+       ],
+       "type": "permissions"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ github.event_name == 'push' && (github.event.ref == 'refs/heads/master' || github.event.ref == 'refs/heads/next') }}"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "release new version"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "lint"
+        },
+        {
+         "children": [],
+         "type": "test-node"
+        },
+        {
+         "children": [],
+         "type": "test-ubuntu"
+        },
+        {
+         "children": [],
+         "type": "test-macos"
+        },
+        {
+         "children": [],
+         "type": "test-windows"
+        }
+       ],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "FALSE"
+            }],
+            "type": "persist-credentials"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-node@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "lts/*"
+            }],
+            "type": "node-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "npx semantic-release@15"
+           }],
+           "type": "run"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.github_token }}"
+             }],
+             "type": "github_token"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.npm_token }}"
+             }],
+             "type": "npm_token"
+            }
+           ],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "release"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

@@ -1,0 +1,34 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.8', '3.9', 'pypy3.8']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: pip install tox-travis codecov
+
+      - name: Run tests
+        run: tox
+
+      - name: Upload coverage
+        env:
+          VERSION: "python_${GITHUB_SHA//[^[:alnum:]]/}"
+        run: |
+          codecov --required --flags $VERSION || (sleep 5 && codecov --required --flags $VERSION) || (sleep 10 && codecov --required --flags $VERSION) || (sleep 20 && codecov --required --flags $VERSION) || (sleep 30 && codecov --required --flags $VERSION)
+|End-of-Code|
+```
+Note that I've replaced the `install` section with a separate `steps` section, and the `script` section with a `run` step. I've also replaced `TRAVIS_PYTHON_VERSION` with `GITHUB_SHA`, which is the commit hash of the pushed commit. Additionally, I've removed the `after_success` section, as it's not necessary in GitHub Actions.

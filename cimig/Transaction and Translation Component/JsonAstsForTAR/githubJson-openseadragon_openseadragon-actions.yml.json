@@ -1,0 +1,181 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "pull request checks"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "workflow_dispatch"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "src/**"
+       },
+       {
+        "children": [],
+        "type": "test/**"
+       },
+       {
+        "children": [],
+        "type": "images/**"
+       },
+       {
+        "children": [],
+        "type": ".github/workflows/prs.yml"
+       },
+       {
+        "children": [],
+        "type": "*.json"
+       },
+       {
+        "children": [],
+        "type": "*.js"
+       },
+       {
+        "children": [],
+        "type": "*.css"
+       },
+       {
+        "children": [],
+        "type": "!test/demo/**"
+       }
+      ],
+      "type": "paths"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "run test tasks"
+      }],
+      "type": "name"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "10"
+      }],
+      "type": "timeout-minutes"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-node@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "npm"
+            }],
+            "type": "cache"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "package.json"
+            }],
+            "type": "cache-dependency-path"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "lts/*"
+            }],
+            "type": "node-version"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "setup environment and install dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run tests"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "npm-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "run_checks"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

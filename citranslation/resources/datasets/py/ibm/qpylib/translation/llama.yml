@@ -1,0 +1,47 @@
+Here is the migrated GitHub Action configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Python
+        run: python3.8 -m ensurepip
+      - name: Install dependencies
+        run: pip install --upgrade pip
+      - name: Run lint and tests
+        run:./lint.sh &&./test.sh
+      - name: SonarCloud
+        if: github.event_name!= 'pull_request' && github.event_name!= 'push' && github.repository == 'IBM/qpylib'
+        run: sonar-scanner
+      - name: Build
+        run: |
+          if [ "${GITHUB_REF}" == "refs/tags/"* ]; then
+           ./build.sh ${GITHUB_REF##refs/tags/v}
+          else
+           ./build.sh "0.0.dev${GITHUB_RUN_NUMBER}"
+          fi
+      - name: Deploy
+        uses: github-actions/release@v1
+        with:
+          token: ${{ secrets.GITHUB_OAUTH_TOKEN }}
+          files: |
+            dist/qpylib-${GITHUB_REF##refs/tags/v}.tar.gz
+            dist/qpylib-${GITHUB_REF##refs/tags/v}-py3-none-any.whl
+          skip_cleanup: true
+        if: github.event_name =='release'
+```
+|End-of-Code|

@@ -1,0 +1,68 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:9.6
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 'node'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Create database
+      run: psql -c 'create database sequelize;' -U postgres
+      env:
+        PGPASSWORD: postgres
+
+    - name: Run tests
+      run: npm test
+
+    - name: Run coverage
+      run: |
+        ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --report lcovonly test/overall.test.js -- --exit
+        cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+        rm -rf ./coverage
+
+    - name: Send notification on failure
+      if: failure()
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.yandex.com
+        server_port: 465
+        username: KSDaemon@ya.ru
+        password: ${{ secrets.YANDEX_APP_PASSWORD }}
+        subject: GitHub Actions - Build Failure
+        to: KSDaemon@ya.ru
+        from: GitHub Actions <KSDaemon@ya.ru>
+        body: Build failed for ${{ github.repository }} on ${{ github.ref }}.
+|End-of-Code|
+```

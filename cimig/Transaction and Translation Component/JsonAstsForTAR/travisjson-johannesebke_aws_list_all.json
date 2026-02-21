@@ -1,0 +1,59 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "2.7"
+    },
+    {
+     "children": [],
+     "type": "3.9"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install flake8 yapf pytest"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "aws_list_all --help"
+    },
+    {
+     "children": [],
+     "type": "pytest aws_list_all"
+    },
+    {
+     "children": [],
+     "type": "flake8 aws_list_all"
+    },
+    {
+     "children": [],
+     "type": "yapf -d -r aws_list_all/"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

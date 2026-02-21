@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    tags: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.8, 3.9, 3.10]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - run: sed '/pypandoc/d' -i requirements.txt
+      - run: pip install -U -r requirements.txt
+      - run: python setup.py install
+      - run: py.test --cov=ssh_ldap_pubkey --cov-report term -vv
+      - run: pycodestyle
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.10
+      - run: sed '/pypandoc/d' -i requirements.txt
+      - run: pip install -U -r requirements.txt
+      - run: python setup.py install
+      - run: py.test --cov=ssh_ldap_pubkey --cov-report term -vv
+      - uses: pypa/warehouse@v1.0.0
+        with:
+          username: jirutka
+          password: ${{ secrets.PYPI_PASSWORD }}
+|End-of-Code|

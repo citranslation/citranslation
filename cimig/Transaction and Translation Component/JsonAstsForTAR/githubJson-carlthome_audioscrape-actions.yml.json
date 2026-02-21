@@ -1,0 +1,74 @@
+{
+ "children": [
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "branch-name"
+      }],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "${{ github.workflow }}-${{ github.ref }}"
+     }],
+     "type": "group"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "cancel-in-progress"
+    }
+   ],
+   "type": "concurrency"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "carlthome/workflows/.github/workflows/python.yaml@version"
+      }],
+      "type": "uses"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "audioscrape"
+       }],
+       "type": "package-name"
+      }],
+      "type": "with"
+     }
+    ],
+    "type": "audioscrape"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

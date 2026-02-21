@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9']
+    
+    env:
+      NUMPY_VERSION: stable
+      ASTROPY_VERSION: stable
+      SETUP_CMD: 'test'
+      PIP_DEPENDENCIES: ''
+      CONDA_DEPENDENCIES: 'scipy pytest-cov'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install and Setup Conda
+        run: |
+          git clone git://github.com/astropy/ci-helpers.git
+          # Note: ci-helpers is designed for Travis/AppVeyor; 
+          # in GHA, we source the setup script to configure the environment.
+          source ci-helpers/travis/setup_conda_linux.sh
+
+      - name: Run tests
+        run: py.test
+
+|End-of-Code|

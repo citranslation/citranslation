@@ -1,0 +1,27 @@
+name: Node CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run build:prod
+    - run: npm run test:coverage
+    - run: npm run lint
+    - run: bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
+      |End-of-Code|
+
+Please note that the above GitHub Action configuration is based on the Travis CI configuration you provided. It assumes that you have a `.npmrc` file in your repository that specifies the registry where your npm packages are published. If your packages are not published to an npm registry, you may need to adjust the configuration accordingly.

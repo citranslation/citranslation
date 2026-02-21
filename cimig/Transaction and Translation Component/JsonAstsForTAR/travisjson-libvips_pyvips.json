@@ -1,0 +1,272 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [],
+      "type": "vips_version_major=8"
+     },
+     {
+      "children": [],
+      "type": "vips_version_minor=9"
+     },
+     {
+      "children": [],
+      "type": "vips_version_micro=0"
+     },
+     {
+      "children": [],
+      "type": "path=~/vips/bin:$path"
+     },
+     {
+      "children": [],
+      "type": "ld_library_path=~/vips/lib:$ld_library_path"
+     },
+     {
+      "children": [],
+      "type": "pkg_config_path=~/vips/lib/pkgconfig:$pkg_config_path"
+     }
+    ],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [
+      {
+       "children": [],
+       "type": "libexpat1-dev"
+      },
+      {
+       "children": [],
+       "type": "gettext"
+      },
+      {
+       "children": [],
+       "type": "liblcms2-dev"
+      },
+      {
+       "children": [],
+       "type": "libmagickwand-dev"
+      },
+      {
+       "children": [],
+       "type": "libopenexr-dev"
+      },
+      {
+       "children": [],
+       "type": "libcfitsio3-dev"
+      },
+      {
+       "children": [],
+       "type": "libfftw3-dev"
+      },
+      {
+       "children": [],
+       "type": "libgif-dev"
+      },
+      {
+       "children": [],
+       "type": "libgs-dev"
+      },
+      {
+       "children": [],
+       "type": "libgsf-1-dev"
+      },
+      {
+       "children": [],
+       "type": "libmatio-dev"
+      },
+      {
+       "children": [],
+       "type": "libopenslide-dev"
+      },
+      {
+       "children": [],
+       "type": "liborc-0.4-dev"
+      },
+      {
+       "children": [],
+       "type": "libpango1.0-dev"
+      },
+      {
+       "children": [],
+       "type": "libpoppler-glib-dev"
+      },
+      {
+       "children": [],
+       "type": "librsvg2-dev"
+      },
+      {
+       "children": [],
+       "type": "libwebp-dev"
+      },
+      {
+       "children": [],
+       "type": "libtiff5-dev"
+      },
+      {
+       "children": [],
+       "type": "libglib2.0-dev"
+      }
+     ],
+     "type": "packages"
+    }],
+    "type": "apt"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "~/vips"
+    }],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "2.7"
+    },
+    {
+     "children": [],
+     "type": "3.3"
+    },
+    {
+     "children": [],
+     "type": "3.4"
+    },
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "nightly"
+    },
+    {
+     "children": [],
+     "type": "pypy"
+    },
+    {
+     "children": [],
+     "type": "pypy3"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.3"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.7"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.8"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "nightly"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "allow_failures"
+   }],
+   "type": "matrix"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install -u .[test]"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python-cmd"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "uname -a"
+    },
+    {
+     "children": [],
+     "type": "bash PATH-OR-URL --without-python"
+    },
+    {
+     "children": [],
+     "type": "pip install -u setuptools"
+    }
+   ],
+   "type": "before_install"
+  }
+ ],
+ "type": "travis-file"
+}

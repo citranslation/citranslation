@@ -1,0 +1,35 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ["12", "14", "node"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm test
+      - name: Notify on IRC
+        uses: actions/irc-notifier@v1
+        with:
+          server: chat.freenode.net
+          channel: #ua-parser
+          message: "CI build completed"
+|End-of-Code|
+```
+Note that in GitHub Actions, we use a `jobs` section to define a job that runs on an `ubuntu-latest` environment. We use a `strategy` section to define a matrix of nodes to test, and then define three steps:
+
+1. Checkout the code using the `actions/checkout` action.
+2. Install dependencies using `npm install`.
+3. Run tests using `npm test`.
+4. Notify on IRC using the `actions/irc-notifier` action.
+
+The `with` section specifies the IRC server, channel, and message to send.

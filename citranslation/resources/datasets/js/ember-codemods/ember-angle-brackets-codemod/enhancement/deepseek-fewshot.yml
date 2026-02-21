@@ -1,0 +1,54 @@
+## 3. Task:
+Migrate the above Travis CI configuration to Github Action, using the provided migration pair as reference. 
+## 4. Output: GitHub Action
+```yaml
+name: Continuous integration
+
+on: [push, pull_request]
+
+jobs:
+  run-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run checkout
+        uses: actions/checkout@v3
+      - name: Use Node.js 10.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: '10.x'
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn install
+      - name: Run tests
+        run: yarn test
+      - name: Lint
+        run: yarn lint-on-ci
+
+  check-tests-pass:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+          cache: 'yarn'
+      - run: yarn install
+      - run: yarn test
+
+  build:
+    runs-on: ubuntu-latest
+    name: 'Yoast SEO for Neos CMS frontend build'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '16'
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn
+      - name: Build inspector view plugin
+        run: yarn build:inspectorView
+      - name: Build edit/preview mode
+        run: yarn build:editMode
+```
+|End-of-Code|

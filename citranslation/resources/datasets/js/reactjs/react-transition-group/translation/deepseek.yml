@@ -1,0 +1,50 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Node CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14]
+        react-version: [16, 17]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Cache node modules
+      uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.OS }}-modules-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.OS }}-modules-
+    - name: Install Dependencies
+      run: |
+        yarn
+        yarn add react@${{ matrix.react-version }} react-dom@${{ matrix.react-version }}
+        yarn --cwd www
+    - name: Run Tests
+      run: yarn test
+    - name: Build
+      run: npm run build
+    - name: Semantic Release
+      run: npm run semantic-release
+
+branches:
+  only:
+    - master
+```
+
+Please note that GitHub Actions do not support the `sudo: false` directive in the Travis CI configuration. This is because GitHub Actions run on a virtual environment provided by GitHub, and `sudo` is not supported in GitHub Actions.
+
+Also, the `branches: only: - master` directive is equivalent to the `only: master` directive in GitHub Actions. This means that the workflow will only run on the master branch.

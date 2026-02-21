@@ -1,0 +1,887 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "build"
+    }],
+    "type": "use"
+   }],
+   "type": "workspaces"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "install-build"
+    },
+    {
+     "children": [],
+     "type": "test"
+    }
+   ],
+   "type": "stages"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "12"
+    },
+    {
+     "children": [],
+     "type": "4"
+    }
+   ],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "ljharb/travis-ci:node/latest-npm.yml"
+   }],
+   "type": "import"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "echo-cmd"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "nvm exec node sh PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "shell-cmd"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "shell-cmd"
+    }
+   ],
+   "type": "after_script"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "install-build"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "build"
+            }],
+            "type": "name"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "./"
+            }],
+            "type": "paths"
+           }
+          ],
+          "type": "create"
+         }],
+         "type": "workspaces"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "lts/gallium"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "npm-cmd"
+         }],
+         "type": "install"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "npx lerna bootstrap"
+         }],
+         "type": "before_script"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "npx lerna run build"
+         }],
+         "type": "script"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "8"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "react=16"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "6"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "react=16"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "lts/gallium"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "react=16.8.5 renderer=16.8.5"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "lts/gallium"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "react=16.8.5 renderer=16.8.3"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "lts/gallium"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "react=16.8.3"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "lts/gallium"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "react=16.8 renderer=16.7"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "lts/gallium"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "react=16.7 renderer=16.8"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "lts/gallium"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "react=16.7 renderer=16.7"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "lts/gallium"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "react=16.3 adapter=16"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "lts/gallium"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "react=15.3"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "lts/gallium"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "react=15.2"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "lts/gallium"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "react=15.1"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "lts/gallium"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "react=15.0"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "6"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "karma=true react=0.13"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "6"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "karma=true react=0.14"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "6"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "karma=true react=15.4"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "6"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "karma=true react=15"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "6"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "karma=true react=16"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "test"
+         }],
+         "type": "stage"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "6"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "karma=true react=0.13"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "6"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "karma=true react=0.14"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "6"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "karma=true react=15.4"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "6"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "karma=true react=15"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "6"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "karma=true react=16"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "lts/gallium"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "react=16.8.5 renderer=16.8.3"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "lts/gallium"
+         }],
+         "type": "node_js"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "react=16.8 renderer=16.7"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "allow_failures"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "6"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "react=0.13"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }],
+     "type": "exclude"
+    }
+   ],
+   "type": "matrix"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "react=16.14"
+    },
+    {
+     "children": [],
+     "type": "react=16.13"
+    },
+    {
+     "children": [],
+     "type": "react=16.12"
+    },
+    {
+     "children": [],
+     "type": "react=16.11"
+    },
+    {
+     "children": [],
+     "type": "react=16.10"
+    },
+    {
+     "children": [],
+     "type": "react=16.9"
+    },
+    {
+     "children": [],
+     "type": "react=16.8"
+    },
+    {
+     "children": [],
+     "type": "react=16.7"
+    },
+    {
+     "children": [],
+     "type": "react=16.6"
+    },
+    {
+     "children": [],
+     "type": "react=16.5"
+    },
+    {
+     "children": [],
+     "type": "react=16.4"
+    },
+    {
+     "children": [],
+     "type": "react=16.3"
+    },
+    {
+     "children": [],
+     "type": "react=16.2"
+    },
+    {
+     "children": [],
+     "type": "react=16.1"
+    },
+    {
+     "children": [],
+     "type": "react=16.0"
+    },
+    {
+     "children": [],
+     "type": "react=15.5"
+    },
+    {
+     "children": [],
+     "type": "react=15.4"
+    },
+    {
+     "children": [],
+     "type": "react=0.14"
+    },
+    {
+     "children": [],
+     "type": "react=0.13"
+    }
+   ],
+   "type": "env"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,110 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "deploy"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "v*"
+     }],
+     "type": "tags"
+    }],
+    "type": "push"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "./.github/workflows/_test.yml"
+      }],
+      "type": "uses"
+     }],
+     "type": "tests"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "./.github/workflows/_linting.yml"
+      }],
+      "type": "uses"
+     }],
+     "type": "lint"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "tests"
+        },
+        {
+         "children": [],
+         "type": "lint"
+        }
+       ],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "./.github/workflows/_upload.yml"
+       }],
+       "type": "uses"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.pypi_token }}"
+        }],
+        "type": "pypi_token"
+       }],
+       "type": "secrets"
+      }
+     ],
+     "type": "upload"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "tests"
+        },
+        {
+         "children": [],
+         "type": "lint"
+        }
+       ],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "./.github/workflows/_docs.yml"
+       }],
+       "type": "uses"
+      }
+     ],
+     "type": "docs"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

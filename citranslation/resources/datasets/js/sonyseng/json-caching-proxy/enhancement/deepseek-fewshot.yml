@@ -1,0 +1,61 @@
+Here is the GitHub Action configuration equivalent to the provided Travis CI configuration:
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches: ['master']
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  Unit:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+          - 22
+          - 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm test
+
+build:
+  name: CI
+  runs-on: ubuntu-latest
+  strategy:
+    matrix:
+      node-version: [10.x, 11.x, 12.x]
+  steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+    - run: npm test
+
+Node.js CI:
+  name: Node.js CI
+  runs-on: ubuntu-latest
+  strategy:
+    matrix:
+      node-version: [6.x, 7.x, 8.x, 9.x, 10.x]
+  steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+    - run: npm test
+```
+
+Please note that the GitHub Actions configuration is slightly different from the Travis CI configuration. The GitHub Actions configuration uses the `runs-on` field to specify the type of runner that the job will run on, while the Travis CI configuration uses the `sudo` field to specify the type of runner. In the GitHub Actions configuration, the `runs-on` field is used to specify the type of runner that the job will run on, and the `matrix` field is used to specify the versions of Node.js that the job will run on.

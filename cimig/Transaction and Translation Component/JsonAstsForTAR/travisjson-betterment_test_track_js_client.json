@@ -1,0 +1,60 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "8.15.1"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "yarn"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "stable"
+    }],
+    "type": "chrome"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "yarn prettier:check"
+    },
+    {
+     "children": [],
+     "type": "yarn lint"
+    },
+    {
+     "children": [],
+     "type": "yarn test"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

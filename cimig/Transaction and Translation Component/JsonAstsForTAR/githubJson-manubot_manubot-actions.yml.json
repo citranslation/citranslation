@@ -1,0 +1,601 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "tests"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "python-cmd"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ matrix.os }}"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "4"
+         }],
+         "type": "max-parallel"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "FALSE"
+         }],
+         "type": "fail-fast"
+        },
+        {
+         "children": [
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "ubuntu-latest"
+            },
+            {
+             "children": [],
+             "type": "windows-latest"
+            },
+            {
+             "children": [],
+             "type": "macos-latest"
+            }
+           ],
+           "type": "os"
+          },
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "3.7"
+            },
+            {
+             "children": [],
+             "type": "3.8"
+            },
+            {
+             "children": [],
+             "type": "3.9"
+            },
+            {
+             "children": [],
+             "type": "3.10"
+            }
+           ],
+           "type": "python-version"
+          },
+          {
+           "children": [
+            {
+             "children": [],
+             "type": "2.9.2"
+            },
+            {
+             "children": [],
+             "type": "2.11.3.1"
+            }
+           ],
+           "type": "pandoc-version"
+          },
+          {
+           "children": [
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "windows-latest"
+               }],
+               "type": "os"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "2.11.3.1"
+               }],
+               "type": "pandoc-version"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "3.7"
+               }],
+               "type": "python-version"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "2.9.2"
+               }],
+               "type": "pandoc-version"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "3.8"
+               }],
+               "type": "python-version"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "2.9.2"
+               }],
+               "type": "pandoc-version"
+              }
+             ],
+             "type": "OBJ-NODE"
+            }
+           ],
+           "type": "exclude"
+          },
+          {
+           "children": [
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "2.9.2"
+               }],
+               "type": "pandoc-version"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "1.12.5"
+               }],
+               "type": "panflute-version"
+              }
+             ],
+             "type": "OBJ-NODE"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "2.11.3.1"
+               }],
+               "type": "pandoc-version"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "2.0.5"
+               }],
+               "type": "panflute-version"
+              }
+             ],
+             "type": "OBJ-NODE"
+            }
+           ],
+           "type": "include"
+          }
+         ],
+         "type": "matrix"
+        }
+       ],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout repository"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install pandoc"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "r-lib/actions/setup-pandoc@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.pandoc-version }}"
+            }],
+            "type": "pandoc-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install python"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-version }}"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "python-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "test with pytest"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "en_us.utf-8"
+             }],
+             "type": "lang"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ github.event.pull_request.head.sha }}"
+             }],
+             "type": "github_pull_request_sha"
+            }
+           ],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pytest"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "pytest"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "pre-commit checks"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout repository"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install python"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run checks"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pre-commit/action@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "pre-commit"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "build docs"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "checkout repository"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/checkout@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install python"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pip install --upgrade pip\\npip install \\\".[webpage,dev]\\\"\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "build docs"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "# temporary workaround for-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "deploy docs"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "github.ref == 'refs/heads/main' && github.event_name == 'push' && !github.event.repository.fork"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "peaceiris/actions-gh-pages@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.github_token }}"
+             }],
+             "type": "github_token"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "docs"
+             }],
+             "type": "publish_dir"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "gh-pages"
+             }],
+             "type": "publish_branch"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "docs"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

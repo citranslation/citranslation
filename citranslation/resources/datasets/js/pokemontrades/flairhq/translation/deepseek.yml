@@ -1,0 +1,51 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Travis CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        node-version: [6]
+
+    env:
+      SKIP_SASS_BINARY_DOWNLOAD_FOR_CI: true
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies
+      run: |
+        npm install -g npm@latest-6
+        npm install -g grunt-cli
+        npm install -g eslint
+        npm install
+
+    - name: Test
+      run: npm test
+
+    - name: Cache
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.node-gyp
+          ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+|End-of-Code|
+```
+
+Please note that GitHub Actions do not support the same level of control over the environment as Travis CI does. For example, Travis CI allows you to specify different compilers and versions, while GitHub Actions only supports a limited set of compilers and versions. Also, GitHub Actions does not support the `sudo: false` directive, which is used to run jobs in containers.

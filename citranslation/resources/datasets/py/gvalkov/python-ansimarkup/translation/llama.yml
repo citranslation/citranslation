@@ -1,0 +1,30 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10", "3.11"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          pip install.
+          pip install pytest-cov pytest
+      - name: Run tests
+        run: |
+          python -m pytest --cov=ansimarkup tests
+      - name: Send notification
+        uses: github-actions/notify@v1
+          state: failure
+```
+|End-of-Code|

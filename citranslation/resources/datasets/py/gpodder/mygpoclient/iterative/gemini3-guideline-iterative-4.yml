@@ -1,0 +1,60 @@
+name: Python Package
+
+on:
+  push:
+    branches: [ "*" ]
+    tags: [ "*" ]
+  pull_request:
+    branches: [ "*" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.13-dev"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: pip install simplejson minimock coverage pytest
+
+      - name: Fix deprecated unittest aliases for Python 3.11+
+        run: |
+          grep -rl "assertEquals" . --exclude-dir=.git | xargs sed -i 's/assertEquals/assertEqual/g'
+          grep -rl "assert_" . --exclude-dir=.git | xargs sed -i 's/assert_/assertTrue/g'
+
+      - name: Run tests
+        run: make test
+
+  deploy:
+    needs: test
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Install pypa/build
+        run: pip install build
+
+      - name: Build package
+        run: python -m build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: gpodder
+          password: ${{ secrets.PYPI_PASSWORD }}
+
+|End-of-Code|

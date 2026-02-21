@@ -1,0 +1,58 @@
+name: Node.js CI with LocalStack
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 12
+        uses: actions/setup-node@v3
+        with:
+          node-version: '12'
+          cache: 'npm'
+
+      - name: Start LocalStack
+        run: |
+          docker pull localstack/localstack
+          docker run --rm -d \
+            -p 4566:4566 \
+            -e SERVICES=cloudformation,iam,sts,lambda,s3,apigateway \
+            --name localstack_main \
+            localstack/localstack
+          
+          # Wait for port to be open
+          timeout 60s bash -c "until (echo > /dev/tcp/localhost/4566) >/dev/null 2>&1; do sleep 2; done"
+
+      - name: Install dependencies
+        run: |
+          npm install
+          npm install -g serverless@2
+
+      - name: Run lint and unit tests
+        run: |
+          set -e
+          npm run lint
+          npm run test
+
+      - name: Run integration tests
+        env:
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          AWS_DEFAULT_REGION: us-east-1
+          SLS_DEBUG: "*"
+        run: |
+          npm link
+          # Ensure LocalStack internal services are ready
+          sleep 15
+          npm run test:integration
+
+|End-of-Code|

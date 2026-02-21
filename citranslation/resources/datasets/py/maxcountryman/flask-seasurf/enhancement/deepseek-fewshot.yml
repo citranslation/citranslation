@@ -1,0 +1,40 @@
+Here is the GitHub Action configuration equivalent to the provided Travis CI configuration:
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:    
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install xrandr
+        run: sudo apt-get install -y x11-xserver-utils
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: x64
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flask nose mock
+      - name: Run tests
+        run: python setup.py test
+```
+
+Please note that the Travis CI configuration you provided does not include the installation of any specific dependencies, so I have included the common Python testing dependencies (flask, nose, mock) in the GitHub Action configuration.
+
+Also, the Travis CI configuration you provided does not specify any specific Python version, so I have used "3.8" as the default Python version in the GitHub Action configuration.
+
+|End-of-Code|

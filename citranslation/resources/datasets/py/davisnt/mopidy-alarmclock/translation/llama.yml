@@ -1,0 +1,37 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      TOX_ENV: py38
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install python==3.8
+      - name: Mock Python gi package
+        run: |
+          python -c "import sys; import mock; sys.modules['gi'] = mock.Mock(); sys.modules['gi.repository'] = mock.Mock(); sys.modules['gi.repository'].Gst.version.side_effect = lambda: (1, 14, 0)"
+      - name: Install tox
+        run: pip install tox
+      - name: Run tox
+        run: tox -e $TOX_ENV
+      - name: Run tests and generate coverage report (if py38)
+        if: $TOX_ENV == 'py38'
+        run: |
+          pip install coveralls requests
+          coveralls
+|End-of-Code|
+```
+Note that in GitHub Actions, we use the `runs-on` keyword to specify the OS and architecture of the environment, and the `env` keyword to set environment variables. We also use the `uses` keyword to use an action (in this case, `actions/checkout@v2`) to checkout the code. The `run` keyword is used to execute a command in the environment.

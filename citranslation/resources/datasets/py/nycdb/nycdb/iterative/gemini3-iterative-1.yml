@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python_version: "3.12-rc-bullseye"
+            postgres_version: "15"
+          - python_version: "3.11-bullseye"
+            postgres_version: "15"
+          - python_version: "3.11-bullseye"
+            postgres_version: "14"
+          - python_version: "3.10-bullseye"
+            postgres_version: "14"
+          - python_version: "3.10-bullseye"
+            postgres_version: "13"
+          - python_version: "3.10-bullseye"
+            postgres_version: "12"
+          - python_version: "3.9-bullseye"
+            postgres_version: "14"
+          - python_version: "3.8-bullseye"
+            postgres_version: "14"
+
+    env:
+      PYTHON_VERSION: ${{ matrix.python_version }}
+      POSTGRES_VERSION: ${{ matrix.postgres_version }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build docker-compose
+        run: docker compose build
+
+      - name: Run tests
+        run: docker compose run --entrypoint="pytest tests" nycdb
+
+|End-of-Code|

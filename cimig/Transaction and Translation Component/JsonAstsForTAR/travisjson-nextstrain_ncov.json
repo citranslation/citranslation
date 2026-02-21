@@ -1,0 +1,93 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "docker-cmd"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.9"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python3 -m pip install --upgrade pip setuptools wheel"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "shell-cmd"
+    },
+    {
+     "children": [],
+     "type": "pip3 install git+PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "nextstrain version"
+    },
+    {
+     "children": [],
+     "type": "nextstrain check-setup"
+    },
+    {
+     "children": [],
+     "type": "nextstrain update"
+    },
+    {
+     "children": [],
+     "type": "pip3 install cram nextstrain-augur"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "gunzip data/example_sequences.fasta.gz"
+    },
+    {
+     "children": [],
+     "type": "nextstrain build . all_regions -j 2 --profile nextstrain_profiles/nextstrain-ci"
+    },
+    {
+     "children": [],
+     "type": "cram --shell=/bin/bash tests/sanitize-metadata.t"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,88 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Checks
+
+on:
+  push:
+    branches:
+      - master
+      - main
+      - next
+  pull_request:
+    branches:
+      - master
+      - main
+      - next
+
+jobs:
+  test-node:
+    name: Test on Node.js v${{ matrix.node-version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [16.x]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - name: install
+        run: npm ci
+      - name: run tests
+        run: npm run test
+        env:
+          CI: true
+
+  release:
+    if: ${{ github.event_name == 'push' && (github.event.ref == 'refs/heads/main' || github.event.ref == 'refs/heads/next' || github.event.ref == 'refs/heads/master') }}
+    name: Release new version
+    needs: [test-node]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: npm
+      - name: install
+        run: npm ci
+      - run: npm run build
+      - run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          ref: master
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test
+        run: npm test
+
+      - name: Compute coverage
+        run: npm run coverage
+
+      - name: Publish coverage
+        uses: coverallsapp/github-action@v2
+
+|End-of-Code|
+```
+
+This GitHub Action configuration is equivalent to the Travis CI configuration provided. It includes three jobs: `test-node`, `release`, and `test`. The `test-node` job runs tests on Node.js 16.x. The `release` job is triggered when a push event occurs on the `master`, `main`, or `next` branches and it builds and releases a new version. The `test` job runs tests, computes coverage, and publishes the coverage to Coveralls.

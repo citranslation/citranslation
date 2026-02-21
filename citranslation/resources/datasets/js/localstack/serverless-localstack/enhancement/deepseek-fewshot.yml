@@ -1,0 +1,50 @@
+Here is the GitHub Action configuration equivalent to the provided Travis CI configuration:
+
+```yaml
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x, 18.x, 20.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: sudo apt install python3
+    - run: sudo apt install php-cli
+    - run: npm install
+    - run: npm test
+
+  check-tests-pass:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - run: npm ci
+      - run: npm run test
+
+|End-of-Code|
+```
+
+This GitHub Action configuration does the following:
+
+1. It sets up a workflow that runs on every push and pull request.
+2. It uses the latest version of Ubuntu as the environment to run the jobs.
+3. It sets a timeout for the jobs to 30 minutes.
+4. It uses a matrix strategy to run the jobs with different versions of Node.js.
+5. It checks out the repository, sets up the Node.js version, installs Python and PHP, and runs the tests.
+6. It also sets up a second job to check if the tests pass.

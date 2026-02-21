@@ -1,0 +1,42 @@
+Sure, here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install sphinx==3.2.1 pyspark==3.0.1 tensorflow-cpu==1.15.0
+
+    - name: Build the docs
+      run: |
+        pushd docs/
+        PYTHONPATH=.. make clean html
+        popd
+
+    - name: Test with pytest
+      run: pytest
+
+|End-of-Code|
+```
+
+This configuration will trigger the workflow on every push and pull request to the master branch. It will use the latest version of Ubuntu to run the jobs, set up Python 3.9, install the required dependencies, build the documentation, and run the tests with pytest.

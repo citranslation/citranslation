@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
+    env:
+      TOXENV: py
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          # Removed automatic cache: 'pip' because it requires a requirements.txt or pyproject.toml
+          # Tox will handle its own environments, or you can manually cache ~/.cache/pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools
+          python -m pip install --upgrade tox
+          tox --notest
+
+      - name: Run tox
+        run: tox
+
+  lint:
+    runs-on: ubuntu-24.04
+    env:
+      TOXENV: lint
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools
+          python -m pip install --upgrade tox
+          tox --notest
+
+      - name: Run tox
+        run: tox
+
+|End-of-Code|

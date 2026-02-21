@@ -1,0 +1,138 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "php"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "5.6"
+    },
+    {
+     "children": [],
+     "type": "7.0"
+    },
+    {
+     "children": [],
+     "type": "7.1"
+    },
+    {
+     "children": [],
+     "type": "7.2"
+    }
+   ],
+   "type": "php"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "mysql"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "rvm use 2.3 --install --binary --fuzzy"
+    },
+    {
+     "children": [],
+     "type": "ruby --version"
+    },
+    {
+     "children": [],
+     "type": "mysql -e 'create database development;'"
+    },
+    {
+     "children": [],
+     "type": "nvm install 6.14.4"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "gem install bundler"
+    },
+    {
+     "children": [],
+     "type": "bundle install"
+    },
+    {
+     "children": [],
+     "type": "gem install bacon"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "composer install"
+    },
+    {
+     "children": [],
+     "type": "nohup bash -c \\\"php -s localhost:8080 2>&1 &\\\" && sleep 1; cat nohup.out"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "npm-cmd"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "./PATH-OR-URL"
+    },
+    {
+     "children": [],
+     "type": "cd-cmd"
+    },
+    {
+     "children": [],
+     "type": "bacon init.rb"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

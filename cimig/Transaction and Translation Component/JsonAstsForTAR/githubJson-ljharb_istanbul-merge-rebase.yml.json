@@ -1,0 +1,44 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "automatic rebase"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pull_request_target"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ljharb/actions/.github/workflows/rebase.yml@version"
+      }],
+      "type": "uses"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "${{ secrets.github_token }}"
+       }],
+       "type": "token"
+      }],
+      "type": "secrets"
+     }
+    ],
+    "type": "_"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

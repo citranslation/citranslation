@@ -1,0 +1,133 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.6"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo apt-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip install sphinx sphinx-rtd-theme"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "make html"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "rm -rf ./src ./roles makefile ./*.md"
+    },
+    {
+     "children": [],
+     "type": "mv ./build/html/* ./"
+    },
+    {
+     "children": [],
+     "type": "rm -rf ./build"
+    },
+    {
+     "children": [],
+     "type": "touch .nojekyll"
+    },
+    {
+     "children": [],
+     "type": "curl-cmd"
+    },
+    {
+     "children": [],
+     "type": "chmod-cmd"
+    },
+    {
+     "children": [],
+     "type": "./kubectl --insecure-skip-tls-verify --kubeconfig=\\\"/dev/null\\\" --server=PATH-OR-URL --token=$sa_travis_ci_token -n ns-rootpages patch deployment deploy-rootpages -p \\\"{\\\\\\\"spec\\\\\\\":{\\\\\\\"template\\\\\\\":{\\\\\\\"metadata\\\\\\\":{\\\\\\\"annotations\\\\\\\":{\\\\\\\"date\\\\\\\":\\\\\\\"`date --utc --iso-8601=ns`\\\\\\\"}}}}}\\\""
+    },
+    {
+     "children": [],
+     "type": "./kubectl --insecure-skip-tls-verify --kubeconfig=\\\"/dev/null\\\" --server=PATH-OR-URL --token=$sa_travis_ci_token apply -f k8s/app/"
+    }
+   ],
+   "type": "after_success"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "pages"
+     }],
+     "type": "provider"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "skip-cleanup"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "$supersecret"
+     }],
+     "type": "github-token"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "FALSE"
+     }],
+     "type": "keep-history"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "TRUE"
+      }],
+      "type": "tags"
+     }],
+     "type": "on"
+    }
+   ],
+   "type": "deploy"
+  }
+ ],
+ "type": "travis-file"
+}

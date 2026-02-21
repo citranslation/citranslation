@@ -1,0 +1,43 @@
+```yaml
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 'pypy3.7']
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install -U -r requirements.txt
+          pip install .
+
+      - name: Run tests
+        env:
+          TOX_ENV: ${{ matrix.python-version == 'pypy3.7' && 'pypy3.7' || 'py' + matrix.python-version }}
+        run: |
+          tox -e $TOX_ENV
+          pytest --dead-fixtures
+
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: $HOME/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements-dev.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+|End-of-Code|
+```

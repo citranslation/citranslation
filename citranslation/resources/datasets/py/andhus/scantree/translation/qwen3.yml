@@ -1,0 +1,33 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python-version: 3.8
+            toxenv: py38
+          - python-version: 3.9
+            toxenv: py39
+          - python-version: 3.10
+            toxenv: py10
+          - python-version: 3.11
+            toxenv: py311
+          - python-version: 3.12
+            toxenv: py312
+    steps:
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install tox codecov
+      - run: tox
+      - uses: codecov/codecov-action@v3
+
+|End-of-Code|

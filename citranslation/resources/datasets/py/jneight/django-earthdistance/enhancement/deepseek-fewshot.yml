@@ -1,0 +1,41 @@
+Sure, here is the equivalent GitHub Action configuration for the provided Travis CI configuration:
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python:
+          - '3.8'
+        deps:
+          - { django: '<2', drf: '<3.8' }
+          - { django: '<2', drf: '<3.9' }
+          - { django: '<2.1', drf: '<3.9' }
+          - { django: '<2.2', drf: '<3.9' }
+    name: Python ${{ matrix.python }} / Django ${{ matrix.deps.django }} / DRF ${{ matrix.deps.drf }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup python ${{ matrix.python }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: pip install "django${{ matrix.deps.django }}" "django-rest-framework${{ matrix.deps.drf }}"
+      - name: Run tests
+        run: python runtests.py
+```
+
+Please note that the GitHub Actions configuration for the Travis CI configuration provided in the question is quite similar to the one provided above. The differences might be due to the specifics of the project or the specifics of the Travis CI configuration.
+
+Also, please replace the `runtests.py` command with the actual command you use to run your tests in the Travis CI configuration.
+
+|End-of-Code|

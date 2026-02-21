@@ -1,0 +1,66 @@
+name: Build and Test
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest]
+        fast_finish: true
+    env:
+      SKIP_SASS_BINARY_DOWNLOAD_FOR_CI: true
+      NODE_VERSION: 6
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Update submodules
+      run: git submodule update --init --recursive
+    - name: Setup Node.js
+      run: |
+        git clone https://github.com/creationix/nvm.git ./.nvm
+        source ./.nvm/nvm.sh
+        nvm install $NODE_VERSION
+        nvm use $NODE_VERSION
+        npm config set python `which python`
+    - name: Set compiler variables (Linux)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        export CC="gcc-4.7"
+        export CXX="g++-4.7"
+        export LINK="gcc-4.7"
+        export LINKXX="g++-4.7"
+        sudo apt install -y build-essential checkinstall libssl-dev
+    - name: Check compiler versions
+      run: |
+        gcc --version
+        g++ --version
+    - name: Clean npm cache
+      run: |
+        rm -rf node_modules
+        rm package-lock.json
+        npm cache clean --force
+    - name: Install npm@6
+      run: npm install -g npm@latest-6
+    - name: Install global dependencies
+      run: |
+        npm install -g grunt-cli
+        npm install -g eslint
+    - name: Install and test
+      run: |
+        npm install
+        npm test
+    - name: Cache node-gyp and npm
+      uses: actions/cache@v2
+      with:
+        path: |
+          $HOME/.node-gyp
+          $HOME/.npm
+        key: ${{ matrix.os }}-node-${{ env.NODE_VERSION }}-${{ hashFiles('package.json') }}
+        restore-keys: |
+          ${{ matrix.os }}-node-${{ env.NODE_VERSION }}-
+          ${{ matrix.os }}-node-
+|End-of-Code|

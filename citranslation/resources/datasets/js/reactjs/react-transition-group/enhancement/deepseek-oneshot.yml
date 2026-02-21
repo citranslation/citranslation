@@ -1,0 +1,31 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: github-actions
+on: [push, pull_request]
+jobs:
+  check-tests-pass:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '12'
+      - run: yarn
+      - run: yarn add react@${{ matrix.react_dist }} react-dom@${{ matrix.react_dist }}
+        env:
+          REACT_DIST: ${{ matrix.react_dist }}
+      - run: yarn --cwd www
+      - run: yarn test
+      - run: npm run build
+      - run: npm run semantic-release
+branches:
+  only:
+    - master
+```
+
+Please note that GitHub Actions does not support the `env` keyword to set environment variables for each job in the matrix. However, you can use `matrix.react_dist` to access the value of `REACT_DIST` in the matrix.
+
+Also, the `cache: yarn` in Travis CI is equivalent to `cache: 'yarn'` in GitHub Actions.
+
+|End-of-Code|

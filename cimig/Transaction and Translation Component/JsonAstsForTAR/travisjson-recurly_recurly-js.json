@@ -1,0 +1,779 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "release-notes"
+    }],
+    "type": "except"
+   }],
+   "type": "branches"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "16"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "node_modules"
+    }],
+    "type": "directories"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "bash .PATH-OR-URL"
+   }],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "token"
+       }],
+       "type": "secure"
+      }],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "travis_retry make test-unit-ci"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "check"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "lint"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "make lint"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "check"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "types"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "make test-types"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "unit test"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "coverage"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "stable"
+         }],
+         "type": "chrome"
+        }],
+        "type": "addons"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=chromeheadlessci report_coverage=true"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "make test-unit-cov-ci"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "chrome"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=chrome"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "stable"
+         }],
+         "type": "chrome"
+        }],
+        "type": "addons"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "xvfb"
+        }],
+        "type": "services"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "firefox"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=firefox"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "latest"
+         }],
+         "type": "firefox"
+        }],
+        "type": "addons"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "xvfb"
+        }],
+        "type": "services"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "safari"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=browserstacksafari"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "edge"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=browserstackedge"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "ios 16"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=browserstackios16"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "ios 15"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=browserstackios15"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "android 13"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=browserstackandroid13"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "android 12"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=browserstackandroid12"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "android 11"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=browserstackandroid11"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "electron"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=electron"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "stable"
+         }],
+         "type": "chrome"
+        }],
+        "type": "addons"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "xvfb"
+        }],
+        "type": "services"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "react-recurly"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "type != pull_request"
+        }],
+        "type": "if"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "recurly_js_sha=$travis_commit"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "mkdir-cmd"
+         },
+         {
+          "children": [],
+          "type": "git clone PATH-OR-URL && cd-cmd"
+         },
+         {
+          "children": [],
+          "type": "make test"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "end-to-end test"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "chrome"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=browserstackchrome"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "travis_retry make test-e2e-ci"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "e2e"
+        }],
+        "type": "<<"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "firefox"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=browserstackfirefox"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "e2e"
+        }],
+        "type": "<<"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "safari"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=browserstacksafari"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "e2e"
+        }],
+        "type": "<<"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "edge"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=browserstackedge"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "e2e"
+        }],
+        "type": "<<"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "ios 16"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=browserstackios16"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "e2e"
+        }],
+        "type": "<<"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "ios 15"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=browserstackios15"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "e2e"
+        }],
+        "type": "<<"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "android 13"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=browserstackandroid13"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "e2e"
+        }],
+        "type": "<<"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "android 12"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=browserstackandroid12"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "e2e"
+        }],
+        "type": "<<"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "android 11"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "browser=browserstackandroid11"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "publish"
+        }],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "publish artifacts"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "google-cloud-sdk"
+          }],
+          "type": "packages"
+         }],
+         "type": "apt"
+        }],
+        "type": "addons"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "openssl aes-256-cbc -k $encrypted_7a8336da16e8_key -iv $encrypted_7a8336da16e8_iv -in gcs.json.enc -out gcs.json -d"
+         },
+         {
+          "children": [],
+          "type": "gcloud auth activate-service-account --key-file=gcs.json"
+         },
+         {
+          "children": [],
+          "type": "make build"
+         },
+         {
+          "children": [],
+          "type": "gsutil cp -z build/* $gcs_bucket_url/$travis_commit/"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

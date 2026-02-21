@@ -1,0 +1,43 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [linux, osx]
+        node: ["node"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install codecov
+        run: npm install -g codecov
+
+      - name: Build and test
+        run: npm run build
+        run: npm run test
+
+      - name: Code coverage
+        run: codecov
+
+      - name: Build and package (only for Linux)
+        if: matrix.os == 'linux'
+        run: npm run dist
+
+      - name: Build and package (only for macOS)
+        if: matrix.os == 'osx'
+        run: npm run dist -- --mac --win
+```
+|End-of-Code|

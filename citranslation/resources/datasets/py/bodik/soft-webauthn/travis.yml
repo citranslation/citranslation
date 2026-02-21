@@ -1,0 +1,9 @@
+dist: noble
+language: python
+python: 3.9
+
+install:
+    - make install-deps
+
+script:
+    - make

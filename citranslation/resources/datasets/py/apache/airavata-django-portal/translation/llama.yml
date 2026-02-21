@@ -1,0 +1,59 @@
+Here is the migrated GitHub Action configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip setuptools wheel
+          pip install -r requirements-dev.txt
+
+      - name: Copy settings file
+        run: |
+          cp django_airavata/settings_local.py.sample django_airavata/settings_local.py
+
+      - name: Run migrations
+        run: |
+          python manage.py migrate
+          python manage.py check
+
+      - name: Run linter
+        run: |
+          flake8.
+
+      - name: Run JavaScript linter
+        run:./lint_js.sh
+
+      - name: Build JavaScript
+        run:./build_js.sh
+
+      - name: Run tests
+        run:./test_js.sh
+
+      - name: Run tests with Django test client
+        run:./runtests.py
+
+|End-of-Code|
+```
+Note that I've used the `actions/checkout@v2` action to checkout the code, and `actions/setup-node@v2` and `actions/setup-python@v2` to install Node.js and Python respectively. I've also used the `pip install` command to install dependencies, and the `run` command to execute the remaining steps.

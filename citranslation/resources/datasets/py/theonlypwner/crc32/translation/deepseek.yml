@@ -1,0 +1,36 @@
+Sure, here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [2.6, 2.7, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, pypy, pypy3]
+        os: [ubuntu-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install coveralls
+    - name: Test with coverage
+      run: |
+        coverage run --branch --source=crc32 test.py
+    - name: Report coverage to coveralls
+      run: |
+        coveralls
+```
+
+Please note that GitHub Actions are currently in beta and some features may not be available. Also, the Python versions you specified in the matrix are not officially supported by GitHub Actions. You may need to adjust the Python versions to match the ones that are officially supported by GitHub Actions.

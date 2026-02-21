@@ -1,0 +1,59 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+    - master
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      TOX_ENV: py38
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.8
+    - run: pip install tox
+    - run: tox -e $TOX_ENV
+  test_2:
+    runs-on: ubuntu-latest
+    env:
+      TOX_ENV: py39
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.9
+    - run: pip install tox
+    - run: tox -e $TOX_ENV
+  test_3:
+    runs-on: ubuntu-latest
+    env:
+      TOX_ENV: py310
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.1
+    - run: pip install tox
+    - run: tox -e $TOX_ENV
+  test_4:
+    runs-on: ubuntu-latest
+    env:
+      TOX_ENV: py311
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: 3.11
+    - run: pip install tox
+    - run: tox -e $TOX_ENV

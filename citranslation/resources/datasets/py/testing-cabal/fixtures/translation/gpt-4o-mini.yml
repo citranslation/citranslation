@@ -1,0 +1,38 @@
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 'nightly']
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Upgrade pip
+        run: pip install -U pip
+
+      - name: Install dependencies
+        run: |
+          pip install -U wheel setuptools pbr
+          pip install -U .[docs,test]
+          pip list
+          python --version
+
+      - name: Run checks
+        run: make check
+
+      - name: Convert RST to HTML
+        run: rst2html.py README.rst README.html
+|End-of-Code|
+```

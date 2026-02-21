@@ -1,0 +1,29 @@
+name: Cypress Tests
+on:
+  push:
+  pull_request:
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 10
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgconf-2-4
+          npm install cypress
+          npx cypress install
+
+      - name: Run Cypress tests
+        run: npx cypress run
+
+|End-of-Code|

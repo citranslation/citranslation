@@ -1,0 +1,43 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "ruby"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "2.2"
+   }],
+   "type": "rvm"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "gem install awesome_bot"
+   }],
+   "type": "before_script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "awesome_bot PATH-OR-URL"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "FALSE"
+    }],
+    "type": "email"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

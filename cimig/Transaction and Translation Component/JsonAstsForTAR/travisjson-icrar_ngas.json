@@ -1,0 +1,288 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "focal"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "my-ngas-host"
+     }],
+     "type": "hostname"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "libdb-dev"
+      }],
+      "type": "packages"
+     }],
+     "type": "apt"
+    }
+   ],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "db=sqlite3"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "db=mysql"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "my-ngas-host"
+          }],
+          "type": "hostname"
+         },
+         {
+          "children": [{
+           "children": [
+            {
+             "children": [],
+             "type": "libmysqlclient-dev"
+            },
+            {
+             "children": [],
+             "type": "libdb-dev"
+            }
+           ],
+           "type": "packages"
+          }],
+          "type": "apt"
+         }
+        ],
+        "type": "addons"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "mysql"
+        }],
+        "type": "services"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "db=postgresql pgport=5433 pguser=travis"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "2.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "my-ngas-host"
+          }],
+          "type": "hostname"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "12"
+          }],
+          "type": "postgresql"
+         },
+         {
+          "children": [{
+           "children": [
+            {
+             "children": [],
+             "type": "postgresql-12"
+            },
+            {
+             "children": [],
+             "type": "libpq-dev"
+            },
+            {
+             "children": [],
+             "type": "libdb-dev"
+            }
+           ],
+           "type": "packages"
+          }],
+          "type": "apt"
+         }
+        ],
+        "type": "addons"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.6"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.7"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.8"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [],
+        "type": "3.9"
+       }],
+       "type": "python"
+      }],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "3.7"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "build docs"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "pip install sphinx sphinx_rtd_theme"
+        }],
+        "type": "install"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "make -c doc html sphinxopts=\\\"-w --keep-going\\\""
+        }],
+        "type": "script"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "TRUE"
+        }],
+        "type": "after_success"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "${travis_build_dir}/.travis/run_build.sh"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "${travis_build_dir}/.travis/run_tests.sh"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "${travis_build_dir}/.travis/after_success.sh"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

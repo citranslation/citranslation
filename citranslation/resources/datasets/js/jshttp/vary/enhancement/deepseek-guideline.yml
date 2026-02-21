@@ -1,0 +1,178 @@
+## 1. Input: Travis CI
+language: node_js
+node_js:
+  - "0.8"
+  - "0.10"
+  - "0.12"
+  - "1.8"
+  - "2.5"
+  - "3.3"
+  - "4.9"
+  - "5.12"
+  - "6.16"
+  - "7.10"
+  - "8.17"
+  - "9.11"
+  - "10.22"
+  - "11.15"
+  - "12.19"
+  - "13.14"
+  - "14.15"
+  - "15.5"
+sudo: false
+cache:
+  directories:
+    - node_modules
+before_install:
+  # Configure npm
+  - |
+    # Skip updating shrinkwrap / lock
+    npm config set shrinkwrap false
+  # Remove all non-test dependencies
+  - |
+    # Remove build dependencies
+    npm rm --save-dev benchmark
+    npm rm --save-dev beautify-benchmark
+  # Setup Node.js version-specific dependencies
+  - |
+    # mocha for testing
+    # - use 1.x for Node.js < 0.8
+    # - use 2.x for Node.js < 0.10
+    # - use 3.x for Node.js < 4
+    # - use 5.x for Node.js < 6
+    # - use 6.x for Node.js < 8
+    # - use 7.x for Node.js < 10
+    if [[ "$(cut -d. -f1 <<< "$TRAVIS_NODE_VERSION")" -eq 0 && "$(cut -d. -f2 <<< "$TRAVIS_NODE_VERSION")" -lt 8 ]]; then
+      npm install --save-dev mocha@1.21.5
+    elif [[ "$(cut -d. -f1 <<< "$TRAVIS_NODE_VERSION")" -eq 0 && "$(cut -d. -f2 <<< "$TRAVIS_NODE_VERSION")" -lt 10 ]]; then
+      npm install --save-dev mocha@2.5.3
+    elif [[ "$(cut -d. -f1 <<< "$TRAVIS_NODE_VERSION")" -lt 4 ]]; then
+      npm install --save-dev mocha@3.5.3
+    elif [[ "$(cut -d. -f1 <<< "$TRAVIS_NODE_VERSION")" -lt 6 ]]; then
+      npm install --save-dev mocha@5.2.0
+    elif [[ "$(cut -d. -f1 <<< "$TRAVIS_NODE_VERSION")" -lt 8 ]]; then
+      npm install --save-dev mocha@6.2.2
+    elif [[ "$(cut -d. -f1 <<< "$TRAVIS_NODE_VERSION")" -lt 10 ]]; then
+      npm install --save-dev mocha@7.2.0
+    fi
+  - |
+    # istanbul for coverage
+    # - remove on Node.js < 0.10
+    if [[ "$(cut -d. -f1 <<< "$TRAVIS_NODE_VERSION")" -eq 0 && "$(cut -d. -f2 <<< "$TRAVIS_NODE_VERSION")" -lt 10 ]]; then
+      npm rm --silent --save-dev istanbul
+    fi
+  - |
+    # supertest for http calls
+    # - use 1.1.0 for Node.js < 0.10
+    # - use 2.0.0 for Node.js < 4
+    # - use 3.4.2 for Node.js < 6
+    if [[ "$(cut -d. -f1 <<< "$TRAVIS_NODE_VERSION")" -eq 0 && "$(cut -d. -f2 <<< "$TRAVIS_NODE_VERSION")" -lt 10 ]]; then
+      npm install --save-dev supertest@1.1.0
+    elif [[ "$(cut -d. -f1 <<< "$TRAVIS_NODE_VERSION")" -lt 4 ]]; then
+      npm install --save-dev supertest@2.0.0
+    elif [[ "$(cut -d. -f1 <<< "$TRAVIS_NODE_VERSION")" -lt 6 ]]; then
+      npm install --save-dev supertest@3.4.2
+    fi
+  - |
+    # eslint for linting
+    # - remove on Node.js < 10
+    if [[ "$(cut -d. -f1 <<< "$TRAVIS_NODE_VERSION")" -lt 10 ]]; then
+      node -pe 'Object.keys(require("./package").devDependencies).join("\n")' | \
+        grep -E '^eslint(-|$)' | \
+        xargs -n 1 npm rm --save-dev
+    fi
+  # Update Node.js modules
+  - |
+    # Prune and rebuild node_modules
+    if [[ -d node_modules ]]; then
+      npm prune
+      npm rebuild
+    fi
+script:
+  - |
+    # Run test script, depending on istanbul install
+    if npm -ps ls istanbul | grep -q istanbul; then
+      npm run-script test-travis
+    else
+      npm test
+    fi
+  - |
+    # Run linting, depending on eslint install
+    if npm -ps ls eslint | grep -q eslint; then
+      npm run-script lint
+    fi
+after_script:
+  - |
+    # Upload coverage to coveralls if exists
+    if [[ -f ./coverage/lcov.info ]]; then
+      npm install --save-dev coveralls@2
+      coveralls < ./coverage/lcov.info
+    fi
+## 2. Task:
+Migrate the above Travis CI configuration to Github Action. 
+
+## 3. Guideline
+
+- Syntax:
+    - Ensure YAML file follows proper syntax, including required symbols, e.g., colons, hyphens, or quotation marks.
+    - Verify that GitHub Actions YAML file follows proper indentation and structural conventions.
+    - Ensure all used definitions are correctly defined and properly placed.
+    - Ensure the value types match their expected format when such fields exist in the source configuration, e.g., the setup-python action expects a single version value, not a list.
+
+- Platform Discrepancy:
+    - Translate Travis CI keys only when a clear, direct GitHub Actions equivalent exists. Skip any Travis CI–specific or unsupported keys.
+    - Verify that all expressions are properly converted to GitHub Actions syntax, e.g., 'env: TOX_ENV=flake8' to 'TOX_ENV: flake8'.
+    - Retain only x64 and arm64 if architectures are explicitly defined; remove all other architectures.
+    - Ensure all version numbers are in string format, e.g., Python '3.10'.
+    - Explicitly configure fields that are implicitly defaulted in Travis CI as equivalent GitHub Actions steps, e.g., actions/checkout@v4.
+    - Ensure all packages are properly installed and configured when present in the Travis CI configuration, e.g., migrate tox-travis to tox-gh-actions if applicable.
+
+- Environment:
+    - Ensure all referenced GitHub Actions currently exist; avoid non-existent actions.
+    - Ensure all required tokens are properly configured for the migrated steps, e.g., set GITHUB_TOKEN in the coveralls step if such a step exists.
+
+- Logic:
+    - Ensure all trigger events are correctly translated, e.g., avoid using tags as the sole trigger event unless the Travis CI configuration explicitly relies on tag-only builds.
+    - Ensure all execution orders are correctly translated, e.g., deploy job should be configured with the `needs` parameter to execute after test job.
+    - Ensure conditional statements are correctly translated.
+    - Do not introduce extra jobs, steps, operating systems, or matrix dimensions beyond those implied by the Travis CI configuration, except where required to faithfully reproduce Travis CI default behavior.
+    - Ensure that all transferable steps have been migrated.
+
+## 4. Output: GitHub Action
+GitHub Actions configuration only, end with "|End-of-Code|".
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [0.8, 0.10, 0.12, 1.8, 2.5, 3.3, 4.9, 5.12, 6.16, 7.10, 8.17, 9.11, 10.22, 11.15, 12.19, 13.14, 14.15, 15.5]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+    - run: npm run lint
+    - name: Coverage
+      run: |
+        npm install --save-dev coveralls@2
+        npm run coverage
+        coveralls < ./coverage/lcov.info
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+|End-of-Code|

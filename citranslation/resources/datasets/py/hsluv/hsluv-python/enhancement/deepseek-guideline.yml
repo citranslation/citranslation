@@ -1,0 +1,32 @@
+```yaml
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools wheel
+        pip install -r requirements.txt
+    - name: Build and test
+      run: |
+        python setup.py sdist
+        cd dist/
+        tar xf hsluv-*.tar.gz
+        cd hsluv-*/
+        python setup.py test
+      |End-of-Code|
+```
+
+Please note that the above GitHub Action configuration assumes that the Python dependencies are listed in a `requirements.txt` file. If your project has a different structure, you may need to adjust the installation step accordingly.

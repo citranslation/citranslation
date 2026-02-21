@@ -1,0 +1,22 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: CI
+on: [push, pull_request]
+jobs:
+  check-tests-pass:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - name: Install
+        run: npm ci
+      - name: Test
+        run: npm run test
+```
+
+|End-of-Code|

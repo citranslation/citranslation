@@ -1,0 +1,119 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "FALSE"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.5"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "9.6"
+     }],
+     "type": "postgresql"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "expect-dev"
+      }],
+      "type": "packages"
+     }],
+     "type": "apt"
+    }
+   ],
+   "type": "addons"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "version=\\\"12.0\\\" tests=\\\"0\\\" lint_check=\\\"0\\\" makepot=\\\"0\\\" wkhtmltopdf_version=\\\"0.12.4\\\""
+     }],
+     "type": "global"
+    },
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "lint_check=\\\"1\\\""
+      },
+      {
+       "children": [],
+       "type": "tests=\\\"1\\\" odoo_repo=\\\"oca/ocb\\\" lint_check=\\\"0\\\""
+      },
+      {
+       "children": [],
+       "type": "tests=\\\"1\\\" odoo_repo=\\\"oca/ocb\\\" lint_check=\\\"0\\\" unit_test=\\\"1\\\""
+      }
+     ],
+     "type": "matrix"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "git clone --depth=1 PATH-OR-URL ${home}/maintainer-quality-tools"
+    },
+    {
+     "children": [],
+     "type": "sed '/manifest-required-author,/d' ${home}/maintainer-quality-tools/travis/cfg/travis_run_pylint_pr.cfg -i"
+    },
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "travis_install_nightly"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "travis_run_tests"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "travis_after_tests_success"
+   }],
+   "type": "after_success"
+  }
+ ],
+ "type": "travis-file"
+}

@@ -1,0 +1,38 @@
+```yaml
+name: Python package
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ['3.8']
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: python setup.py install
+
+    - name: Run tests
+      run: python -m pytest -v
+
+    - name: Disable email notifications
+      if: always()
+      run: echo "Email notifications are disabled for this workflow."
+|End-of-Code|
+```

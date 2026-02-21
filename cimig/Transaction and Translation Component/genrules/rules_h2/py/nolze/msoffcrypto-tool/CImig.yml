@@ -1,0 +1,15 @@
+name: placeholder
+
+on: push:
+
+jobs:
+  build:
+    runs-on
+    steps
+
+cache: pip
+
+if: ${{ github.ref_name == 'master' }}
+
+print_hash: TRUE
+

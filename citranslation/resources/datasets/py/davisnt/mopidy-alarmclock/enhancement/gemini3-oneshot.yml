@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        tox-env: [py38, flake8]
+        include:
+          - tox-env: py38
+            python-version: "3.8"
+          - tox-env: flake8
+            python-version: "3.8"
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Mock Python gi package
+        run: |
+          PYUSRSITEDIR=$(python -m site --user-site)
+          mkdir -p $PYUSRSITEDIR
+          echo "import sys; import mock; sys.modules['gi'] = mock.Mock(); sys.modules['gi.repository'] = mock.Mock(); sys.modules['gi.repository'].Gst.version.side_effect = lambda: (1, 14, 0)" > ${PYUSRSITEDIR}/usercustomize.py
+
+      - name: Install dependencies
+        run: |
+          pip install tox
+
+      - name: Run tox
+        run: tox -e ${{ matrix.tox-env }}
+
+      - name: Coverage report
+        if: success() && matrix.tox-env == 'py38'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pip install coveralls requests
+          coveralls
+
+|End-of-Code|

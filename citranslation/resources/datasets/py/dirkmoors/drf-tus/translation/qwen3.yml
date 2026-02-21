@@ -1,0 +1,60 @@
+name: Python Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: 3.9
+            django: 3.2
+            toxenv: py39-django-32
+          - python: 3.9
+            django: 4.0
+            toxenv: py39-django-40
+          - python: 3.9
+            django: 4.1
+            toxenv: py39-django-41
+          - python: 3.9
+            django: 4.2
+            toxenv: py39-django-42
+          - python: 3.10
+            django: 3.2
+            toxenv: py310-django-32
+          - python: 3.10
+            django: 4.0
+            toxenv: py310-django-40
+          - python: 3.10
+            django: 4.1
+            toxenv: py310-django-41
+          - python: 3.10
+            django: 4.2
+            toxenv: py310-django-42
+          - python: 3.11
+            django: 3.2
+            toxenv: py311-django-32
+          - python: 3.11
+            django: 4.0
+            toxenv: py311-django-40
+          - python: 3.11
+            django: 4.1
+            toxenv: py311-django-41
+          - python: 3.11
+            django: 4.2
+            toxenv: py311-django-42
+    steps:
+      - uses: actions/checkout@v3
+      - name: Add deadsnakes PPA
+        run: |
+          sudo apt-add-repository -y ppa:deadsnakes/ppa
+          sudo apt-get update
+      - name: Install Python versions
+        run: |
+          sudo apt-get install -y python3.9 python3.10 python3.11
+      - name: Install tox
+        run: pip install tox
+      - name: Run tox
+        run: tox -e ${{ matrix.toxenv }}
+|End-of-Code|

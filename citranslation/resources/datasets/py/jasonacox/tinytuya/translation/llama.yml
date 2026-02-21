@@ -1,0 +1,28 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10", "3.11"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          pip install pycryptodome
+          pip install requests
+      - name: Run tests
+        run: |
+          python test.py
+|End-of-Code|
+```
+Note that in GitHub Actions, we use a `matrix` strategy to run the job for multiple Python versions, whereas in Travis CI, we used a list of Python versions. We also use the `actions/checkout` action to checkout the code, and the `run` keyword to execute the commands.

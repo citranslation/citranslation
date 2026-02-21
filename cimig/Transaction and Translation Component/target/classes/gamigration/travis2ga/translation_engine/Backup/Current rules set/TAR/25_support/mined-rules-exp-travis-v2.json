@@ -1,0 +1,40 @@
+{ "type": "travis-file", "children": [{ "type": "language", "children": [{ "type": "java", "children": [] }] },{ "type": "jdk", "children": [{ "type": "jdk8", "children": [] }] }] }
+{ "type": "travis-file", "children": [{ "type": "language", "children": [{ "type": "java", "children": [] }] },{ "type": "jdk", "children": [] },{ "type": "script", "children": [] }] }
+{ "type": "travis-file", "children": [{ "type": "language", "children": [] },{ "type": "jdk", "children": [{ "type": "jdk8", "children": [] }] },{ "type": "script", "children": [] }] }
+{ "type": "travis-file", "children": [{ "type": "language", "children": [] },{ "type": "cache", "children": [{ "type": "directories", "children": [] }] }] }
+{ "type": "travis-file", "children": [{ "type": "language", "children": [] },{ "type": "after_success", "children": [] }] }
+{ "type": "components", "children": [{ "type": "tools", "children": [] },{ "type": "extra-android-maven-repository", "children": [] }] }
+{ "type": "components", "children": [{ "type": "platform-tools", "children": [] },{ "type": "extra-android-maven-repository", "children": [] }] }
+{ "type": "directories", "children": [{ "type": "~/.gradle", "children": [] },{ "type": "~/.gradle", "children": [] }] }
+{ "type": "directories", "children": [{ "type": "~/.gradle", "children": [] },{ "type": "~/.gradle", "children": [] }] }
+{ "type": "global", "children": [{ "type": "OBJ-NODE", "children": [{ "type": "secure", "children": [{ "type": "token", "children": [] }] }] },{ "type": "OBJ-NODE", "children": [{ "type": "secure", "children": [{ "type": "token", "children": [] }] }] }] }
+{ "type": "components", "children": [{ "type": "tools", "children": [] },{ "type": "platform-tools", "children": [] },{ "type": "extra-android-maven-repository", "children": [] }] }
+{ "type": "components", "children": [{ "type": "tools", "children": [] },{ "type": "extra-google-maven-repository", "children": [] }] }
+{ "type": "components", "children": [{ "type": "platform-tools", "children": [] },{ "type": "tools", "children": [] }] }
+{ "type": "components", "children": [{ "type": "platform-tools", "children": [] },{ "type": "extra-google-maven-repository", "children": [] }] }
+{ "type": "components", "children": [{ "type": "tools", "children": [] },{ "type": "extra-android-support", "children": [] }] }
+{ "type": "global", "children": [{ "type": "OBJ-NODE", "children": [{ "type": "secure", "children": [{ "type": "token", "children": [] }] }] },{ "type": "OBJ-NODE", "children": [{ "type": "secure", "children": [{ "type": "token", "children": [] }] }] }] }
+{ "type": "before_cache", "children": [{ "type": "rm -f ~/.gradle-2/modules-2.lock", "children": [] },{ "type": "rm -fr ~/.gradle*/plugin-resolution/", "children": [] }] }
+{ "type": "deploy", "children": [{ "type": "provider", "children": [{ "type": "releases", "children": [] }] },{ "type": "api_key", "children": [{ "type": "secure", "children": [{ "type": "token", "children": [] }] }] },{ "type": "file", "children": [] },{ "type": "on", "children": [{ "type": "tags", "children": [{ "type": "TRUE", "children": [] }] }] }] }
+{ "type": "deploy", "children": [{ "type": "provider", "children": [{ "type": "releases", "children": [] }] },{ "type": "api_key", "children": [] },{ "type": "file", "children": [] },{ "type": "skip_cleanup", "children": [{ "type": "TRUE", "children": [] }] },{ "type": "on", "children": [] }] }
+{ "type": "deploy", "children": [{ "type": "provider", "children": [] },{ "type": "on", "children": [{ "type": "repo", "children": [] }] }] }
+{ "type": "deploy", "children": [{ "type": "provider", "children": [{ "type": "releases", "children": [] }] },{ "type": "api_key", "children": [] },{ "type": "skip_cleanup", "children": [{ "type": "TRUE", "children": [] }] },{ "type": "on", "children": [{ "type": "tags", "children": [{ "type": "TRUE", "children": [] }] }] }] }
+{ "type": "deploy", "children": [{ "type": "provider", "children": [{ "type": "releases", "children": [] }] },{ "type": "file", "children": [] },{ "type": "skip_cleanup", "children": [{ "type": "TRUE", "children": [] }] },{ "type": "on", "children": [{ "type": "tags", "children": [{ "type": "TRUE", "children": [] }] }] }] }
+{ "type": "include", "children": [{ "type": "OBJ-NODE", "children": [{ "type": "jdk", "children": [] }] },{ "type": "OBJ-NODE", "children": [] }] }
+{ "type": "licenses", "children": [{ "type": "android-sdk-preview-license-.+", "children": [] },{ "type": "android-sdk-license-.+", "children": [] },{ "type": "google-gdk-license-.+", "children": [] }] }
+{ "type": "include", "children": [{ "type": "OBJ-NODE", "children": [{ "type": "jdk", "children": [{ "type": "jdk8", "children": [] }] }] },{ "type": "OBJ-NODE", "children": [{ "type": "jdk", "children": [] }] }] }
+{ "type": "include", "children": [{ "type": "OBJ-NODE", "children": [{ "type": "script", "children": [] }] },{ "type": "OBJ-NODE", "children": [{ "type": "script", "children": [] }] }] }
+{ "type": "include", "children": [{ "type": "OBJ-NODE", "children": [{ "type": "env", "children": [] }] },{ "type": "OBJ-NODE", "children": [{ "type": "env", "children": [] }] }] }
+{ "type": "sonarcloud", "children": [{ "type": "organization", "children": [] },{ "type": "token", "children": [{ "type": "secure", "children": [{ "type": "token", "children": [] }] }] }] }
+{ "type": "include", "children": [{ "type": "OBJ-NODE", "children": [{ "type": "stage", "children": [] },{ "type": "script", "children": [] }] },{ "type": "OBJ-NODE", "children": [{ "type": "stage", "children": [] },{ "type": "script", "children": [] }] },{ "type": "OBJ-NODE", "children": [{ "type": "script", "children": [] }] }] }
+{ "type": "OBJ-NODE", "children": [{ "type": "stage", "children": [] },{ "type": "script", "children": [{ "type": "mvn-cmd", "children": [] }] }] }
+{ "type": "include", "children": [{ "type": "OBJ-NODE", "children": [{ "type": "stage", "children": [{ "type": "test", "children": [] }] },{ "type": "script", "children": [] }] },{ "type": "OBJ-NODE", "children": [{ "type": "stage", "children": [] },{ "type": "script", "children": [] }] }] }
+{ "type": "webhooks", "children": [{ "type": "urls", "children": [{ "type": "PATH-OR-URL", "children": [] }] },{ "type": "on_success", "children": [{ "type": "change", "children": [] }] },{ "type": "on_failure", "children": [{ "type": "always", "children": [] }] },{ "type": "on_start", "children": [{ "type": "never", "children": [] }] }] }
+{ "type": "webhooks", "children": [{ "type": "on_success", "children": [{ "type": "always", "children": [] }] },{ "type": "on_failure", "children": [] },{ "type": "on_start", "children": [] }] }
+{ "type": "sonarqube", "children": [{ "type": "organization", "children": [] },{ "type": "token", "children": [{ "type": "secure", "children": [{ "type": "token", "children": [] }] }] }] }
+{ "type": "allow_failures", "children": [{ "type": "OBJ-NODE", "children": [] },{ "type": "OBJ-NODE", "children": [] }] }
+{ "type": "project", "children": [{ "type": "name", "children": [] },{ "type": "description", "children": [{ "type": "build submitted via travis ci", "children": [] }] }] }
+{ "type": "stages", "children": [{ "type": "OBJ-NODE", "children": [{ "type": "name", "children": [] },{ "type": "if", "children": [] }] },{ "type": "OBJ-NODE", "children": [{ "type": "name", "children": [] },{ "type": "if", "children": [] }] }] }
+{ "type": "stages", "children": [{ "type": "test", "children": [] },{ "type": "OBJ-NODE", "children": [{ "type": "name", "children": [] },{ "type": "if", "children": [] }] }] }
+{ "type": "OBJ-NODE", "children": [{ "type": "name", "children": [{ "type": "deploy", "children": [] }] },{ "type": "if", "children": [] }] }
+{ "type": "artifacts", "children": [{ "type": "s3_region", "children": [] },{ "type": "paths", "children": [] }] }

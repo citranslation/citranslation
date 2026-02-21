@@ -1,0 +1,32 @@
+Sure, here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: Travis CI to GitHub Actions
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run demo script
+      run: |
+        python run_demo_md.py
+```
+
+This GitHub Actions configuration does the same thing as your Travis CI configuration: it sets up a workflow that runs on every push and pull request, on the latest version of Ubuntu, and for each Python version specified in the matrix (3.8, 3.9, and 3.10). It checks out the repository, sets up the specified Python version, installs the dependencies listed in `requirements.txt`, and runs the `run_demo_md.py` script.

@@ -1,0 +1,183 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.8"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "torch=\\\">=1.2,<1.3\\\""
+    },
+    {
+     "children": [],
+     "type": "torch=\\\">=1.3,<1.4\\\""
+    },
+    {
+     "children": [],
+     "type": "torch=\\\">=1.4,<1.5\\\""
+    },
+    {
+     "children": [],
+     "type": "torch=\\\">=1.5,<1.6\\\""
+    },
+    {
+     "children": [],
+     "type": "torch=\\\">=1.6,<1.7\\\""
+    },
+    {
+     "children": [],
+     "type": "torch=\\\">=1.7,<1.8\\\""
+    },
+    {
+     "children": [],
+     "type": "torch=\\\">=1.8,<1.9\\\""
+    },
+    {
+     "children": [],
+     "type": "torch=\\\">=1.8\\\""
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "torch=\\\">=1.2,<1.3\\\""
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "torch=\\\">=1.3,<1.4\\\""
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "exclude"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "torch=\\\">=1.8,<1.9\\\""
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "torch=\\\">=1.8\\\""
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    }
+   ],
+   "type": "build"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip install -u torch$torch"
+    },
+    {
+     "children": [],
+     "type": "python-cmd"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "py.test"
+    },
+    {
+     "children": [],
+     "type": "lettuce --no-cuda convergence"
+    },
+    {
+     "children": [],
+     "type": "lettuce --no-cuda benchmark"
+    }
+   ],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

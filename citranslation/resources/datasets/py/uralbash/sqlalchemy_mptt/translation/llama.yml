@@ -1,0 +1,46 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install -r requirements-test.txt
+      - name: Run tests
+        run: python setup.py nosetests
+      - name: Send notifications
+        uses: env-var/notify@v1
+        with:
+          email: "sacrud@uralbash.ru"
+          irc: "chat.freenode.net#sacrud"
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: coverage.xml
+      - name: Deploy
+        run: |
+          pip install coveralls
+          coveralls
+|End-of-Code|
+```
+Note that I've made the following changes:
+
+* Replaced `dist` and `sudo` with `runs-on` and `uses` respectively, as GitHub Actions uses a different syntax.
+* Replaced `notifications` with a separate step that uses the `env-var/notify` action to send notifications.
+* Replaced `python` with `run` to specify the command to run.
+* Replaced `after_success` with a separate step that uploads the coverage report using the `codecov/codecov-action` action.
+* Removed the `language` and `notifications` sections, as they are not needed in GitHub Actions.
+* Removed the `dist` and `sudo` sections, as they are not needed in GitHub Actions.
+* Replaced `pip install` with `pip install -r requirements-test.txt` to install dependencies from the `requirements-test.txt` file.
+* Replaced `python setup.py nosetests` with `python setup.py nosetests` to run the tests.
+* Replaced `coveralls` with `pip install coveralls` and `coveralls` to install and run coveralls.

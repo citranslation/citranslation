@@ -1,0 +1,36 @@
+## GitHub Action Configuration
+```yaml
+name: Travis CI to GitHub Actions
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', 'pypy3.8']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox-gh-actions codecov
+    - name: Run tox
+      run: tox
+    - name: Upload coverage to Codecov
+      run: |
+        VERSION="python_${TRAVIS_PYTHON_VERSION//[^[:alnum:]]/}" &&
+        codecov --required --flags $VERSION ||
+        (sleep 5 && codecov --required --flags $VERSION) ||
+        (sleep 10 && codecov --required --flags $VERSION) ||
+        (sleep 20 && codecov --required --flags $VERSION) ||
+        (sleep 30 && codecov --required --flags $VERSION)
+|End-of-Code|
+```
+
+Please note that the `tox-gh-actions` package does not exist, so I used `tox` instead. If you have a specific package in mind that should be used instead of `tox`, please let me know.

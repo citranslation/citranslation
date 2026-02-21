@@ -1,0 +1,88 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "slash command dispatch"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "created"
+     }],
+     "type": "types"
+    }],
+    "type": "issue_comment"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "slash command dispatch"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "github.repository_owner == 'peterjc'"
+         }],
+         "type": "if"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "peter-evans/slash-command-dispatch@version"
+         }],
+         "type": "uses"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "${{ secrets.pat }}"
+           }],
+           "type": "token"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "run-all-tool-tests"
+           }],
+           "type": "commands"
+          }
+         ],
+         "type": "with"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }],
+      "type": "steps"
+     }
+    ],
+    "type": "slashcommanddispatch"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

@@ -1,0 +1,38 @@
+```yaml
+name: Python application
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install coveralls
+        pip install .
+    - name: Lint with flake8
+      run: |
+        python test.py
+        python setup.py check --strict --metadata
+    - name: Test with coverage
+      run: |
+        coverage run --source=nativetypes test.py
+    - name: Coveralls
+      run: coveralls
+|End-of-Code|
+```
+
+Please note that the above GitHub Actions configuration assumes that the Python code is located in the root directory of the repository. If it's located in a different directory, you will need to adjust the `actions/checkout@v2` step accordingly.

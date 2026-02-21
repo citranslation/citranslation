@@ -1,0 +1,68 @@
+```yaml
+name: Python CI
+
+on:
+  push:
+    tags:
+      - '*'
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10, 'nightly']
+        fail-fast: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pylint pytest pytest-cov
+          pip install -e .
+
+      - name: Configure PyLint
+        run: |
+          pylint --generate-rcfile > ~/.pylintrc
+          sed -i "s/min-similarity-lines=.*/min-similarity-lines=50/g" ~/.pylintrc
+
+      - name: Fix git tag issues
+        run: |
+          git describe --tags --long --dirty || sed -i "s/setup_requires = .*/version = '0.0.0',/g" setup.py
+
+      - name: Run lint
+        run: |
+          pylint content_hash/*
+          pylint example.py
+
+      - name: Run tests
+        run: pytest --cov=content_hash
+
+      - name: Install Scrutinizer Ocular
+        if: matrix.python-version == '3.7'
+        run: |
+          pip install scrutinizer-ocular
+          ocular
+
+  deploy:
+    runs-on: ubuntu-24.04
+    needs: build
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Deploy to PyPI
+        run: |
+          pip install twine
+          python setup.py sdist bdist_wheel
+          twine upload dist/* -u ${{ secrets.PYPI_USER }} -p ${{ secrets.PYPI_PASSWORD }}
+|End-of-Code|
+```

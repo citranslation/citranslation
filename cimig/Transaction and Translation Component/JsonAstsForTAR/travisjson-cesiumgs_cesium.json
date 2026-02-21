@@ -1,0 +1,242 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "focal"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "stable"
+     }],
+     "type": "chrome"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "latest"
+     }],
+     "type": "firefox"
+    }
+   ],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "token"
+      }],
+      "type": "secure"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "(branch = main) and (type = push)"
+      }],
+      "type": "if"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "change"
+      }],
+      "type": "on_success"
+     }
+    ],
+    "type": "slack"
+   }],
+   "type": "notifications"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [],
+        "type": "stage"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "coverage"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "18"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "curl-cmd"
+         },
+         {
+          "children": [],
+          "type": "unzip awscliv2.zip"
+         },
+         {
+          "children": [],
+          "type": "sudo ./aws/install"
+         }
+        ],
+        "type": "before_script"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "./travis/PATH-OR-URL"
+        }],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "release tests"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "18"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "./travis/PATH-OR-URL"
+         },
+         {
+          "children": [],
+          "type": "./travis/PATH-OR-URL"
+         },
+         {
+          "children": [],
+          "type": "npm-cmd"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "linting, deployment"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "18"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "./travis/PATH-OR-URL"
+         },
+         {
+          "children": [],
+          "type": "npm-cmd"
+         },
+         {
+          "children": [],
+          "type": "npm-cmd"
+         },
+         {
+          "children": [],
+          "type": "npm-cmd"
+         },
+         {
+          "children": [],
+          "type": "npm-cmd"
+         },
+         {
+          "children": [],
+          "type": "./travis/PATH-OR-URL"
+         },
+         {
+          "children": [],
+          "type": "./travis/PATH-OR-URL"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "nodejs 16"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "16"
+        }],
+        "type": "node_js"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "npm-cmd"
+         },
+         {
+          "children": [],
+          "type": "./travis/PATH-OR-URL"
+         }
+        ],
+        "type": "script"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

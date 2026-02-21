@@ -1,0 +1,582 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "build and test ngas"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "mysql"
+           }],
+           "type": "image"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "3306:3306"
+           }],
+           "type": "ports"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "mysql"
+            }],
+            "type": "mysql_root_password"
+           }],
+           "type": "env"
+          }
+         ],
+         "type": "mysql"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "postgres"
+           }],
+           "type": "image"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "5432:5432"
+           }],
+           "type": "ports"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "postgres"
+            }],
+            "type": "postgres_password"
+           }],
+           "type": "env"
+          }
+         ],
+         "type": "postgresql"
+        }
+       ],
+       "type": "services"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "2.7"
+             }],
+             "type": "python"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "1"
+             }],
+             "type": "test_number"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "2.7"
+             }],
+             "type": "python"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "mysql"
+             }],
+             "type": "db"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "2"
+             }],
+             "type": "test_number"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "2.7"
+             }],
+             "type": "python"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "postgresql"
+             }],
+             "type": "db"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "3"
+             }],
+             "type": "test_number"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "3.5"
+             }],
+             "type": "python"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "4"
+             }],
+             "type": "test_number"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "3.6"
+             }],
+             "type": "python"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "5"
+             }],
+             "type": "test_number"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "3.7"
+             }],
+             "type": "python"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "6"
+             }],
+             "type": "test_number"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "3.8"
+             }],
+             "type": "python"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "7"
+             }],
+             "type": "test_number"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "3.9"
+             }],
+             "type": "python"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "8"
+             }],
+             "type": "test_number"
+            }
+           ],
+           "type": "OBJ-NODE"
+          }
+         ],
+         "type": "include"
+        }],
+        "type": "matrix"
+       }],
+       "type": "strategy"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup python"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.python-cmd"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install core python-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pip install -u pip setuptools wheel"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install system dependencies"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "sudo apt update && sudo apt install libdb-dev libmysqlclient-dev libpq-dev"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install ngas"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "virtual_env=${pythonlocation} skip_bbcp=1 travis_build_dir=$pwd .travis/run_build.sh"
+           }],
+           "type": "run"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.db }}"
+            }],
+            "type": "db"
+           }],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "run ngas tests"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": ".travis/run_tests.sh"
+           }],
+           "type": "run"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ matrix.db }}"
+            }],
+            "type": "db"
+           }],
+           "type": "env"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "setup python-cmd"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "matrix.python-cmd"
+           }],
+           "type": "if"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/setup-python@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "3.7"
+            }],
+            "type": "python-version"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install coveralls"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pip install 'coverage<5' coveralls"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "upload to coveralls"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.github_token }}"
+             }],
+             "type": "github_token"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.test_number }}"
+             }],
+             "type": "coveralls_flag_name"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "coveralls_parallel"
+            }
+           ],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "python3 -mcoveralls --service=github"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "build-and-test"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "build-and-test"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "coveralls finished"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "coverallsapp/github-action@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.github_token }}"
+            }],
+            "type": "github-token"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "parallel-finished"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }],
+       "type": "steps"
+      }
+     ],
+     "type": "finish"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

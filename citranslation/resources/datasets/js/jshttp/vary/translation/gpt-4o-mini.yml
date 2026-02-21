@@ -1,0 +1,90 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [0.8, 0.10, 0.12, 1.8, 2.5, 3.3, 4.9, 5.12, 6.16, 7.10, 8.17, 9.11, 10.22, 11.15, 12.19, 13.14, 14.15, 15.5]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Configure npm
+      run: |
+        npm config set shrinkwrap false
+        npm rm --save-dev benchmark beautify-benchmark
+
+    - name: Install dependencies
+      run: |
+        if [[ "${{ matrix.node-version }}" == "0.8" || "${{ matrix.node-version }}" == "0.10" ]]; then
+          npm install --save-dev mocha@1.21.5
+        elif [[ "${{ matrix.node-version }}" == "0.12" ]]; then
+          npm install --save-dev mocha@2.5.3
+        elif [[ "${{ matrix.node-version }}" < "4" ]]; then
+          npm install --save-dev mocha@3.5.3
+        elif [[ "${{ matrix.node-version }}" < "6" ]]; then
+          npm install --save-dev mocha@5.2.0
+        elif [[ "${{ matrix.node-version }}" < "8" ]]; then
+          npm install --save-dev mocha@6.2.2
+        elif [[ "${{ matrix.node-version }}" < "10" ]]; then
+          npm install --save-dev mocha@7.2.0
+        fi
+
+        if [[ "${{ matrix.node-version }}" < "0.10" ]]; then
+          npm rm --save-dev istanbul
+        fi
+
+        if [[ "${{ matrix.node-version }}" == "0.8" || "${{ matrix.node-version }}" == "0.10" ]]; then
+          npm install --save-dev supertest@1.1.0
+        elif [[ "${{ matrix.node-version }}" < "4" ]]; then
+          npm install --save-dev supertest@2.0.0
+        elif [[ "${{ matrix.node-version }}" < "6" ]]; then
+          npm install --save-dev supertest@3.4.2
+        fi
+
+        if [[ "${{ matrix.node-version }}" < "10" ]]; then
+          node -pe 'Object.keys(require("./package").devDependencies).join("\n")' | \
+          grep -E '^eslint(-|$)' | \
+          xargs -n 1 npm rm --save-dev
+        fi
+
+        npm prune
+        npm rebuild
+
+    - name: Run tests
+      run: |
+        if npm -ps ls istanbul | grep -q istanbul; then
+          npm run-script test-travis
+        else
+          npm test
+        fi
+
+    - name: Run linting
+      run: |
+        if npm -ps ls eslint | grep -q eslint; then
+          npm run-script lint
+        fi
+
+    - name: Upload coverage to coveralls
+      if: success() && steps.test.outputs.coverage == 'true'
+      run: |
+        if [[ -f ./coverage/lcov.info ]]; then
+          npm install --save-dev coveralls@2
+          coveralls < ./coverage/lcov.info
+        fi
+|End-of-Code|
+```

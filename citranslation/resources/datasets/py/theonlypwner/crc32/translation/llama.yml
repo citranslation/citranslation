@@ -1,0 +1,27 @@
+Here is the migrated GitHub Action configuration:
+```
+name: Python CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["2.6", "2.7", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7", "3.8", "3.9", "pypy", "pypy3"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install coveralls
+      - name: Run tests
+        run: coverage run --branch --source=crc32 test.py
+      - name: Upload coverage report
+        uses: coveralls-action/coveralls@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          file: coverage.xml
+```
+|End-of-Code|

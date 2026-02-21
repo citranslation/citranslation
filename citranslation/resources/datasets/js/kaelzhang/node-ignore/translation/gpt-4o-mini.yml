@@ -1,0 +1,29 @@
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.arch }}
+    strategy:
+      matrix:
+        arch: [amd64, ppc64le]
+        node-version: [16]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Check Git version
+        run: git --version
+
+      # Add additional steps for your build/test process here
+
+|End-of-Code|
+```

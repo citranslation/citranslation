@@ -1,0 +1,298 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "mongodb"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip"
+   }],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "ubuntu bionic python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "linux"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "bionic"
+        }],
+        "type": "dist"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "3.6"
+        }],
+        "type": "python"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py36"
+        }],
+        "type": "env"
+       }
+      ],
+      "type": "OBJ-NODE"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [],
+         "type": "osx python-cmd"
+        }],
+        "type": "name"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "osx"
+        }],
+        "type": "os"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "xcode11.3"
+        }],
+        "type": "osx_image"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "shell"
+        }],
+        "type": "language"
+       },
+       {
+        "children": [{
+         "children": [],
+         "type": "toxenv=py3"
+        }],
+        "type": "env"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "brew update"
+         },
+         {
+          "children": [],
+          "type": "brew tap mongodb/brew"
+         },
+         {
+          "children": [],
+          "type": "brew install mongodb-community"
+         },
+         {
+          "children": [],
+          "type": "sudo mkdir-cmd"
+         },
+         {
+          "children": [],
+          "type": "sudo chown -r `id -un` /data/db"
+         },
+         {
+          "children": [],
+          "type": "mongod --quiet &>/dev/null &"
+         }
+        ],
+        "type": "before_install"
+       },
+       {
+        "children": [
+         {
+          "children": [],
+          "type": "sudo pip3 install ."
+         },
+         {
+          "children": [],
+          "type": "mykrobe panels update_metadata --panels_dir src/mykrobe/data"
+         },
+         {
+          "children": [],
+          "type": "mykrobe panels update_species --panels_dir src/mykrobe/data --debug all"
+         },
+         {
+          "children": [],
+          "type": "pip3 install pyinstaller"
+         },
+         {
+          "children": [],
+          "type": "cd-cmd"
+         },
+         {
+          "children": [],
+          "type": "pyinstaller --workpath='./pyinstaller_build/binary_cache' --distpath='./pyinstaller_build' mykrobe_atlas_pyinstaller.spec"
+         },
+         {
+          "children": [],
+          "type": "cd-cmd"
+         },
+         {
+          "children": [],
+          "type": "tar cvfz ../../mykrobe.command_line.${travis_os_name}.${travis_tag}.tar.gz mykrobe_atlas/"
+         },
+         {
+          "children": [],
+          "type": "cd-cmd"
+         }
+        ],
+        "type": "before_deploy"
+       }
+      ],
+      "type": "OBJ-NODE"
+     }
+    ],
+    "type": "include"
+   }],
+   "type": "build"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip3 install cython"
+    },
+    {
+     "children": [],
+     "type": "pip3 install requests"
+    },
+    {
+     "children": [],
+     "type": "pip3 install wheel"
+    },
+    {
+     "children": [],
+     "type": "travis_retry pip3 install tox"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "tox -e $toxenv"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "releases"
+     }],
+     "type": "provider"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "draft"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "skip_cleanup"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "token"
+      }],
+      "type": "secure"
+     }],
+     "type": "api_key"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "mykrobe.command_line.${travis_os_name}.${travis_tag}.tar.gz"
+     }],
+     "type": "file"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "TRUE"
+       }],
+       "type": "tags"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "$travis_os_name = osx"
+       }],
+       "type": "condition"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "mykrobe-tools/mykrobe"
+       }],
+       "type": "repo"
+      }
+     ],
+     "type": "on"
+    }
+   ],
+   "type": "deploy"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "FALSE"
+    }],
+    "type": "email"
+   }],
+   "type": "notifications"
+  }
+ ],
+ "type": "travis-file"
+}

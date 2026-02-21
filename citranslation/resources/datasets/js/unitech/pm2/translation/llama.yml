@@ -1,0 +1,50 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ["20", "18", "16", "14", "12"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install python3
+          sudo apt-get install php-cli
+          if [ "$(uname -m)" =='s390x' ]; then
+            sudo apt-get install bc;
+          fi
+
+      - name: Install Node.js
+        run: |
+          curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+          sudo apt-get install -y nodejs
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context:.
+          push: true
+          tags: ${{ github.repository }}:latest
+          dockerfile: Dockerfile
+```
+|End-of-Code|

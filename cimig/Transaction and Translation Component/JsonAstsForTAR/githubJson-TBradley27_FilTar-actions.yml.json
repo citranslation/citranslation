@@ -1,0 +1,367 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "ci"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "branch-name"
+       },
+       {
+        "children": [],
+        "type": "branch-name"
+       }
+      ],
+      "type": "branches"
+     }],
+     "type": "push"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "branch-name"
+       },
+       {
+        "children": [],
+        "type": "branch-name"
+       }
+      ],
+      "type": "branches"
+     }],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "bash -l {0}"
+        }],
+        "type": "shell"
+       }],
+       "type": "run"
+      }],
+      "type": "defaults"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "checkout repository"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set up r"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "r-lib/actions/setup-r@version"
+          }],
+          "type": "uses"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "cache r packages"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/cache@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ env.r_libs_user }}"
+            }],
+            "type": "path"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "r-${{ runner.os }}-${{ hashfiles(arg) }}"
+            }],
+            "type": "key"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "r-${{ runner.os }}-\\n"
+            }],
+            "type": "restore-keys"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "set up miniconda"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "conda-incubator/setup-miniconda@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "TRUE"
+            }],
+            "type": "auto-update-conda"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "3.12"
+            }],
+            "type": "python-version"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "miniforge3"
+            }],
+            "type": "miniforge-variant"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "latest"
+            }],
+            "type": "miniforge-version"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install system dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "sudo apt-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "ensure conda cache directories exist"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "mkdir-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "cache conda environment"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/cache@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "~/.conda/pkgs\\n~/.conda/envs\\n"
+            }],
+            "type": "path"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "conda-${{ runner.os }}-${{ hashfiles(arg) }}"
+            }],
+            "type": "key"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "conda-${{ runner.os }}-\\n"
+            }],
+            "type": "restore-keys"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "create conda environment"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "conda config --set always_yes yes --set changeps1 no\\nconda info -a\\nconda env update -n test-environment -f environment.yml || conda env create -f environment.yml\\n"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "activate environment and install dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ secrets.pat }}"
+           }],
+           "type": "github_pat"
+          }],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "conda activate test-environment\\nrscript -e 'install.packages(\\\"remotes\\\", repos=\\\"PATH-OR-URL\")'\\nrscript -e 'remotes::install_github(\\\"tbradley27/filtar_r\\\")'\\nrscript -e 'install.packages(\\\"testthat\\\", repos=\\\"PATH-OR-URL\")'\\nsnakemake --version\\n"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run snakemake and r tests"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "conda activate test-environment\\nsnakemake --cores 1 --use-conda -p results/targets/mmu/oocyte_chry.contextpp.tsv --config sequence_data_source=sra conservation=false reannotation=false mirnas=\\\"['mmu-mir-188-5p']\\\" transcripts=\\\"['ensmust00000189888.7']\\\" tpm_expression_threshold=0 prediction_algorithm=targetscan7\\nhead results/targets/mmu/oocyte_chry.contextpp.tsv || true\\nrm -f results/targets/mmu/oocyte_chry.contextpp.tsv || true\\nsnakemake --cores 1 --use-conda -p results/targets/miranda/mmu/oocyte/chry.tsv --config sequence_data_source=sra conservation=false reannotation=false mirnas=\\\"['mmu-mir-188-5p']\\\" transcripts=\\\"['ensmust00000189888.7']\\\" tpm_expression_threshold=0 prediction_algorithm=miranda\\nhead results/targets/miranda/mmu/oocyte/chry.tsv || true\\nsnakemake --cores 1 --use-conda -p results/targets/mmu/oocyte_chry.contextpp.tsv --config sequence_data_source=sra conservation=true reannotation=false mirnas=\\\"['mmu-mir-188-5p']\\\" transcripts=\\\"['ensmust00000189888.7']\\\" tpm_expression_threshold=0 prediction_algorithm=targetscan7\\nhead results/targets/mmu/oocyte_chry.contextpp.tsv || true\\nr -e 'istrue(testthat::test_file(\\\"scripts/targetscan_test.r\\\")[[1]]$passed)'"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "build"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

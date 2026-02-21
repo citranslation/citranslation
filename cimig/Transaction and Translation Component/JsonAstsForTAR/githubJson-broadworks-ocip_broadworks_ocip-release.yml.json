@@ -1,0 +1,188 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "overall release process"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "workflow_dispatch"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "./.github/workflows/_test.yml"
+      }],
+      "type": "uses"
+     }],
+     "type": "tests"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "./.github/workflows/_linting.yml"
+      }],
+      "type": "uses"
+     }],
+     "type": "lint"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [],
+         "type": "tests"
+        },
+        {
+         "children": [],
+         "type": "lint"
+        }
+       ],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "./.github/workflows/_full_tests.yml"
+       }],
+       "type": "uses"
+      }
+     ],
+     "type": "full_test"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "release"
+       }],
+       "type": "concurrency"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "full_test"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "deployment"
+       }],
+       "type": "environment"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "set up repository"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "nigelm/gh_actions_python_poetry_setup@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "3.10.2"
+             }],
+             "type": "python-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "1.1.12"
+             }],
+             "type": "poetry-version"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "0"
+             }],
+             "type": "fetch-depth"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.gh_deploy_token }}"
+             }],
+             "type": "token"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "semantic release"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "${{ secrets.gh_deploy_token }}"
+            }],
+            "type": "gh_token"
+           }],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "# source .venv/bin/activate\\ngit config PATH-OR-URL github-actions\\ngit config user.email github-actions@version"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "release"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

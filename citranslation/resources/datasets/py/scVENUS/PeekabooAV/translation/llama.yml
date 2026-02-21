@@ -1,0 +1,29 @@
+Here is the migrated GitHub Actions configuration:
+```
+name: Python Tests
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install aiosqlite
+      - name: Run tests
+        run: |
+          cd tests
+         ./test.py
+|End-of-Code|
+```
+Note that in GitHub Actions, we use a `matrix` strategy to run the tests for multiple Python versions. We also use the `actions/checkout` action to checkout the code, and the `run` keyword to execute the commands.

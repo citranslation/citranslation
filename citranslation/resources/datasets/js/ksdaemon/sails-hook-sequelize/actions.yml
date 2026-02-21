@@ -1,0 +1,49 @@
+name: Build and Test
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+  pull_request:
+    paths-ignore:
+      - 'README.md'
+
+jobs:
+  build_and_test:
+    name: Build and run tests
+    runs-on: ubuntu-latest
+    services:
+        postgres:
+            image: postgres:10
+            env:
+                POSTGRES_USER: postgres
+                POSTGRES_PASSWORD: postgres
+                POSTGRES_DB: sequelize
+            ports:
+                - 5432:5432
+            options:
+                --health-cmd pg_isready
+                --health-interval 10s
+                --health-timeout 5s
+                --health-retries 5
+    strategy:
+      matrix:
+        node-version: [16]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: psql -h 127.0.0.1 -U postgres -d sequelize -c 'create schema if not exists sails;'
+        env:
+            PGPASSWORD: postgres
+      - run: npm ci
+      - run: npm test
+        env:
+            PGPASSWORD: postgres
+      - name: Create test coverage report
+        run: ./node_modules/nyc/bin/nyc.js report --reporter=lcovonly
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

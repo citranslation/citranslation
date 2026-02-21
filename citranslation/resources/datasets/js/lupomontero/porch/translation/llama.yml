@@ -1,0 +1,32 @@
+Here is the equivalent GitHub Action configuration:
+```
+name: Node.js CI
+
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ["12", "14", "16"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm test
+      - name: Generate coverage report
+        run: npm run coveralls
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: coverage.json
+|End-of-Code|
+```
+Note that this configuration uses the `matrix` strategy to run the job for each version of Node.js specified in the `node` array. The `uses` keyword is used to specify the actions to run, and the `with` keyword is used to pass in the `node-version` parameter to the `setup-node` action. The `run` keyword is used to run the `npm install`, `npm test`, and `npm run coveralls` commands. The `codecov-action` is used to upload the coverage report to Codecov.

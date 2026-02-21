@@ -1,0 +1,975 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "linux"
+   }],
+   "type": "os"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "FALSE"
+    }],
+    "type": "email"
+   }],
+   "type": "notifications"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "5"
+     }],
+     "type": "depth"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "FALSE"
+     }],
+     "type": "submodules"
+    }
+   ],
+   "type": "git"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pip"
+    },
+    {
+     "children": [{
+      "children": [{
+       "children": [],
+       "type": "doc/sphinx_gallery_auto"
+      }],
+      "type": "directories"
+     }],
+     "type": "OBJ-NODE"
+    }
+   ],
+   "type": "cache"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "rm -f ~/.cache/pip/log/debug.log"
+   }],
+   "type": "before_cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "3.8"
+    },
+    {
+     "children": [],
+     "type": "3.7"
+    },
+    {
+     "children": [],
+     "type": "3.6"
+    },
+    {
+     "children": [],
+     "type": "3.5"
+    },
+    {
+     "children": [],
+     "type": "3.9-dev"
+    }
+   ],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "makeflags='-j 2'"
+     }],
+     "type": "global"
+    },
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "fatf_test_scipy=1.4.1 fatf_test_numpy=1.18.4"
+      },
+      {
+       "children": [],
+       "type": "fatf_test_scipy=1.3.3 fatf_test_numpy=1.17.5"
+      },
+      {
+       "children": [],
+       "type": "fatf_test_scipy=1.3.0 fatf_test_numpy=1.16.3"
+      },
+      {
+       "children": [],
+       "type": "fatf_test_scipy=1.2.0 fatf_test_numpy=1.16.0"
+      },
+      {
+       "children": [],
+       "type": "fatf_test_scipy=1.1.0 fatf_test_numpy=1.15.4"
+      },
+      {
+       "children": [],
+       "type": "fatf_test_scipy=1.0.1 fatf_test_numpy=1.14.6"
+      },
+      {
+       "children": [],
+       "type": "fatf_test_scipy=0.19.1 fatf_test_numpy=1.13.3"
+      },
+      {
+       "children": [],
+       "type": "fatf_test_scipy=0.18.1 fatf_test_numpy=1.12.1 fatf_test_sklearn=0.19.2"
+      },
+      {
+       "children": [],
+       "type": "fatf_test_scipy=0.18.1 fatf_test_numpy=1.10.1 fatf_test_sklearn=0.20.4 fatf_test_matplotlib=3.0.0"
+      },
+      {
+       "children": [],
+       "type": "fatf_test_scipy=latest fatf_test_numpy=latest"
+      }
+     ],
+     "type": "build"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "make install-matplotlib"
+    },
+    {
+     "children": [],
+     "type": "make install-scikit-learn"
+    },
+    {
+     "children": [],
+     "type": "make dependencies-dev"
+    }
+   ],
+   "type": "install"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "make linting-pylint"
+    },
+    {
+     "children": [],
+     "type": "make linting-flake8"
+    },
+    {
+     "children": [],
+     "type": "make linting-yapf"
+    },
+    {
+     "children": [],
+     "type": "make check-types"
+    },
+    {
+     "children": [],
+     "type": "make test-with-code-coverage"
+    }
+   ],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "fatf_test_scipy=1.0.1 fatf_test_numpy=1.14.6"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "fatf_test_scipy=0.19.1 fatf_test_numpy=1.13.3"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "fatf_test_scipy=0.18.1 fatf_test_numpy=1.12.1 fatf_test_sklearn=0.19.2"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.7"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "fatf_test_scipy=0.18.1 fatf_test_numpy=1.10.1 fatf_test_sklearn=0.20.4 fatf_test_matplotlib=3.0.0"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "fatf_test_scipy=1.3.0 fatf_test_numpy=1.16.3"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "fatf_test_scipy=1.2.0 fatf_test_numpy=1.16.0"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "fatf_test_scipy=1.1.0 fatf_test_numpy=1.15.4"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "fatf_test_scipy=1.0.1 fatf_test_numpy=1.14.6"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "fatf_test_scipy=0.19.1 fatf_test_numpy=1.13.3"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "fatf_test_scipy=0.18.1 fatf_test_numpy=1.12.1 fatf_test_sklearn=0.19.2"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.8"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "fatf_test_scipy=0.18.1 fatf_test_numpy=1.10.1 fatf_test_sklearn=0.20.4 fatf_test_matplotlib=3.0.0"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9-dev"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "fatf_test_scipy=1.0.1 fatf_test_numpy=1.14.6"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9-dev"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "fatf_test_scipy=0.19.1 fatf_test_numpy=1.13.3"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9-dev"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "fatf_test_scipy=0.18.1 fatf_test_numpy=1.12.1 fatf_test_sklearn=0.19.2"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "3.9-dev"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "fatf_test_scipy=0.18.1 fatf_test_numpy=1.10.1 fatf_test_sklearn=0.20.4 fatf_test_matplotlib=3.0.0"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "exclude"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "3.9-dev"
+        }],
+        "type": "python"
+       }],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "fatf_test_scipy=latest fatf_test_numpy=latest"
+        }],
+        "type": "env"
+       }],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "allow_failures"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "documentation testing and deployment"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.6"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "fatf_test_scipy=1.3.0 fatf_test_numpy=1.16.3"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "make test-doc"
+          },
+          {
+           "children": [],
+           "type": "make doc-linkcheck"
+          },
+          {
+           "children": [],
+           "type": "make doc-coverage"
+          }
+         ],
+         "type": "script"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "make doc-html"
+         }],
+         "type": "before_deploy"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "script"
+           }],
+           "type": "provider"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "bash build_tools/doc/PATH-OR-URL ${travis_branch}"
+           }],
+           "type": "script"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "TRUE"
+           }],
+           "type": "skip_cleanup"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "fat-forensics/fat-forensics"
+             }],
+             "type": "repo"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "master"
+             }],
+             "type": "branch"
+            }
+           ],
+           "type": "on"
+          }
+         ],
+         "type": "deploy"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "deploy code coverage"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.6"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "fatf_test_scipy=1.3.0 fatf_test_numpy=1.16.3"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "make test-with-code-coverage"
+         }],
+         "type": "script"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "script"
+           }],
+           "type": "provider"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "make deploy-code-coverage"
+           }],
+           "type": "script"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "TRUE"
+           }],
+           "type": "skip_cleanup"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "deploy-conditions"
+             }],
+             "type": "<<"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "all_branches"
+            }
+           ],
+           "type": "on"
+          }
+         ],
+         "type": "deploy"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "release on pypi"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.6"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "fatf_test_scipy=1.3.0 fatf_test_numpy=1.16.3"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "make install-sans-dep"
+         }],
+         "type": "install"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "skip"
+         }],
+         "type": "script"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "bash build_tools/pypi/PATH-OR-URL"
+         }],
+         "type": "before_deploy"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "pypi"
+           }],
+           "type": "provider"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "__token__"
+           }],
+           "type": "username"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "token"
+            }],
+            "type": "secure"
+           }],
+           "type": "password"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "sdist bdist_wheel"
+           }],
+           "type": "distributions"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "TRUE"
+           }],
+           "type": "skip_existing"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "TRUE"
+           }],
+           "type": "skip_cleanup"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "deploy-conditions"
+             }],
+             "type": "<<"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "tags"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "$travis_tag =~ ^[0-9]+\\\\.[0-9]+\\\\.[0-9]+(-rev[0-9]+)?$"
+             }],
+             "type": "condition"
+            }
+           ],
+           "type": "on"
+          }
+         ],
+         "type": "deploy"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "release on github"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3.6"
+         }],
+         "type": "python"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "fatf_test_scipy=1.3.0 fatf_test_numpy=1.16.3"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "pip install --upgrade setuptools wheel"
+          },
+          {
+           "children": [],
+           "type": "make install-sans-dep"
+          }
+         ],
+         "type": "install"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "skip"
+         }],
+         "type": "script"
+        },
+        {
+         "children": [
+          {
+           "children": [],
+           "type": "bash build_tools/pypi/PATH-OR-URL"
+          },
+          {
+           "children": [],
+           "type": "make build"
+          }
+         ],
+         "type": "before_deploy"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "releases"
+           }],
+           "type": "provider"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "token"
+            }],
+            "type": "secure"
+           }],
+           "type": "token"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "TRUE"
+           }],
+           "type": "file_glob"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "dist/*"
+           }],
+           "type": "file"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "fat-forensics ${travis_tag}"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "see change log at: PATH-OR-URL"
+           }],
+           "type": "release_notes"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "TRUE"
+           }],
+           "type": "skip_cleanup"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "deploy-conditions"
+             }],
+             "type": "<<"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "tags"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "$travis_tag =~ ^[0-9]+\\\\.[0-9]+\\\\.[0-9]+(-rev[0-9]+)?$"
+             }],
+             "type": "condition"
+            }
+           ],
+           "type": "on"
+          }
+         ],
+         "type": "deploy"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

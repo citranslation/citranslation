@@ -1,0 +1,25 @@
+Here is the equivalent GitHub Actions configuration:
+```
+name: Python Tests
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.9", "3.10", "3.11", "3.12", "pypy3.10"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install Markdown
+      - name: Run tests
+        run: python test.py
+|End-of-Code|
+```
+Note that in GitHub Actions, we use a `matrix` strategy to run the tests on multiple Python versions, whereas in Travis CI, we used a list of Python versions. We also use the `ubuntu-latest` environment, which is equivalent to the `noble` environment in Travis CI.

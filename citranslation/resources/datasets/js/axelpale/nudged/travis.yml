@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - "node"
+  - "18"
+  - "16"
+  - "14"
+branches:
+  only:
+  - master

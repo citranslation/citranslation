@@ -1,0 +1,37 @@
+Sure, here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        sudo apt-get install npm
+        python -m pip install tox-travis
+    - name: Test with tox
+      run: tox
+    - name: Report coverage to Coveralls
+      run: coveralls
+```
+
+Please note that GitHub Actions does not support Python versions less than 3.7. Also, GitHub Actions does not have a direct equivalent to Travis CI's `env` variable, which is used to specify the environment for the tox tests. You can achieve this by using the `with` keyword in the `run` step.
+
+Also, GitHub Actions does not support the `npm i -g elm` command to install Elm globally. You would need to use a tool like `npm ci` to install the dependencies in the `package.json` file. However, this is beyond the scope of the original Travis CI configuration.
+
+This is a basic conversion and might need to be adjusted based on your specific project requirements.

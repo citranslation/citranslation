@@ -1,0 +1,59 @@
+```yaml
+name: CI
+
+on:
+  push:
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: List installed packages
+        run: python -m pip list
+
+      - name: Run lint and tests
+        run: |
+          ./lint.sh
+          ./test.sh
+
+      - name: SonarCloud Scan
+        if: github.event_name != 'pull_request' && github.ref != 'refs/tags' && github.repository == 'IBM/qpylib'
+        run: sonar-scanner
+
+      - name: Build
+        run: |
+          if [ "${{ github.ref }}" == "refs/tags/${{ github.ref_name }}" ]; then
+            ./build.sh "${{ github.ref_name }}";
+          else
+            ./build.sh "0.0.dev${{ github.run_number }}";
+          fi
+
+      - name: Deploy to GitHub Releases
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: |
+            dist/qpylib-${{ github.ref_name }}.tar.gz
+            dist/qpylib-${{ github.ref_name }}-py3-none-any.whl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+|End-of-Code|
+```

@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        include:
+          - python: "3.8"
+            tox_env: py38
+          - python: "3.9"
+            tox_env: py39
+          - python: "pypy-3.7"
+            tox_env: pypy3.7
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -U -r requirements.txt
+          pip install .
+
+      - name: Run tests
+        env:
+          TOX_ENV: ${{ matrix.tox_env }}
+        run: |
+          tox -e $TOX_ENV
+          pytest --dead-fixtures
+
+|End-of-Code|

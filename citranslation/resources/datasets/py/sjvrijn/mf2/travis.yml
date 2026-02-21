@@ -1,0 +1,18 @@
+language: python
+dist: noble
+matrix:
+  include:
+    - python: 3.8
+    - python: 3.9
+    - python: 3.10
+    - python: 3.11
+before_install:
+  - python -m pip install --upgrade pip
+install:
+  - pip install .[dev]
+  - pip install coverage coveralls
+script:
+  - pytest tests/regression_test.py
+  - pytest -Werror --cov-branch --cov=mf2 tests/property_test.py tests/multi_fidelity_function_test.py
+after_success:
+  - coveralls

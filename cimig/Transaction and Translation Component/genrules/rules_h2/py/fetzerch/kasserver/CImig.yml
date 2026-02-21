@@ -1,0 +1,13 @@
+name: placeholder_Name
+
+on: push:
+
+jobs:
+  build:
+    runs-on
+    steps
+    run: tox
+    run: coveralls --service=github
+
+print_hash: TRUE
+

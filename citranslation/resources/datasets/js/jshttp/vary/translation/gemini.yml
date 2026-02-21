@@ -1,0 +1,130 @@
+```yaml
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      # Run all jobs to completion, even if one fails. This matches Travis CI's default behavior.
+      fail-fast: false
+      matrix:
+        node-version:
+          - "0.8"
+          - "0.10"
+          - "0.12"
+          - "1.8"
+          - "2.5"
+          - "3.3"
+          - "4.9"
+          - "5.12"
+          - "6.16"
+          - "7.10"
+          - "8.17"
+          - "9.11"
+          - "10.22"
+          - "11.15"
+          - "12.19"
+          - "13.14"
+          - "14.15"
+          - "15.5"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Cache node_modules
+        id: cache-nodemodules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node-version }}-
+
+      - name: Prepare dependencies (from before_install)
+        run: |
+          # Configure npm
+          npm config set shrinkwrap false
+
+          # Remove build dependencies
+          npm rm --save-dev benchmark
+          npm rm --save-dev beautify-benchmark
+
+          # Setup Node.js version-specific dependencies
+          # mocha for testing
+          if [[ "$(cut -d. -f1 <<< "${{ matrix.node-version }}")" -eq 0 && "$(cut -d. -f2 <<< "${{ matrix.node-version }}")" -lt 8 ]]; then
+            npm install --save-dev mocha@1.21.5
+          elif [[ "$(cut -d. -f1 <<< "${{ matrix.node-version }}")" -eq 0 && "$(cut -d. -f2 <<< "${{ matrix.node-version }}")" -lt 10 ]]; then
+            npm install --save-dev mocha@2.5.3
+          elif [[ "$(cut -d. -f1 <<< "${{ matrix.node-version }}")" -lt 4 ]]; then
+            npm install --save-dev mocha@3.5.3
+          elif [[ "$(cut -d. -f1 <<< "${{ matrix.node-version }}")" -lt 6 ]]; then
+            npm install --save-dev mocha@5.2.0
+          elif [[ "$(cut -d. -f1 <<< "${{ matrix.node-version }}")" -lt 8 ]]; then
+            npm install --save-dev mocha@6.2.2
+          elif [[ "$(cut -d. -f1 <<< "${{ matrix.node-version }}")" -lt 10 ]]; then
+            npm install --save-dev mocha@7.2.0
+          fi
+
+          # istanbul for coverage
+          if [[ "$(cut -d. -f1 <<< "${{ matrix.node-version }}")" -eq 0 && "$(cut -d. -f2 <<< "${{ matrix.node-version }}")" -lt 10 ]]; then
+            npm rm --silent --save-dev istanbul
+          fi
+
+          # supertest for http calls
+          if [[ "$(cut -d. -f1 <<< "${{ matrix.node-version }}")" -eq 0 && "$(cut -d. -f2 <<< "${{ matrix.node-version }}")" -lt 10 ]]; then
+            npm install --save-dev supertest@1.1.0
+          elif [[ "$(cut -d. -f1 <<< "${{ matrix.node-version }}")" -lt 4 ]]; then
+            npm install --save-dev supertest@2.0.0
+          elif [[ "$(cut -d. -f1 <<< "${{ matrix.node-version }}")" -lt 6 ]]; then
+            npm install --save-dev supertest@3.4.2
+          fi
+
+          # eslint for linting
+          if [[ "$(cut -d. -f1 <<< "${{ matrix.node-version }}")" -lt 10 ]]; then
+            node -pe 'Object.keys(require("./package").devDependencies).join("\n")' | \
+              grep -E '^eslint(-|$)' | \
+              xargs -n 1 npm rm --save-dev
+          fi
+
+          # Prune and rebuild node_modules if it exists (from cache)
+          if [[ -d node_modules ]]; then
+            npm prune
+            npm rebuild
+          fi
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests and lint (from script)
+        run: |
+          # Run test script, depending on istanbul install
+          if npm -ps ls istanbul | grep -q istanbul; then
+            npm run-script test-travis
+          else
+            npm test
+          fi
+
+          # Run linting, depending on eslint install
+          if npm -ps ls eslint | grep -q eslint; then
+            npm run-script lint
+          fi
+
+      - name: Upload coverage to Coveralls (from after_script)
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # The action automatically finds './coverage/lcov.info' and will not fail if the file is missing.
+```|End-of-Code|

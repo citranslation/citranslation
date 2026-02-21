@@ -1,0 +1,45 @@
+Sure, here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: Travis CI to GitHub Actions
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        python setup.py install
+        pip install coveralls
+
+    - name: Run tests
+      run: |
+        coverage run --source=nvd3 setup.py test
+
+    - name: Coveralls
+      run: coveralls
+
+    - name: Notifications
+      if: failure()
+      uses: dorny/test-reporter@v1
+      with:
+        artifact: coverage.json
+        name: Coverage report
+        path: ./coverage.json
+        reporter: python-junit
+
+|End-of-Code|
+```
+
+This GitHub Actions configuration does the same thing as your Travis CI configuration. It sets up a workflow that runs on every push and pull request. The workflow installs Python 3.8, installs the dependencies, runs the tests, and reports the coverage to Coveralls. If the tests fail, it also reports the failure to the dorny/test-reporter.

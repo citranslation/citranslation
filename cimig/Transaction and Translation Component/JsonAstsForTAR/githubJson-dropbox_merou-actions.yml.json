@@ -1,0 +1,240 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "grouper pull request tests actions"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pull_request"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "3.8"
+    }],
+    "type": "python_version"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [{
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "mysql:5.7"
+         }],
+         "type": "image"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "merou"
+           }],
+           "type": "mysql_database"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "root"
+           }],
+           "type": "mysql_root_password"
+          }
+         ],
+         "type": "env"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "3306"
+         }],
+         "type": "ports"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "--health-cmd=\\\"mysqladmin ping\\\" --health-interval=10s --health-timeout=5s --health-retries=3"
+         }],
+         "type": "options"
+        }
+       ],
+       "type": "mysql"
+      }],
+      "type": "services"
+     },
+     {
+      "children": [
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install ubuntu dependencies"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "sudo apt-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "checkout code"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "2"
+           }],
+           "type": "fetch-depth"
+          }],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "install python"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "${{ env.python_version }}"
+            }],
+            "type": "python-version"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "pip"
+            }],
+            "type": "cache"
+           }
+          ],
+          "type": "with"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run for-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "ci/PATH-OR-URL sqlite && ci/PATH-OR-URL sqlite"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "run for-cmd"
+          }],
+          "type": "name"
+         },
+         {
+          "children": [
+           {
+            "children": [{
+             "children": [],
+             "type": "root"
+            }],
+            "type": "db_user"
+           },
+           {
+            "children": [{
+             "children": [],
+             "type": "root"
+            }],
+            "type": "db_password"
+           }
+          ],
+          "type": "env"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "sudo /etc/init.d/mysql start\\nmysql -e 'create database merou character set utf8mb4;' -u${{ env.db_user }} -p${{ env.db_password }}\\nmysql -e \\\" create user travis@localhost; grant-cmd"
+          }],
+          "type": "run"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "grouper_test"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

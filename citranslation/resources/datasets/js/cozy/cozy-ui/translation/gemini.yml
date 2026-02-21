@@ -1,0 +1,506 @@
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  # Stage: Prebuild (Jobs that can run first, in parallel)
+  lint:
+    name: 'Lint'
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[only argos]')"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run linter
+        run: yarn lint
+
+  generate-sprite-palette:
+    name: 'Generate Sprite and Palette'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Generate files
+        run: yarn makeSpriteAndPalette
+
+      - name: Upload sprite and palette artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sprite-palette-binaries
+          path: |
+            ./react/Icon/icons-sprite.js
+            ./react/palette.js
+
+  # Stage: Build (Jobs that build JS and CSS assets)
+  build-js:
+    name: 'Build JS'
+    runs-on: ubuntu-latest
+    needs: generate-sprite-palette
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install Yarn
+        run: npm install -g yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Download sprite and palette artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: sprite-palette-binaries
+          path: .
+      - name: Build JS
+        run: yarn build
+      - name: Upload JS artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: js-binaries
+          path: ./transpiled
+
+  build-css:
+    name: 'Build CSS'
+    runs-on: ubuntu-latest
+    needs: generate-sprite-palette # To maintain stage order
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install Yarn
+        run: npm install -g yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build CSS
+        run: yarn build:css:all
+      - name: Upload CSS artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: css-binaries
+          path: ./dist
+
+  # Stage: Docs (Job that builds documentation)
+  build-docs:
+    name: 'Build docs'
+    runs-on: ubuntu-latest
+    needs: [build-js, build-css]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install Yarn
+        run: npm install -g yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: .
+      - name: Build docs
+        run: |
+          yarn build:doc:react
+          yarn build:doc:kss
+      - name: Upload docs artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-binaries
+          path: ./build
+
+  # Stage: Test (Jobs that run tests)
+  tests-without-snapshots:
+    name: 'Tests without snapshots'
+    runs-on: ubuntu-latest
+    needs: [build-js, build-css]
+    if: "!contains(github.event.head_commit.message, '[only argos]')"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install Yarn
+        run: npm install -g yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: .
+      - name: Run tests
+        run: yarn test:noSnapshots
+
+  tests-snapshots:
+    name: 'Tests snapshots'
+    runs-on: ubuntu-latest
+    needs: [build-js, build-css]
+    if: "!contains(github.event.head_commit.message, '[only argos]')"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install Yarn
+        run: npm install -g yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: .
+      - name: Run snapshot tests
+        run: yarn test:snapshots
+
+  bundlemon:
+    name: 'Bundlemon'
+    runs-on: ubuntu-latest
+    needs: [build-js, build-css]
+    if: "!contains(github.event.head_commit.message, '[only argos]')"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install Yarn
+        run: npm install -g yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: .
+      - name: Run bundlemon
+        run: yarn bundlemon
+
+  # Stage: Screenshots - Create (Jobs for visual regression testing)
+  create-screenshots-desktop:
+    name: '[Argos] Create desktop screenshots'
+    runs-on: ubuntu-latest
+    needs: build-docs
+    if: github.event_name == 'pull_request' && !contains(github.event.pull_request.title, '[skip argos]')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install Yarn
+        run: npm install -g yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: .
+      - name: Create screenshots
+        run: |
+          mkdir ./screenshots
+          npx puppeteer browsers install chrome
+          yarn screenshots --mode react --viewport desktop --screenshot-dir ./screenshots/reactDesktop
+      - name: Upload screenshot artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-desktop-binaries
+          path: ./screenshots
+
+  create-screenshots-mobile:
+    name: '[Argos] Create mobile screenshots'
+    runs-on: ubuntu-latest
+    needs: build-docs
+    if: github.event_name == 'pull_request' && !contains(github.event.pull_request.title, '[skip argos]')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install Yarn
+        run: npm install -g yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: .
+      - name: Create screenshots
+        run: |
+          mkdir ./screenshots
+          npx puppeteer browsers install chrome
+          yarn screenshots --mode react --viewport 300x600 --screenshot-dir ./screenshots/reactMobile
+      - name: Upload screenshot artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-mobile-binaries
+          path: ./screenshots
+
+  create-screenshots-kss:
+    name: '[Argos] Create kss screenshots'
+    runs-on: ubuntu-latest
+    needs: build-docs
+    if: github.event_name == 'pull_request' && !contains(github.event.pull_request.title, '[skip argos]')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install Yarn
+        run: npm install -g yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: .
+      - name: Create screenshots
+        run: |
+          mkdir ./screenshots
+          npx puppeteer browsers install chrome
+          yarn screenshots --mode kss --screenshot-dir ./screenshots/kss
+      - name: Upload screenshot artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-kss-binaries
+          path: ./screenshots
+
+  # Stage: Screenshots - Upload
+  upload-screenshots:
+    name: '[Argos] Upload all screenshots'
+    runs-on: ubuntu-latest
+    needs: [create-screenshots-desktop, create-screenshots-mobile, create-screenshots-kss]
+    if: github.event_name == 'pull_request' && !contains(github.event.pull_request.title, '[skip argos]')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install Yarn
+        run: npm install -g yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Download all screenshot artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: .
+      - name: Upload to Argos
+        env:
+          ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
+        run: |
+          yarn argos:upload --parallel screenshots/reactDesktop/ --token $ARGOS_TOKEN  --parallel-total 3 --parallel-nonce ${{ github.run_id }} --ignore ''
+          yarn argos:upload --parallel screenshots/reactMobile/ --token $ARGOS_TOKEN  --parallel-total 3 --parallel-nonce ${{ github.run_id }} --ignore ''
+          yarn argos:upload --parallel screenshots/kss/ --token $ARGOS_TOKEN  --parallel-total 3 --parallel-nonce ${{ github.run_id }} --ignore ''
+
+  # Stage: Deploy
+  deploy:
+    name: 'Deploy'
+    runs-on: ubuntu-latest
+    needs: [tests-without-snapshots, tests-snapshots, bundlemon, build-docs]
+    if: >
+      github.ref == 'refs/heads/master' &&
+      github.event_name == 'push' &&
+      !contains(github.event.head_commit.message, '[only argos]')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install Yarn
+        run: npm install -g yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: .
+      - name: Deploy docs and release
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          git config --global user.name "cozycloud"
+          git config --global user.email "contact@cozycloud.cc"
+          yarn deploy:doc -- --username cozycloud --email contact@cozycloud.cc --repo https://cozy-bot:$GH_TOKEN@github.com/cozy/cozy-ui.git && yarn semantic-release
+|End-of-Code|
+```

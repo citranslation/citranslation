@@ -1,0 +1,542 @@
+repo_name,language,gpt-4o,gpt-4o-mini,deepseek,qwen,llama,gemini3
+ace-diff/ace-diff,js,,,"1.missing secret
+","1.missing secret
+","1.unspecified default
+2.missing or misplaced definition",1.redundant task
+aframevr/aframe-inspector,js,,,1.execution order error,,"1.unsupported expression
+2.unspecified default
+3.missing or misplaced definition",1.redundant task
+alphagov/govuk-country-and-territory-autocomplete,js,,,,1.unspecified default,1.unspecified default,
+apis-guru/asyncapi-directory,1.unsupported actions,1.unsupported actions,1.unsupported actions,"1.condition misconfig
+2.unspported actions","1.condition misconfig
+2.unsupported expression
+3.obsolete actions
+4.unsupported actions","1.condition event misconfig
+2.unsupported actions","1.unsupported actions
+1.redundant task"
+axelpale/nudged,js,,,1.missing task,,"1.unspported keys
+2.missing or misplaced definition",1.redundant task
+badeball/karma-jsdom-launcher,js,,,,,"1.unspecified default
+2.missing symbol",1.redundant task
+basti1302/repoman,js,,,,,,
+bbc/lrud,js,,1.missing task,,,,
+bdougherty/better-title-case,js,1.unsupported keys,"1.miss task
+2.unsupported keys
+3.missing or misplaced definition",,,"1.unspecified default
+2.invalid value",1.unsupported keys
+bendrucker/document-ready,js,,,,1.unspecified default,1.unspecified default,
+bfirsh/jsnes-web,js,,,,,1.unspecified default,
+bjornstar/intercept-redirect,js,,,,,1.unspecified default,1.redundant task
+calipersjs/calipers,js,,,,1.unspecified default,,
+cesiumgs/cesium-webpack-example,js,,,,,,1.redundant task
+cloudinary/cloudinary_npm,js,1.condition misconfig,"1.unsupported keys
+2.condition misconfig",1.unsupported keys,1.redundant task,,1.redundant task
+codemeta/codemeta-generator,js,"
+1.unspported package
+2.obsolet package","1.unspported package
+2.obsolet package",1.obsolet package,"1.unspported packages
+2.obsolet package","1.missing task
+2.unspecified default
+3.obsolet package
+3.missing or misplaced definition","1.unspported packages
+2.obsolet package"
+damonoehlman/wildcard,js,,,1.unsupported keys,,1.unspecified default,
+davidchambers/base64.js,js,,,,,1.unspecified default,
+definitelytyped/definitelytyped.github.io,js,,,,,"1.unspported actions
+1.unspecified default
+3.missing or misplaced definition",
+dresende/node-sql-ddl-sync,js,,,,,1.unspecified default,
+dylang/node-rss,js,1.redundant Task,1.redundant task,1.redundant task,,"1.missing or misplaced definition
+2.unspecified default",
+evanshortiss/express-joi-validation,js,1.unspecified default,1.unspecified default,"1.missing secret
+1.unspecified default","1.missing secret
+2.unspecified default","1.missing secret
+1.unspecified default","1.unspecified default
+1.redundant task"
+evanshortiss/lintspaces-cli,js,"1.missing secret
+1.unspecified default","1.unspecified default
+","1.missing secret
+1.unspecified default","1.missing secret
+1.unspecified default","1.missing secret
+1.unspecified default","1.unspecified default
+1.redundant task"
+exodusmovement/redux-watch,js,1.redundant task,1.execution order error,1.redundant task,,"1.missing or misplaced definition
+2.missing task",
+expressjs/serve-index,js,"1.missing secret
+1.unspecified default","1.missing secret
+1.unspecified default","1.missing secret
+2.condition misconfig
+1.unspecified default","1.missing secret
+1.unspecified default","1.missing secret
+2.missing symbol
+1.unspecified default",1.unspecified default
+fastify/safe-regex2,js,,,,1.unspecified default,1.unspecified default,
+fnogatz/transportation,js,1.unsupported keys,1.unsupported keys,1.unsupported keys,1.unsupported keys,1.missing or misplaced definition,1.unsupported keys
+giuseppeg/postcss-pseudo-classes,js,1.unsupported keys,1.unsupported keys,,"1.unspecified default
+2.unsupported keys",1.unspecified default,1.unsupported keys
+haykam821/shortcutspreview,js,1.unsupported keys,1.unsupported keys,1.unsupported keys,1.unsupported keys,"1.unspecified default
+2.missing or misplaced definition","1.unsupported keys
+1.redundant task"
+henry-luo/mark,js,1.unsupported keys,1.unsupported keys,1.unsupported keys,1.unsupported keys,"1.unspecified default
+2.missing or misplaced definition",1.unsupported keys
+http-party/node-portfinder,js,,,1.unsupported keys,,1.unsupported actions,
+hughsk/flat,js,,,,,1.unspecified default,
+jackub/diff-match-patch,js,,,,,1.unspecified default,
+jakezatecky/d3-funnel,js,,,,,,1.redundant task
+jeffbski/wait-on,js,,,,,1.unspecified default,1.redundant task
+jfromaniello/url-join,js,,,,1.unspecified default,1.unspecified default,
+jonkemp/inline-css,js,"1.unspported keys
+2.missing secret
+1.unspecified default","1.unspported keys
+2.missing secret
+1.unspecified default
+3.execution order error","1.unspported keys
+2.missing secret
+3.execution order error
+1.unspecified default","1.missing secret
+1.unspecified default","1.missing task
+2.unspported actions
+1.unspecified default","1.unspecified default
+1.redundant task"
+jsdom/cssstyle,js,1.unspported keys,,,1.missing secret,"1.missing task
+2.exe order error",
+jshttp/on-headers,js,"1.missing secret
+1.unspecified default","1.missing secret
+1.unspecified default","1.missing secret
+2.missing task
+1.unspecified default","1.missing secret
+1.unspecified default","1.missing secret
+1.unspecified default",1.unspecified default
+jshttp/vary,js,"1.missing secret
+1.unspecified default","1.missing secret
+1.unspecified default","1.missing secret
+2.missing task
+1.unspecified default","1.missing secret
+1.unspecified default","1.missing secret
+2.missing synbol
+1.unspecified default",1.unspecified default
+kaelzhang/node-ignore,js,1.unsupported architecture,"1.unsupported architecture
+2.unspecified default","1.redundant task
+","1.unspecified default
+2.unsupported architecture","1.unspecified default
+2.unsupported architecture","1.unspecified default
+2.unsupported architecture"
+kerimdzhanov/dotenv-flow-webpack,js,,,,,1.unspecified default,
+ksdaemon/sails-hook-sequelize,js,"1.missing secret
+2.unsupported keys
+1.unspecified default","1.unsupported keys
+2.missing secret
+1.unspecified default","1.unsupported keys
+2.missing secret
+1.unspecified default","1.unspported keys
+2.missing secret
+1.unspecified default","1.missing symbol
+2.missing secret
+3.unsupported actions
+1.unspecified default","
+1.unspecified default"
+localstack/serverless-localstack,js,1.aaa,1.aaa,1.aaa,1.aaa,1.unspecified default,1.redundant task
+ludofischer/metalsmith-gzip,js,,,"1.redundant task
+",1.unspecified default,,1.redundant task
+lupomontero/porch,js,,,1.missing secret,1.missing secret,1.unspecified default,
+maasglobal/io-ts-from-json-schema,js,,,1.unspecified default,1.unspecified default,"1.unspecified default
+3.missing or misplaced definition",
+mafintosh/protocol-buffers,js,,,"1.redundant task
+",,,1.redundant task
+marceloucker/postcss-prefixer,js,,,,,1.unspecified default,
+markets/suchtube,js,,,"1.redundant task
+",,1.invalid value,
+mgol/jquery.classlist,js,,,1.unspecified default,1.unspecified default,1.unspecified default,"1.unspecified default
+1.redundant task"
+micromatch/braces,js,1.unsupported keys,1.unsupported keys,1.unsupported keys,1.unsupported keys,"1.unspecified default
+2.missing or misplaced definition
+3.unsupported keys",
+mihai-vlc/uglifyjs-folder,js,,,,1.unsupported actions,1.unspecified default,1.redundant task
+mikemcl/bignumber.js,js,1.unsupported architecture,1.unsupported architecture,1.unsupported architecture,1.unsupported architecture,"1.missing symbols
+1.unspecified default",
+misund/hex-to-rgba,js,1.unsupported keys,1.unsupported keys,,,1.unspecified default,1.unsupported keys
+mmalecki/spawn-command,js,,,,,1.unspecified default,
+modernizr/grunt-modernizr,js,,,,1.unspecified default,1.unspecified default,
+mohlsen/check-engine,js,,,,,,1.redundant task
+moll/node-mitm,js,1.unsupported keys,1.unsupported keys,1.unsupported keys,"1.unspecified default
+1.unsupported keys","1.unsupported actions
+1.unsupported keys",1.unsupported keys
+mourner/bullshit.js,js,1.unsupported keys,1.unsupported keys,1.unsupported keys,1.unsupported keys,"1.unspecified default
+2.missing or misplaced definition",1.unsupported keys
+mreinstein/node-gearman,js,,,,,1.unspecified default,
+ninetwozero/gradle-to-js,js,,,,,1.unspecified default,
+pa11y/pa11y-dashboard,js,1.invalid value,1.invaild value,,1.unsupported keys,1missing task,
+picnicsupermarket/localicious,js,,,,,1.unspecified default,
+pirxpilot/connect-gzip-static,js,,,,1.unspecified default,1.unspecified default,
+plotly/react-cytoscapejs,js,1.unsupported keys,1.unsupported keys,,,,
+polygonplanet/lzjs,js,,,,1.unspecified default,1.unspecified default,
+qgustavor/mega,js,1.unsupported keys,1.unsupported keys,1.unsupported keys,1.unsupported keys,,"1.unsupported keys
+1.redundant task"
+quaertym/ember-cli-dependency-checker,js,,,,,1.unspecified default,
+ralphtheninja/mqtt-match,js,,,,1.unspecified default,1.unspecified default,
+rexxars/hyphenate-style-name,js,,,,,,1.redundant task
+rexxars/registry-auth-token,js,,,,,1.unspecified default,
+rolodato/dotenv-safe,js,,,,,1.unspecified default,
+rovellipaolo/gnome-shell-extension-sermon,js,1.unsupported keys,1.unsupported keys,"1.redundant task
+",1.unsupported keys,"1.unspecified default
+2.missing or misplaced definition",1.unsupported keys
+ryanzim/universalify,js,"1.missing secret
+1.unspecified default",1.unspecified default,"1.missing secret
+1.unspecified default","1.missing secret
+1.unspecified default",1.unspecified default,"1.unspecified default
+1.redundant task"
+sap/openui5-worklist-app,js,1.unsupported keys,1.unsupported keys,1.unsupported keys,"1.unspecified default
+2.unsupported keys",1.unspecified default,"1.unsupported keys
+1.redundant task"
+SAP-archive/openui5-worklist-app,js,1.unsupported keys,1.unsupported keys,1.unsupported keys,1.unsupported keys,"1.unspecified default
+2.missing or misplaced definition","1.unsupported keys
+1.redundant task"
+sarcadass/i18n-zipcodes,js,"1.unsupported keys
+1.unspecified default","1.unsupported keys
+1.unspecified default","1.unsupported keys
+1.unspecified default","1.unsupported keys
+1.unspecified default","1.unspecified default
+1.unspecified default","1.unsupported keys
+1.unspecified default
+1.redundant task"
+sboudrias/class-extend,js,,,,1.unspecified default,1.unspecified default,1.redundant task
+schema-inspector/schema-inspector,js,,,,,1.unspecified default,
+sonyseng/json-caching-proxy,js,1.unsupported keys,1.unsupported keys,1.unsupported keys,1.unsupported keys,"1.unspecified default
+2.missing task",1.unsupported keys
+ssbc/multiblob,js,,,,,1.unspecified default,
+streamich/fs-monkey,js,,,"1.redundant task
+2.missing secret",,"1.unsupported keys
+2.missing secret",
+tbhesswebber/style-object-to-css-string,js,1.unsupported keys,1.unsupported keys,1.unsupported keys,1.unsupported keys,1.missing task,1.unsupported keys
+tcql/node-yesno,js,,,,"1.missing symbol
+",1.unspecified default,
+tekkamanendless/umactually,js,,,,,1.unspecified default,
+theforeman/npm2rpm,js,,,,1.unspecified default,1.unspecified default,
+thlorenz/convert-source-map,js,1.unsupported keys,1.unsupported keys,1.unsupported keys,1.unsupported keys,"1.unsupported keys
+1.unspecified default",1.unsupported keys
+tobie/pr-preview,js,,,,1.unspecified default,1.unspecified default,1.missing symbol
+ua-parser/uap-core,js,"1.unsupported keys
+","1.unsupported keys
+","1.unsupported keys
+","1.unsupported actions
+2.unsupported keys
+","1.unsupported keys
+2.unsupported actions","1.unsupported keys
+1.redundant task
+"
+unitech/pm2,js,1.unspecified default,,1.unspecified default,1.unspecified default,1.invalid value,"1.unspecified default
+1.redundant task"
+watson/https-pem,js,,,,,1.unspecified default,
+whawker/react-jsx-highcharts,js,,,1.redundant task,"1.unspecified default
+2.unsupported keys",,1.redundant task
+winstonjs/winston-daily-rotate-file,js,1.unspecified default,1.unspecified default,1.unspecified default,1.unspecified default,1.unspecified default,
+xi/aria-api,js,"1.unsupported keys
+1.redundant task",1.unsupported keys,"1.unsupported keys
+1.unspecified default",,"1.unspecified default
+2.unsupported actions","1.unsupported keys
+1.redundant task"
+yeoman/yeoman-welcome,js,,,,"1.unsupported keys
+1.unspecified default",1.unspecified default,1.unsupported keys
+yoast/yoast-seo-for-neos,js,,,1.execution order error,,1.unspecified default,
+aboucaud/pypher,py,,,1.execution order errers,"1.missing or misplaced definition
+2.missing task",1.invalid value,
+akshaykmr/emailtrail,py,,,,,,
+alexaltea/ntypes,py,,1.missing secret,"1.execution order errers
+1.missing secret",1.missing secret,1.missing secret,
+algorand/pyteal,py,,,1.execution order errors,1.execution order errors,,
+andhus/scantree,py,"1.redundant task
+1.trailing zero","1.redundant task
+1.trailing zero","1.unsupported keys
+1.trailing zero
+1.missing task",1.trailing zero,"1.unspecified default
+",
+apache/airavata-django-portal,py,,1.trailing zero,"1.trailing zero
+2.missing task",,"1.missing symbol
+2.missing task",
+areski/python-nvd3,py,,1.mssing secret,1.mssing secret,,1.unsupport keys,
+associatedpress/datakit-core,py,1.unspecified default,1.unspecified default,1.unspecified default,,"1.unspecified default
+",
+autotest/tp-qemu,py,1.trailing zero,1.trailing zero,1.missing task,,"1.unspecified default
+2.missing task
+",
+billdeitrick/pypco,py,1.unsupport packages,1.unsupport packages,,"1.unspecified default
+","1.unspecified default
+2.missing task
+",
+bodik/soft-webauthn,py,,,,,"1.unspecified default
+2.missing task
+",
+cbillingham/docconvert,py,"1.redundant task
+1.trailing zero","1.trailing zero
+2.missing task","1.trailing zero
+2.missing task","1.unspecified default
+1.trailing zero
+","1.unspecified default
+1.trailing zero
+",
+cenkalti/pypi-notifier,py,,,,,"1.unspecified default
+",
+clembou/behave-pandas,py,1.trailing zero,1.trailing zero,1.trailing zero,1.trailing zero,"1.unspecified default
+2.indentation error
+",
+click-contrib/click-configfile,py,1.unsupported keys,1.indentation error,1.unsupported keys,1.unsupported keys,"1.unspecified default
+",
+click-contrib/click-log,py,"1.unspecified default
+1.trailing zero
+","1.unspecified default
+1.trailing zero
+","1.unspecified default
+1.trailing zero
+","1.unspecified default
+1.trailing zero
+","1.unspecified default
+","1.unspecified default
+"
+codereclaimers/neat-python,py,"1.unsupported keys
+1.trailing zero","1.unsupported keys
+2.missing secret
+1.trailing zero","1.unsupported keys
+2.missing secret
+1.trailing zero","1.unsupported keys
+1.trailing zero
+2.missing secret
+","1.trailing zero
+2.unsupported keys",
+cuducos/webassets-elm,py,"1.unsupported packages
+2.missing secret","1.unsupported packages
+3.missing secret","1.unsupported packages
+2.missing secret","1.unspecified default
+2.missing secret","1.unspecified default
+2.redundant task",
+dakrauth/django-swingtime,py,1.unsupported packages,,,1.unsupported packages,"1.unspecified default
+",1.unsupported packages
+databricks/spark-deep-learning,py,,,,,,
+davisnt/mopidy-alarmclock,py,1.missing secret,1.missing secret,1.missing secret,1.missing secret,1.missing secret,
+dbrgn/drf-dynamic-fields,py,1.redundant task,1.redundant task,1.redundant task,1.redundant task,1.redundant task,
+dbrgn/rplcd,py,1.trailing zero,1.trailing zero,1.trailing zero,1.trailing zero,"1.unspecified default
+
+",
+delgan/loguru,py,1.unsupported packages,1.unsupported packages,,1.unsupported packages,"1.unsupported packages
+2.unspecified default",
+dhepper/django-model-path-converter,py,"1.unsupported packages
+2.exe order errors
+1.trailing zero
+1.redundant task","1.unsupported packages
+1.trailing zero
+1.redundant task","1.trailing zero
+2.execution errors
+1.redundant task",1.redundant task,"1.unsupported packages
+1.redundant task",1.redundant task
+dirkmoors/drf-tus,py,"1.unspecified default
+1.trailing zero","1.invalid value
+1.trailing zero","1.exe order errors
+1.trailing zero",1.trailing zero,"1.unspecified default
+1.trailing zero",1.invalid value
+earwig/mwparserfromhell,py,"unsupported architecture
+1.trailing zero","unsupported architecture
+1.trailing zero
+1.redundant task","unsupported architecture
+1.missing secret
+1.trailing zero
+1.redundant task","1.missing secret
+1.trailing zero","unsupported architecture
+1.trailing zero",
+eric-wieser/numpy_ringbuffer,py,,,1.execution error,,"1.unspecified default
+2.missing task",
+EvoluxBR/greenswitch,py,1.trailing zero,1.trailing zero,,,1.unspecified default,
+faheel/cleanup,py,1.trailing zero,1.trailing zero,1.trailing zero,,"1.unspecified default
+2.missing task",
+fetzerch/kasserver,py,"1.missing secret
+2.invalid value","1.missing secret
+2.trigger event errors
+3.unspecified default","1.missing task
+2.unspecified default","1.execution order errors
+2.missing secret","1.unspecified default
+2.execution order errors",
+filips123/contenthashpy,py,1.trailing zero,"1.unsupported keys
+2.indentation errors
+3.trigger event errors","1.unsupported keys
+2.trailing zero","1.unsupported keys
+2.trailing zero
+",1.unsupported keys,1.unsupported keys
+globocom/derpconf,py,1.trailing zero,1.trailing zero,1.trailing zero,1.unspecified default,1.unspecified default,
+gpodder/mygpoclient,py,"1.unsupported keys
+2.trigger event errors","1.unsupported keys
+2.trigger event errors","1.execution order errors
+1.unsupported keys",1.unsupported keys,1.unspecified default,
+gvalkov/python-ansimarkup,py,1.trailing zero,"1.trailing zero
+2.unsupported keys",1.trailing zero,,"1.invalid value
+2.unsupported actions
+3.unspecified default",
+hsluv/hsluv-python,py,,,,,3.unspecified default,
+html5lib/html5lib-python,py,,"1.missing task
+2.trailing zero","1.missing task
+2.trailing zero",2.trailing zero,1.unsupported keys,
+ibm/qpylib,py,,1.trigger event errors,,,1.missing symbol,
+idiap/sdialog,py,2.trailing zero,2.trailing zero,2.trailing zero,2.trailing zero,2.trailing zero,
+in-toto/demo,py,,2.trailing zero,,,"1.unspecified default
+2.trailing zero
+",
+jakubplichta/grafana-dashboard-builder,py,1.unsupported packages,1.unsupported packages,,1.unsupported packages,"1.unsupported packages
+2.unspecified default",
+jasonacox/tinytuya,py,2.trailing zero,2.trailing zero,2.trailing zero,,1.unspecified default,
+jealous/stockstats,py,2.trailing zero,2.trailing zero,2.trailing zero,,1.missing task,1.missing secret
+jirutka/ssh-ldap-pubkey,py,2.trailing zero,"1.trigger event errors
+2.trailing zero",2.trailing zero,"1.trigger event errors
+2.trailing zero","1.missing task
+2.unsupported keys
+3.unspecified default",
+jllorencetti/pytest-deadfixtures,py,"1.unsupported expression
+2.missing task",1.redundant task,1.redundant task,"
+1.unsupported expression",1.unspecified default,
+jlumpe/pyorg,py,,,,,1.unspecified default,
+jneight/django-earthdistance,py,1.unsupported architecture,"1.unsupported architecture
+2.trailing zero","1.unsupported architecture
+2.trailing zero
+3.execution errors",1.unsupported architecture,1.execution order errors,1.unsupported architecture
+johnfraney/flake8-markdown,py,1.unsupported packages,1.unsupported packages,"
+1.execution order errors","1.unsupported packages
+1.unspecified default","1.unspecified default
+2.missing task",
+johnwmillr/lyricsgenius,py,,,,,1.unspecified default,1.redundant task
+jplana/python-etcd,py,"1.unsupported packages
+2.trailing zero
+2.missing secret","1.unsupported packages
+2.trailing zero
+2.missing secret","1.unsupported packages
+2.trailing zero
+2.missing secret","1.unsupported packages
+2.missing secret","1.missing symbol
+1.unsupported packages",
+jpmckinney/validictory,py,2.trailing zero,"2.trailing zero
+2.missing secret","1.missing secret
+2.trailing zero","1.trailing zero
+2.missing secret","1.unspecified default
+2.missing secret",
+juliema/label_reconciliations,py,,,2.trailing zero,2.trailing zero,1.unspecified default,
+jungtaekkim/bayeso-benchmarks,py,2.trailing zero,2.trailing zero,2.trailing zero,2.trailing zero,"1.unspecified default
+1.redundant task",
+kamilkijak/django-smoke-tests,py,"1.indentation error
+2.unsupported keys",,,"1.missing symbol
+",1.unspecified default,
+klieret/randomfiletree,py,2.trailing zero,2.trailing zero,"1.missing secret
+2.trailing zero","1.missing secret
+2.trailing zero",1.unspecified default,
+koiuo/randrctl,py,,,,,,
+kolotaev/vakt,py,"1.unsupported architecture
+1.unsupported keys","1.missing task
+1.unsupported architecture
+1.unsupported keys","1.unsupported keys
+1.unsupported architecture
+3.execution errors
+2.trailing zero","1.unsupported architecture
+2.unsupported keys","1.unspecified default
+1.unsupported architecture
+3.missing task",
+kpetremann/mqtt-exporter,py,,,,"1.missing symbol
+",1.unspecified default,
+laowantong/paroxython,py,2.trailing zero,2.trailing zero,2.trailing zero,2.trailing zero,1.unspecified default,
+lgoodridge/django-uniauth,py,"1.unsupported packages
+","1.redundant task
+2.unsupported packages
+",1.unsupported packages,"
+2.unsupported packages","
+2.unsupported packages",
+maxcountryman/flask-seasurf,py,,,,,1.unspecified default,
+melizalab/quickspikes,py,1.condition misconfig,"2.trailing zero
+1.condition misconfig",1.missing task,,"1.unspecified default
+2.unsupported actions",
+mgaitan/sphinxcontrib-mermaid,py,2.trailing zero,2.trailing zero,"1.execetion order errors
+2.trailing zero
+1.redundant task",,1.missing task,
+mitya57/python-markdown-math,py,2.trailing zero,2.trailing zero,2.trailing zero,,1.unspecified default,
+m-lundberg/simple-pid,py,2.trailing zero,2.trailing zero,2.trailing zero,,"1.unspecified default
+2.missing task",
+mozilla/guardduty-multi-account-manager,py,,,,,1.unspecified default,
+msaltnet/smtm,py,2.trailing zero,2.trailing zero,2.trailing zero,1.unspecified default,"1.unspecified default
+2.trailing zero
+3.unsupported keys",
+networktocode/ntc-templates,py,"1.execetion order errors
+2.trigger event misconfig","2.trigger event misconfig
+2.trailing zero","1.execetion order errors
+2.trailing zero
+3.missing task",,"1.unspecified default
+1.execetion order errors",
+nginxinc/crossplane,py,"1.unsupported packages
+2.trailing zero","1.unsupported packages
+2.trailing zero",2.trailing zero,"2.trailing zero
+1.unsupported packages","1.unspecified default
+2.invalid value",
+nolze/msoffcrypto-tool,py,,,,,"1.unspecified default
+2.unsupported keys",
+nycdb/nycdb,py,,,2.trailing zero,,1.unspecified default,
+OpenCageData/python-opencage-geocoder,py,"1.condition misconfig
+1.unsupported packages","2.trailing zero
+",2.unsupported actions,"1.unsupported packages
+2.unsupported actions","1.unspecified default
+1.unsupported packages
+2.unsupported actions",
+petergardfjall/garminexport,py,,,,,1.unspecified default,
+polymonster/jsn,py,,,,"1.missing symbol
+",1.unspecified default,
+porridge/bambam,py,,,,1.execetion order errors,1.unspecified default,
+pucrs-automated-planning/pddl-parser,py,"
+2.unsupported keys","1.indentation error
+",1.redundant task,"
+2.unsupported keys",1.redundant task,
+pypi/conveyor,py,,,,,1.unspecified default,
+python/mypy_extensions,py,2.trailing zero,2.trailing zero,2.trailing zero,2.trailing zero,"1.unspecified default
+2.execution order errors",
+python/the-knights-who-say-ni,py,1.unsupported keys,"1.unsupported keys
+",1.unsupported keys,1.unsupported keys,"1.unspecified default
+2.unsupported expression
+3.unsupported keys",
+python-organizers/conferences,py,,,,1.unspecified default,1.unspecified default,
+raphaelvallat/yasa,py,1.unsupported keys,,,,"1.unsupported actions
+1.unspecified default
+",
+raysect/source,py,1.redundant task,1.redundant task,1.redundant task,,1.indentation error,
+rcaloras/bashhub-client,py,,"1.unsupported keys
+2.unsupported expression",1.missing task,,"1.unspecified default
+2.unsupported actions",
+roverdotcom/django-inlinecss,py,2.trailing zero,2.trailing zero,2.trailing zero,2.trailing zero,,
+scVENUS/PeekabooAV,py,2.trailing zero,2.trailing zero,"1.execetion order errors
+2.trailing zero",,"1.unspecified default
+1.indentation error",
+SiLab-Bonn/irrad_spectroscopy,py,,,,,"1.missing task
+2.unsupported actions",
+sjvrijn/mf2,py,,2.trailing zero,2.trailing zero,,1.unspecified default,
+smart-on-fhir/fhir-parser,py,,,,,1.indentation error,
+starou/simpleidml,py,,1.missing secret,1.missing secret,1.missing secret,1.unspecified default,
+stlk/django-shopify-webhook,py,2.trailing zero,2.trailing zero,2.trailing zero,,1.unspecified default,
+testing-cabal/fixtures,py,1.unsupported keys,1.unsupported keys,1.unsupported keys,1.unsupported keys,"1.unsupported keys
+1.unspecified default",
+theonlypwner/crc32,py,1.missing secret,1.missing secret,1.missing secret,1.missing secret,1.unspecified default,
+twisted/ampoule,py,2.trailing zero,2.trailing zero,"1.execetion order errors
+2.trailing zero",2.trailing zero,"1.unspecified default
+2.trailing zero",
+uralbash/sqlalchemy_mptt,py,1.missing secret,"
+1.missing secret
+","1.missing task
+1.missing secret",1.missing secret,"1.missing task
+1.missing task",
+xyproto/setconf,py,"1.unsupported keys
+2.trailing zero","1.unsupported keys
+2.trailing zero","1.unsupported keys
+2.trailing zero","1.unsupported keys
+2.trailing zero","1.unsupported keys
+2.trailing zero
+3.indentation error",1.unsupported keys
+zecure/shadowd_python,py,,,,,1.unspecified default,
+callstack/eslint-config-callstack,js,,,,,1.unspecified default,
+dubov94/vue-jwt-mongo,js,1.unsupported keys,1.unsupported keys,1.unsupported keys,1.unsupported keys,"1.unspecified default
+2.missing or misplaced definition",1.unsupported keys
+ember-codemods/ember-angle-brackets-codemod,js,1.unspecified default,1.unspecified default,1.unspecified default,1.unspecified default,,
+mapbox/delaunator,js,,,,1.unspecified default,,
+openseadragon/openseadragon,js,,,1.redundant task,1.unspecified default,1.unspecified default,
+pimm/mapsort,js,1.unspecified default,1.unspecified default,1.unspecified default,,1.unspecified default,1.unspecified default
+reactjs/react-transition-group,js,1.missing secret,1.missing secret,1.missing secret,1.missing secret,"1.unspecified default
+2.missing secret
+3.missing task",
+wechat-miniprogram/miniprogram-simulate,js,,,,,1.unspecified default,
+thegrill/grill,py,,,,,1.unspecified default,

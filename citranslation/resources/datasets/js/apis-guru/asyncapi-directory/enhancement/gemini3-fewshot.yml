@@ -1,0 +1,43 @@
+name: Build and Deploy
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Travis condition: $TRAVIS_EVENT_TYPE = cron
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js lts/*
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Data
+        run: npm run build.data
+
+      - name: Build Site
+        run: npm run build.site
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
+          folder: build # Or the specific output directory of your build scripts
+          clean: false # Equivalent to skip-cleanup: true
+          single-commit: false # Equivalent to keep-history: true
+
+|End-of-Code|

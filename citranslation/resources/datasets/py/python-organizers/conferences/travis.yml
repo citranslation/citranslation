@@ -1,0 +1,13 @@
+language: python
+python:
+  - "3.11"
+
+dist: noble
+
+# command to install dependencies
+install:
+  - pip install -r linting/requirements.txt
+
+# command to run tests
+script:
+  - python ./linting/lint-csv.py

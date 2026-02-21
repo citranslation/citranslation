@@ -1,0 +1,36 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: # this agent type is not supported: [[{"dist"=>"noble"}]]
+             ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - run: pip install coveralls pytest
+    - run: python setup.py develop
+    - run: coverage run --source=mwparserfromhell -m pytest
+    - run: coveralls
+      if: "${{ success() }}"
+    strategy:
+      matrix:
+        WITHOUT_EXTENSION:
+        - '0'
+        - '1'
+        python:
+        - 3.8
+        - 3.9
+        - 3.1
+        - 3.11
+    env:
+      WITHOUT_EXTENSION: "${{ matrix.WITHOUT_EXTENSION }}"

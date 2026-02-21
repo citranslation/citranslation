@@ -1,0 +1,8 @@
+## 1. Error message
+{error_message}
+
+## 2. Task:
+Fix the above GitHub Actions configuration using the error message.
+
+## 3. Output: GitHub Actions
+GitHub Actions configuration only, end with "|End-of-Code|".

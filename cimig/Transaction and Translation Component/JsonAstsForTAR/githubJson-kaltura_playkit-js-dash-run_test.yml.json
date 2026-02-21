@@ -1,0 +1,121 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "player and plugin tests"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "player and plugin tests"
+   }],
+   "type": "run-name"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [{
+      "children": [],
+      "type": "branch-name"
+     }],
+     "type": "branches"
+    }],
+    "type": "pull_request"
+   }],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "kaltura/ovp-pipelines-pub/.github/workflows/player_tests.yaml@version"
+       }],
+       "type": "uses"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "eslint flow test"
+        }],
+        "type": "yarn-run-to-execute"
+       }],
+       "type": "with"
+      }
+     ],
+     "type": "running-tests"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "always()"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "kaltura/ovp-pipelines-pub/.github/workflows/notification.yaml@version"
+       }],
+       "type": "uses"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "running-tests"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [{
+         "children": [],
+         "type": "${{ secrets.player_msteams_webhook }}"
+        }],
+        "type": "player_msteams_webhook"
+       }],
+       "type": "secrets"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "${{ contains(needs.*.result, 'failure') }}"
+         }],
+         "type": "failure-status"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "${{ contains(needs.*.result, 'cancelled') }}"
+         }],
+         "type": "cancelled-status"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "true"
+         }],
+         "type": "is-test"
+        }
+       ],
+       "type": "with"
+      }
+     ],
+     "type": "notification"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

@@ -1,0 +1,58 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: # this agent type is not supported: [[{"dist"=>"noble"}]]
+             ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+      with:
+        python-version: "${{ matrix.python }}"
+    - name: Set up pip cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.cache/pip"
+        key: "${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}"
+        restore-keys: "${{ runner.os }}-pip-"
+    - run: travis_retry pip install pylint pytest pytest-cov
+    - run: pylint --generate-rcfile > ~/.pylintrc
+    - run: sed -i "s/min-similarity-lines=.*/min-similarity-lines=50/g" ~/.pylintrc
+    - run: git describe --tags --long --dirty || sed -i "s/setup_requires = .*/version = '0.0.0',/g" ${{ github.workspace }}/setup.py
+    - run: travis_retry pip install -e .
+    - run: pylint content_hash/*
+    - run: pylint example.py
+    - run: pytest --cov=content_hash
+    - run: |
+        if [[ ${TRAVIS_PYTHON_VERSION:0:3} == "3.7" ]]
+        then
+          travis_retry pip install scrutinizer-ocular
+          ocular
+        fi
+#     # This item has no matching transformer
+#     - pypi:
+#         provider: pypi
+#         skip_cleanup: true
+#         skip_existing: true
+#         'on':
+#           tags: true
+#         user: "$PYPI_USER"
+#         password: "$PYPI_PASSWORD"
+#         distributions: sdist bdist_wheel
+#       if: "${{ github.event_name == 'push' && ${{ github.ref }} }}"
+    strategy:
+      matrix:
+        python:
+        - 3.8
+        - 3.9
+        - 3.1
+        - nightly
+#       # 'allow_failures' transformations are currently unsupported.

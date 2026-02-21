@@ -1,0 +1,48 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Travis CI to GitHub Action
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:${{ matrix.POSTGRES_VERSION }}
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10, 3.11]
+        postgres-version: [12, 13, 14, 15]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install docker-compose
+    - name: Build
+      run: docker-compose build
+    - name: Test with pytest
+      run: docker-compose run --entrypoint="pytest tests" nycdb
+
+```
+
+Please note that the GitHub Actions configuration is different from Travis CI configuration. The GitHub Actions configuration above uses the `services` keyword to set up a PostgreSQL service, which is not available in Travis CI. Also, the Python versions and PostgreSQL versions are defined in a matrix strategy, which is similar to the `jobs.include` section in Travis CI.

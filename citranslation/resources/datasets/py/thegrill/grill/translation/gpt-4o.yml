@@ -1,0 +1,42 @@
+```yaml
+name: Python package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get install graphviz graphviz-dev
+        pip install -U setuptools
+        pip install pytest codecov pytest-cov
+        pip install ".[full,test]" .
+
+    - name: Set environment variable
+      run: echo "QT_QPA_PLATFORM=offscreen" >> $GITHUB_ENV
+
+    - name: Run tests
+      run: pytest --cov=./
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+```
+|End-of-Code|

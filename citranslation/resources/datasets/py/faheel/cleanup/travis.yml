@@ -1,0 +1,12 @@
+dist: noble
+language: python
+python:
+  - "3.10"
+  - "3.11"
+  - "3.12"
+install:
+  - pip install --upgrade pipenv
+  - pipenv --three
+  - pipenv install --dev
+script:
+  - python3 -m tests.test

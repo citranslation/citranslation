@@ -1,0 +1,39 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [
+          {"python": "3.8", "toxenv": "py38-sdist"},
+          {"python": "3.9", "toxenv": "py39-sdist"},
+          {"python": "3.10", "toxenv": "py310-sdist"},
+        ]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.version.python }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.version.python }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install tox
+    - name: test
+      run: tox -e ${{ matrix.version.toxenv }}
+```
+
+|End-of-Code|

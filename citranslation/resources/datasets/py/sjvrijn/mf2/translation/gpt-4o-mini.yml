@@ -1,0 +1,41 @@
+```yaml
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10, 3.11]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install dependencies
+        run: |
+          pip install .[dev]
+          pip install coverage coveralls
+
+      - name: Run regression tests
+        run: pytest tests/regression_test.py
+
+      - name: Run property and multi-fidelity function tests
+        run: pytest -Werror --cov-branch --cov=mf2 tests/property_test.py tests/multi_fidelity_function_test.py
+
+      - name: Upload coverage to Coveralls
+        if: success()
+        run: coveralls
+
+|End-of-Code|
+```

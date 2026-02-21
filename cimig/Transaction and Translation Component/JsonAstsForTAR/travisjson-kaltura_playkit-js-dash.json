@@ -1,0 +1,523 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "PATH-OR-URL"
+      }],
+      "type": "urls"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "never"
+      }],
+      "type": "on_success"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "never"
+      }],
+      "type": "on_cancel"
+     }
+    ],
+    "type": "webhooks"
+   }],
+   "type": "notifications"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "v1"
+   }],
+   "type": "conditions"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xenial"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "node_js"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "17"
+   }],
+   "type": "node_js"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "node_options=\\\"--openssl-legacy-provider\\\""
+    }],
+    "type": "global"
+   }],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [],
+     "type": "stable"
+    }],
+    "type": "chrome"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "xvfb"
+   }],
+   "type": "services"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "yarn"
+    },
+    {
+     "children": [{
+      "children": [],
+      "type": "node_modules"
+     }],
+     "type": "directories"
+    }
+   ],
+   "type": "cache"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "export-cmd"
+    },
+    {
+     "children": [],
+     "type": "chmod-cmd"
+    }
+   ],
+   "type": "before_install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "./scripts/PATH-OR-URL"
+   }],
+   "type": "script"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "tests"
+    },
+    {
+     "children": [],
+     "type": "release canary"
+    },
+    {
+     "children": [],
+     "type": "release"
+    }
+   ],
+   "type": "stages"
+  },
+  {
+   "children": [
+    {
+     "children": [{
+      "children": [],
+      "type": "TRUE"
+     }],
+     "type": "fast_finish"
+    },
+    {
+     "children": [
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "release"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "releasing a new version"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "tag is present"
+         }],
+         "type": "if"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "travis_mode=release"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "releases"
+             }],
+             "type": "provider"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "$gh_token"
+             }],
+             "type": "api_key"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "file_glob"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "dist/*"
+             }],
+             "type": "file"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "FALSE"
+             }],
+             "type": "prerelease"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "skip_cleanup"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "master"
+               }],
+               "type": "branch"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "TRUE"
+               }],
+               "type": "tags"
+              }
+             ],
+             "type": "on"
+            }
+           ],
+           "type": "OBJ-NODE"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "npm"
+             }],
+             "type": "provider"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "edge"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "$npm_token"
+             }],
+             "type": "api_key"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "$npm_email"
+             }],
+             "type": "email"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "TRUE"
+             }],
+             "type": "skip_cleanup"
+            },
+            {
+             "children": [
+              {
+               "children": [{
+                "children": [],
+                "type": "TRUE"
+               }],
+               "type": "tags"
+              },
+              {
+               "children": [{
+                "children": [],
+                "type": "master"
+               }],
+               "type": "branch"
+              }
+             ],
+             "type": "on"
+            }
+           ],
+           "type": "OBJ-NODE"
+          }
+         ],
+         "type": "deploy"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "release canary"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "(branch = master) and (type != pull_request) and commit_message !~ /^chore\\\\(release\\\\)/"
+         }],
+         "type": "if"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "travis_mode=releasecanary"
+         }],
+         "type": "env"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "npm"
+           }],
+           "type": "provider"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "TRUE"
+           }],
+           "type": "edge"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "$npm_token"
+           }],
+           "type": "api_key"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "$npm_email"
+           }],
+           "type": "email"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "TRUE"
+           }],
+           "type": "skip_cleanup"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "canary"
+           }],
+           "type": "tag"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "FALSE"
+             }],
+             "type": "tags"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "master"
+             }],
+             "type": "branch"
+            }
+           ],
+           "type": "on"
+          }
+         ],
+         "type": "deploy"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "tests"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "((branch = master) or (tag is present) or (type = pull_request)) and commit_message !~ /^chore\\\\(release\\\\)/"
+         }],
+         "type": "if"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "running lint"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "travis_mode=lint"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "tests"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "((branch = master) or (tag is present) or (type = pull_request)) and commit_message !~ /^chore\\\\(release\\\\)/"
+         }],
+         "type": "if"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "running flow type check"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "travis_mode=flow"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [],
+          "type": "tests"
+         }],
+         "type": "stage"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "((branch = master) or (tag is present) or (type = pull_request)) and commit_message !~ /^chore\\\\(release\\\\)/"
+         }],
+         "type": "if"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "running unit tests"
+         }],
+         "type": "name"
+        },
+        {
+         "children": [{
+          "children": [],
+          "type": "travis_mode=unittests"
+         }],
+         "type": "env"
+        }
+       ],
+       "type": "OBJ-NODE"
+      }
+     ],
+     "type": "include"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "travis-file"
+}

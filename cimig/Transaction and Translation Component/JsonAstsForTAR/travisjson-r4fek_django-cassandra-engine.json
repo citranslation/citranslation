@@ -1,0 +1,186 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "bionic"
+   }],
+   "type": "dist"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "required"
+   }],
+   "type": "sudo"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "python"
+   }],
+   "type": "language"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "3.8"
+   }],
+   "type": "python"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "echo-cmd"
+    },
+    {
+     "children": [],
+     "type": "wget-cmd"
+    },
+    {
+     "children": [],
+     "type": "sudo apt update"
+    },
+    {
+     "children": [],
+     "type": "sudo apt install cassandra"
+    },
+    {
+     "children": [],
+     "type": "sudo service cassandra start"
+    }
+   ],
+   "type": "before_script"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "tox_env=django21"
+      },
+      {
+       "children": [],
+       "type": "tox_env=django22"
+      },
+      {
+       "children": [],
+       "type": "tox_env=django30"
+      },
+      {
+       "children": [],
+       "type": "tox_env=django31"
+      },
+      {
+       "children": [],
+       "type": "tox_env=django32"
+      },
+      {
+       "children": [],
+       "type": "tox_env=djangomaster"
+      }
+     ],
+     "type": "matrix"
+    },
+    {
+     "children": [
+      {
+       "children": [],
+       "type": "cass_driver_no_cython=1"
+      },
+      {
+       "children": [],
+       "type": "cass_host=127.0.0.1"
+      }
+     ],
+     "type": "global"
+    }
+   ],
+   "type": "env"
+  },
+  {
+   "children": [{
+    "children": [{
+     "children": [
+      {
+       "children": [],
+       "type": "apt-transport-https"
+      },
+      {
+       "children": [],
+       "type": "build-essential"
+      },
+      {
+       "children": [],
+       "type": "python3-dev"
+      },
+      {
+       "children": [],
+       "type": "python3-pip"
+      },
+      {
+       "children": [],
+       "type": "pypy-dev"
+      },
+      {
+       "children": [],
+       "type": "libc-ares-dev"
+      },
+      {
+       "children": [],
+       "type": "libev4"
+      },
+      {
+       "children": [],
+       "type": "libev-dev"
+      },
+      {
+       "children": [],
+       "type": "sqlite3"
+      },
+      {
+       "children": [],
+       "type": "curl"
+      },
+      {
+       "children": [],
+       "type": "ca-certificates"
+      },
+      {
+       "children": [],
+       "type": "wget"
+      },
+      {
+       "children": [],
+       "type": "gnupg"
+      },
+      {
+       "children": [],
+       "type": "wait-for-it"
+      }
+     ],
+     "type": "packages"
+    }],
+    "type": "apt"
+   }],
+   "type": "addons"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "pip3 install tox-travis lz4"
+   }],
+   "type": "install"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "wait-for-it 127.0.0.1:9042 -t 120 -- tox -e $tox_env"
+   }],
+   "type": "script"
+  }
+ ],
+ "type": "travis-file"
+}

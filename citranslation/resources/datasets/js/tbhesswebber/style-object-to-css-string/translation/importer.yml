@@ -1,0 +1,37 @@
+name: Tufuwu/test2
+on:
+  push:
+    branches:
+    - "**/*"
+    - master
+  pull_request:
+concurrency:
+#   # This item has no matching transformer
+#   maximum_number_of_builds: 0
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-node@v4.0.0
+      with:
+        cache: npm
+    - name: Set up npm cache
+      uses: actions/cache@v3.3.2
+      with:
+        path: "~/.npm"
+        key: "${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}"
+        restore-keys: "${{ runner.os }}-node-"
+#     # 'sudo' was not transformed because there is no suitable equivalent in GitHub Actions
+    - run: npm install
+    - run: npm run validate
+
+#     # This item has no matching transformer
+#     - email: false
+    strategy:
+      matrix:
+        node_js:
+        - 16
+        - 18
+        - 20

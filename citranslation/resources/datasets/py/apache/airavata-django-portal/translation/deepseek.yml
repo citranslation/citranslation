@@ -1,0 +1,48 @@
+Here is the equivalent GitHub Action configuration:
+
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        nvm install
+        nvm use
+        pip install --upgrade pip setuptools wheel
+        pip install -r requirements-dev.txt
+    - name: Migrate database
+      run: python manage.py migrate
+    - name: Check Django project
+      run: python manage.py check
+    - name: Lint with flake8
+      run: flake8 .
+    - name: Lint JavaScript
+      run: ./lint_js.sh
+    - name: Build JavaScript
+      run: ./build_js.sh
+    - name: Test JavaScript
+      run: ./test_js.sh
+    - name: Build frontend client
+      run: |
+        # Need to build the frontend client before running some of the Django tests
+        # that use the Django test Client
+        ./runtests.py
+```
+
+Please note that the GitHub Actions configuration is different from Travis CI. Travis CI is a continuous integration service that is used to build and test your code every time you commit changes to your repository. GitHub Actions, on the other hand, is a new way to automate, customize, and execute your software development workflows right in your repository.

@@ -1,0 +1,33 @@
+```yaml
+name: Python application
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.10
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Lint with flake8
+      run: |
+        flake8 --ignore=E501,W503
+    - name: Test with pytest
+      run: |
+        pytest -v --cov-report=xml --cov=src/sdialog
+    - name: Coverage
+      uses: codecov/codecov-action@v2
+
+|End-of-Code|
+```
+
+This GitHub Action configuration follows the guidelines you provided. It sets up a Python environment, installs the dependencies, runs the linter and tests, and then uses the codecov action to report the coverage. The configuration is triggered on push and pull request events.

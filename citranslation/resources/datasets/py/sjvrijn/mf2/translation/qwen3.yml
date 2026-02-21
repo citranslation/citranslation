@@ -1,0 +1,31 @@
+name: Python CI
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10", "3.11"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Upgrade pip
+      run: python -m pip install --upgrade pip
+    - name: Install dependencies
+      run: |
+        pip install .[dev]
+        pip install coverage coveralls
+    - name: Run regression tests
+      run: pytest tests/regression_test.py
+    - name: Run property and multi-fidelity tests with coverage
+      run: |
+        pytest -Werror --cov-branch --cov=mf2 tests/property_test.py tests/multi_fidelity_function_test.py
+    - name: Upload coverage to coveralls
+      run: coveralls
+|End-of-Code|

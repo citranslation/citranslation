@@ -1,0 +1,96 @@
+{
+ "children": [
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "pull_request"
+    },
+    {
+     "children": [{
+      "children": [
+       {
+        "children": [],
+        "type": "created"
+       },
+       {
+        "children": [],
+        "type": "edited"
+       }
+      ],
+      "type": "types"
+     }],
+     "type": "issue_comment"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [{
+    "children": [],
+    "type": "wool"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [{
+    "children": [
+     {
+      "children": [{
+       "children": [],
+       "type": "run black"
+      }],
+      "type": "name"
+     },
+     {
+      "children": [{
+       "children": [],
+       "type": "ubuntu-latest"
+      }],
+      "type": "runs-on"
+     },
+     {
+      "children": [
+       {
+        "children": [{
+         "children": [{
+          "children": [],
+          "type": "actions/checkout@version"
+         }],
+         "type": "uses"
+        }],
+        "type": "OBJ-NODE"
+       },
+       {
+        "children": [
+         {
+          "children": [{
+           "children": [],
+           "type": "uc-cdis/wool@version"
+          }],
+          "type": "uses"
+         },
+         {
+          "children": [{
+           "children": [{
+            "children": [],
+            "type": "${{ secrets.github_token }}"
+           }],
+           "type": "github_token"
+          }],
+          "type": "env"
+         }
+        ],
+        "type": "OBJ-NODE"
+       }
+      ],
+      "type": "steps"
+     }
+    ],
+    "type": "runwool"
+   }],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

@@ -1,0 +1,381 @@
+{
+ "children": [
+  {
+   "children": [{
+    "children": [],
+    "type": "build and test wheels"
+   }],
+   "type": "name"
+  },
+  {
+   "children": [
+    {
+     "children": [],
+     "type": "push"
+    },
+    {
+     "children": [],
+     "type": "pull_request"
+    }
+   ],
+   "type": "on"
+  },
+  {
+   "children": [
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "build wheels on ${{ matrix.os }}"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "${{ matrix.os }}"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [
+         {
+          "children": [
+           {
+            "children": [],
+            "type": "ubuntu-latest"
+           },
+           {
+            "children": [],
+            "type": "macos-10.15"
+           }
+          ],
+          "type": "os"
+         },
+         {
+          "children": [{
+           "children": [],
+           "type": "auto"
+          }],
+          "type": "arch"
+         },
+         {
+          "children": [
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "windows-2016"
+              }],
+              "type": "os"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "amd64"
+              }],
+              "type": "cibw-arch"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "visual studio 15 2017 win64"
+              }],
+              "type": "cmake-generator"
+             }
+            ],
+            "type": "OBJ-NODE"
+           },
+           {
+            "children": [
+             {
+              "children": [{
+               "children": [],
+               "type": "windows-2016"
+              }],
+              "type": "os"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "x86"
+              }],
+              "type": "cibw-arch"
+             },
+             {
+              "children": [{
+               "children": [],
+               "type": "visual studio 15 2017"
+              }],
+              "type": "cmake-generator"
+             }
+            ],
+            "type": "OBJ-NODE"
+           }
+          ],
+          "type": "include"
+         }
+        ],
+        "type": "matrix"
+       }],
+       "type": "strategy"
+      },
+      {
+       "children": [
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "disable autocrlf"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "git config --global core.autocrlf false\\n"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/setup-python@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "install cibuildwheel"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "python-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "build wheels"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "cmake_generator=\\\"${{ matrix.cmake-generator }}\\\" cmake_prefix_path=\\\"c:/program files/mpark.variant/\\\" cmake_prefix_path=\\\"$cmake_prefix_path;c:/program files (x86)/mpark.variant/\\\" cmake_prefix_path=\\\"$cmake_prefix_path;c:/program files/layered-file-protocols/\\\" cmake_prefix_path=\\\"$cmake_prefix_path;c:/program files (x86)/layered-file-protocols/\\\"\\n"
+             }],
+             "type": "cibw_environment_windows"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.cibw-arch }}"
+             }],
+             "type": "cibw_archs_windows"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ matrix.arch }}"
+             }],
+             "type": "cibw_archs_linux"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "pp* *-musllinux_* cp31*-win32"
+             }],
+             "type": "cibw_skip"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "c:\\\\program files\\\\powershell\\\\7\\\\pwsh.exe"
+             }],
+             "type": "comspec"
+            }
+           ],
+           "type": "env"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "python-cmd"
+           }],
+           "type": "run"
+          }
+         ],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "actions/upload-artifact@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [{
+            "children": [{
+             "children": [],
+             "type": "./wheelhouse/*.whl"
+            }],
+            "type": "path"
+           }],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "wheels"
+    },
+    {
+     "children": [
+      {
+       "children": [{
+        "children": [],
+        "type": "wheels"
+       }],
+       "type": "needs"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "publish wheels to pypi"
+       }],
+       "type": "name"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "ubuntu-latest"
+       }],
+       "type": "runs-on"
+      },
+      {
+       "children": [{
+        "children": [],
+        "type": "github.event_name == 'push' && startswith(github.ref, 'refs/tags')"
+       }],
+       "type": "if"
+      },
+      {
+       "children": [
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/checkout@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [{
+          "children": [{
+           "children": [],
+           "type": "actions/download-artifact@version"
+          }],
+          "type": "uses"
+         }],
+         "type": "OBJ-NODE"
+        },
+        {
+         "children": [
+          {
+           "children": [{
+            "children": [],
+            "type": "publish wheels to pypi"
+           }],
+           "type": "name"
+          },
+          {
+           "children": [{
+            "children": [],
+            "type": "pypa/gh-action-pypi-publish@version"
+           }],
+           "type": "uses"
+          },
+          {
+           "children": [
+            {
+             "children": [{
+              "children": [],
+              "type": "__token__"
+             }],
+             "type": "user"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "${{ secrets.pypi_api_token }}"
+             }],
+             "type": "password"
+            },
+            {
+             "children": [{
+              "children": [],
+              "type": "artifact"
+             }],
+             "type": "packages_dir"
+            }
+           ],
+           "type": "with"
+          }
+         ],
+         "type": "OBJ-NODE"
+        }
+       ],
+       "type": "steps"
+      }
+     ],
+     "type": "publish"
+    }
+   ],
+   "type": "build"
+  }
+ ],
+ "type": "github-file"
+}

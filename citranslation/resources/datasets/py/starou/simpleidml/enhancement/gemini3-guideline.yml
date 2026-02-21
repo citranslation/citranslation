@@ -1,0 +1,42 @@
+name: Python Package
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install -q coverage
+          pip install -q coveralls
+          pip install -q mock
+          pip install .
+
+      - name: Run tests
+        run: |
+          cd tests
+          make coverage
+
+      - name: Upload coverage to Coveralls
+        run: coveralls --rc=coveragerc
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+|End-of-Code|

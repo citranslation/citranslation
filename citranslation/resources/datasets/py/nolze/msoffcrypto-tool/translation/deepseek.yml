@@ -1,0 +1,70 @@
+Sure, here is the equivalent GitHub Actions configuration:
+
+```yaml
+name: Python package
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  release:
+    types: [ created ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/poetry.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install Poetry
+      run: curl -sSL https://install.python-poetry.org | python -
+
+    - name: Install dependencies
+      run: poetry install
+
+    - name: Test with pytest
+      run: poetry run pytest
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+
+    - name: Publish to PyPI
+      if: startsWith(github.ref, 'refs/tags')
+      run: |
+        poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+        poetry publish --no-interaction --build
+      env:
+        POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
+```
+
+Please replace `${{ secrets.CODECOV_TOKEN }}` and `${{ secrets.PYPI_TOKEN }}` with your actual secrets. You can set these in your GitHub repository settings under "Secrets".
+
+This GitHub Actions configuration does the following:
+
+- It triggers on push and pull request events for the master branch.
+- It sets up Python 3.8 environment.
+- It caches pip to speed up subsequent builds.
+- It installs Poetry and dependencies.
+- It runs tests with pytest.
+- It uploads coverage to Codecov.
+- It publishes to PyPI if the ref starts with 'refs/tags'.
+
+Please note that GitHub Actions does not support email notifications out of the box, so you may need to use other services like Slack or email integration to get notifications.
