@@ -15,6 +15,9 @@ The original CSV files were generated using the **SEART GitHub Search Engine**. 
 
 After **manual screening and cleaning**, the final selected projects were consolidated and saved into `datasets.csv`.
 
-##
+## Plot Generation
+
+Use the script `scripts/run_GenPlot.py` to generate plots.
+
 #
 More updates coming soon.
