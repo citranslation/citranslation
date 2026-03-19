@@ -8,9 +8,11 @@ import requests
 import subprocess
 import pandas as pd
 from pathlib import Path
-from citranslation.utils.genToken import github_token
-from citranslation.utils.IOtools import saveYmlfile,readYmlfile
 
+from ..utils.genToken import github_token
+from ..utils.IOtools import saveYmlfile,readYmlfile
+from ..actions_remaker.gha_dispatcher import GHADispatcher
+from ..actions_remaker.result_comparer import ResultComparer
 
 def run(repo_file,csv_path,file_name):
 
@@ -240,17 +242,20 @@ def check_run_result(test_repo, commit_sha,repo_name,file_name):
 
                 # completed
                 print("✔ Actions 已完成:", conclusion)
-                run_id = get_run_id(run)
-                fetch_actions_logs(test_repo, run_id,repo_name,file_name)
-                # if conclusion == "success":
-                #     run_id = get_run_id(run)
-                #     # run_id = '21108477748'
-                #     fetch_actions_logs(test_repo, run_id,repo_name,file_name)
+                # run_id = get_run_id(run)
+                # fetch_actions_logs(test_repo, run_id,repo_name,file_name)
+                if conclusion == "success":
+                    run_id = get_run_id(run)
+                    # run_id = '21108477748'
+                    log_b = fetch_actions_logs(test_repo, run_id,repo_name,file_name)
+                    log_a_path = f"D:/vscode/3/CItranslation/citranslation/resources/logs/{repo_name}/actions_log"
+                    log_a = readYmlfile(log_a_path)
+                    compare_two_github_actions_logs(log_a, log_b, build_system=None, force=0)
                 return conclusion
 
         else:
             # for 未 break（未找到 run）
-            print("没有找到对应的 check-run")
+            print("fail to find check-run")
             return None
         
 def add_exec(content_lines, base_dir):
@@ -367,3 +372,41 @@ def fix_case_sensitive_files(repo_dir):
         if os.path.exists(src) and not os.path.exists(dst):
             subprocess.run(["git", "mv", src, dst], check=True)
             print(f"Fixed case: {src} -> {dst}")
+
+
+def compare_two_github_actions_logs(log_a, log_b, build_system=None, force=0):
+    """
+    Compare two GitHub Actions logs directly and determine whether they are equivalent.
+
+    :param log_a: path to first log file
+    :param log_b: path to second log file
+    :param build_system: optional build system hint (e.g., maven, gradle)
+    :param force: force analyzer (used for Java)
+    :return: (match: bool, mismatched_attributes: dict)
+    """
+
+    dispatcher = GHADispatcher()
+
+    # job_id is only used as an identifier; use dummy but consistent value
+    dummy_job_id = 'local_compare'
+
+    result_a = dispatcher.analyze(
+        log_path=log_a,
+        job_id=dummy_job_id,
+        build_system=build_system,
+        trigger_sha=None,
+        repo=None,
+        force=force
+    )
+
+    result_b = dispatcher.analyze(
+        log_path=log_b,
+        job_id=dummy_job_id,
+        build_system=build_system,
+        trigger_sha=None,
+        repo=None,
+        force=force
+    )
+    print(result_a)
+
+    return ResultComparer.compare_attributes(result_a, result_b)

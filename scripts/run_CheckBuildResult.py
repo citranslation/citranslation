@@ -1,5 +1,5 @@
 from pathlib import Path
-from citranslation.core.CheckBuildResult import run
+from ..citranslation.core.CheckBuildResult import run
 
 
 if __name__ == "__main__":

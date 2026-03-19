@@ -1,5 +1,5 @@
 from pathlib import Path
-from citranslation.core.CaculateAll import run
+from ..citranslation.core.CaculateAll import run
 
 
 

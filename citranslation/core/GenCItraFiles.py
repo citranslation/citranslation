@@ -4,8 +4,9 @@ import pandas as pd
 from pathlib import Path
 from openai import OpenAI
 from sentence_transformers import SentenceTransformer, util
-from citranslation.utils.genToken import openai_token,api_token
-from citranslation.utils.IOtools import readYmlfile,saveYmlfile,saveCsvfile
+
+from ..utils.genToken import openai_token,api_token
+from ..utils.IOtools import readYmlfile,saveYmlfile,saveCsvfile
 
 
 def run(csv_path,dir_name,prompt_type):

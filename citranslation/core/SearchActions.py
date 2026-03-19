@@ -2,21 +2,21 @@ import re
 import requests
 import pandas as pd
 from pathlib import Path
-from citranslation.utils.genToken import github_token
-from citranslation.utils.IOtools import saveCsvfile
+
+from ..utils.genToken import github_token
+from ..utils.IOtools import saveCsvfile
 
 def run(csv_path,save_path):
     base_dir = Path(__file__).resolve().parent.parent
     df = pd.read_csv(csv_path)
     for index, row in df.iterrows():
-        # repo_name = "otsaloma/nfoview"
+
         repo_name = row['repo_name']
         print(index,repo_name)
         try:
             commit = CheckMigCommit(repo_name)
             for c in commit:
                 b = c['commit']['message']
-                # print(b)
                 if (re_match("Migrate",b) or re_match('Move',b) or re_match('Replace',b) or re_match('switch',b)) and re_match('travis',b) and re_match('actions',b):
 
                     new_data = {'repo_name': repo_name,'commit_sha':c['sha'],'commit_date':c['commit']['committer']['date']}
