@@ -1,7 +1,7 @@
 # CItranslation
 
 This repository contains the replication package for the **CI Translation** project.
-README file coming soon 2026-03-27
+README file coming soon 2026-03-27-preparing
 
 ## Datasets
 
