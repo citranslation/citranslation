@@ -3,6 +3,15 @@
 This repository contains the replication package for the **CI Translation** project.
 README file coming soon 2026-03-27-preparing
 
+Installation
+------------
+
+Install using poetry:
+
+```bash
+poetry install
+```
+
 ## Datasets
 
 The dataset is located under the `citranslation/resource/datasets` directory and includes **301 software projects**.
