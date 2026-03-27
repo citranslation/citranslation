@@ -31,6 +31,8 @@ After **manual screening and cleaning**, the final selected projects were consol
 ## Plot Generation
 
 Use the script `scripts/run_GenPlot.py` to generate plots.
-
+```bash
+ python -m scripts.run_GenPlot
+```
 #
 More updates coming soon.
