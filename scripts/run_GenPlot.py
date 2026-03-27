@@ -8,6 +8,7 @@ def main(dir_name):
 
 
 if __name__ == "__main__":
+    # save dir
     dir_name = 'enhancement'
-    # dir_name = 'translation'
+
     main(dir_name)

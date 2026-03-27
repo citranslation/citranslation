@@ -182,4 +182,4 @@ def x_information(base_dir, save_dir):
     )
     plt.close()
 
-    print(f"Legend 已保存到：{legend_path}")
+    print(f"Legend saved in:{legend_path}")
