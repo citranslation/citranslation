@@ -20,10 +20,9 @@ warnings.filterwarnings("ignore")
 
 SentenceTransformerModelPath = 'all-MiniLM-L6-v2'
 
-def run(csv_path,dir_name):
+def run(csv_path,dir_name,col_lists):
     col_lists = ['1']
-    # col_lists = ['gpt-4o','gpt-4o-mini','gemini3','gpt5.1-code','gpt5.1-mini','llama','qwen3','deepseek','gemini']
-    # col_lists = ['deepseek-oneshot','deepseek-fewshot','deepseek-guideline','gemini3-oneshot','gemini3-fewshot','gemini3-guideline']
+
     base_dir = Path(__file__).parent.parent
     df = pd.read_csv(csv_path)
     for index, row in df.iterrows():

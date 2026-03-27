@@ -3,7 +3,7 @@
 This repository contains the replication package for the **CI Translation** project.
 README file coming soon 2026-03-27-preparing
 
-Installation
+## Installation
 ------------
 
 Install using poetry:
@@ -22,6 +22,9 @@ The original CSV files were generated using the **SEART GitHub Search Engine**. 
 
 * Search and filter candidate GitHub projects
 * Generate intermediate CSV files saved in the `filter` folder
+```bash
+ python -m scripts.run_SearchActions
+```
 
 After **manual screening and cleaning**, the final selected projects were consolidated and saved into `datasets.csv`.
 
