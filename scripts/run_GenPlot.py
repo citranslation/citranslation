@@ -1,5 +1,5 @@
 from pathlib import Path
-from ..citranslation.core.GenPlot import run
+from citranslation.core.GenPlot import run
 
 
 def main(dir_name):

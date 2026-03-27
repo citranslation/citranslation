@@ -1,5 +1,5 @@
 from pathlib import Path
-from ..citranslation.core.GenCItraFiles import run
+from citranslation.core.GenCItraFiles import run
 
 def main():
     prompt_type = 'guideline'

@@ -1,5 +1,5 @@
 from pathlib import Path
-from ..citranslation.core.Iterative import run
+from citranslation.core.Iterative import run
 
 def main():
     prompt_type = 'iterative'

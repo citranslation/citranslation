@@ -9,7 +9,7 @@ def run(csv_path,save_path):
     base_dir = Path(__file__).resolve().parent.parent
     df = pd.read_csv(csv_path)
     for index, row in df.iterrows():
-        # repo_name = "nextstrain/nextstrain.org"
+
         repo_name = row['repo_name']
         print(index,repo_name)
         if row["download"] != "success":

@@ -1,5 +1,5 @@
 from pathlib import Path
-from ..citranslation.core.DownloadRepo import run
+from citranslation.core.DownloadRepo import run
 
 def main():
     base_dir = Path(__file__).resolve().parent.parent

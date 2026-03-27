@@ -1,5 +1,5 @@
 from pathlib import Path
-from ..citranslation.core.SearchActions import run
+from citranslation.core.SearchActions import run
 
 def main():
     base_dir = Path(__file__).resolve().parent.parent

@@ -250,7 +250,7 @@ def check_run_result(test_repo, commit_sha,repo_name,file_name):
                     log_b = fetch_actions_logs(test_repo, run_id,repo_name,file_name)
                     log_a_path = f"D:/vscode/3/CItranslation/citranslation/resources/logs/{repo_name}/actions_log"
                     log_a = readYmlfile(log_a_path)
-                    compare_two_github_actions_logs(log_a, log_b, build_system=None, force=0)
+                    result = compare_two_github_actions_logs(log_a, log_b, build_system=None, force=0)
                 return conclusion
 
         else:
