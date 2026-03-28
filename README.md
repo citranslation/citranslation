@@ -31,16 +31,20 @@ replication_package/
 │   ├── actions_remaker/                 # Actions-remaker analyzer
 │   ├── core/
 │   │   ├── CaculateALL.py               # Caculate similarity metric
+│   │   ├── DownloadRepo.py              # Download repo
+│   │   ├── GenPlot.py                   # Gen similarity metric pictures
 │   │   └── SearchActions.py             # Search target repo
 │   ├── resources/
+│   │   ├── csv                          # Csv files
+│   │   └── prompts                      # prompts used
 │   └── utils/
 ├── test/
 ├── scripts/                             # Scripts
 │   ├── run_CaculateALL.py               # Scripts to run CaculateALL.py 
 │   ├── run_CheckBuildResult.py          
-│   ├── run_DownloadRepo.py
+│   ├── run_DownloadRepo.py              # Scripts to run DownloadRepo.py 
 │   ├── run_GenCItraFiles.py
-│   ├── run_GenPlot.py
+│   ├── run_GenPlot.py                   # Scripts to run GenPlot.py
 │   ├── run_Iterative.py
 │   └── run_SearchActions.py             # Scripts to run SearchActions.py
 ├── .env                                 # need to be created
