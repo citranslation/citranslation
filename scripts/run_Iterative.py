@@ -1,7 +1,10 @@
 from pathlib import Path
 from citranslation.core.Iterative import run
 
-def main():
+
+
+
+if __name__ == "__main__":
     prompt_type = 'iterative'
     base_dir = Path(__file__).resolve().parent.parent
     csv_path = base_dir/"citranslation"/"resources"/"csv"/'3.csv'
@@ -10,8 +13,3 @@ def main():
     # dir_name = 'translation'
     dir_name = 'iterative'
     run(csv_path,dir_name,prompt_type)
-
-
-
-if __name__ == "__main__":
-    main()
