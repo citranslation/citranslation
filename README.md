@@ -11,9 +11,8 @@ Install using poetry:
 ```bash
 poetry install
 ```
-## 📁 Repository Structure
+## Repository Structure
 
-## 📁 Repository Structure
 
 ```text
 replication_package/
