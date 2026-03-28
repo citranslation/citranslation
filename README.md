@@ -13,6 +13,9 @@ poetry install
 ```
 ## 📁 Repository Structure
 
+## 📁 Repository Structure
+
+```text
 replication_package/
 ├── cimig/
 ├── citranslation/                       # Main code
@@ -20,18 +23,18 @@ replication_package/
 │   ├── core/
 │   │   ├── CaculateALL.py               # Caculate similarity metric
 │   │   └── SearchActions.py             # Search target repo
-│   ├── resources
-│   └── utils
-├── test/                
-├── scripts/                             # Scripts 
-│   ├── run_CaculateALL.py               # Scripts to run CaculateALL.py
-│   ├── run_CheckBuildResult.py          # 
-│   ├── run_DownloadRepo.py              # 
-│   ├── run_GenCItraFiles.py             # 
-│   ├── run_GenPlot.py                   # 
-│   ├── run_Iterative.py                 # 
-│   └── run_SearchActions.py             # Scripts to run SearchActions.py
-├── .env                                 # need to be create
+│   ├── resources/
+│   └── utils/
+├── test/
+├── scripts/                             # Scripts
+│   ├── run_CaculateALL.py
+│   ├── run_CheckBuildResult.py
+│   ├── run_DownloadRepo.py
+│   ├── run_GenCItraFiles.py
+│   ├── run_GenPlot.py
+│   ├── run_Iterative.py
+│   └── run_SearchActions.py
+├── .env                                 # need to be created
 ├── pyproject.toml                       # project dependencies
 └── README.md                            # This file
 
