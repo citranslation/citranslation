@@ -33,6 +33,11 @@ After **manual screening and cleaning**, the final selected projects were consol
 ```bash
  python -m scripts.run_GenCItraFiles
 ```
+## Caculate similarity metric
+
+```bash
+ python -m scripts.run_CaculateAll
+```
 
 ## Plot Generation
 

@@ -19,14 +19,7 @@ def run(csv_path,dir_name,prompt_type):
         print(index,repo_name)
 
         save_path = base_dir/'resources'/'configration_data'/row['language']/repo_name/dir_name/f'{model_tag}-{prompt_type}.yml'
-        # save_path = base_dir/'resources'/'configration_data'/row['language']/repo_name/dir_name/f'{model_tag}.yml'
-        # file_content = readYmlfile(file_path)
-        # cosine_path = base_dir / "resources" / "csv" / "cosine_repo.csv" 
-        # cosine_sim_cal(csv_path,repo_name,row['language'],cosine_path)
-        # continue
-        # prompt = gen_prompt(row,prompt_type)
-        # print(prompt)
-        # break
+
         try:
             prompt = gen_prompt(row,prompt_type)
 
@@ -35,6 +28,7 @@ def run(csv_path,dir_name,prompt_type):
             translation_files = gen_files(model_tag,prompt)
             print(translation_files)
             saveYmlfile(save_path,translation_files)
+            
         except:
             error_data = {'repo_name': repo_name,'error':'translate failed'}
             error_path = base_dir / "resources" / "error.csv"
