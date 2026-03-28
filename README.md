@@ -11,6 +11,16 @@ Install using poetry:
 ```bash
 poetry install
 ```
+## Configration
+------------
+
+Need '.env' file to config GitHub token and LLM api token
+
+```text
+OPENAI_API_KEY = XXXXXXXX
+GITHUB_TOKEN = XXXXXXXX
+```
+
 ## Repository Structure
 
 
