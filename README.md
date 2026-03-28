@@ -36,7 +36,7 @@ replication_package/
 │   │   └── SearchActions.py             # Search target repo
 │   ├── resources/
 │   │   ├── csv                          # Csv files
-│   │   └── prompts                      # prompts used
+│   │   └── prompts                      # Prompts used
 │   └── utils/
 ├── test/
 ├── scripts/                             # Scripts
