@@ -36,8 +36,7 @@ replication_package/
 │   └── run_SearchActions.py
 ├── .env                                 # need to be created
 ├── pyproject.toml                       # project dependencies
-└── README.md                            # This file
-
+```
 ## Datasets
 
 The dataset is located under the `citranslation/resource/datasets` directory and includes **301 software projects**.
