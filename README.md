@@ -68,7 +68,7 @@ The original CSV files were generated using the **SEART GitHub Search Engine**. 
 
 After **manual screening and cleaning**, the final selected projects were consolidated and saved into `datasets.csv`.
 ## Download repo
-Use DownloadRepo to download repo and switch to target version. The repo will be saved in `resources/repo` folder.
+Use DownloadRepo to download repo and switch to target version according to `datasets.csv` . The repo will be saved in `resources/repo` folder.
 
 ```bash
  python -m scripts.run_DownloadRepo.py

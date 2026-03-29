@@ -223,12 +223,12 @@ def fetch_and_extract_logs(repo_name, run_id, headers):
 
     url = f"https://api.github.com/repos/{repo_name}/actions/runs/{run_id}/logs"
     
-    # 1️⃣ 下载 zip
+    # 1. fetch logs as zip
     resp = requests.get(url, headers=headers, timeout=30)
     resp.raise_for_status()
     zip_bytes = resp.content
 
-    # 2️⃣ 解压并读取文本文件内容
+    # 2️. extract logs from zip
     extracted = []
     with zipfile.ZipFile(io.BytesIO(zip_bytes)) as z:
         for name in z.namelist():
@@ -322,10 +322,10 @@ def inital_repo(local_dir,github_repo_url):
 
 def push_repo(commit_message):
 
-    # 将所有更改加入暂存区
+    # add all changes
     subprocess.run(["git", "add", "."], check=True)
 
-    # 检查工作区是否有改动
+    # check if there are changes to commit
     status = subprocess.run(
         ["git", "status", "--porcelain"],
         capture_output=True,
@@ -391,7 +391,7 @@ def replace_yml(file_path,local_dir):
     delet_folder(workflow_path)
     workflow_path = workflow_path/"workflows"
     os.makedirs(workflow_path, exist_ok=True)
-    # 写入到目标位置，覆盖原有文件
+    # writeYmlfile(workflow_path/"actions.yml", content)
     file_path = workflow_path/"actions.yml"
     saveYmlfile(file_path, content)
     print(f" Replaced YML file: success")
