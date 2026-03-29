@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["pypy-3.8", "pypy-2.7", "3.11", "3.10", "3.9", "3.8"]
+
+    env:
+      TOXENV: base,optional,six19-optional
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install tox
+
+      - name: Run tox
+        run: tox
+
+      - name: Post-script debug info
+        if: always()
+        run: python debug-info.py
+
+|End-of-Code|

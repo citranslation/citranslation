@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04 # noble
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12-dev", "pypy-3.9"]
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: vakt_db
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: vakt_db
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install MongoDB
+        run: |
+          wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1604-4.2.1.tgz
+          tar zxf mongodb-linux-x86_64-ubuntu1604-4.2.1.tgz
+          export PATH=${PWD}/mongodb-linux-x86_64-ubuntu1604-4.2.1/bin/:${PATH}
+          mkdir -p data/db
+          mongod --dbpath=data/db --fork --logpath /dev/null
+          sleep 5
+          mongo vakt_db --eval 'db.createUser({user:"test_user",pwd:"test_password",roles:["readWrite"]});'
+          echo "${PWD}/mongodb-linux-x86_64-ubuntu1604-4.2.1/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies
+        run: make deps
+
+      - name: Run tests with coverage
+        env:
+          DATABASE_DSN: "mysql+pymysql://root@127.0.0.1/vakt_db"
+        run: make coverage
+
+      - name: Test SQL integration (SQLite)
+        env:
+          DATABASE_DSN: "sqlite:///:memory:"
+        run: make test-sql-i
+
+      - name: Test SQL integration (Postgres)
+        env:
+          DATABASE_DSN: "postgresql+psycopg2cffi://postgres:@localhost/vakt_db"
+        run: make test-sql-i
+
+      - name: Run performance tests
+        run: make bench
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+|End-of-Code|

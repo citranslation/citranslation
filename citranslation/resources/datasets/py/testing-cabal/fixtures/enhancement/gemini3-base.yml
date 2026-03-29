@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.12-dev"] # 3.12-dev maps to nightly
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install -U pip
+          python -m pip install -U wheel setuptools pbr
+          python -m pip install -U .[docs,test]
+          pip list
+          python --version
+
+      - name: Run script
+        run: |
+          make check
+          rst2html.py README.rst README.html
+
+|End-of-Code|

@@ -1,0 +1,42 @@
+name: Build and Deploy to GitHub Pages
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs daily (adjust to match your Travis cron frequency)
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Data
+        run: npm run build.data
+
+      - name: Build Site
+        run: npm run build.site
+
+      - name: Deploy to GitHub Pages
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
+          folder: build # Replace with your actual build output directory (e.g., dist, public)
+          clean: false # Equivalent to skip-cleanup: true
+
+|End-of-Code|

@@ -1,0 +1,37 @@
+name: Python Package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        include:
+          - python-version: "3.8"
+            django: "<2"
+            drf: "<3.8"
+          - python-version: "3.8"
+            django: "<2"
+            drf: "<3.9"
+          - python-version: "3.8"
+            django: "<2.1"
+            drf: "<3.9"
+          - python-version: "3.8"
+            django: "<2.2"
+            drf: "<3.9"
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install "django${{ matrix.django }}" "djangorestframework${{ matrix.drf }}"
+    - name: Run tests
+      run: python runtests.py
+
+|End-of-Code|
