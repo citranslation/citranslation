@@ -1,3 +1,4 @@
+import pandas as pd
 from pathlib import Path
 from citranslation.core.Iterative import run
 
@@ -5,11 +6,13 @@ from citranslation.core.Iterative import run
 
 
 if __name__ == "__main__":
-    prompt_type = 'iterative'
     base_dir = Path(__file__).resolve().parent.parent
-    csv_path = base_dir/"citranslation"/"resources"/"csv"/'3.csv'
-    # csv_path = base_dir/"citranslation"/"resources"/"csv"/'guideline_1.csv'
-    # csv_path = base_dir/"citranslation"/"resources"/"csv"/'3.csv'
-    # dir_name = 'translation'
-    dir_name = 'iterative'
-    run(csv_path,dir_name,prompt_type)
+    # test repo dir
+    test_dir = 'tests/XXXX/XXXX'
+    csv_path = base_dir/"citranslation"/"resources"/"csv"/'datasets.csv'
+    strategy = 'base'
+    df = pd.read_csv(csv_path)
+    for index, row in df.iterrows():
+        repo_name = row['repo_name']
+        language = row['language']
+        run(repo_name, language, test_dir, strategy)

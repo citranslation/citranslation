@@ -38,14 +38,14 @@ replication_package/
 │   │   ├── csv                          # Csv files
 │   │   └── prompts                      # Prompts used
 │   └── utils/
-├── test/
+├── tests/                               # local test repo to be create
 ├── scripts/                             # Scripts
 │   ├── run_CaculateALL.py               # Scripts to run CaculateALL.py 
 │   ├── run_CheckBuildResult.py          
 │   ├── run_DownloadRepo.py              # Scripts to run DownloadRepo.py 
-│   ├── run_GenCItraFiles.py
+│   ├── run_GenCItraFiles.py             # Scripts to run GenCItraFiles.py
 │   ├── run_GenPlot.py                   # Scripts to run GenPlot.py
-│   ├── run_Iterative.py
+│   ├── run_Iterative.py                 # Scripts to run Iterative.py
 │   └── run_SearchActions.py             # Scripts to run SearchActions.py
 ├── .env                                 # need to be created
 ├── pyproject.toml                       # project dependencies
@@ -61,17 +61,28 @@ The dataset is located under the `citranslation/resource/datasets` directory and
 The original CSV files were generated using the **SEART GitHub Search Engine**. We used the script `scripts/run_SearchActions.py` to:
 
 * Search and filter candidate GitHub projects
-* Generate intermediate CSV files saved in the `filter` folder
+* Generate intermediate CSV files saved in the `origin` folder
 ```bash
  python -m scripts.run_SearchActions
 ```
 
 After **manual screening and cleaning**, the final selected projects were consolidated and saved into `datasets.csv`.
+## Download repo
+Use DownloadRepo to download repo and switch to target version. The repo will be saved in `resources/repo` folder.
 
+```bash
+ python -m scripts.run_DownloadRepo.py
+```
 ## Translation File Gen
 
 ```bash
  python -m scripts.run_GenCItraFiles
+```
+
+## Iterative
+
+```bash
+ python -m scripts.run_Iterative
 ```
 ## Caculate similarity metric
 

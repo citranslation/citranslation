@@ -1,73 +1,75 @@
 import re
 import os
-import pandas as pd
+import io
+import json
+import time
+import shutil
+import zipfile
+import requests
+import subprocess
 from pathlib import Path
 from openai import OpenAI
-from sentence_transformers import SentenceTransformer, util
+
 
 from ..utils.genToken import openai_token,api_token
 from ..utils.IOtools import readYmlfile,saveYmlfile,saveCsvfile
+from ..actions_remaker.gha_dispatcher import GHADispatcher
+from ..actions_remaker.result_comparer import ResultComparer
 
-
-def run(csv_path,dir_name,prompt_type):
+def run(repo_name, language, test_repo, strategy):
     base_dir = Path(__file__).resolve().parent.parent
-    # model_tag = 'gemini3-guideline'
+    local_dir = base_dir/'resources'/'test'/test_repo
+    index = 0
+    message = []
+    translation_prompt = gen_base_prompt(language,repo_name)
+    message.append({"role": "user","content": translation_prompt})
+    build_result = None
+
+    # init local test repo
+    repo_path = base_dir/'resources'/'datasets'/language/repo_name/'enhancement'/f'gemini3-{strategy}.yml'
+    github_repo_url = f"https://github.com/{test_repo}.git"
+    inital_repo(local_dir,github_repo_url)
+    delet_folder(local_dir)
+    write_repo(repo_path,local_dir)
+
+    # run test
+    build_test(test_repo,repo_path,repo_name,repo_path,local_dir)
+
     model_tag = 'gemini3'
-    count = '4'
-    df = pd.read_csv(csv_path)
-    for index, row in df.iterrows():
-        # repo_name = "alphagov/govuk-country-and-territory-autocomplete"
-        repo_name = row['repo_name']
-        language = row['language']
-        if row['gemini3-iterative-4'] =="fail":
-        # if row['gemini3-guideline-iterative-4'] =="fail":
-            print(index,repo_name)
+    build_result, log_content = check_build_result(response)
+    while index < 6 and build_result != "success":
+        try:
+            if build_result == "failed":
+                error_message = filter_log_content(log_content)
+            else:
+                error_message = log_content
+            message.append({"role": "user","content": gen_iterative_prompt(error_message)})
+            response = gen_gemini3_file(error_message)
+            yml_path = base_dir/'resources'/'datasets'/language/repo_name/'iterative'/f'{model_tag}-iterative-{index}.yml'
+            saveYmlfile(yml_path,response)
+            message.append({"role": "assistant","content": response})
+            build_test(repo_name,yml_path,local_dir)
+            build_result, log_content = check_build_result(response)
+            index += 1
 
-            save_path = base_dir/'resources'/'configration_data'/language/repo_name/dir_name/f'{model_tag}-{prompt_type}-{count}.yml'
-        # save_path = base_dir/'resources'/'configration_data'/row['language']/repo_name/dir_name/f'{model_tag}.yml'
-        # file_content = readYmlfile(file_path)
-        # cosine_path = base_dir / "resources" / "csv" / "cosine_repo.csv" 
-        # cosine_sim_cal(csv_path,repo_name,row['language'],cosine_path)
-        # continue
-        # prompt = gen_prompt(row,prompt_type)
-        # print(prompt)
-        # break
-            # message_path = base_dir/'resources'/'csv'/'error_message'/'guideline.csv'
-            message_path = base_dir/'resources'/'csv'/'error_message'/'base.csv'
-            df1 = pd.read_csv(message_path,encoding="gbk")
-            error_message_1 = df1.loc[index, "1"]
-            error_message_2 = df1.loc[index, "2"]
-            error_message_3 = df1.loc[index, "3"]
-            error_message_4 = df1.loc[index, "4"]
-            # print(error_message)
-            # translation_files = gen_files(model_tag,error_message_1,error_message_2,count,language,repo_name)
-            # saveYmlfile(save_path,translation_files)
+        except:
+            error_data = {'repo_name': repo_name,'error':'translate failed'}
+            error_path = base_dir / "resources" / "error.csv"
+            saveCsvfile(error_path,error_data)
             # break
-            try:
-                # print(prompt)
+    if build_result == "success":
+        log_a_path = base_dir/'resources'/'logs'/language/repo_name/'actions_log'
+        log_a = read_all_txt_logs(log_a_path)
+        log_b = log_content
+        compare_two_github_actions_logs(log_a, log_b, build_system=None, force=0)
 
-                translation_files = gen_files(model_tag,error_message_1,error_message_2,error_message_3,error_message_4,count,language,repo_name)
-                print(translation_files)
-                saveYmlfile(save_path,translation_files)
-            except:
-                error_data = {'repo_name': repo_name,'error':'translate failed'}
-                error_path = base_dir / "resources" / "error.csv"
-                saveCsvfile(error_path,error_data)
-            # break
 
-def gen_files(model_tag, error_message_1,error_message_2,error_message_3,error_message_4,count, language,repo_name):
-    if count == '1':
-        return gen_gemini3_one_file(error_message_1,model_tag,language,repo_name)
-    if count == '2':
-        return gen_gemini3_two_file(error_message_1,error_message_2,model_tag,language,repo_name)
-    if count == '3':
-        return gen_gemini3_three_file(error_message_1,error_message_2,error_message_3,model_tag,language,repo_name)
-    if count == '4':
-        return gen_gemini3_four_file(error_message_1,error_message_2,error_message_3,error_message_4,model_tag,language,repo_name)
+    json_path = base_dir/'resources'/'iterative_message'/language/repo_name/f'{model_tag}-iterative-message.json'
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump(message, f, ensure_ascii=False, indent=2)
 
 
 def prompt_constructor(prompt_path):
-
     with open(prompt_path, 'r') as file:
             prompt = file.read()
     return prompt
@@ -80,13 +82,15 @@ def gen_base_prompt(language,repo_name):
     prompt_template = prompt_constructor(prompt_path)
     prompt = prompt_template.format(source_content =file_content)
     return prompt
+
 def gen_iterative_prompt(error_message):
     base_dir = Path(__file__).resolve().parent.parent
     prompt_path = base_dir/'resources'/'prompts'/'iterative'
     prompt_template = prompt_constructor(prompt_path)
     prompt = prompt_template.format(error_message = error_message )
     return prompt
-def gen_gemini3_file(prompt):
+
+def gen_gemini3_file(message):
     client = OpenAI(
         base_url="https://openrouter.ai/api/v1",
         api_key=api_token(),
@@ -95,164 +99,319 @@ def gen_gemini3_file(prompt):
         extra_body={},
         model="google/gemini-3-flash-preview",
         temperature=0,
-        messages=[
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ]
+        messages=message
     )
 
     reply = response.choices[0].message.content
     return reply
-def gen_gemini3_one_file(error_message,model_tag,language,repo_name):
-    base_dir = Path(__file__).resolve().parent.parent
-    prompt1 = gen_base_prompt(language,repo_name)
-    # action_path = base_dir/'resources'/'configration_data'/language/repo_name/'enhancement'/f'{model_tag}.yml'
-    action_path = base_dir/'resources'/'configration_data'/language/repo_name/'translation'/f'{model_tag}.yml'
 
-    action_content = readYmlfile(action_path)
-    prompt2 = gen_iterative_prompt(error_message)
-    # print(prompt2)
-    # return
-    client = OpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=api_token(),
-    )
-    response = client.chat.completions.create(
-        extra_body={},
-        model="google/gemini-3-flash-preview",
-        temperature=0,
-        messages=[
-
-            {"role": "user","content": prompt1},
-            {"role": "assistant","content": action_content},
-            {"role": "user","content": prompt2}
+def filter_log_content(raw_text):
+    timestamp_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z\s*')
+    lines = raw_text.splitlines()
+    extracted = []
+    start_collecting = False
+    
+    for line in lines:
+        # 1. remove timestamp
+        clean_line = timestamp_pattern.sub('', line)
+        
+        # 2. check end condition
+        if "Post job cleanup." in clean_line:
+            break
             
-        ]
+        # 3. check start condition
+        if not start_collecting and "ERROR:" in clean_line:
+            start_collecting = True
+        
+        if start_collecting:
+            extracted.append(clean_line)
+    
+    return "\n".join(extracted)
+
+def check_build_result(repo_path,repo_name):
+    try:
+        commit_sha = get_head_commit(repo_path)
+
+        token = os.getenv("GITHUB_TOKEN")
+        if not token:
+            raise RuntimeError("GITHUB_TOKEN not set")
+
+        headers = {
+            "Authorization": f"token {token}",
+            "Accept": "application/vnd.github+json"
+        }
+
+
+        result, state = wait_for_completion(repo_name, commit_sha, headers)
+
+        if state == "NOT_TRIGGERED":
+            return "NOT_TRIGGERED", "No workflow triggered for this commit"
+
+
+        if state == "TIMEOUT":
+            return "TIMEOUT", "Workflow did not complete within the expected time frame"
+
+        zip_bytes = fetch_and_extract_logs(repo_name, result["id"], headers)
+
+        if state == "COMPLETED" and result["conclusion"] == "success":
+            return "success", zip_bytes
+        
+        return "failed", zip_bytes
+
+
+    except Exception as e:
+        print(f"Error: {e}")
+
+
+
+def get_head_commit(repo_path: Path):
+    """获取当前 HEAD commit"""
+    return subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=repo_path,
+        capture_output=True,
+        text=True,
+        check=True
+    ).stdout.strip()
+
+
+def get_branch(repo_path: Path):
+    """获取当前分支"""
+    return subprocess.run(
+        ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+        cwd=repo_path,
+        capture_output=True,
+        text=True,
+        check=True
+    ).stdout.strip()
+
+
+def fetch_runs(repo_name, commit_sha, headers):
+    url = f"https://api.github.com/repos/{repo_name}/actions/runs?head_sha={commit_sha}"
+    resp = requests.get(url, headers=headers, timeout=10)
+    resp.raise_for_status()
+    return resp.json().get("workflow_runs", [])
+
+def wait_for_completion(repo_name, commit_sha, headers):
+    """
+    wait_for_completion
+    """
+    start = time.time()
+
+    while True:
+        runs = fetch_runs(repo_name, commit_sha, headers)
+
+        if not runs:
+            return None, "NOT_TRIGGERED"
+
+        latest = runs[0]
+        status = latest["status"]
+        conclusion = latest["conclusion"]
+
+        print(f"⏳ Status: {status} (elapsed: {int(time.time() - start)}s)")
+
+        if status == "completed":
+            return latest, "COMPLETED"
+
+        if time.time() - start > 1200:
+            return latest, "TIMEOUT"
+
+        time.sleep(60)
+
+
+def fetch_and_extract_logs(repo_name, run_id, headers):
+
+    url = f"https://api.github.com/repos/{repo_name}/actions/runs/{run_id}/logs"
+    
+    # 1️⃣ 下载 zip
+    resp = requests.get(url, headers=headers, timeout=30)
+    resp.raise_for_status()
+    zip_bytes = resp.content
+
+    # 2️⃣ 解压并读取文本文件内容
+    extracted = []
+    with zipfile.ZipFile(io.BytesIO(zip_bytes)) as z:
+        for name in z.namelist():
+            if not name.endswith(".txt"):
+                continue
+
+            with z.open(name) as f:
+                content = f.read().decode("utf-8", errors="ignore")
+                extracted.append((name, content))
+
+    return extracted
+
+
+def compare_two_github_actions_logs(log_a, log_b, build_system=None, force=0):
+    """
+    Compare two GitHub Actions logs directly and determine whether they are equivalent.
+
+    :param log_a: path to first log file
+    :param log_b: path to second log file
+    :param build_system: optional build system hint (e.g., maven, gradle)
+    :param force: force analyzer (used for Java)
+    :return: (match: bool, mismatched_attributes: dict)
+    """
+
+    dispatcher = GHADispatcher()
+
+    # job_id is only used as an identifier; use dummy but consistent value
+    dummy_job_id = 'local_compare'
+
+    result_a = dispatcher.analyze(
+        log_path=log_a,
+        job_id=dummy_job_id,
+        build_system=build_system,
+        trigger_sha=None,
+        repo=None,
+        force=force
     )
 
-    reply = response.choices[0].message.content
-    return reply
-
-def gen_gemini3_two_file(error_message_1,error_message_2,model_tag,language,repo_name):
-    base_dir = Path(__file__).resolve().parent.parent
-    prompt1 = gen_base_prompt(language,repo_name)
-    # action_path_1 = base_dir/'resources'/'configration_data'/language/repo_name/'enhancement'/f'gemini3-guideline.yml'
-    action_path_1 = base_dir/'resources'/'configration_data'/language/repo_name/'translation'/f'gemini3.yml'
-    # action_path_2 = base_dir/'resources'/'configration_data'/language/repo_name/'iterative'/'gemini3-guideline-iterative-1.yml'
-    action_path_2 = base_dir/'resources'/'configration_data'/language/repo_name/'iterative'/'gemini3-iterative-1.yml'
-    action_content_1 = readYmlfile(action_path_1)
-    action_content_2 = readYmlfile(action_path_2)
-    prompt2 = gen_iterative_prompt(error_message_1)
-    prompt3 = gen_iterative_prompt(error_message_2)
-    # print(prompt2)
-    # return
-    client = OpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=api_token(),
+    result_b = dispatcher.analyze(
+        log_path=log_b,
+        job_id=dummy_job_id,
+        build_system=build_system,
+        trigger_sha=None,
+        repo=None,
+        force=force
     )
-    response = client.chat.completions.create(
-        extra_body={},
-        model="google/gemini-3-flash-preview",
-        temperature=0,
-        messages=[
+    print(result_a)
 
-            {"role": "user","content": prompt1},
-            {"role": "assistant","content": action_content_1},
-            {"role": "user","content": prompt2},
-            {"role": "assistant","content": action_content_2},
-            {"role": "user","content": prompt3}
-            
-        ]
-    )
+    return ResultComparer.compare_attributes(result_a, result_b)
 
-    reply = response.choices[0].message.content
-    return reply
 
-def gen_gemini3_three_file(error_message_1,error_message_2,error_message_3,model_tag,language,repo_name):
-    base_dir = Path(__file__).resolve().parent.parent
-    prompt1 = gen_base_prompt(language,repo_name)
-    # action_path_1 = base_dir/'resources'/'configration_data'/language/repo_name/'enhancement'/f'gemini3-guideline.yml'
-    # action_path_2 = base_dir/'resources'/'configration_data'/language/repo_name/'iterative'/'gemini3-guideline-iterative-1.yml'
-    # action_path_3 = base_dir/'resources'/'configration_data'/language/repo_name/'iterative'/'gemini3-guideline-iterative-2.yml'
-    action_path_1 = base_dir/'resources'/'configration_data'/language/repo_name/'translation'/f'gemini3.yml'
-    action_path_2 = base_dir/'resources'/'configration_data'/language/repo_name/'iterative'/'gemini3-iterative-1.yml'
-    action_path_3 = base_dir/'resources'/'configration_data'/language/repo_name/'iterative'/'gemini3-iterative-2.yml'
-    action_content_1 = readYmlfile(action_path_1)
-    action_content_2 = readYmlfile(action_path_2)
-    action_content_3 = readYmlfile(action_path_3)
-    prompt2 = gen_iterative_prompt(error_message_1)
-    prompt3 = gen_iterative_prompt(error_message_2)
-    prompt4 = gen_iterative_prompt(error_message_3)
-    # print(prompt2)
-    # return
-    client = OpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=api_token(),
-    )
-    response = client.chat.completions.create(
-        extra_body={},
-        model="google/gemini-3-flash-preview",
-        temperature=0,
-        messages=[
+def read_all_txt_logs(log_dir):
+    
+    if not log_dir.exists() or not log_dir.is_dir():
+        raise FileNotFoundError(f"Log directory not found: {log_dir}")
 
-            {"role": "user","content": prompt1},
-            {"role": "assistant","content": action_content_1},
-            {"role": "user","content": prompt2},
-            {"role": "assistant","content": action_content_2},
-            {"role": "user","content": prompt3},
-            {"role": "assistant","content": action_content_3},
-            {"role": "user","content": prompt4}
-            
-        ]
+    all_contents = []
+
+    # read all txt files in the log directory and concatenate their contents
+    for txt_file in sorted(log_dir.glob("*.txt")):  
+        with txt_file.open("r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+            all_contents.append(f"\n--- {txt_file.name} ---\n{content}")
+
+    # concat all contents into a single string
+    return "\n".join(all_contents)
+
+
+def build_test(repo_name,file_path,local_dir):
+    commit_message = f"Logs-{repo_name}"
+
+    replace_yml(file_path,local_dir)
+    push_repo(commit_message)
+
+def inital_repo(local_dir,github_repo_url):
+    # ensure local_dir exists
+    os.chdir(local_dir)
+
+    # check if .git exists
+    if not os.path.isdir(".git"):
+        subprocess.run(["git", "init"], check=True)
+        print("Initialized a new git repository.")
+
+    check_remote = subprocess.run(["git", "remote"], capture_output=True, text=True)
+    if "origin" in check_remote.stdout:
+        print("Remote 'origin' already exists. Removing it...")
+        subprocess.run(["git", "remote", "remove", "origin"], check=True)
+
+    # setup remote
+    subprocess.run(["git", "remote", "add", "origin", github_repo_url], check=True)
+
+def push_repo(commit_message):
+
+    # 将所有更改加入暂存区
+    subprocess.run(["git", "add", "."], check=True)
+
+    # 检查工作区是否有改动
+    status = subprocess.run(
+        ["git", "status", "--porcelain"],
+        capture_output=True,
+        text=True
     )
 
-    reply = response.choices[0].message.content
-    return reply
+    if status.stdout.strip() == "":
+        print("No changes detected. Skipping commit and push.")
+        return
 
-def gen_gemini3_four_file(error_message_1,error_message_2,error_message_3,error_message_4,model_tag,language,repo_name):
-    base_dir = Path(__file__).resolve().parent.parent
-    prompt1 = gen_base_prompt(language,repo_name)
-    # action_path_1 = base_dir/'resources'/'configration_data'/language/repo_name/'enhancement'/f'gemini3-guideline.yml'
-    # action_path_2 = base_dir/'resources'/'configration_data'/language/repo_name/'iterative'/'gemini3-guideline-iterative-1.yml'
-    # action_path_3 = base_dir/'resources'/'configration_data'/language/repo_name/'iterative'/'gemini3-guideline-iterative-2.yml'
-    # action_path_4 = base_dir/'resources'/'configration_data'/language/repo_name/'iterative'/'gemini3-guideline-iterative-3.yml'
-    action_path_1 = base_dir/'resources'/'configration_data'/language/repo_name/'translation'/f'gemini3.yml'
-    action_path_2 = base_dir/'resources'/'configration_data'/language/repo_name/'iterative'/'gemini3-iterative-1.yml'
-    action_path_3 = base_dir/'resources'/'configration_data'/language/repo_name/'iterative'/'gemini3-iterative-2.yml'
-    action_path_4 = base_dir/'resources'/'configration_data'/language/repo_name/'iterative'/'gemini3-iterative-3.yml'
-    action_content_1 = readYmlfile(action_path_1)
-    action_content_2 = readYmlfile(action_path_2)
-    action_content_3 = readYmlfile(action_path_3)
-    action_content_4 = readYmlfile(action_path_4)
-    prompt2 = gen_iterative_prompt(error_message_1)
-    prompt3 = gen_iterative_prompt(error_message_2)
-    prompt4 = gen_iterative_prompt(error_message_3)
-    prompt5 = gen_iterative_prompt(error_message_4)
-    # print(prompt2)
-    # return
-    client = OpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=api_token(),
-    )
-    response = client.chat.completions.create(
-        extra_body={},
-        model="google/gemini-3-flash-preview",
-        temperature=0,
-        messages=[
+    # 有改动才提交
+    subprocess.run(["git", "commit", "-m", commit_message], check=True)
+    print(f"Changes committed with message: {commit_message}")
 
-            {"role": "user","content": prompt1},
-            {"role": "assistant","content": action_content_1},
-            {"role": "user","content": prompt2},
-            {"role": "assistant","content": action_content_2},
-            {"role": "user","content": prompt3},
-            {"role": "assistant","content": action_content_3},
-            {"role": "user","content": prompt4},
-            {"role": "assistant","content": action_content_4},
-            {"role": "user","content": prompt5}
-        ]
-    )
+    # 推送（你可以保留 -f 或去掉）
+    subprocess.run(["git", "push", "origin", "main"], check=True)
+    print("Changes pushed to GitHub.")
 
-    reply = response.choices[0].message.content
-    return reply
+
+def delet_folder(local_dir):
+    # delete all files and folders in local_dir except .git
+    for item in os.listdir(local_dir):
+        item_path = os.path.join(local_dir, item)
+
+        if item == ".git" :
+            continue  # keep .git folder
+
+        if os.path.isdir(item_path):
+            shutil.rmtree(item_path)  # delete folder
+            print(f"Deleted folder: {item_path}")
+        else:
+            os.remove(item_path)  # delete file
+            print(f"Deleted file: {item_path}")
+
+    print(" Repository cleaned (except .git).")
+
+
+def write_repo(repo_path, local_dir):
+    for item in os.listdir(repo_path):
+        if item == ".git":  
+            continue  
+        item_path = os.path.join(repo_path, item)
+        destination_item_path = os.path.join(local_dir, item)
+
+        if os.path.isdir(item_path):  
+            # copytree 
+            shutil.copytree(item_path, destination_item_path, ignore=shutil.ignore_patterns('.git'), dirs_exist_ok=True)
+            print(f" Copied folder: {item_path} → {destination_item_path}")
+        else:  
+            # copy file
+            shutil.copy(item_path, destination_item_path)
+            print(f"Copied file: {item_path} → {destination_item_path}")
+
+    print("copy source repo: success")
+
+def replace_yml(file_path,local_dir):
+
+    content = readYmlfile(file_path)
+    lines = content.splitlines(keepends=True)
+    lines = controlTriggerEvent(lines)
+    content = ''.join(lines)
+    workflow_path = local_dir/".github"
+    delet_folder(workflow_path)
+    workflow_path = workflow_path/"workflows"
+    os.makedirs(workflow_path, exist_ok=True)
+    # 写入到目标位置，覆盖原有文件
+    file_path = workflow_path/"actions.yml"
+    saveYmlfile(file_path, content)
+    print(f" Replaced YML file: success")
+
+def controlTriggerEvent(lines):
+    result = []
+    flag = 1
+    flag2 = 0
+    for line in lines:
+        if(re).search(r'```yaml',line) and flag2==0:
+            flag2 += 1
+            continue
+        if((re).search(r'```',line) and flag2!=0) or (re).search(r'\|End-of-Code\|',line):
+
+            # result.append("\n")
+            break
+        if(re).search(r'master',line) and flag==1:
+            line = re.sub(r'master','main',line)
+        if(re).search(r'jobs',line):
+            flag = 0
+        result.append(line)
+
+    return result
