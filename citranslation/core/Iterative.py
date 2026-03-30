@@ -111,28 +111,37 @@ def gen_gemini3_file(message):
     reply = response.choices[0].message.content
     return reply
 
-def filter_log_content(raw_text):
-    timestamp_pattern = re.compile(r'^/d{4}-/d{2}-/d{2}T/d{2}:/d{2}:/d{2}/./d+Z/s*')
-    lines = raw_text.splitlines()
-    extracted = []
-    start_collecting = False
+def filter_log_content(logs: dict):
+    timestamp_pattern = re.compile(
+        r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z\s*'
+    )
     
-    for line in lines:
-        # 1. remove timestamp
-        clean_line = timestamp_pattern.sub('', line)
+    result = {}
+    
+    for name, raw_text in logs.items():
+        lines = raw_text.splitlines()
+        extracted = []
+        start_collecting = False
         
-        # 2. check end condition
-        if "Post job cleanup." in clean_line:
-            break
+        for line in lines:
+            # 1. remove timestamp
+            clean_line = timestamp_pattern.sub('', line)
             
-        # 3. check start condition
-        if not start_collecting and "ERROR:" in clean_line:
-            start_collecting = True
+            # 2. end condition
+            if "Post job cleanup." in clean_line:
+                break
+                
+            # 3. start condition
+            if not start_collecting and "ERROR:" in clean_line:
+                start_collecting = True
+            
+            if start_collecting:
+                extracted.append(clean_line)
         
-        if start_collecting:
-            extracted.append(clean_line)
+        # save extracted log content for this file
+        result[name] = "\n".join(extracted)
     
-    return "/n".join(extracted)
+    return result
 
 def check_build_result(repo_path):
     try:
