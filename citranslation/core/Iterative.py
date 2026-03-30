@@ -43,10 +43,10 @@ def run(repo_name, language, test_repo, strategy):
 
     while index < 6 and build_result != "success":
         try:
-            if build_result == "failed":
-                error_message = filter_log_content(log_content)
-            else:
+            if build_result == "not_triggered":
                 error_message = log_content
+            else:
+                error_message = filter_log_content(log_content)
             message.append({"role": "user","content": gen_iterative_prompt(error_message)})
             response = gen_gemini3_file(error_message)
             yml_path = base_dir/'resources'/'datasets'/language/repo_name/'iterative'/f'{model_tag}-iterative-{index}.yml'
@@ -132,13 +132,13 @@ def filter_log_content(logs: dict):
                 break
                 
             # 3. start condition
-            if not start_collecting and "ERROR:" in clean_line:
+            if not start_collecting and re.search(r'error', clean_line, re.IGNORECASE):
                 start_collecting = True
             
             if start_collecting:
                 extracted.append(clean_line)
         
-        # save extracted log content for this file
+        # save extracted content for this log file
         result[name] = "\n".join(extracted)
     
     return result
@@ -219,7 +219,7 @@ def check_build_result(repo_path):
 
 
 def get_head_commit(repo_path: Path):
-    """获取当前 HEAD commit"""
+    """get current HEAD commit sha of the repo at repo_path"""
     return subprocess.run(
         ["git", "rev-parse", "HEAD"],
         cwd=repo_path,
