@@ -41,6 +41,10 @@ def run(repo_name, language, test_repo, strategy):
     model_tag = 'gemini3'
     build_result, log_content = check_build_result(local_dir)
 
+    #result save file
+    save_path = base_dir / "resources" / "results"/"build_result.csv"
+    df = pd.read_csv(csv_path)
+
     while index < 6 and build_result != "success":
         try:
             if build_result == "not_triggered":
@@ -65,9 +69,23 @@ def run(repo_name, language, test_repo, strategy):
         log_a = base_dir/'resources'/'logs'/repo_name/'actions_log'
         log_b = base_dir/'resources'/'logs'/repo_name/f'{model_tag}-iterative-{index}_log'
         save_logs_dict(log_content, log_b)
-        temp = compare_two_github_actions_logs(log_a, log_b, build_system=None, force=0)
+        LogM = compare_two_github_actions_logs(log_a, log_b, build_system=None, force=0)
+        col1 = f"{model_tag}-iterative-{index}_build"
+        col2 = f"{model_tag}-iterative-{index}_LogM"
 
-
+        if col1 not in df.columns:
+            df[col1] = None
+        if col2 not in df.columns:
+            df[col2] = None
+        df.loc[index, col1] = build_result
+        df.loc[index, col2] = LogM
+        df.to_csv(csv_path, index=False)
+    else:
+        col = f"{model_tag}-iterative-{index}_build"
+        if col not in df.columns:
+            df[col] = None
+        df.loc[index, col] = build_result
+        df.to_csv(csv_path, index=False)
 
     json_path = base_dir/'resources'/'iterative_message'/language/repo_name/f'{model_tag}-iterative-message.json'
     json_path.parent.mkdir(parents=True, exist_ok=True)

@@ -1,7 +1,7 @@
 # CItranslation
 
 This repository contains the replication package for the **CI Translation** project.
-README file coming soon 2026-03-27-preparing
+
 
 ## Installation
 ------------
@@ -39,13 +39,14 @@ replication_package/
 │   │   └── SearchActions.py             # Search target repo
 │   ├── resources/
 │   │   ├── csv                          # Csv files
-│   │   ├── repo                         # Download repo
-│   │   └── prompts                      # Prompts used
+│   │   ├── datasets                     
+│   │   ├── prompts                      # Prompts used
+│   │   └── repo                         # Download repo
 │   └── utils/
 ├── tests/                               # local test repo to be create
 ├── scripts/                             # Scripts
 │   ├── run_CaculateALL.py               # Scripts to run CaculateALL.py 
-│   ├── run_CheckBuildResult.py          
+│   ├── run_CheckBuildResult.py          # Scripts to run CheckBuildResult.py
 │   ├── run_DownloadRepo.py              # Scripts to run DownloadRepo.py 
 │   ├── run_GenCItraFiles.py             # Scripts to run GenCItraFiles.py
 │   ├── run_GenPlot.py                   # Scripts to run GenPlot.py
@@ -72,18 +73,26 @@ The original CSV files were generated using the **SEART GitHub Search Engine**. 
 
 After **manual screening and cleaning**, the final selected projects were consolidated and saved into `datasets.csv`.
 ## Download repo
-Use DownloadRepo to download repo and switch to target version according to `datasets.csv` . The repo will be saved in `resources/repo` folder.
+Use DownloadRepo to download repo and switch to target version according to `datasets.csv`. The repo will be saved in `resources/repo` folder.
 
 ```bash
  python -m scripts.run_DownloadRepo.py
 ```
 ## Translation File Gen
+Use the script `scripts/GenCItraFiles.py` to generate `{prompt_type}` by `{model_tag}` model, the result will be saved in `resoucces/datasets/{target_repo}/{dir_name}`.
 
 ```bash
  python -m scripts.run_GenCItraFiles
 ```
+## Check Build Result
+Use the script `scripts/CheckBuildResult.py` run actions workflow, will read test repo from `resources/repo` and write repo in `tests/{repo}`, the result will be saved in `resources/results/build_result.csv`.
+
+```bash
+ python -m scripts.run_Iterative
+```
 
 ## Iterative
+Use the script `scripts/Iterative.py` run actions workflow, will read test repo from `resources/repo` and write repo in `tests/{repo}`, the result will be saved in `resources/results/build_result.csv`.
 
 ```bash
  python -m scripts.run_Iterative
@@ -96,9 +105,8 @@ Use DownloadRepo to download repo and switch to target version according to `dat
 
 ## Plot Generation
 
-Use the script `scripts/run_GenPlot.py` to generate plots.
+Use the script `scripts/run_GenPlot.py` to generate plots, the result will be saved in `resoucces/picture/{dir_name}`.
 ```bash
  python -m scripts.run_GenPlot
 ```
-#
-More updates coming soon.
+
