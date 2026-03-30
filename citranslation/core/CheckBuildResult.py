@@ -18,11 +18,7 @@ from ..actions_remaker.result_comparer import ResultComparer
 def run(repo_name, language, test_repo, model_tag):
     base_dir = Path(__file__).resolve().parent.parent
     local_dir = base_dir.parent/'tests'/test_repo
-    print(local_dir)
-    index = 0
-    message = []
-    translation_prompt = gen_base_prompt(language,repo_name)
-    message.append({"role": "user","content": translation_prompt})
+
     build_result = None
 
 
@@ -259,22 +255,6 @@ def compare_two_github_actions_logs(log_a, log_b, build_system=None, force=0):
 
     return ResultComparer.compare_attributes(result_a, result_b)
 
-
-def read_all_txt_logs(log_dir):
-    
-    if not log_dir.exists() or not log_dir.is_dir():
-        raise FileNotFoundError(f"Log directory not found: {log_dir}")
-
-    all_contents = []
-
-    # read all txt files in the log directory and concatenate their contents
-    for txt_file in sorted(log_dir.glob("*.txt")):  
-        with txt_file.open("r", encoding="utf-8", errors="ignore") as f:
-            content = f.read()
-            all_contents.append(f"\n--- {txt_file.name} ---\n{content}")
-
-    # concat all contents into a single string
-    return "/n".join(all_contents)
 
 def save_logs_dict(logs: dict, log_dir: Path):
     log_dir.mkdir(parents=True, exist_ok=True)

@@ -229,7 +229,37 @@ class GHADispatcher(object):
             time_lines = [line[:26] for line in lines]
             lines = [line[29:] for line in lines]
         return lines, time_lines
+    
+    @staticmethod
+    def read_logs_from_dir_flat(log_dir):
+        """
+        只读取当前目录下的 .txt 文件（不包含子目录）
+        """
+        log_dir = Path(log_dir)
 
+        if not log_dir.exists() or not log_dir.is_dir():
+            raise FileNotFoundError(f"Log directory not found: {log_dir}")
+
+        all_lines = []
+        all_time_lines = []
+
+        # ✅ 只遍历当前目录
+        for txt_file in sorted(log_dir.glob("*.txt")):
+            if not txt_file.is_file():
+                continue
+
+            if txt_file.stat().st_size == 0:
+                continue
+
+            lines, time_lines = GHADispatcher.read_log_into_lines(txt_file)
+
+            # 文件分隔标记
+            all_lines.append(f"\n===== FILE: {txt_file.name} =====\n")
+            all_lines.extend(lines)
+
+            all_time_lines.extend(time_lines)
+
+        return all_lines, all_time_lines
     # Determine the primary language of the build.
     # First analyze the workflow file, find all the setup actions and commands.
     # If Actions name doesn't work, use GitHub API to check repo's primary language
@@ -348,7 +378,7 @@ class GHADispatcher(object):
 
     # force - force run analyze when we know the job is in Java, avoiding skipping based on primary language.
     def analyze(self, log_path, job_id, build_system=None, trigger_sha=None, repo=None, force=0):
-        lines, time_lines = GHADispatcher.read_log_into_lines(log_path)
+        lines, time_lines = GHADispatcher.read_logs_from_dir_flat(log_path)
         folds = GHADispatcher.split(lines, time_lines)
         # print(folds)
         primary_language = "node_js"
