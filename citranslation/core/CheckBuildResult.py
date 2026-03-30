@@ -7,6 +7,7 @@ import shutil
 import zipfile
 import requests
 import subprocess
+import pandas as pd
 from pathlib import Path
 
 
@@ -15,7 +16,7 @@ from ..utils.IOtools import readYmlfile,saveYmlfile,saveCsvfile
 from ..actions_remaker.gha_dispatcher import GHADispatcher
 from ..actions_remaker.result_comparer import ResultComparer
 
-def run(repo_name, language, test_repo, model_tag):
+def run(repo_name, language, test_repo, model_tag, index):
     base_dir = Path(__file__).resolve().parent.parent
     local_dir = base_dir.parent/'tests'/test_repo
 
@@ -37,11 +38,29 @@ def run(repo_name, language, test_repo, model_tag):
     build_result, log_content = check_build_result(local_dir)
 
 
+    save_path = base_dir / "resources" / "results"/"build_result.csv"
+    df = pd.read_csv(csv_path)
     if build_result == "success":
         log_a = base_dir/'resources'/'logs'/repo_name/'actions_log'
         log_b = base_dir/'resources'/'logs'/repo_name/f'{model_tag}_log'
         save_logs_dict(log_content, log_b)
-        temp = compare_two_github_actions_logs(log_a, log_b, build_system=None, force=0)
+        LogM = compare_two_github_actions_logs(log_a, log_b, build_system=None, force=0)
+        col1 = f"{model_tag}_build"
+        col2 = f"{model_tag}_LogM"
+
+        if col1 not in df.columns:
+            df[col1] = None
+        if col2 not in df.columns:
+            df[col2] = None
+        df.loc[index, col1] = build_result
+        df.loc[index, col2] = LogM
+        df.to_csv(csv_path, index=False)
+    else:
+        col = f"{model_tag}_build"
+        if col not in df.columns:
+            df[col] = None
+        df.loc[index, col] = build_result
+        df.to_csv(csv_path, index=False)
 
 
 def filter_log_content(logs: dict):

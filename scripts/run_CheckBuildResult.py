@@ -1,14 +1,19 @@
+import pandas as pd
 from pathlib import Path
-from citranslation.core.CheckBuildResult import run
+from citranslation.core.Iterative import run
+
+
 
 
 if __name__ == "__main__":
-
     base_dir = Path(__file__).resolve().parent.parent
-    repo_name = "gemini3-iterative-4"
-    file_name = 'gemini3-iterative-4'
-    # csv_path = base_dir/"citranslation"/"resources"/"csv"/"base_1.csv"
-    csv_path = f"../citranslation/resources/csv/base_1.csv"
-
-    # csv_path = base_dir/"citranslation"/"resources"/"csv"/"guideline_1.csv"
-    run(repo_name,csv_path,file_name)
+    # test repo dir
+    test_dir = 'XXXX'
+    csv_path = base_dir/"citranslation"/"resources"/"csv"/'datasets.csv'
+    # model tag: gemini3 or gpt-4o or gpt-40-mini or deepseek or importer
+    model_tag = 'gemini3'
+    df = pd.read_csv(csv_path)
+    for index, row in df.iterrows():
+        repo_name = row['repo_name']
+        language = row['language']
+        run(repo_name, language, test_dir, model_tag,index)
