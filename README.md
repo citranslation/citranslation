@@ -31,8 +31,11 @@ replication_package/
 │   ├── actions_remaker/                 # Actions-remaker analyzer
 │   ├── core/
 │   │   ├── CaculateALL.py               # Caculate similarity metric
+│   │   ├── CheckBuildResult.py          # Get the run result
 │   │   ├── DownloadRepo.py              # Download repo
+│   │   ├── GenCItraFiles.py             # Gen translate files
 │   │   ├── GenPlot.py                   # Gen similarity metric pictures
+│   │   ├── Iterative.py                 # Iterative strategy
 │   │   └── SearchActions.py             # Search target repo
 │   ├── resources/
 │   │   ├── csv                          # Csv files
