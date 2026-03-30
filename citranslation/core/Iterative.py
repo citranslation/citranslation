@@ -11,32 +11,36 @@ from pathlib import Path
 from openai import OpenAI
 
 
-from ..utils.genToken import openai_token,api_token
+from ..utils.genToken import openai_token,api_token,github_token
 from ..utils.IOtools import readYmlfile,saveYmlfile,saveCsvfile
 from ..actions_remaker.gha_dispatcher import GHADispatcher
 from ..actions_remaker.result_comparer import ResultComparer
 
 def run(repo_name, language, test_repo, strategy):
     base_dir = Path(__file__).resolve().parent.parent
-    local_dir = base_dir/'resources'/'test'/test_repo
+    local_dir = base_dir.parent/'tests'/test_repo
+    print(local_dir)
     index = 0
     message = []
     translation_prompt = gen_base_prompt(language,repo_name)
     message.append({"role": "user","content": translation_prompt})
     build_result = None
 
+
     # init local test repo
-    repo_path = base_dir/'resources'/'datasets'/language/repo_name/'enhancement'/f'gemini3-{strategy}.yml'
-    github_repo_url = f"https://github.com/{test_repo}.git"
+    repo_path = base_dir/'resources'/'repo'/repo_name
+    github_repo_url = get_github_url(local_dir)
     inital_repo(local_dir,github_repo_url)
     delet_folder(local_dir)
     write_repo(repo_path,local_dir)
 
     # run test
-    build_test(test_repo,repo_path,repo_name,repo_path,local_dir)
+    file_path = base_dir/'resources'/'datasets'/language/repo_name/'enhancement'/f'gemini3-{strategy}.yml'
+    build_test(repo_name, file_path, local_dir)
 
     model_tag = 'gemini3'
-    build_result, log_content = check_build_result(response)
+    build_result, log_content = check_build_result(local_dir)
+
     while index < 6 and build_result != "success":
         try:
             if build_result == "failed":
@@ -58,13 +62,15 @@ def run(repo_name, language, test_repo, strategy):
             saveCsvfile(error_path,error_data)
             # break
     if build_result == "success":
-        log_a_path = base_dir/'resources'/'logs'/language/repo_name/'actions_log'
-        log_a = read_all_txt_logs(log_a_path)
-        log_b = log_content
-        compare_two_github_actions_logs(log_a, log_b, build_system=None, force=0)
+        log_a = base_dir/'resources'/'logs'/repo_name/'actions_log'
+        log_b = base_dir/'resources'/'logs'/repo_name/f'{model_tag}-iterative-{index}_log'
+        save_logs_dict(log_content, log_b)
+        temp = compare_two_github_actions_logs(log_a, log_b, build_system=None, force=0)
+
 
 
     json_path = base_dir/'resources'/'iterative_message'/language/repo_name/f'{model_tag}-iterative-message.json'
+    json_path.parent.mkdir(parents=True, exist_ok=True)
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(message, f, ensure_ascii=False, indent=2)
 
@@ -76,7 +82,7 @@ def prompt_constructor(prompt_path):
 
 def gen_base_prompt(language,repo_name):
     base_dir = Path(__file__).resolve().parent.parent
-    file_path = base_dir/'resources'/'configration_data'/language/repo_name/f'travis.yml'
+    file_path = base_dir/'resources'/'datasets'/language/repo_name/f'travis.yml'
     file_content = readYmlfile(file_path)
     prompt_path = base_dir/'resources'/'prompts'/'origin'
     prompt_template = prompt_constructor(prompt_path)
@@ -106,7 +112,7 @@ def gen_gemini3_file(message):
     return reply
 
 def filter_log_content(raw_text):
-    timestamp_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z\s*')
+    timestamp_pattern = re.compile(r'^/d{4}-/d{2}-/d{2}T/d{2}:/d{2}:/d{2}/./d+Z/s*')
     lines = raw_text.splitlines()
     extracted = []
     start_collecting = False
@@ -126,13 +132,13 @@ def filter_log_content(raw_text):
         if start_collecting:
             extracted.append(clean_line)
     
-    return "\n".join(extracted)
+    return "/n".join(extracted)
 
-def check_build_result(repo_path,repo_name):
+def check_build_result(repo_path):
     try:
         commit_sha = get_head_commit(repo_path)
 
-        token = os.getenv("GITHUB_TOKEN")
+        token = github_token()
         if not token:
             raise RuntimeError("GITHUB_TOKEN not set")
 
@@ -141,26 +147,65 @@ def check_build_result(repo_path,repo_name):
             "Accept": "application/vnd.github+json"
         }
 
+        owner, repo = get_repo_info(repo_path)
+        start = time.time()
 
-        result, state = wait_for_completion(repo_name, commit_sha, headers)
+        while True:
+            runs_url = f"https://api.github.com/repos/{owner}/{repo}/commits/{commit_sha}/check-runs"
+            headers = {
+                "Authorization": f"token {github_token()}",
+                "Accept": "application/vnd.github.v3+json"
+            }
 
-        if state == "NOT_TRIGGERED":
-            return "NOT_TRIGGERED", "No workflow triggered for this commit"
+            while True:
+                response = requests.get(runs_url, headers=headers)
+
+                if response.status_code != 200:
+                    print("GitHub API error:", response.text)
+                    return 'not_triggered', "No workflow triggered for this commit"
+
+                check_runs = response.json().get("check_runs", [])
+
+                if not check_runs:
+
+                    print("➡ Actions still running, waiting for 20s before re-checking...")
+                    time.sleep(20)
+                    continue
+
+                # completed
+                run = check_runs[0]
+                status = run["status"]          # queued / in_progress / completed
+                conclusion = run["conclusion"]  # null / success / failure ...
+                if status != "completed":
+                    print("➡ Actions still running, waiting for 40s before re-checking...")
+                    time.sleep(40)
+                    continue
+
+                print(f"Status = {status}, Conclusion = {conclusion}")
+                print("✔ Actions completed:", conclusion)
+
+                run_id = get_run_id(run)
+
+                url = f"https://api.github.com/repos/{owner}/{repo}/actions/runs/{run_id}/logs"
+                r = requests.get(url, headers=headers)
+                r.raise_for_status()
+                zip_bytes = io.BytesIO(r.content)
+                logs = {}
+
+                with zipfile.ZipFile(zip_bytes) as z:
+                    for name in z.namelist():
+                        if name.endswith(".txt") and "/" not in name:
+                            # reading log content and decode to string
+                            content = z.read(name).decode("utf-8", errors="ignore")
+                            logs[name] = content
 
 
-        if state == "TIMEOUT":
-            return "TIMEOUT", "Workflow did not complete within the expected time frame"
-
-        zip_bytes = fetch_and_extract_logs(repo_name, result["id"], headers)
-
-        if state == "COMPLETED" and result["conclusion"] == "success":
-            return "success", zip_bytes
-        
-        return "failed", zip_bytes
+                return conclusion, logs
 
 
     except Exception as e:
         print(f"Error: {e}")
+        return 'error', str(e)
 
 
 
@@ -175,48 +220,37 @@ def get_head_commit(repo_path: Path):
     ).stdout.strip()
 
 
-def get_branch(repo_path: Path):
-    """获取当前分支"""
-    return subprocess.run(
-        ["git", "rev-parse", "--abbrev-ref", "HEAD"],
-        cwd=repo_path,
-        capture_output=True,
-        text=True,
-        check=True
-    ).stdout.strip()
+def get_repo_info(repo_path: Path):
+    try:
+        origin_url = subprocess.run(
+            ["git", "remote", "get-url", "origin"],
+            cwd=repo_path,
+            capture_output=True,
+            text=True,
+            check=True
+        ).stdout.strip()
+    except subprocess.CalledProcessError:
+        raise RuntimeError("Not a git repository or missing origin")
+
+    match = re.search(r"(?:github\.com[:/])(.+)/([^.]+)(?:\.git)?", origin_url)
+    if not match:
+        raise RuntimeError(f"Cannot parse GitHub repo from {origin_url}")
+
+    owner_part, repo = match.group(1), match.group(2)
+    owner = owner_part.split("/")[-1]
+
+    return owner, repo
 
 
-def fetch_runs(repo_name, commit_sha, headers):
-    url = f"https://api.github.com/repos/{repo_name}/actions/runs?head_sha={commit_sha}"
-    resp = requests.get(url, headers=headers, timeout=10)
-    resp.raise_for_status()
-    return resp.json().get("workflow_runs", [])
 
-def wait_for_completion(repo_name, commit_sha, headers):
-    """
-    wait_for_completion
-    """
-    start = time.time()
 
-    while True:
-        runs = fetch_runs(repo_name, commit_sha, headers)
+def get_run_id(run):
+    url = run.get("html_url") or run.get("details_url")
+    m = re.search(r"/actions/runs/(\d+)", url)
+    return m.group(1) if m else None                
 
-        if not runs:
-            return None, "NOT_TRIGGERED"
 
-        latest = runs[0]
-        status = latest["status"]
-        conclusion = latest["conclusion"]
 
-        print(f"⏳ Status: {status} (elapsed: {int(time.time() - start)}s)")
-
-        if status == "completed":
-            return latest, "COMPLETED"
-
-        if time.time() - start > 1200:
-            return latest, "TIMEOUT"
-
-        time.sleep(60)
 
 
 def fetch_and_extract_logs(repo_name, run_id, headers):
@@ -275,7 +309,7 @@ def compare_two_github_actions_logs(log_a, log_b, build_system=None, force=0):
         repo=None,
         force=force
     )
-    print(result_a)
+
 
     return ResultComparer.compare_attributes(result_a, result_b)
 
@@ -294,8 +328,18 @@ def read_all_txt_logs(log_dir):
             all_contents.append(f"\n--- {txt_file.name} ---\n{content}")
 
     # concat all contents into a single string
-    return "\n".join(all_contents)
+    return "/n".join(all_contents)
 
+def save_logs_dict(logs: dict, log_dir: Path):
+    log_dir.mkdir(parents=True, exist_ok=True)
+
+    for name, content in logs.items():
+        # keep the same name as in the zip, and save to log_dir
+        file_path = log_dir / name
+        file_path.parent.mkdir(parents=True, exist_ok=True)
+
+        with file_path.open("w", encoding="utf-8") as f:
+            f.write(content)
 
 def build_test(repo_name,file_path,local_dir):
     commit_message = f"Logs-{repo_name}"
@@ -321,11 +365,8 @@ def inital_repo(local_dir,github_repo_url):
     subprocess.run(["git", "remote", "add", "origin", github_repo_url], check=True)
 
 def push_repo(commit_message):
-
-    # add all changes
     subprocess.run(["git", "add", "."], check=True)
 
-    # check if there are changes to commit
     status = subprocess.run(
         ["git", "status", "--porcelain"],
         capture_output=True,
@@ -333,17 +374,21 @@ def push_repo(commit_message):
     )
 
     if status.stdout.strip() == "":
-        print("No changes detected. Skipping commit and push.")
-        return
+        # no changes → create empty commit to trigger CI
+        subprocess.run(
+            ["git", "commit", "--allow-empty", "-m", commit_message],
+            check=True
+        )
+        print("Empty commit created (trigger CI)")
+    else:
+        # have changes → normal commit
+        subprocess.run(
+            ["git", "commit", "-m", commit_message],
+            check=True
+        )
+        print("Normal commit created")
 
-    # 有改动才提交
-    subprocess.run(["git", "commit", "-m", commit_message], check=True)
-    print(f"Changes committed with message: {commit_message}")
-
-    # 推送（你可以保留 -f 或去掉）
     subprocess.run(["git", "push", "origin", "main"], check=True)
-    print("Changes pushed to GitHub.")
-
 
 def delet_folder(local_dir):
     # delete all files and folders in local_dir except .git
@@ -398,20 +443,40 @@ def replace_yml(file_path,local_dir):
 
 def controlTriggerEvent(lines):
     result = []
-    flag = 1
-    flag2 = 0
-    for line in lines:
-        if(re).search(r'```yaml',line) and flag2==0:
-            flag2 += 1
-            continue
-        if((re).search(r'```',line) and flag2!=0) or (re).search(r'\|End-of-Code\|',line):
+    started = False   # flag to indicate if we've started copying lines
+    before_jobs = True
 
-            # result.append("\n")
+    for line in lines:
+        # 1. start condition (include that line)
+        if not started:
+            if re.search(r'^name\s*:', line):
+                started = True
+                result.append(line)
+            continue
+
+        # 2. end condition
+        if re.search(r'^```', line) or re.search(r'\|End-of-Code\|', line):
             break
-        if(re).search(r'master',line) and flag==1:
-            line = re.sub(r'master','main',line)
-        if(re).search(r'jobs',line):
-            flag = 0
+
+        # 3. remove "on: pull_request" and "on: push"
+        if re.search(r'^\s*jobs\s*:', line):
+            before_jobs = False
+
+        # 4. special handling for branch name in "on: push" if it exists before "jobs"
+        if before_jobs:
+            line = re.sub(r'\bmaster\b', 'main', line)
+
         result.append(line)
 
     return result
+
+def get_github_url(repo_path):
+    path_obj = Path(repo_path).resolve()
+    origin_url = subprocess.run(
+    ["git", "remote", "get-url", "origin"],
+    cwd=path_obj,
+    capture_output=True,
+    text=True,
+    check=True
+).stdout.strip()
+    return origin_url
