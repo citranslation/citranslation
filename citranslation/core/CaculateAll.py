@@ -119,10 +119,13 @@ rouge_metric_ignite = RougeL(multiref="best")
 def compute_rouge_ignite(code, llm_output):
     candidate = llm_output.split()
     references = [code.split()]
+
     rouge_metric_ignite.reset()
     rouge_metric_ignite.update(([candidate], [references]))
     scores = rouge_metric_ignite.compute()
-    return max(scores['Rouge-L-P'], scores['Rouge-L-R'], scores['Rouge-L-F'])
+
+    # Standard ROUGE-L F1
+    return scores['Rouge-L-F']
 
 # ROUGE-L and chrF
 def compute_metrics_yaml_lines(code, llm_output):

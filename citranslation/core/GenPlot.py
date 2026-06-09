@@ -24,44 +24,45 @@ def plot_all(base_dir, save_dir):
 
 
 
-def plot_picture(base_dir, save_dir,pictue_name):
-    csv_path = base_dir/f"{pictue_name}.csv"
-    # read CSV file (assuming filename is data.csv)
-    # every column is a group of data
+def plot_picture(base_dir, save_dir, pictue_name):
+    csv_path = base_dir / f"{pictue_name}.csv"
+
+    # =========================
+    # read CSV
+    # =========================
     df = pd.read_csv(csv_path)
 
     # exclude first column
     df_plot = df.iloc[:, 1:]
-
     num_cols = len(df_plot.columns)
 
     # =========================
-    # set figure size based on number of columns
+    # figure size
     # =========================
-    fig_width = max(4.5, num_cols * 0.3)
+    fig_width = max(6, num_cols * 0.4)   # 稍微加宽一点
     fig, ax = plt.subplots(figsize=(fig_width, 6))
 
     # =========================
-    # repare data (matplotlib needs list)
+    # prepare data
     # =========================
     data = [df_plot[col].dropna().values for col in df_plot.columns]
 
     # =========================
-    # original boxplot (no gap)
+    # boxplot（有间距）
     # =========================
     bp = ax.boxplot(
         data,
-        widths=1.0,                 
+        widths=0.6,   # ✅ 改这里（核心）
         showfliers=False,
         showmeans=True,
         meanline=True,
         medianprops=dict(visible=False),
         meanprops=dict(color='black', linewidth=1),
-        patch_artist=True           # enable box fill color
+        patch_artist=True
     )
 
     # =========================
-    # set boxplot colors (Set2)
+    # colors
     # =========================
     colors = sns.color_palette("Set2", num_cols)
     for box, color in zip(bp['boxes'], colors):
@@ -70,18 +71,18 @@ def plot_picture(base_dir, save_dir,pictue_name):
         box.set_linewidth(1)
 
     # =========================
-    # force boxplot no horizontal gap
+    # ❌ 删除这两行（否则永远挤在一起）
     # =========================
-    ax.set_xlim(0.5, num_cols + 0.5)
-    ax.margins(x=0)
+    # ax.set_xlim(0.5, num_cols + 0.5)
+    # ax.margins(x=0)
 
     # =========================
-    # mark mean values
+    # mean annotation
     # =========================
     for i, col in enumerate(df_plot.columns, start=1):
         mean_val = df_plot[col].mean()
         y_range = df_plot[col].max() - df_plot[col].min()
-        offset = 0.02 * y_range
+        offset = 0.02 * y_range if y_range != 0 else 0.01
 
         va = 'bottom' if mean_val >= 0 else 'top'
         y_text = mean_val + offset if va == 'bottom' else mean_val - offset
@@ -98,15 +99,20 @@ def plot_picture(base_dir, save_dir,pictue_name):
         )
 
     # =========================
-    # improve x-axis labels readability
+    # ✅ x-axis labels（关键新增）
     # =========================
-    # ax.set_xticks(range(1, num_cols + 1))
-    # ax.set_xticklabels(
-    #     df_plot.columns,
-    #     fontsize=max(10, 24 - num_cols),
-    #     fontname="Times New Roman"
-    # )
+    ax.set_xticks(range(1, num_cols + 1))
+    ax.set_xticklabels(
+        df_plot.columns,
+        rotation=45,          # 倾斜
+        ha='right',
+        fontsize=max(8, 20 - num_cols * 0.3),
+        fontname="Times New Roman"
+    )
 
+    # =========================
+    # y-axis style
+    # =========================
     ax.tick_params(axis='y', labelsize=14)
     for label in ax.get_yticklabels():
         label.set_fontname("Times New Roman")
@@ -114,14 +120,22 @@ def plot_picture(base_dir, save_dir,pictue_name):
     ax.set_xlabel(pictue_name, fontsize=24, fontname="Times New Roman")
     ax.set_ylabel("Values", fontsize=14, fontname="Times New Roman")
 
+    # =========================
+    # layout（防裁剪）
+    # =========================
     plt.tight_layout()
-    output_dir = save_dir  # save folder
-    os.makedirs(output_dir, exist_ok=True)
-    output_file = os.path.join(output_dir, f"{pictue_name}.png")
-    plt.savefig(output_file, dpi=300)  # dpi=300 
-    plt.close()  
+    plt.subplots_adjust(bottom=0.25)
 
-    print(f"save:{output_file}")
+    # =========================
+    # save
+    # =========================
+    os.makedirs(save_dir, exist_ok=True)
+    output_file = os.path.join(save_dir, f"{pictue_name}.png")
+
+    plt.savefig(output_file, dpi=300)
+    plt.close()
+
+    print(f"save: {output_file}")
 
 
 
