@@ -88,7 +88,7 @@ Use the script `scripts/GenCItraFiles.py` to generate `{prompt_type}` by `{model
 Use the script `scripts/CheckBuildResult.py` run actions workflow, will read test repo from `resources/repo` and write repo in `tests/{repo}`, the result will be saved in `resources/results/build_result.csv`.
 
 ```bash
- python -m scripts.run_Iterative
+ python -m scripts.run_CheckBuildResult
 ```
 
 ## Iterative
